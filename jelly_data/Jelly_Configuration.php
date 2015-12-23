@@ -10,7 +10,7 @@ array(
 		"Database_Name" => "better",
 				
 		// Database Host Name
-		"Host_Name" => "127.0.0.1",
+		"Host_Name" => "localhost",
 				
 		// Database Username
 		"Username" => "adminIMDu5ae",
