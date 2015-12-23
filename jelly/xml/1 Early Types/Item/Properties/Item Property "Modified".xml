@@ -1,0 +1,15 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "Modified" --}
+	
+		{Property}
+			{Type}Item{/Type}
+			{Value_Type}Date_Time{/Value_Type}
+			{Name}Modified{/Name}
+			{Alias}Modified{/Alias}
+			{Data_Name}Modified{/Data_Name}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

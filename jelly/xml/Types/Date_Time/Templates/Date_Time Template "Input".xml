@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Date_Time Template "Input" --}
+		{Template}
+			{Type}Date_Time{/Type}
+			{Name}Input{/Name}
+			{Content}[Input "Date Time" with Alias Date_Time.Alias, Value Date_Time.Value/]{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Long Text" --}
+		{Type}
+			{Name}Long Text{/Name}
+			{Alias}Long_Text{/Alias}
+			{Default_Input}Text_Area{/Default_Input}
+			{Package}Simple{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

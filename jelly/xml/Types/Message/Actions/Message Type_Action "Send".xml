@@ -1,0 +1,66 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Message Type_Action "Send" --}
+		{Type_Action}
+			{Type}Message{/Type}
+			{Name}Send{/Name}
+			{Content}
+				<!-- No content --> 
+			{/Content}
+			{Code}
+				<!-- Message Type_Action "Send" -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Item to Current_Action.Target /]
+				 
+				[If Current_Item.Variables.Recipient]				
+					[Then]
+						[PHP]
+							require_once 'jelly/php/libraries/phpmailer/PHPMailerAutoload.php';
+
+							$Mail_Sender = new PHPMailer;
+
+							// TODO: move SMTP information to database
+							$Mail_Sender->Host = 'wkw5-lvvb.accessdomain.com';
+							$Mail_Sender->Port = 587;
+							$Mail_Sender->Username = 'sender@better.space';
+							$Mail_Sender->Password = 'S3nder3.';
+
+							// SMTP Settings
+							$Mail_Sender->isSMTP();
+							$Mail_Sender->SMTPAuth = true;
+							$Mail_Sender->SMTPSecure = 'tls';		
+					
+							// Content type settings
+							$Mail_Sender->CharSet = 'UTF-8';
+							$Mail_Sender->isHTML(true);
+					
+							// Add content
+							$Mail_Sender->Subject = '[Format as "PHP Single Quoted String"][Current_Item.Subject no_wrap/][/Format]';
+							$Mail_Sender->Body = '[Format as "PHP Single Quoted String"][Current_Item.Variables.Body no_wrap/][/Format]';
+					
+							// Add From, BCC 
+							$Mail_Sender->From = 'services@better.space';
+							$Mail_Sender->FromName = '[Format as "PHP Single Quoted String"][1 Site from Database no_wrap][Name no_wrap/][/1][/Format] (via Better)';
+							$Mail_Sender->addBCC('services@better.space');
+					
+							// Add recipient
+							$Mail_Sender->addAddress('[Format as "PHP Single Quoted String"][Current_Item.Variables.Recipient.Email_Address no_wrap /][/Format]', '[Format as "PHP Single Quoted String"][Current_Item.Variables.Recipient.Name no_wrap /][/Format]');
+					
+							// Add sender
+							$Mail_Sender->addReplyTo('[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Email_Address no_wrap /][/Format]', '[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Name no_wrap /][/Format]');
+
+							// Send 
+							if(!$Mail_Sender->send())
+								echo 'Message could not be sent. Error: ' . $Mail_Sender->ErrorInfo;
+						[/PHP]
+					[/Then]
+					[Else]	
+						No recipient provided for message.
+					[/Else]					
+				[/If]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

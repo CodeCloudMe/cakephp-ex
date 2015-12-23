@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "Favorite Icon" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}Favorite Icon{/Name}
+			{Content}[This.Icon no_wrap][Then][This.Icon as File no_wrap with Maximum_Width = 50, Maximum_Height = 50 /][/Then][Else][Header "Content-Type" Value "image/png" /][Header 
+			"Content-Transfer-Encoding" 
+			Value "binary" 
+		/][PHP]$GLOBALS\['Stream_Content_Path'\] = 'jelly/images/Better_Logo_Orange_Square.png';[/PHP][/Else][/This.Icon]{/Content}
+			{Content_Type}application/unknown{/Content_Type}
+		{/Template}
+	
+{/Jelly}

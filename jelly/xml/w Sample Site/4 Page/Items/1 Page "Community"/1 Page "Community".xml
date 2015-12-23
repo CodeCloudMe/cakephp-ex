@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Page "Community" --}
+		{Page}
+			{Name}Community{/Name}
+			{Package}Local{/Package}
+			{Viewable_By}Public{/Viewable_By}
+		{/Page}
+	
+{/Jelly}

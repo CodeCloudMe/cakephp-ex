@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Late Show Picture" Picture --}
+		{Picture}
+			{Name}Late Show Picture{/Name}
+			{Path}jelly_data/Files/File/11181215_10101937096659562_5149422830689000074_n copy.jpg{/Path}
+		{/Picture}
+	
+{/Jelly}

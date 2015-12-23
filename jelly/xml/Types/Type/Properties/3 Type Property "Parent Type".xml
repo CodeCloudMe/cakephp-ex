@@ -1,0 +1,21 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type Property "Parent Type" --}
+	
+		{Property}
+			{Type}Type{/Type}
+			{Value_Type}Type{/Value_Type}
+			{Name}Parent Type{/Name}
+			{Alias}Parent_Type{/Alias}
+			{Reverse_Name}Child Type{/Reverse_Name}
+			{Reverse_Alias}Child_Type{/Reverse_Alias}
+			{Reverse_Plural_Name}Child Types{/Reverse_Plural_Name}
+			{Reverse_Plural_Alias}Child_Types{/Reverse_Plural_Alias}
+			{Relation}Many-To-One{/Relation}
+			{Data_Name}Parent_Type{/Data_Name}
+			{Key}Alias{/Key}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

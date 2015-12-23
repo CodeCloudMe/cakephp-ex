@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Text" --}
+		{Type}
+			{Name}Text{/Name}
+			{Alias}Text{/Alias}
+			{Default_Input}Text_Field{/Default_Input}
+			{Package}Simple{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

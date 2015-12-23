@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Location Template "Marker" --}
+	
+		{Template}
+			{Type}Location{/Type}
+			{Name}Popup{/Name}
+			{Content}
+				[Location.Name/]
+			{/Content}
+		{/Template}
+{/Jelly}

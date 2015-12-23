@@ -1,0 +1,116 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Type_Action "Publish" --}
+		{Type_Action}
+			{Type}Type{/Type}
+			{Name}Publish{/Name}
+			{Content}
+				[Link to Execute with Class = "Better_Publish"]Publish[/Link]
+				<span style="display:none;">
+					[Action as "Loading"/]
+				</span>
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin only -->
+					[Set Current_Action to This/]
+					[Set Current_Type to Current_Action.Target /]
+
+					[If Current_Type.Plural_Name]
+						[Then]
+							[Set Current_Action.Variables.Page_Name to Current_Type.Plural_Name/]
+						[/Then]
+						[Else]
+							[Set Current_Action.Variables.Page_Name to Current_Type.Name/]
+						[/Else]
+					[/If]
+					
+					<!-- Create page for published list -->
+					[New Page with Name = Current_Action.Variables.Page_Name, Visible = 1]
+						<!-- Disambiguate -->
+						[Set Current_Page to This/]
+						[Save Current_Page /]
+						
+						<!-- Create text module for list name -->
+						[New Text_Module]
+							<!-- Disambiguate -->
+							[Set New_Text_Module to This /]
+							
+							<!-- Set new text module body to type name -->
+							[Set New_Text_Module.Body to Current_Type.Name /]
+							
+							<!-- Specify new text module as heading size -->
+							[Set New_Text_Module.Size to "Large" /]
+							
+							<!-- Save new text module -->
+							[Save New_Text_Module /]
+							
+							<!-- Add new text module to page -->
+							[Add New_Text_Module to Current_Page.Content_Module /]
+			
+							<!-- Save page -->
+							[Save Current_Page /]
+						[/New]
+						
+						<!-- Create text module for content text -->
+						[New Text_Module]
+							<!-- Disambiguate -->
+							[Set New_Text_Module to This /]
+							
+							<!-- Set new text module body -->
+							[Set New_Text_Module.Body to "All " + Current_Type.Name /]
+							
+							<!-- Save new text module -->
+							[Save New_Text_Module /]
+							
+							<!-- Add new text module to page -->
+							[Add New_Text_Module to Current_Page.Content_Module /]
+			
+							<!-- Save page -->
+							[Save Current_Page /]
+						[/New]
+						
+						<!-- Create data module for list items -->
+						[New Data_Module]
+							<!-- Disambiguate -->
+							[Set Current_New_Item to This /]
+
+							<!-- Set data module's list to Presentation -->
+							[Set Current_New_Item.List to Current_Type/]
+			
+							<!-- Display as grid -->
+							[Set Current_New_Item.Display to "Grid" /]
+			
+							<!-- Save data module -->
+							[Save Current_New_Item /]
+			
+							<!-- Reset presentation's properties -->
+							[Current_New_Item.Action "Reset Properties" as Execute/]
+			
+							<!-- Add data module to current page -->
+							[Add Current_New_Item to Current_Page.Content_Module /]
+			
+							<!-- Save page -->
+							[Save Current_Page /]
+			
+							<!-- Save data module -->
+							[Save Current_New_Item /]
+							
+							[External_Script]
+								// Hack 
+								window.setTimeout(function()\{
+										Jelly.Handlers.Handle_Link_From_Click(null, \{
+												"Namespace":"Jelly_Globals_1_Page_New",
+												"URL":"\/page\/[Format as "Lowercase"][Current_Page.Alias no_wrap /][/Format]"
+											\});
+										Jelly.Interface.Hide_Inspector();
+									\}, 2500);	
+							[/External_Script]
+						[/New]
+					[/New Page]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

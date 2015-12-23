@@ -1,0 +1,28 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Add Template" --}
+		{Action}
+			{Name}Add Template{/Name}
+			{Content}
+				[Admin]
+					[Input "Hidden" with Name = "Type", Value = Current_Action.Variables.Template_Type/]
+					[Input "Hidden" with Name = "Name", Value = Current_Action.Variables.Name/]
+					[Input "Hidden" with Name = "Alias", Value = Current_Action.Variables.Alias/]
+					[Input "Hidden" with Name = "Content", Value = Current_Action.Variables.Content/]
+					[Link to Execute]Create Template "[Current_Action.Variables.Name no_wrap /]"[/Link]
+				[/Admin]
+			{/Content}
+			{Code}
+				[New Template]
+					[Set Template.Type = Form.Values.Type/]
+					[Set Template.Name = Form.Name/]
+					[Set Template.Alias = Form.Alias/]
+					[Set Template.Content = Form.Content_Original/]
+					[Save Template as "Unsaved"/]
+					[Go to Edit Template/]
+				[/New Template]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

@@ -1,0 +1,67 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Remove" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Remove{/Name}
+			{Content}
+				[Admin]
+					<div class="Remove_Window">
+						<!-- Close Link -->
+						<a href="#" class="Close_Button" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+				
+						<!-- Title -->
+						<div class="Header">
+							Remove [Current_Action.Target.Type.Name /][If Current_Action.Target.Name] "[Current_Action.Target.Name /]"[/If]?
+						</div>
+				
+						<!-- Title -->
+						<div class="Text">
+							This cannot be undone.
+						</div>
+						
+						<!-- Save/Cancel -->
+						<div class="Execute">
+							[Action as Loading /]
+							[Link to Execute]Remove[/Link]	
+						</div>
+						
+						<!-- Result -->
+						<div>[Action as Result /]</div>
+					</div>
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- If this is a property, remove Input modules that reference it -->
+					<!-- TODO Same w/ Property_Modules, etc. --> 
+					[If Action.Target.Type.Alias = "Property"]	
+						[Input_Module from Database where Property_Item = Action.Target.ID]
+							[Remove Input_Module/]
+						[/If]
+					[/If]					
+					
+					<!-- Admin only -->
+					[Remove Action.Target /]
+				
+					[External_Script]
+						Jelly.Handlers.Call_Handler_For_Target(
+							\{
+								"Event": "Item_Removed",
+								"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+								"Item": "[Current_Action.Target as Key No_Wrap /]",
+								"Item_Type": "[Current_Action.Target.Type as Alias No_Wrap /]"
+							\});
+				
+						Jelly.Handlers.Call_Handler_For_Target(
+							\{
+								"Event": "Dismiss",
+								"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]")
+							\});
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

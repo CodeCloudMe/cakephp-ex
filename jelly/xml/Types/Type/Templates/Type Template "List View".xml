@@ -1,0 +1,131 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "List View" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}List View{/Name}
+			{Content}
+				<!-- TODO:  add No_Child_Types Support --> 
+
+				<!-- Localize variables. --> 
+				[Set Current_Type to This /]
+				[Set Current_Type_Alias to Current_Type.Alias/]
+				
+				<div class="Better_Manage_Close">
+					<button class="Better_Remove" onclick="
+							Jelly.Interface.Close_Manage(\{
+									[Page from Database where Name = Current_Type.Name or Name = Current_Type.Plural_Name No_Wrap]
+										'List_Page_Alias': '[Page.Alias No_Wrap/]'
+									[/Page]
+								\});
+						"></button>
+				</div>
+
+				<header class="Better_Manage_Filter">
+					[1 [Current_Type_Alias no_wrap /] from Database]
+						[Current_Type.Action "Publish"/]
+					[/1]
+					[Ignore]
+						<!-- Refresh Google Sheet -->
+						[If Current_Type.Remote_URL]
+							[Current_Type.Action "Refresh Google Sheet" /]
+						[/If]
+					[/Ignore]
+					<label>Filters:</label>
+					<input type="Text" class="Better_Input" value="[Type.Name No_Wrap/]"/>
+				</header>
+
+				<!-- Display items of this type --> 
+				[[Current_Type_Alias no_wrap /] from Database Iterator_Wrap_Element "ul" Iterator_Classes "Better_Manage_List Better_Expanded" Item_Wrap_Element "li" by Order]
+
+					<!-- Localize variables. --> 
+					[Set Current_Item to This /]
+	
+					<!-- Drag Handle --> 
+					<span class="Better_Left" >
+						 <button class="Better_Drag"></button>
+					</span>
+
+					<!-- Menu -->
+					<span class="Better_Right">
+						<button class="Better_Menu"></button>
+						[Link to Remove Current_Item]<button class="Better_Remove"></button>[/Link]
+					</span>
+
+
+					<!-- Display information. -->
+					<!-- TODO: Abstract to template? -->
+					<div class="Better_Information">
+
+						<!-- If there's an image property, try displaying the value -->
+						[1 Current_Item.Property where Name = "Picture" or Name = "Image" or Name = "Cover Image"]
+		
+							<!-- Localize variables --> 
+							[Set Current_Property to This/]
+							[Set Current_Property_Alias to Current_Property.Alias/]
+
+							<!-- If a value for this image property exists, display it -->
+							[If Current_Item.[Current_Property_Alias no_wrap /] exists]
+								<span class="Better_Left">
+									<figure style="background-image: url(/Picture/[Current_Item.[Current_Property_Alias no_wrap /].ID no_wrap /]/File:Maximum_Width=140,Maximum_Height=60);"></figure>
+								</span>
+							[/If]
+						[/1 Current_Item.Property]
+
+
+						<span class="Better_Left">
+							<div class="Better_Heading">
+								[Current_Item.Name/]
+							</div>
+			
+							<!-- If there's a standard detail property property, try displaying the value -->
+							<div class="Better_Details">
+								[Current_Item.Property]
+									<!-- Localize variables -->
+									[Set Current_Property to This/]
+									[Set Current_Property_Alias to Current_Property.Alias/]
+									
+									<!-- Display some standard detail properties in full -->
+									[If 
+										Current_Property_Alias = "Date" or
+										Current_Property_Alias = "Start_Time"
+										]
+											[If Current_Item.[Current_Property_Alias no_wrap /] exists][Current_Item.[Current_Property_Alias no_wrap /]/]<br/>[/If]
+									[/If]
+									
+									[If Current_Property_Alias = "Location"]
+										[If Current_Item.Location exists][Current_Item.Location.Original_Address /]<br/>[/If]									
+									[/If]
+									
+									<!-- Display some standard detail properties truncated -->
+									[If 
+										Current_Property_Alias = "Content" or
+										Current_Property_Alias = "Description" or
+										Current_Property_Alias = "Tagline" or
+										Current_Property_Alias = "Details"
+										]
+											[If Current_Item.[Current_Property_Alias no_wrap /] exists][Format as "Plain Text" Characters 100][Current_Item.[Current_Property_Alias no_wrap /] Process_Once /][/Format]<br/>[/If]
+									[/If]
+								[/Current_Item.Property]
+							</div>
+						</span>
+					</div>
+					[External_Script]
+						document.getElementById("[This.Namespace no_wrap /]").onclick = function () \{
+								Jelly.Interface.Inspect(\{
+										"Event": event, 
+										"Type_Alias": "[Current_Type_Alias No_Wrap/]", 
+										"Item_ID": [Current_Item.ID No_Wrap/]
+									\})
+							\};
+					[/External_Script]
+				[/[Current_Type_Alias no_wrap /]]
+				
+				[Link to Add [Current_Type_Alias no_wrap /] Create_Inspector with Class = "Better_Manage_Button"]<figure>+</figure>Item[/]
+				
+			{/Content}
+		{/Template}
+	
+{/Jelly}

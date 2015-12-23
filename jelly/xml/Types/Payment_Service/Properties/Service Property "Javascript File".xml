@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Payment Service Property "Javascript File" --}
+		{Property}
+			{Type}Payment_Service{/Type}
+			{Name}Javascript File{/Name}
+			{Value_Type}Javascript_File{/Value_Type}
+			{Relation}Many-To-One{/Relation}
+		{/Property}
+	
+{/Jelly}

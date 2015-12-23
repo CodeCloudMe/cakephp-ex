@@ -1,0 +1,32 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Location Template "Cover" --}
+		{Template}
+			{Type}Location{/Type}
+			{Name}Cover{/Name}
+			{Content}
+				<div class="Cover_Content">
+					<!-- Map -->
+					<span class="Map" id="[This.Namespace no_wrap /]_Map">
+					</span>
+
+					[External_Script]
+						// Generate map
+						Jelly.Interface.Generate_Map(\{Alias: "[This.Namespace no_wrap /]_Map"\});
+	
+						// Add marker to map
+						Jelly.Interface.Create_Location(
+								\{
+									"Map_Alias": "[This.Namespace no_wrap /]_Map",
+									"Position": \[[This.Latitude no_wrap /], [This.Longitude no_wrap /]\],
+									"Content": "[Format as "Javascript String"][This as "Popup" Wrap /][/Format]",
+									"Show": true
+								\}
+							);
+					[/External_Script]
+				</div>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

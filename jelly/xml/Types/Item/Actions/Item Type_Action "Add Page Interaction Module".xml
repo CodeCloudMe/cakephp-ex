@@ -1,0 +1,52 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add Page Interaction Module" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add Page Interaction Module{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<div class="Window Add_Interaction">
+						<!-- Close Link -->
+						<div class="Close_Link">
+							<a href="#" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+						</div>
+						
+						<!-- List Menu -->
+						[Current_Action.Target]
+							<div class="Links">
+								[Ignore]
+									<!-- TODO Contact us -->
+									<a href="#" onclick="return false;">Contact Us</a>
+								[/Ignore]
+								
+								<!-- Donate -->
+								[This.Action "Add Donate Module" /]
+							</div>
+						[/Current_Action.Target]
+					</div>
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Added",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Does nothing -->
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

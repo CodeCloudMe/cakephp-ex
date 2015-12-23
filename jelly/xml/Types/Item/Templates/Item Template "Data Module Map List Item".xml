@@ -1,0 +1,63 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Data Module Map List Item" --}
+	
+		{Template}
+			{Type}Item{/Type}
+			{Name}Data Module Map List Item{/Name}
+			{Content}
+				<!-- Required Variables: Data_Module -->
+				<!-- Disambiguate -->
+				[Set Current_List_Item to This /]
+				[Set Current_Data_Module to This.Variables.Data_Module /]
+				
+				<!-- Link to item -->
+				<!-- TODO Show_Links -->
+				[Link to This by Alias]
+					<!-- Check if a cover property has been set -->
+					[Current_Data_Module.Cover_Property_Item]
+						<!-- Cover Image -->
+						<span class="Cover">
+							<!-- Show cover template for item -->
+							[1 Current_List_Item.[This.Alias no_wrap /] as Cover /]
+						</span>
+					[/Current_Data_Module.Cover_Property_Item]
+					
+					<!-- Properties -->
+					<!-- TODO: display the object itself here? Like a blog? -->
+					<!-- Link to items by Alias? -->
+					<!-- (Current_List_Item /) -->
+					<!-- TODO: Hacky -->
+					<span class="Details">
+						[Current_Data_Module.Child_Property_Item]
+							[If Attachment.Visible]
+								<!-- Disambiguate -->
+								[Set Current_Property to This /]
+		
+								<div>
+									<!-- TODO - tristan and i are not sure about why parent_typpe --> 
+									[If Current_Property.Value_Type.Parent_Type.Alias = "Picture"]
+										[Then]
+											[Current_List_Item.[Current_Property.Alias no_wrap /] with Maximum_Width = 200 /]
+										[/Then]
+										[Else]
+											[If Current_Property.Value_Type.Parent_Type.Alias = "Location"]
+												[Then]
+													[Current_List_Item.[Current_Property.Alias no_wrap /].Original_Address /]
+												[/Then]
+												[Else]
+													[Current_List_Item.[Current_Property.Alias no_wrap /] /]
+												[/Else]
+											[/If]
+										[/Else]
+									[/If]
+								</div>
+							[/If]
+						[/Current_Data_Module.Child_Property_Item]
+					</span>
+				[/Link]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,16 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Dashboard Template "Default" --}
+		{Template}
+			{Type}Dashboard{/Type}
+			{Name}Default{/Name}
+			{Content}
+				[Dashboard.Content /]
+			{/Content}
+			{Less_Style}
+			{/Less_Style}
+			{Package}Interaction{/Package}
+		{/Template}
+	
+{/Jelly}

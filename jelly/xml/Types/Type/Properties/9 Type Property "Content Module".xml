@@ -1,0 +1,14 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type Property "Content Module" --}
+	
+		{Property}
+			{Type}Type{/Type}
+			{Value_Type}Content_Module{/Value_Type}
+			{Name}Content Module{/Name}
+			{Reverse_Name}Type Item{/Reverse_Name}
+			{Relation}Many-To-Many{/Relation}
+		{/Property}
+	
+{/Jelly}

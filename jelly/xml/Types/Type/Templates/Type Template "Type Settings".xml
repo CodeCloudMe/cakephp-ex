@@ -1,0 +1,60 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "Type Settings" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}Type Settings{/Name}
+			{Content}
+				[Set Current_Type to This /]
+				<span class="Page_Settings_Content">
+					[If not Current_Type.Core]
+						<span class="Single_Name_Input Setting_Row">
+							<span class="Setting_Label">
+								Single Name:
+							</span>
+							<span class="Setting_Value">
+								[Current_Type.Action "Edit Text Property" with Property_Alias = "Name" /]
+							</span>
+						</span>
+						<span class="Plural_Name_Input Setting_Row">
+							<span class="Setting_Label">
+								Plural Name:
+							</span>
+							<span class="Setting_Value">
+								[Current_Type.Action "Edit Text Property" with Property_Alias = "Plural_Name" /]
+							</span>
+						</span>
+					[/If]
+					<span class="URL_Detail Setting_Row">
+						<span class="Setting_Label">
+							Permanent Link:
+						</span>
+						<span class="Setting_Value">
+							<input type="text" readonly="readonly" value="http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[This.Alias no_wrap /]" />
+						</span>
+					</span>
+					<span class="Show_In_Toolbar_Setting Setting_Row">
+						<span class="Setting_Label">
+							Pin to Navigation:
+						</span>
+						<span class="Setting_Value">
+							[Current_Type.Action "Toggle in Toolbar" /]
+						</span>
+					</span>
+					[If not Current_Type.Core]
+						<span class="Delete_Type_Setting Setting_Row">
+							<span class="Setting_Label">
+								Delete List:
+							</span>
+							<span class="Setting_Value">
+								[Link to "/Type/[Current_Type.Alias no_wrap /]/Remove" into "Window"]Delete[/Link]
+							</span>
+						</span>
+					[/If]
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

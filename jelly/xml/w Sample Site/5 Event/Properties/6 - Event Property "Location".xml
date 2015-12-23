@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Property "Location" --}
+		{Property}
+			{Type}Event{/Type}
+			{Name}Location{/Name}
+			{Value_Type}Location{/Value_Type}
+		{/Property}
+	
+{/Jelly}

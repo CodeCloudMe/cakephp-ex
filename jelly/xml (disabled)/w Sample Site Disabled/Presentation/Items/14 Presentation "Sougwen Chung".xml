@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Sougwen Chung" --}
+		{Presentation}
+			{Name}Sougwen Chung{/Name}
+			{Website}http://sougwen.com/{/Website}
+			{Description}Sougwen Chung is an interdisciplinary artist whose practice spans installation, sculpture, still image, drawing, and performance, informing her multifaceted approach to experiential art.{/Description}
+			{Picture}Sougwen_Chung{/Picture}
+		{/Presentation}
+	
+{/Jelly}

@@ -1,0 +1,74 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Type_Action "Add Unadded Properties" --}
+		{Type_Action}
+			{Type}Data_Module{/Type}
+			{Name}Add Unadded Properties{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Execute link -->
+					[Link to Execute /]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Add Default Properties -->
+					<!-- TODO: Convert to a better way to get properties -->
+					<!-- TODO: What about reverse properties? -->
+					[New [Current_Action.Target.List.Alias no_wrap /]]
+						<!-- Only add properties that are not advanced -->
+						[This.Property where not Advanced]
+							<!-- Disambiguate -->
+							[Set Current_Property to This /]
+							
+							<!-- Check if property is one of the defaults -->
+							<!-- Check if property already added -->
+							[Current_Action.Target.Child_Property_Item where Alias is Current_Property.Alias]
+								[Else]
+									<!-- Add Property -->
+									[Add Current_Property to Current_Action.Target.Child_Property_Item /]
+									
+									<!-- Set default visibility -->
+									<!-- TODO this can be done better when Add executes its content within an attachment -->
+									[Current_Action.Target.Child_Property_Item where Alias is Current_Property.Alias]
+										<!-- Disambiguate -->
+										[Set Current_Child_Property_Item to This.Attachment /]
+										
+										<!-- Check if the property is one of the default visible ones -->
+										<!-- TODO Better way to specify default properties? -->
+										[Set Current_Child_Property_Item.Visible to false /]
+										[If
+											Current_Property.Name is "Name" or
+											Current_Property.Name is "Date" or
+											Current_Property.Name is "Start Date" or
+											Current_Property.Name is "Start Time" or
+											Current_Property.Name is "Location" or
+											Current_Property.Name is "Picture" or
+											Current_Property.Name is "Image" or
+											Current_Property.Name is "Cover Image"
+										]
+											[Then]
+												<!-- Only show properties that are simple -->
+												[If Current_Property.Value_Type is simple type]
+													<!-- For default properties, make them visible -->
+													[Set Current_Child_Property_Item.Visible to true /]
+												[/If]
+											[/Then]
+										[/If]
+										
+										[Save Current_Child_Property_Item /]
+									[/Current_Action.Target.Child_Property_Item]
+								[/Else]
+							[/Current_Action.Target.Child_Property_Item]
+						[/This.Property]
+					[/New]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Payment_Transaction Property "Total" --}
+		{Property}
+			{Type}Payment_Transaction{/Type}
+			{Name}Total{/Name}
+			{Value_Type}Number{/Value_Type}
+		{/Property}
+	
+{/Jelly}

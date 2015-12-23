@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Property "Allow Any Member To Email Entire Team" --}
+		{Property}
+			{Type}Team{/Type}
+			{Name}Allow Any Member To Email Entire Team{/Name}
+			{Value_Type}Boolean{/Value_Type}
+			{Default_Value}1{/Default_Value}
+			{Viewable_By}Admin{/Viewable_By}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

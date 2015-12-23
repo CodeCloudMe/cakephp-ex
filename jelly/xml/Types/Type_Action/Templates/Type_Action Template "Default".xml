@@ -1,0 +1,40 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type_Action Template "Default" --}
+	
+		{Template}
+			{Type}Type_Action{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Store action and namespace for disambiguation later -->
+				[Set Current_Action to This /]
+				[Set Current_Action_Namespace to Current_Action.Namespace /]
+			
+				<!-- Register execute handler -->
+				[External_Script]
+					Jelly.Handlers.Register_Handler(\{
+							"Element": document.getElementById("[Current_Action.Namespace No_Wrap /]"),
+							"Event": "Execute",
+							"Code": function() \{
+									Jelly.Actions.Execute_By_Namespace(\{
+											Namespace: "[Current_Action.Namespace No_Wrap /]",
+											Target_Type: '[Current_Action.Target.Type.Alias No_Wrap /]',
+											Target: '[Current_Action.Target.ID No_Wrap /]'
+										\});
+								\}
+						\});
+				[/External_Script]
+				
+				<!-- Render Action Content -->
+				[Current_Action.Content /]
+				
+				[If Current_Action.Variables.Append_Result]
+					<!-- Render Action Result -->				
+					[Current_Action as "Result"/]
+				[/If]
+			
+			{/Content}
+		{/Template}
+	
+{/Jelly}

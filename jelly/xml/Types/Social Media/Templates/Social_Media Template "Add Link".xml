@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Social_Media Template "Add Link" --}
+		{Template}
+			{Type}Social_Media{/Type}
+			{Name}Add Link{/Name}
+			{Content}
+				<!-- Add action -->
+				[Action "Add Item From URL" with Type_Alias = "Social_Media" /]
+			{/Content}
+			{Package}Website{/Package}
+		{/Template}
+	
+{/Jelly}

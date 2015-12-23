@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property "Connected Account" --}
+		{Property}
+			{Type}User{/Type}
+			{Name}Connected Account{/Name}
+			{Plural_Name}Connected Accounts{/Plural_Name}
+			{Value_Type}Connected_Account{/Value_Type}
+			{Relation}One-To-Many{/Relation}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

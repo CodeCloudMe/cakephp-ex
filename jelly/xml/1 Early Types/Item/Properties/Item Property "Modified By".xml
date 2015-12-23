@@ -1,0 +1,16 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "Modified By" --}
+	
+		{Property}
+			{Type}Item{/Type}
+			{Value_Type}User{/Value_Type}
+			{Name}Modified By{/Name}
+			{Alias}Modified_By{/Alias}
+			{Data_Name}Modified_By{/Data_Name}
+			{Relation}Many-To-One{/Relation}
+			{Advanced}1{/Advanced}
+		{/Property}
+		
+{/Jelly}

@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "NYCTV" Picture --}
+		{Picture}
+			{Name}NYCTV{/Name}
+			{Path}jelly_data/Files/File/Presentation_NYCTV.jpg{/Path}
+		{/Picture}
+	
+{/Jelly}

@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Heading" --}
+		{Block}
+			{Name}Heading{/Name}
+			{Content}
+				<script>
+					document.getElementById('Item_Heading').innerHTML = "[Format as "Javascript String"][This.Variables.Content/][/Format]";
+					document.getElementById('Item_Heading').style.display = "block";
+				</script>
+			{/Content}
+		{/Block}
+	
+{/Jelly}

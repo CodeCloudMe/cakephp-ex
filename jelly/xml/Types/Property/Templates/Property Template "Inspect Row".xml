@@ -1,0 +1,70 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property Template "Inspect Row" --}
+	
+		{Template}
+			{Type}Property{/Type}
+			{Name}Inspect Row{/Name}
+			{Content}
+				<!-- Disambiguate property --> 
+				[Set Current_Property to Property/]
+				[Set Current_Property_Namespace to Current_Property.Namespace /]
+
+				<!-- Determine whether to show forward version, reverse version, or both. -->
+				[Set Current_Property.Variables.Show_Forward_Version to False/]
+				[Set Current_Property.Variables.Show_Reverse_Version to False/]
+
+				<!-- TODO - Clean up below for Inspect. --> 
+				<!-- Show advanced properties only if specified-->
+				[If Current_Action.Variables.Show_Advanced_Properties or (Not Current_Action.Variables.Show_Advanced_Properties and not Current_Property.Values.Advanced)]
+
+						<!-- If this property's type is this item's type, consider the forward direction -->
+						[If Current_Property.Values.Type is Parent Type of Current_Action.Target.Type]
+							<!-- If this isn't the specified parent property or there is no specified parent property, then show the forward direction --> 
+							[If Current_Action.Variables.Parent_Property_Alias Twas Not Set or Current_Property.Reverse_Alias is not Current_Action.Variables.Parent_Property_Alias]
+								[Set Current_Property.Variables.Show_Forward_Version to True/]
+							[/If]
+						[/If]
+
+						[If Current_Property.Relation != "Commutative"]
+							<!-- If this property's value type is this item's type, consider the reverse direction -->
+							[If Current_Property.Value_Type is Parent Type of Current_Action.Target.Type]
+								<!-- If this isn't the specified parent property or there is no specified parent property, then show the reverse direction --> 
+								[If Current_Action.Variables.Parent_Property_Alias Twas Not Set or Current_Property.Alias is not Current_Action.Variables.Parent_Property_Alias]
+									[Set Current_Property.Variables.Show_Reverse_Version to True/]
+								[/If]
+							[/If]
+						[/If]
+		
+						<!-- If this property's attachment type is this item's type, consider both the forward and reverse directions -->
+						[If Current_Property.Values.Attachment_Type exists]
+							[If Current_Property.Values.Attachment_Type is Parent Type of Current_Action.Target.Type]
+								[Set Current_Property.Variables.Show_Forward_Version to True/]
+								[Set Current_Property.Variables.Show_Reverse_Version to True/]
+							[/If]
+						[/If]
+				[/If]
+
+				[If Current_Property.Variables.Show_Forward_Version]
+					<!-- Forward -->	
+					<li>
+						[Current_Property.Action "Edit Property"/]
+						[Current_Property as Inspect_Row_Content with Edit_Item = Current_Action.Target, Direction = "Forward", Execute_On_Change = True/]
+					</li>
+				[/If]
+
+				[If Current_Property.Variables.Show_Reverse_Version]
+					<!-- Reverse -->	
+					<li>
+						<button class="Better_Menu"></button>
+						<h2>
+							[Current_Property.Values.Reverse_Name /]
+						</h2>
+						[Current_Property as Inspect_Row_Content with Edit_Item = Current_Action.Target, Direction = "Reverse", Execute_On_Change = True/]
+					</li>
+				[/If]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,91 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Type_Action "Set Cover Property Item" --}
+		{Type_Action}
+			{Type}Data_Module{/Type}
+			{Name}Set Cover Property Item{/Name}
+			{Content}
+				<!-- TODO: Currently disabled -->
+				
+				[Admin]
+					<!-- Admin Only -->
+					[Link to Execute /]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- TODO: Currently disabled -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Data_Module to Current_Action.Target /]
+				[Set Current_Data_Module_Type to Current_Data_Module.List /]
+				
+				<!-- Check if a cover property has already been set -->
+				<!-- TODO better way to figure out when to run this? -->
+				[If Current_Data_Module.Cover_Property_Item does not exist]
+					<!-- Check if the type has a property with a cover -->
+					<!-- TODO check Pictures first, etc. -->
+					[New [Current_Data_Module_Type.Alias no_wrap /]]
+						<!-- Disambiguate -->
+						[Set Current_Cover_Item to This /]
+						
+						<!-- Find a property that can be used as a cover -->
+						<!-- TODO the count is not passed in to Property value queries -->
+						[1 Current_Cover_Item.Properties Where Value_Type = "Picture"]
+							<!-- Check if a cover property has already been found -->
+							[If Current_Data_Module.Cover_Property_Item does not exist]
+								<!-- Check if the cover property is actually a property of the current item -->
+								<!-- TODO this seems hacky -->
+								[If This.Values.Type is Parent Type of Current_Cover_Item.Type]
+									<!-- Set cover property for data module -->
+									<!-- TODO sets by ID as a hack because the item won't be available later during the current page load after this iterator moves on -->
+									[Set Current_Data_Module.Cover_Property_Item to This.ID /]
+									[Save Current_Data_Module /]
+								[/If]
+							[/If]
+						[/Current_Cover_Item.Properties]
+						[1 Current_Cover_Item.Properties Where Value_Type = "Video"]
+							<!-- Check if a cover property has already been found -->
+							[If Current_Data_Module.Cover_Property_Item does not exist]
+								<!-- Check if the cover property is actually a property of the current item -->
+								<!-- TODO this seems hacky -->
+								[If This.Values.Type is Parent Type of Current_Cover_Item.Type]
+									<!-- Set cover property for data module -->
+									<!-- TODO sets by ID as a hack because the item won't be available later during the current page load after this iterator moves on -->
+									[Set Current_Data_Module.Cover_Property_Item to This.ID /]
+									[Save Current_Data_Module /]
+								[/If]
+							[/If]
+						[/Current_Cover_Item.Properties]
+						[1 Current_Cover_Item.Properties Where Value_Type = "Location"]
+							<!-- Check if a cover property has already been found -->
+							[If Current_Data_Module.Cover_Property_Item does not exist]
+								<!-- Check if the cover property is actually a property of the current item -->
+								<!-- TODO this seems hacky -->
+								[If This.Values.Type is Parent Type of Current_Cover_Item.Type]
+									<!-- Set cover property for data module -->
+									<!-- TODO sets by ID as a hack because the item won't be available later during the current page load after this iterator moves on -->
+									[Set Current_Data_Module.Cover_Property_Item to This.ID /]
+									[Save Current_Data_Module /]
+								[/If]
+							[/If]
+						[/Current_Cover_Item.Properties]
+						[1 Current_Cover_Item.Properties Where Value_Type is "Website"]
+							<!-- Check if a cover property has already been found -->
+							[If Current_Data_Module.Cover_Property_Item does not exist]
+								<!-- Check if the cover property is actually a property of the current item -->
+								<!-- TODO this seems hacky -->
+								[If This.Values.Type is Parent Type of Current_Cover_Item.Type]
+									<!-- Set cover property for data module -->
+									<!-- TODO sets by ID as a hack because the item won't be available later during the current page load after this iterator moves on -->
+									[Set Current_Data_Module.Cover_Property_Item to This.ID /]
+									[Save Current_Data_Module /]
+								[/If]
+							[/If]
+						[/Current_Cover_Item.Properties]
+					[/New]
+				[/If]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

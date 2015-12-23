@@ -1,0 +1,110 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Schedule Lunch" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Schedule Lunch{/Name}
+			{Content}
+				<div class="Window Schedule_Lunch">
+					<div class="Close_Button">
+						<button class="Better_Remove" onclick="Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Dismiss', 'Target': this\});"></button>
+					</div>
+					<div id="[Current_Action.Namespace no_wrap /]_Schedule_Lunch_Step_1">
+						<h1>
+							Pick a date
+						</h1>
+						<!-- TODO change to getting from item -->
+						[New Lunch_Meeting]
+							<span id="[Current_Action.Namespace no_wrap /]_Meeting_Input_Finder">
+								[Input "Hidden" with Name = "Meeting", Value_Type = This.Type /]
+							</span>
+						[/Lunch_Meeting]
+						[Current_Action.Target.Meeting where Person is null by Start_Time]
+							[Then]
+								<a href="#" onclick="Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Meeting_Input_Finder \[name=Meeting\]').val('[This.ID no_wrap /]');Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Schedule_Lunch_Step_2').show();Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Schedule_Lunch_Step_1').hide();return false;">[Lunch_Meeting.Start_Time /]</a>
+							[/Then]
+							[Else]
+								Sorry, there are no availabilities.
+							[/Else]
+						[/Current_Action.Target.Meeting]
+					</div>
+					
+					<div id="[Current_Action.Namespace no_wrap /]_Schedule_Lunch_Step_2" style="display: none;">
+						<h1>
+							Tell us about yourself
+						</h1>
+						<section>
+							<label class="Block">
+								Notes
+							</label>
+							[Input "Text Area" with Name = "Notes" /]
+						</section>
+						<section>
+							<span id="[Current_Action.Namespace no_wrap /]_Type_Of_Person_Input_Finder">
+								[Input "Hidden" with Name = "Type of Person" /]
+							</span>
+							<label>
+								I am a...
+							</label>
+							<div>
+								<div onclick="Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Type_Of_Person_Input_Finder \[name=Type_of_Person\]').val('Designer');Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Designer').prop('checked', true);">
+									<input id="[Current_Action.Namespace no_wrap /]_Designer" type="radio" name="Type_Of_Person_Radio" value="Designer" />
+									<label>Designer</label>
+								</div>
+								<div onclick="Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Type_Of_Person_Input_Finder \[name=Type_of_Person\]').val('Journalist');Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Journalist').prop('checked', true);">
+									<input id="[Current_Action.Namespace no_wrap /]_Journalist" type="radio" name="Type_Of_Person_Radio" value="Journalist" />
+									<label>Journalist</label>
+								</div>
+								<div onclick="Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Type_Of_Person_Input_Finder \[name=Type_of_Person\]').val('Investor');Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Investor').prop('checked', true);">
+									<input id="[Current_Action.Namespace no_wrap /]_Investor" type="radio" name="Type_Of_Person_Radio" value="Investor" />
+									<label>Investor</label>
+								</div>
+								<div onclick="Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Type_Of_Person_Input_Finder \[name=Type_of_Person\]').val('Other');Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Other').prop('checked', true);">
+									<input id="[Current_Action.Namespace no_wrap /]_Other" type="radio" name="Type_Of_Person_Radio" value="Other" />
+									<label>Other</label>
+								</div>
+							</div>
+						</section>
+						<section class="Links Bottom_Links">
+							[Link to Execute /]
+						</section>
+					</div>
+				</div>
+			{/Content}
+			{Code}
+				<!-- TODO require user -->
+				
+				<!-- Set person -->
+				[Set Form.Meeting.Person to Current_Session.User /]
+				
+				<!-- Set type of person -->
+				[Set Form.Meeting.Type_Of_Person to Form.Type_Of_Person /]
+				
+				<!-- Set notes -->
+				[Set Form.Meeting.Notes to Form.Notes /]
+				
+				<!-- Save meeting -->
+				[Save Form.Meeting /]
+				
+				<!-- Force refresh of the scheduled item -->
+				<!-- TODO Improve -->
+				[External_Script]
+					Jelly.References.Trigger_Refresh(\{'Kind': 'Item', 'Item_ID': [Current_Action.Target.ID no_wrap /]\});
+					[Block "Toolbar" no_wrap]
+						Jelly.References.Trigger_Refresh(\{'Kind': 'Item', 'Item_ID': '[This.ID no_wrap /]'\});
+					[/Block]
+				[/External_Script]
+					
+				[External_Script]
+					<!-- Trigger Dismiss Event -->
+					Jelly.Handlers.Call_Handler_For_Target(
+						\{
+							"Event": "Dismiss",
+							"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]")
+						\});
+				[/External_Script]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

@@ -1,0 +1,44 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Browser_Control "Loading" --}
+		{Browser_Control}
+			{Name}Loading{/Name}
+			{Content}
+					<img 
+						src="[Globals.URL_Prefix No_Wrap /]/jelly/images/Loading.gif" 
+						align="absmiddle" 
+						[If Browser_Control.Variables.Loading_Action exists]	
+							[Then]
+								id="[Browser_Control.Variables.Loading_Action.Namespace No_Wrap /]_Loading"
+							[/Then]
+							[Else]
+								id = "NAMESPACE_Loading"
+							[/Else]
+						[/If] 
+						width="16" 
+						height="16" 
+						class="Jelly_Loading" 
+					/>
+					[Ignore]
+						<span>
+							<!-- TODO: Whatever this is, there's no way it would make sense --> 
+							[If Browser_Control.Variables.Loading_Action exists]
+								[External_Script]
+									Jelly.Actions.Register_Action_Loading_Element(\{Namespace: "[Browser_Control.Variables.Loading_Action.Namespace No_Wrap /]", Loading_Element: document.getElementById("[Browser_Control.Variables.Loading_Action.Namespace No_Wrap /]_Loading")\});
+								[/External_Script]
+							[/If]
+						[/Ignore]
+		
+						<!-- 
+							THIS IS OLD
+							<div class="Jelly_Loading">
+								<div style="height: 16px; position: relative; top: -3px;"><img src="[Globals.URL_Prefix No_Wrap /]/jelly/images/Loading.gif" width="16" height="16" alt="Loading" align="absmiddle" /> Loading</div>
+							</div>				
+						--> 
+					</span>
+				[/Ignore]
+			{/Content}
+		{/Browser_Control}
+	
+{/Jelly}

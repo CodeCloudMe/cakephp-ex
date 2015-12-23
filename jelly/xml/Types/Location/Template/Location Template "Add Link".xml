@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Location Template "Add Link" --}
+		{Template}
+			{Type}Location{/Type}
+			{Name}Add Link{/Name}
+			{Content}
+				[Action "Geocode" from Database /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

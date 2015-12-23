@@ -1,0 +1,22 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Theme "Clean Theme" --}
+	
+		{Theme}
+			{Name}Clean Theme{/Name}
+			{Web_Font}Inconsolata{/Web_Font}
+			{Web_Font}Karla{/Web_Font}
+			{Web_Font}Lato{/Web_Font}
+			{Web_Font}Libre_Baskerville{/Web_Font}
+			{Web_Font}Montserrat{/Web_Font}
+			{Web_Font}Open_Sans{/Web_Font}
+			{Web_Font}Playfair_Display{/Web_Font}
+			{Web_Font}Raleway{/Web_Font}
+			{Web_Font}Roboto{/Web_Font}
+			{Web_Font}Source_Sans_Pro{/Web_Font}
+			{Web_Font}Sorts_Mill_Goudy{/Web_Font}
+			{Web_Font}Dosis{/Web_Font}
+		{/Theme}
+	
+{/Jelly}

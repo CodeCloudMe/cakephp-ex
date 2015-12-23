@@ -1,0 +1,111 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Content_Module Type_Action "Move Up" --}
+		{Type_Action}
+			{Type}Content_Module{/Type}
+			{Name}Move Down{/Name}
+			{Content}
+				[Link to Execute with Class = "Setting_Button"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/caret.svg" data-direction="bottom">[/Link]
+			{/Content}
+			{Code}
+				[Action.Target]
+
+					<!-- Disambiguate --> 
+					[Set Current_Action.Variables.Current_Content_Module to This/]
+	
+					<!-- Get parent property alias --> 
+					[If Current_Content_Module.Type_Item]
+						[Then]
+							[Set Current_Action.Variables.Parent_Property_Alias = "Type_Item"/]
+						[/Then]
+						[Else]
+							[If Current_Content_Module.Action_Item]
+								[Then]
+									[Set Current_Action.Variables.Parent_Property_Alias = "Action_Item"/]
+								[/Then]
+								[Else]
+									[If Current_Content_Module.Page]
+										[Set Current_Action.Variables.Parent_Property_Alias = "Page"/]
+									[/If]
+								[/Else]
+							[/If]
+						[/Else]
+					[/If]
+
+					<!-- Get Parent_Item -->	
+					[Set Current_Action.Variables.Current_Parent_Item to Current_Content_Module.[Current_Action.Variables.Parent_Property_Alias no_wrap/]/]
+	
+					<!-- Get current attachment --> 
+					[[Current_Action.Variables.Current_Parent_Item.Type.Alias no_wrap/]_Content_Module from Database where Content_Module = Current_Content_Module]
+	
+						<!-- Disambiguate --> 
+						[Set Current_Action.Variables.Current_Content_Module_Attachment to This/]
+						[Set Current_Action.Variables.Original_Current_Content_Module_Attachment_Order to Current_Action.Variables.Current_Content_Module_Attachment.Order/]
+
+						current order: [Current_Action.Variables.Original_Current_Content_Module_Attachment_Order no_wrap/]
+		
+						<!-- Get next content module --> 
+						[Set Current_Action.Variables.Swap_Content_Module_Attachment_ID to 0/]
+		
+						[[Current_Action.Variables.Current_Parent_Item.Type.Alias no_wrap/]_Content_Module from Database where Order > [Original_Current_Content_Module_Attachment_Order no_wrap/] and [Current_Action.Variables.Parent_Property_Alias no_wrap/] = "[Current_Action.Variables.Current_Parent_Item.[Current_Action.Variables.Current_Parent_Item.Type.Default_Key no_wrap/] no_wrap/]" by Order Ascending]
+							<!-- Disambiguate --> 
+							[Set Test_Content_Module_Attachment to This/]
+
+							<!-- Break if one was found --> 
+							[If not Current_Action.Variables.Swap_Content_Module_Attachment_ID]
+			
+								<!-- Verify content module exists --> 
+								[Test_Content_Module_Attachment.Content_Module]
+									<!-- Disambiguate --> 
+									[Set Test_Content_Module to This.Specific_Item/]
+					
+									<!-- If visible --> 
+									[If Test_Content_Module.Visible]
+										[If Test_Content_Module.Type.Alias = "Property_Module"]
+											[Then]
+												<!-- Because this is a property module, check against core too. --> 
+												<!-- TODO this should halt on else.--> 
+												<!-- TODO this is also perhaps not needed --> 
+												[If not Test_Content_Module.Property_Item.Core]
+													[Set Current_Action.Variables.Swap_Content_Module_Attachment_ID to Test_Content_Module_Attachment.ID/]							
+												[/If]
+											[/Then]
+											[Else]
+												[Set Current_Action.Variables.Swap_Content_Module_Attachment_ID to Test_Content_Module_Attachment.ID/]
+											[/Else]
+										[/if]			
+									[/If]
+								[/Content_Module]
+							[/If]
+						[/If]
+	
+						<!-- If next item found, then swap --> 
+						[If Current_Action.Variables.Swap_Content_Module_Attachment_ID]
+							<!-- Swap --> 
+							[[Current_Action.Variables.Current_Parent_Item.Type.Alias no_wrap/]_Content_Module from Database where ID = Current_Action.Variables.Swap_Content_Module_Attachment_ID]
+								<!-- Disambiguate --> 
+								[Set Swap_Content_Module_Attachment to This/]
+				
+								current 1: [Current_Content_Module_Attachment.Order no_wrap/]
+								swap 1: [Swap_Content_Module_Attachment.Order no_wrap/]
+		
+								<!-- Swap orders --> 
+								[Set Current_Content_Module_Attachment.Order to Swap_Content_Module_Attachment.Order/]
+								[Set Swap_Content_Module_Attachment.Order to Original_Current_Content_Module_Attachment_Order/]
+
+								current 2: [Current_Content_Module_Attachment.Order no_wrap/]
+								swap 2: [Swap_Content_Module_Attachment.Order no_wrap/]
+
+								<!-- Save content modules --> 
+								[Save Current_Content_Module_Attachment/]
+								[Save Swap_Content_Module_Attachment/]
+							[/]
+						[/If]
+					[/]
+
+				[/Action.Target]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

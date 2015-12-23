@@ -1,0 +1,40 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "Browse" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}Browse{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Browse_Type to This /]
+				
+				<!-- Search -->
+				[Ignore]
+					[If Globals.Path_Variables.Show_Search is not "False"]
+						<!-- Search Box -->
+						<div>
+							<input
+								id="[Namespace No_Wrap /]_Text_Box"
+								type="text"
+								onkeyup="Jelly.Interface.Refresh_Browse_Menu_Table(\{Namespace: '[Namespace No_Wrap /]', Type: '[Browse_Type.Alias No_Wrap /]'\});"
+							/>
+						</div>
+					[/If]
+				
+					[External_Script]
+						<!-- Focus the text box -- >
+						document.getElementById("[Namespace No_Wrap /]_Text_Box").focus();
+					[/External_Script]
+				[/Ignore]
+				
+				<!-- Menu Table -->
+				<!-- TODO: "Browse Menu Table" is the right word? -->
+				<div id="[Namespace No_Wrap /]_Table">
+					[This as Browse_Menu_Table Preserve_Variables /]
+				</div>
+			{/Content}
+		{/Template}
+		
+{/Jelly}

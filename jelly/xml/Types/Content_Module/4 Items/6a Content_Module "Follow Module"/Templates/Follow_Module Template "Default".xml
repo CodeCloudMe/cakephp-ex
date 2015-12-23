@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Follow_Module Template "Default" --}
+		{Template}
+			{Type}Follow_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Follow_Module to This /]
+				
+				<!-- Follow Button -->
+				[Current_Item.Action "Follow" /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

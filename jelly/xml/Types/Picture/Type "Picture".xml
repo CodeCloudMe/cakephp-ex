@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Picture" --}
+		{Type}
+			{Name}Picture{/Name}
+			{Parent_Type}File{/Parent_Type}
+			{Plural_Name}Pictures{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Media{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

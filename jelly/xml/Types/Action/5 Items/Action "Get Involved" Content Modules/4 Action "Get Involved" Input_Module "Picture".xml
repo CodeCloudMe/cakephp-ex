@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Get Involved" Input_Module "Picture" --}
+		{Input_Module}
+			{Action_Item}Get_Involved{/Action_Item}
+			{Property_Item}39591837{/Property_Item}
+			{Package}Local{/Package}
+		{/Input_Module}
+	
+{/Jelly}

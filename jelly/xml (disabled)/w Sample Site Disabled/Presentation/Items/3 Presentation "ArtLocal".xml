@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Luisa" --}
+		{Presentation}
+			{Name}ArtLocal{/Name}
+			{Website}http://artlocalapp.com/{/Website}
+			{Description}ArtLocal is an app and mobile gallery hub for contemporary art, helping art lovers and creative professionals visually navigate art scenes locally and abroad while providing relevant data and analytics to galleries so that they can better understand their audiences.{/Description}
+			{Picture}ArtLocal{/Picture}
+		{/Presentation}
+	
+{/Jelly}

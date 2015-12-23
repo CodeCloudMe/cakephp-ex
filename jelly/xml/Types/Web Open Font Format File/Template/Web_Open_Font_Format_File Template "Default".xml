@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Open_Font_Format_File Template "Default" --}
+	
+		{Template}
+			{Type}Web_Open_Font_Format_File{/Type}
+			{Name}Default{/Name}
+			{Content}{/Content}
+		{/Template}
+{/Jelly}

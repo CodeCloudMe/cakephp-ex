@@ -1,0 +1,42 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Action "Join via Purchase" --}
+		{Type_Action}
+			{Type}Shopping_Cart{/Type}
+			{Name}Join via Purchase{/Name}
+			{Content}
+				<!-- Window -->
+				<span class="Add_Value_Clean_Window" style="padding:30px;">
+
+					<!-- Close Button -->
+					<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+						<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+					</a>
+	
+					<span style="font-weight:600">How are you interested in helping out?</span>
+	
+					<!-- Select input -->
+					[Type "Team"]
+						[Set Team_Type to This/]
+						[Input "Select Clean" with Name = "Join", Value_Type = Team_Type, Execute_On_Change = True /]
+					[/Type]
+	
+				</span>
+
+			{/Content}
+			{Code}
+				[Action.Target]
+					[Set Current_Shopping_Cart to This/]
+					[Set Current_Shopping_Cart.Discount to "-1"/]	
+
+					<!-- Recalculate total -->
+					[Current_Shopping_Cart.Action "Recalculate" as Execute /]
+
+					[Save Current_Shopping_Cart/]
+					[Go to "/Shopping_Cart/[Shopping_Cart.ID no_wrap /]/simple_checkout:team_type=team,team=[Form.Join.ID no_wrap/]" into "[Form.Calling_Namespace no_wrap/]" /]
+				[/Action.Target]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

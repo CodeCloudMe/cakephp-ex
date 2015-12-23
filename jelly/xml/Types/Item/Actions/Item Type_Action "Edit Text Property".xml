@@ -1,0 +1,167 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Edit Text Property" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Edit Text Property{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Item to Current_Action.Target /]
+				[Set Current_Property_Alias to Current_Action.Variables.Property_Alias /]
+				[Set Current_Property_Type_Alias to Current_Item.Type.Alias /]
+				[Set Current_Property_Value_Type_Alias to Current_Action.Variables.Property_Value_Type_Alias /]
+				[Set Current_Property_Value to Current_Item.[Current_Property_Alias no_wrap /] /]
+				
+				<!-- TODO - I don't know if this is appropriate.  I wanted to abstract labels from Save_Item because Save_Item was data handling, and labels are sort UI/UX handling.  This means that if there's a blank label, this auto-sets and saves the label from the name, here, during the UX. Similar behavior exists in importing XML items. --> 
+				[If not Current_Property_Value]
+					[If Current_Property_Type_Alias = "Property"and Current_Property_Alias = "Label" and Current_Item.Name]
+						[Set Current_Property_Value to Name/]
+						[Save Current_Item no_refresh/]
+					[/If]
+					
+					[If Current_Property_Type_Alias = "Property"and Current_Property_Alias = "Reverse_Label" and Current_Item.Reverse_Name]
+						[Set Current_Property_Value to Reverse_Name/]
+						[Save Current_Item no_refresh/]
+					[/If]
+				[/If]
+
+				<!-- Load Property -->
+				<!-- TODO: using Current_Property_Alias as a variable instead of a quoted string doesn't work -->
+				[Current_Item.Property where Alias is "[Current_Property_Alias no_wrap /]"]
+					<!-- Disambiguate -->
+					[Set Current_Property to this /]
+					[Set Current_Property_Value_Type to Current_Property.Value_Type /]
+	
+					<!-- Pass property alias to action -->
+					[Input "Hidden" with Name = "Property Alias", Value = Current_Action.Variables.Property_Alias /]
+	
+					<!-- This is for a refresh trigger --> 
+					<span class="Hidden">[Current_Item.[Current_Property_Alias no_wrap /] /]</span>
+	
+					<!-- Input -->
+					<!-- TODO Execute_On_Change for booleans? -->
+					[Current_Property_Value_Type.Default_Input with Name = "Value", Value = Current_Property_Value, Execute_On_Change = true, Class = "Text_Field" /]
+				[/Current_Item]
+
+				<!-- Hide Loading Icon -->
+				<span style="display: none;">[Action as Loading /]</span>
+			{/Content}
+			{Code}
+				[Current_Action.Target]
+					<!-- Disambiguate -->
+					[Set Current_Item to This /]
+					[Set Current_Property_Type_Alias to Current_Item.Type.Alias /]
+
+					<!-- Check if the item is editable -->
+					[Set Current_Item.Variables.Editable to false /]
+					[Admin]
+						[Set Current_Item.Variables.Editable to true /]
+					[/Admin]
+					[Member]
+						[If Current_Property_Type_Alias is "User"]
+							[If Current_Item.ID is Current_Session.User.ID]
+								[Set Current_Item.Variables.Editable to true /]
+							[/If]
+						[/If]
+					[/Member]
+
+					<!-- Admin only -->
+					[If Current_Item.Variables.Editable]
+
+						<!-- Validations --> 
+						[Set Current_Action.Validated to True/]
+
+						<!-- Validations for special cases --> 				
+						[If Current_Property_Type_Alias = "Property" and Form.Property_Alias = "Label"]
+							[If Form.Value Twas Not Set or Form.Value = ""]
+								[Set Current_Action.Validated to False/]
+							[/If]
+						[/If]
+						
+						[If Current_Property_Type_Alias = "Property" and Form.Property_Alias = "Reverse_Label"]
+							[If Form.Value Twas Not Set or Form.Value = ""]
+								[Set Current_Action.Validated to False/]
+							[/If]
+						[/If]
+		
+						<!-- Validations for special cases --> 				
+						[If Current_Property_Type_Alias = "User" and Form.Property_Alias = "First_Name"]
+							[1 User from Database where Name = "[Form.Value no_wrap/] [Current_Item.Last_Name no_wrap/]" and ID is not Current_Item.ID]
+								[Show Error for "Value"]Oops! At this stage we can only support one user with a particular name, and this name is taken! Sorry! Can you choose another?[/Show]
+								[Set Current_Action.Validated to False/]
+							[/1 User]
+						[/If]
+		
+						<!-- Validations for special cases --> 				
+						[If Current_Property_Type_Alias = "User" and Form.Property_Alias = "Last_Name"]
+							[1 User from Database where Name = "[Current_Item.First_Name/] [Form.Value no_wrap/]" and ID is not Current_Item.ID]
+								[Show Error for "Value"]Oops! At this stage we can only support one user with a particular name, and this name is taken! Sorry! Can you choose another?[/Show]
+								[Set Current_Action.Validated to False/]
+							[/1 User]
+						[/If]
+		
+						<!-- Validations for special cases --> 				
+						[If Current_Property_Type_Alias = "User" and Form.Property_Alias = "Email_Address"]
+							[1 User from Database where Email_Address = Form.Value and ID is not Current_Item.ID]
+								[Show Error for "Value"]This email address is already in use by another account.[/Show]
+								[Set Current_Action.Validated to False/]
+							[/1]
+						[/If]
+	
+						[If Current_Action.Validated]
+							<!-- Set value -->
+							[Set Current_Item.[Form.Property_Alias no_wrap /] to Form.Value save /]
+	
+	
+							<!-- Special cases -->
+
+							<!-- Trigger refreshes for Email & Phone Numbers -->
+							[If Current_Property_Type_Alias = "User" and Form.Property_Alias = "Allow_Community_Members_to_Contact_Me"]
+								[Set Current_Item.Email_Address to Current_Item.Email_Address Save/]	
+								[Set Current_Item.Phone_Number to Current_Item.Phone_Number Save/]
+							[/If]
+
+							<!-- For users, auto-set Name to first and last names -->
+							<!-- TODO generalize -->
+							[If Current_Property_Type_Alias is "User" and Form.Property_Alias is "First_Name"]
+								[Set Current_Item.Name to (Form.Value + " " + Current_Item.Last_Name) save /]
+							[/If]
+							[If Current_Property_Type_Alias is "User" and Form.Property_Alias is "Last_Name"]
+								[Set Current_Item.Name to (Current_Item.First_Name + " " + Form.Value) save /]
+							[/If]		
+
+							<!-- For Properties, set Name from Label  --> 
+							[If Current_Property_Type_Alias = "Property" and Form.Property_Alias = "Label"]
+								<!-- 64 characters - 10 ("_Temporary") - 5 ("_0000") = 49 --> 
+								[Set Current_Item.Name to "[Format Characters 49][Current_Item.Label no_wrap/][/Format]" Save/]
+								<!-- TODO: this seems inconsistent with below -->
+								[Set Current_Item.Plural_Name to Current_Item.Name save /]
+							[/If]
+							
+							<!-- For Properties, set Name from Label  --> 
+							[If Current_Property_Type_Alias = "Property" and Form.Property_Alias = "Reverse_Label"]
+								<!-- 64 characters - 10 ("_Temporary") - 5 ("_0000") = 49 --> 
+								[Set Current_Item.Reverse_Name to "[Format Characters 49][Current_Item.Reverse_Label no_wrap/][/Format]" Save/]
+								<!-- TODO: this seems inconsistent with below -->
+								[Set Current_Item.Reverse_Plural_Name to Current_Item.Name save /]
+							[/If]
+	
+							<!-- For properties, set other names from name --> 
+							<!-- TODO: this seems inconsistent with above -->
+							[If Current_Property_Type_Alias is "Property" and Form.Property_Alias is "Name"]
+								[If Current_Item.Relation is "One-To-Many" or Current_Item.Relation is "Many-To-Many" or Current_Item.Relation is "Many-To-One"]
+									[Set Current_Item.Plural_Name to Form.Value save /]
+								[/If]
+							[/If]
+							[If Current_Property_Type_Alias is "Property" and Form.Property_Alias is "Reverse_Name"]
+								[Set Current_Item.Reverse_Plural_Name to Form.Value save /]
+							[/If]
+						[/If]
+					[/If]
+				[/Current_Action.Target]
+
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

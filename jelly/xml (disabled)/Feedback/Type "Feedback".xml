@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Feedback" --}
+		{Type}
+			{Name}Feedback{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Package}Local{/Package}
+			{Plural_Name}Feedback{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Starred}1{/Starred}
+		{/Type}
+		
+{/Jelly}

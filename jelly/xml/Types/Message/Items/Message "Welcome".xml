@@ -1,0 +1,64 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Message "Welcome" --}
+		{Message}
+			{Name}Welcome{/Name}
+			{Subject}Welcome to [1 Site from Database no_wrap][Name no_wrap/][/1]!{/Subject}
+			{Body_Top}
+				<div style="height:50px;background-color:#FD6B03;padding-top:13px;">
+					<center>
+						<img src="http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/jelly/images/Better_Logo_White.png" style="width:40px;display:block;margin-bottom:25px;"/>	
+					</center>
+				</div>
+
+				<div style="padding:20px; padding-top:25px;">
+					<!-- -->
+					<div class="Name" style="font-weight: bold; margin-bottom: 12px;">
+						Hi [New_Item.Name /],
+					</div>
+
+					<!--  -->
+					<div class="Time" style="margin-bottom: 12px;">
+						Thanks for joining [1 Site from Database no_wrap][Name no_wrap/][/1].
+					</div>
+	
+					<!--  -->
+					<div class="Time" style="margin-bottom: 12px;">
+						[1 Site from Database no_wrap][Summary no_wrap/][/1]
+					</div>	
+			
+					<!--  -->
+					<div class="Time" style="margin-bottom: 12px;">
+						<div class="Time" style="margin-bottom: 2px;">
+							Your member profile is here,  and you can update it anytime.
+						</div>
+						<div class="Time" style="margin-bottom: 5px;">
+							<a style="color:#41bde1;" href="http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[New_Item.Type.Alias no_wrap /]/[New_Item.Alias no_wrap /]">http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[New_Item.Type.Alias no_wrap /]/[New_Item.Alias no_wrap /]</a>
+						</div>
+					</div>
+
+					<!--  -->
+					<div class="Time" style="margin-bottom: 12px;">
+						Thanks!<br/>
+					</div>
+	
+					<!--  -->
+					<div class="Time" style="margin-bottom: 12px;">
+						[1 Site from Database no_wrap]
+							[Owner.Name no_wrap/] @ [Site.Name no_wrap/]<br/>
+							<a style="color:#41bde1;" href="http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[Owner.Alias no_wrap/]">http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[Owner.Alias no_wrap/]</a>
+						[/1]
+					</div>
+				</div>
+
+				<div style="background-color:#efefef;padding:20px;">
+					Better helps creative & volunteer communities with a shared vision coordinate their free time to make enormous changes together.<br/>
+					<br/>
+					<a href="http://better.space/learn_more" style="color:#FD6B03; font-weight:bold;text-decoration:underline;">LEARN MORE</a><br/>
+				</div>
+			{/Body_Top}
+			{Core}1{/Core}
+		{/Message}
+	
+{/Jelly}

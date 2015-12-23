@@ -1,0 +1,16 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Navigation Property "Navigation Item" --}
+		{Property}
+			{Type}Navigation{/Type}
+			{Name}Navigation Item{/Name}
+			{Plural_Name}Navigation Items{/Plural_Name}
+			{Value_Type}Item{/Value_Type}
+			{Reverse_Name}Parent Navigation{/Reverse_Name}
+			{Reverse_Plural_Name}Parent Navigations{/Reverse_Plural_Name}
+			{Relation}Many-To-Many{/Relation}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

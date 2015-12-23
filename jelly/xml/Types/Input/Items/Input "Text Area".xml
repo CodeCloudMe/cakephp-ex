@@ -1,0 +1,242 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Text Area" --}
+		{Input}
+			{Name}Text Area{/Name}
+			{Content}
+				<span class= "Jelly_Text_Area">				
+					<textarea
+						name="[Input.Variables.Alias No_Wrap /]"
+						id="[Input.Namespace No_Wrap /]_Value"
+						class="Jelly_Text_Input Jelly_Text_Area_Input [Input.Variables.Class No_Wrap /]"
+						rows="1"
+						style="[Input.Variables.Style No_Wrap /][If Input.Variables.Width exists]width: [Input.Variables.Width No_Wrap /]px;[/If][If Input.Variables.Height exists]height: [Input.Variables.Height No_Wrap /]px;[/If][If Current_Action.Variables.Editing_Single_Value]width: 800px; height: 400px;[/If]"
+						[If Input.Variables.Attributes exists][Input.Variables.Attributes No_Wrap /][/If]
+						>[Format as "HTML Text Area"][Input.Variables.Value Process_Once No_Wrap /][/Format]</textarea>
+				
+					<!-- TODO: the additional features remain to be completed.  -->
+					[Ignore]
+						[If Input.Variables.Show_Edit_Window_Features]
+							<!-- Toolbar -->
+							<div class="Jelly_Text_Area_Toolbar">
+				
+								<!-- Toolbar insert items --> 
+								<ul class="Jelly_Text_Area_Toolbar_Items">
+									<li>
+										Insert:
+									</li>
+				
+									[If Current_Action.Target exists]
+										<li>
+											<a 
+												href="#" 
+												id="[Current_Action.Namespace No_Wrap /]_[Input.Variables.Alias No_Wrap /]_Insert_Property_Link" 
+												class="Jelly_Menu_Closed" 
+												onclick="[Format as "Single Line Code"]
+													var This_Item = this;
+													var Menu_Reference = Jelly.Interface.Create_Menu(
+														\{
+															Alias: 'Insert_Menu', 
+															URL: 'Type/[Current_Action.Target.Type.Alias No_Wrap /]/Insert/Raw:Hide_Property_Alias=[Current_Property.Alias No_Wrap /]',
+															Attach: 'Element',
+															Attach_Element: document.getElementById('[Current_Action.Namespace No_Wrap /]_[Input.Variables.Alias No_Wrap /]_Insert_Property_Link')
+														\});
+													Jelly.Handlers.Register_Handler(
+													\{
+														'Element': Menu_Reference\['Element'\],
+														'Event': 'Selected',
+														'Code': function(Parameters)
+														\{
+															Jelly.Utilities.Insert_At_Cursor(
+																\{
+																	'ID': '[Input.Namespace No_Wrap /]_Value',
+																	'Value': '\[' + '[Current_Action.Target.Type.Alias No_Wrap /]' + '.' + Parameters\['Item_Alias'\] + ' /\]'
+																\});
+															Parameters\['Event'\] = 'Dismiss';
+															Parameters\['Target'\] = Menu_Reference\['Element'\];
+															Jelly.Handlers.Call_Handler_For_Target(Parameters);
+														\}
+													\});
+													return false;
+													[/Format]">
+													Property &#x25BC;
+											</a>
+										</li>
+									[/If]
+				
+									<li>
+										<a
+											href="#"
+											id="[Current_Action.Namespace No_Wrap /]_[Input.Variables.Alias No_Wrap /]_Insert_Picture_Link"
+											class="Jelly_Menu_Closed" 
+											onclick="[Format as "Single Line Code"]
+												var This_Item = this;
+												var Menu_Reference = Jelly.Interface.Create_Menu(
+												\{
+													Alias: 'Pictures_Menu',
+													Attach: 'Element',
+													Attach_Element: This_Item,
+													URL: '/Type/Picture/Browse/Raw:Show_New_Link=True,Show_Items=True'
+												\});
+												Jelly.Handlers.Register_Handler(
+												\{
+													'Element': This_Item,
+													'Event': 'Selected',
+													'Code': function (Parameters)
+													\{
+														Jelly.Utilities.Insert_At_Cursor(\{'ID': '[Input.Namespace No_Wrap /]_Value', 'Value': '\[' + Parameters\['Item_Type'\] + ' ' + Parameters\['Item'\] + ' /\]'\});
+													\}
+												\});
+												Jelly.Handlers.Register_Handler(
+												\{
+													'Element': This_Item,
+													'Event': 'Added',
+													'Code': function(Parameters)
+													\{
+														Parameters\['Event'\] = 'Selected';
+														Jelly.Handlers.Call_Handler_For_Target(Parameters);
+													\}
+												\});
+												return false;
+											[/Format]">Picture &#x25BC;</a>
+									</li>
+				
+									<li>
+										<a
+											href="#"
+											id="[Current_Action.Namespace No_Wrap /]_[Input.Variables.Alias No_Wrap /]_Insert_Awesome_Link"
+											class="Jelly_Menu_Closed" 
+											onclick="[Format as "Single Line Code"]
+												var This_Item = this;
+												var Menu_Reference = Jelly.Interface.Create_Menu(
+												\{
+													Alias: 'Types_Menu',
+													Attach: 'Element',
+													Attach_Element: This_Item,
+													URL: '/Type/Browse/Raw:Show_Submenu=True,Show_Items=True'
+												\});
+												Jelly.Handlers.Register_Handler(
+												\{
+													'Element': This_Item,
+													'Event': 'Selected',
+													'Code': function (Parameters)
+													\{
+														Jelly.Utilities.Insert_At_Cursor(\{'ID': '[Input.Namespace No_Wrap /]_Value', 'Value': '\[' + Parameters\['Item_Type'\] + ' ' + Parameters\['Item'\] + ' /\]'\});
+													\}
+												\});
+												Jelly.Handlers.Register_Handler(
+												\{
+													'Element': This_Item,
+													'Event': 'Added',
+													'Code': function(Parameters)
+													\{
+														Parameters\['Event'\] = 'Selected';
+														Jelly.Handlers.Call_Handler_For_Target(Parameters);
+													\}
+												\});
+												return false;
+											[/Format]">Item &#x25BC;</a>
+									</li>
+									<!-- Toolbar edit locally --> 						
+									<!-- TODO - Is it necessary to make sure it's unsaved? --> 
+									[If Current_Action.Alias = "Edit" and Current_Action.Target Exists and Current_Action.Target.Status.Alias != "Unsaved"]
+										<li class="Jelly_Text_Area_Toolbar_Edit_Locally">
+											<!-- TODO: Upgrade -->
+											<a href="[Format as "Single Line Code"]
+												bettereditor://
+												Server=[HTTP_Host No_Wrap /],
+												Site_Name=[Format as "URL"][Current_Site.Name No_Wrap /][/Format],
+												Site_Alias=[Current_Site.Alias No_Wrap /],
+												Value_Type=Long_Text,
+												[If Current_Action.Target.Type.Alias = "Template" or Current_Action.Target.Type.Alias = "Type_Action"]
+													Item_Parent_Name=[Format as "URL"][Current_Action.Target.Values.Type.Name No_Wrap /][/Format],
+												[/If]
+												Item_Type=[Current_Action.Target.Type.Alias No_Wrap /],
+												Item_Type_ID=[Current_Action.Target.Type.ID No_Wrap /],
+												Item_Key=[Current_Action.Target as Key No_Wrap /],
+												Item_ID=[Current_Action.Target.ID No_Wrap /],
+												Item_Alias=[Current_Action.Target.Alias No_Wrap /],
+												Item_Name=[Format as "URL"][Current_Action.Target.Name No_Wrap /][/Format],
+												Property_Alias=[Current_Property.Alias No_Wrap /],
+												Property_Name=[Format as "URL"][Current_Property.Name No_Wrap /][/Format]
+											[/Format]" onclick="Jelly.Interface.Close_Top_Window();">Edit Locally...</a>
+										</li>
+									[/If]
+								</ul>						
+								<br class="Jelly_Clear" />
+							</div>
+						[/If]
+					[/Ignore]
+				</span>
+				
+					[External_Script]	
+						// Register input to the action namespace.
+						Jelly.Actions.Register_Action_Input( \{
+								Namespace: "[Current_Action.Namespace no_wrap /]",
+								Element: document.getElementById("[Input.Namespace No_Wrap /]_Value")
+							 \});
+							 
+						// Set default target on focus, prevent refreshing on focus, release hold on blur.
+						Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").focus(function()
+							 \{	
+								// Set default target
+								Jelly.Handlers.Set_Default_Target(this);
+								Jelly.References.Block_Refresh(\{'Namespace': "[Current_Action.Namespace no_wrap /]"\});
+							\});
+						
+						Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").blur(function()
+							 \{	
+								Jelly.References.Release_Refresh(\{'Namespace': "[Current_Action.Namespace no_wrap /]"\});
+							\});
+						
+						// Handle execute on change. 
+						[If Input.Variables.Execute_On_Change]					
+							// Restart action execution timer on change
+							Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").keyup(function()
+								 \{			
+									// Restart action timer
+									Jelly.Actions.Restart_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+								 \});
+				
+							// Trigger action execution timer on blur
+							Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").blur(function()
+								 \{	
+									Jelly.Actions.Execute_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+								\});
+						[/If]
+						
+						// Autogrow textarea
+						autosize(Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value"));
+						
+						// TODO: Disabled
+						
+						/*
+				
+						jQuery("#[Current_Action.Namespace No_Wrap /]_[Input.Variables.Alias No_Wrap /]_Value").droppable
+						(
+							\{
+								hoverClass: 'Jelly_Droppable',
+								tolerance: "pointer",
+								greedy: true,
+								drop: function (Event, UI)
+								\{
+									var Draggable_Reference = Jelly.References.Get_Reference_For_Element(UI.draggable.context);
+									var HTML = '\[' + Draggable_Reference\['Type'\] + ' ' + Draggable_Reference\['ID'\] + ' /\]';
+				
+									Jelly.Utilities.Insert_At_Cursor(
+										\{
+											ID: '[Current_Action.Namespace No_Wrap /]_[Input.Variables.Alias No_Wrap /]_Value',
+											Value: HTML
+										\});
+								\}
+							\}
+						);
+						
+						*/
+						
+					[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

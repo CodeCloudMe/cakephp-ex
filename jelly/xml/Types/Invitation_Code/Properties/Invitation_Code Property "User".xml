@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Invitation_Code Property "User" --}
+		{Property}
+			{Type}Invitation_Code{/Type}
+			{Name}User{/Name}
+			{Value_Type}User{/Value_Type}
+		{/Property}
+	
+{/Jelly}

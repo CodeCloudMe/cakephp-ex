@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property "Last Received Invitation Date" --}
+		{Property}
+			{Type}User{/Type}
+			{Name}Last Received Invitation Date{/Name}
+			{Value_Type}Date_Time{/Value_Type}
+			{Advanced}1{/Advanced}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

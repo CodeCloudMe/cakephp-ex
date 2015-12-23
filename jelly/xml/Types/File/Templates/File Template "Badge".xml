@@ -1,0 +1,20 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- File Template "Badge" --}
+		{Template}
+			{Type}File{/Type}
+			{Name}Badge{/Name}
+			{Content}
+				[If File.Path Exists]
+					[Then]
+						[File.Name /]
+					[/Then]
+					[Else]
+						Uploading???
+					[/Else]
+				[/If]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

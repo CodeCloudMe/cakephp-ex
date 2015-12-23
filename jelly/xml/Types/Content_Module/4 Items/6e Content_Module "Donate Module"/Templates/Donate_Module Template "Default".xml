@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Donate_Module Template "Default" --}
+		{Template}
+			{Type}Donate_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Purchase -->
+				<!-- TODO implement label and which property to use for price -->
+				<!-- TODO no_wrap prevents the type_action from refreshing, but type_actions should never refresh without their parents -->
+				
+				[Action "Donate" no_refresh /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Location Property "Original Address" --}
+		{Property}
+			{Type}Location{/Type}
+			{Name}Original Address{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

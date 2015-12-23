@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Generate" --}
+		{Presentation}
+			{Name}Generate{/Name}
+			{Website}http://blog.generateapp.com/{/Website}
+			{Description}Generate is a mobile audio-visual app that is revolutionizing the way people share and create moving images on devices today.{/Description}
+			{Picture}Generate{/Picture}
+		{/Presentation}
+	
+{/Jelly}

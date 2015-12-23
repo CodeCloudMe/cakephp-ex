@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Not_Found_Item "Not Found" --}
+		{Not_Found_Item}
+			{Name}Not Found{/Name}
+			{Content}
+				The page you requested was not found.
+			{/Content}
+		{/Not_Found_Item}
+	
+{/Jelly}

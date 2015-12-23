@@ -1,0 +1,137 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "Settings" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}Settings{/Name}
+			{Content}
+				<!-- Admin only -->
+				[Admin]
+					<!-- Disambiguate -->
+					[Set Current_Item to This /]
+	
+					<span class="Settings_Window">
+						<!-- Close Button -->
+						<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+						</a>
+		
+						<span class="Header">
+							Settings
+						</span>
+
+						<span class="Section">
+							<span class="Label">
+								Name
+							</span>
+							<span class="Input">
+								[Current_Item.Action "Edit Text Property" with Property_Alias = "Name" /]
+							</span>
+						</span>
+
+						<span class="Section">
+							<span class="Row">
+								<span class="Label">
+									Picture
+								</span>
+								<span class="Privacy">
+									<img class="iconic iconic-sm" data-src="/jelly/libraries/iconic/svg/smart/share-boxed.svg" data-direction="bottom" style="width:12px; height:12px;">
+									<span class="Explanation">For sharing & search results</span>
+								</span>
+							</span>
+							<span class="Input_Row_With_Preview">
+								<span class="Cover" >
+									[This.Picture]
+										[Then]
+											[This with Maximum_Width = 150, Maximum_Height = 150/]
+										[/Then]
+										[Else]
+											<div class="Placeholder"></div>
+										[/Else]
+									[/This.Picture]
+								</span>
+								<span class="Input">
+									[Link to "/Action/Set_Complex_Value:Item=[Current_Item.ID no_wrap /],Item_Type=[Current_Item.Type.Alias no_wrap /],Property_Alias=Picture" into "Window" with Class = "Input_Set_Link"][If Site.Picture][Then]Change[/Then][Else]Set[/Else][/If] Picture[/Link]
+								</span>
+							</span>
+						</span>
+		
+						<span class="Section">
+							<span class="Row">
+								<span class="Label">
+									Description
+								</span>
+								<span class="Privacy">
+									<img class="iconic iconic-sm" data-src="/jelly/libraries/iconic/svg/smart/share-boxed.svg" data-direction="bottom" style="width:12px; height:12px;">
+									<span class="Explanation">For sharing & search results</span>
+								</span>
+							</span>
+							<span class="Input">
+								[Current_Item.Action "Edit Text Property" with Property_Alias = "Summary" /]
+							</span>
+						</span>
+		
+						<span class="Section">
+							<span class="Row">
+								<span class="Label">
+									Payments
+								</span>
+							</span>
+							<span class="Input">
+								[If Current_Item.Stripe_Access_Token and Current_Item.Stripe_Refresh_Token and Current_Item.Stripe_Publishable_Key and Current_Item.Stripe_User_ID]
+									[Then]
+										<span class="Payment_Status"> 
+											Ready! <img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/check.svg">
+										</span>
+									[/Then]
+									[Else]
+										<span class="Payment_Input">
+										[Link to "https://connect.stripe.com/oauth/authorize?response_type=code&client_id=[PHP]
+												$Configuration_File_Path = &New_String('jelly_data/Jelly_Configuration.php');
+												$Configuration = include($Configuration_File_Path);
+												$Stripe_Mode = $Configuration\['API_Keys'\]\['Stripe'\]\['Mode'\];
+												return $Configuration\['API_Keys'\]\['Stripe'\]\[$Stripe_Mode\]\['Client_ID'\];
+											[/PHP]&scope=read_write&state=[PHP]
+												$Host = $_SERVER\['HTTP_HOST'\];
+												if (strtolower($Host) == 'better.dev')
+													return $Host;
+												else 
+													return explode('.', $Host)\[0\];
+											[/PHP]" with Class = "Small_Button"]Connect to Stripe...[/Link]
+										</span>
+									[/Else]
+								[/If]
+							</span>
+						</span>
+		
+						<span class="Section Row">
+							<span class="Row">
+								<span class="Label">
+									Sharing
+								</span>
+							</span>
+							<span class="Input">
+								[Action "Update Social Media Previews"/]
+							</span>
+						</span>
+	
+						<span class="Section Row">
+							<span class="Input Left" style="width: 30px;">
+								[Current_Item.Action "Edit Text Property" with Property_Alias = "Show_Link_To_Better" /]
+							</span>
+							<span class="Left Description" style="padding-top: 1px;">
+								Show Link to Better in toolbar
+							</span>
+						</span>
+
+						<span class="Execute">
+							<!-- Execute link -->
+							<a href="#" onclick="Jelly.Interface.Close_Top_Window(); return false;">Done</a>
+						</span>
+					</span>
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

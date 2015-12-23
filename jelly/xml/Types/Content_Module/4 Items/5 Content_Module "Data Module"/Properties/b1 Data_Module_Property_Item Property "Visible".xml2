@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module_Child_Property_Item Property "Visible" --}
+		{Property}
+			{Type}Data_Module_Child_Property_Item{/Type}
+			{Name}Visible{/Name}
+			{Value_Type}Boolean{/Value_Type}
+			{Default_Value}1{/Default_Value}
+		{/Property}
+{/Jelly}

@@ -1,0 +1,60 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "Default" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}Manage{/Name}
+			{Content}
+				<!-- Disambiguate Current Type -->
+				[Set Current_Type to This /]
+
+				[Admin]
+					[Then]
+						[Ignore]
+							<section>
+								[Current_Type as Heading/]
+							</section>
+							<section></section>
+							<section>
+								<!-- Grid View Link -->
+								[Link to this as Grid by Alias]View as Grid[/Link],
+
+								<!-- Add Item Link -->
+								[Link to Add [Current_Type.Alias No_Wrap /] /],
+
+								<!-- Edit Type Link -->
+								[Link to Edit Current_Type /]
+
+								<!-- Import CSV File -->
+								<!-- TODO -->
+								<!--
+									(Action "Import CSV File" with Target_Type = Current_Type /),
+								-->
+
+								<!-- Quick Add -->
+								<!-- TODO -->
+								<!--
+									(Action "Quick Add" with Target_Type = Current_Type /)
+								-->
+							</section>
+						[/Ignore]
+	
+						[If Type.Alias = "Type"]
+							[Then]
+								[Type as Card_View with Selected_Item_ID = Current_Type.Variables.Selected_Item_ID/]
+							[/Then]
+							[Else]	
+								[Type as List_View with Selected_Item_ID = Current_Type.Variables.Selected_Item_ID/]
+							[/Else]
+						[/If]
+					[/Then]
+					[Else]
+						Please [Link to "/Action/Login"]log in[/Link].
+					[/Else]
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

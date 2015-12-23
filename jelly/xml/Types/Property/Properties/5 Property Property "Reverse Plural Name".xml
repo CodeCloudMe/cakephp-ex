@@ -1,0 +1,15 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Property Property "Reverse Plural Name" --}
+	
+		{Property}
+			{Type}Property{/Type}
+			{Value_Type}Text{/Value_Type}
+			{Name}Reverse Plural Name{/Name}
+			{Alias}Reverse_Plural_Name{/Alias}
+			{Data_Name}Reverse_Plural_Name{/Data_Name}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

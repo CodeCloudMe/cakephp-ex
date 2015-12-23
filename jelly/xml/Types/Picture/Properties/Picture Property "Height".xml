@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Picture Property "Height" --}
+		{Property}
+			{Type}Picture{/Type}
+			{Name}Height{/Name}
+			{Value_Type}Number{/Value_Type}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

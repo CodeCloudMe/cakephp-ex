@@ -1,0 +1,150 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type_Action "Send Invitation" --}
+		{Type_Action}
+			{Type}User{/Type}
+			{Name}Send Invitation{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_User to Action.Target /]
+
+				<!-- Admin only -->
+				[Admin]
+					<span class="Send_Invitation_Window">
+						<!-- Close Button -->
+						<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+						</a>
+		
+						<span class="Header">
+							Send Invitation [If Current_User.Received_Invitation]Again[/If]
+						</span>
+		
+						[Message "Invitation" with Recipient = Current_User, Preview = True]
+							<span class="Section">
+								<span class="Label">
+									Subject
+								</span>
+								<span class="Input">
+									[Input "Text Field" with Name = "Subject", Value = "[Format as "Jelly Attribute"][Message.Subject no_wrap/][/Format]"/]
+								</span>
+							</span>
+			
+							<span class="Section">
+								<span class="Label">
+									Body
+								</span>
+				
+								<span class="Input" style="clear:left; height:300px; overflow:scroll;border-top:solid 1px #e7e7e7; border-bottom:solid 1px #e7e7e7;">
+									[Input "Inline Text" with Name = "Body_Top", Value = "[Format as "Jelly Attribute"][Message.Body_Top no_wrap/][/Format]", Style = "padding:5px;border-left: solid 1px #e7e7e7;border-right: solid 1px #e7e7e7;"/]
+									<div style="padding:5px;border-left: solid 1px #e7e7e7;border-right: solid 1px #e7e7e7;background-color:#ffffcc;">
+										[Message.Body_Action no_wrap/]
+									</div>
+									[Input "Inline Text" with Name = "Body_Bottom", Value = "[Format as "Jelly Attribute"][Message.Body_Bottom no_wrap/][/Format]", Style = "padding:5px;border-left: solid 1px #e7e7e7;border-right: solid 1px #e7e7e7;"/]
+								</span>
+							</span>
+						[/Message]
+					</span>
+	
+					<span class="Execute">
+						<!-- Execute link -->
+						[Link to Execute with Class="Button"]
+							Send Invitation [If Current_User.Received_Invitation]Again[/If]
+						[/Link]
+					</span>
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Admin only -->
+				[Admin]
+					[Current_Action.Target]
+						<!-- Disambiguate -->
+						[Set Current_Item to this /]
+						[Set Current_User to this /]
+		
+						<!-- Check if the user has an email address -->
+						[If Current_User.Email_Address]
+			
+							<!-- Create and send invitation code -->
+							[New Invitation_Code]
+								<!-- Disambiguate -->
+								[Set New_Invitation_Code to this /]
+
+								<!-- Generate random invite code -->
+								[Set New_Invitation_Code.Name to "[PHP]return substr(md5(microtime()),rand(0,26), 24);[/PHP]" /]
+
+								<!-- Store invite code user -->
+								[Set New_Invitation_Code.User to Current_User /]
+
+								<!-- Mark that the user has received an invitation -->
+								[Set Current_User.Received_Invitation to true /]
+								[Set Current_User.Last_Received_Invitation_Date to Now /]
+								[Save Current_User /]
+
+								<!-- Save invite code -->
+								[Save New_Invitation_Code /]
+
+								<!-- Send invitation message --> 
+								[Message "Invitation" no_wrap with 
+										Recipient = Current_User,
+										Recipient_Invitation_Code = New_Invitation_Code.Name
+									]
+										[Set Invitation_Message to This/]
+										[New Message with
+												Subject = Form.Subject,
+												Body = "[Format as "Jelly Attribute"][Form.Body_Top no_wrap/][Invitation_Message.Body_Action no_wrap/][Form.Body_Bottom no_wrap/][/Format]",
+												Recipient = Current_User
+											]
+												[Set New_Message to This/]
+
+												<!-- Set sender to current user, or site owner as fallback --> 
+												[If Current_Session.User]
+													[Then][Set New_Message.Variables.Sender = Current_Session.User/][/Then]
+													[Else][1 Site from Database][Set New_Message.Variables.Sender to Site.Owner/][/1][/Else]
+												[/If]
+
+												<!-- Send message -->  
+												[New_Message.Action "Send" as Execute/]
+										[/New Message] 
+								[/Message]
+								
+								<!-- Track invite --> 
+								[If Globals.Allow_Tracking]
+									[External_Script]
+										// Don't die on adblock
+										
+										if (mixpanel)
+										\{
+											mixpanel.track(
+													'Invite Sent', 
+													\{	
+														'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]',
+														'Email_Address': '[Current_User.Email_Address no_wrap/]',
+														[If "[PHP]return strtolower($_SERVER\['HTTP_HOST'\]);[/PHP]" = "community.better.space"]
+															[Set Current_Action.Markets_Traversed to false/]
+															'Markets': 
+																\[
+																	[Current_User.Mission no_wrap][If Markets_Traversed], 
+																		[/If]'[Name no_wrap/]'[Set Current_Action.Markets_Traversed to true/][/Current_User.Mission]
+																\]
+														[/If]
+													\}
+												);
+										\}
+									[/External_Script]
+								[/If]
+							
+								Invite sent.
+							[/New]
+						[/If]
+					[/Current_Action.Target]
+					[External_Script]
+						// TODO - do it the right way
+						Jelly.Interface.Close_Top_Window();
+					[/External_Script]	
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

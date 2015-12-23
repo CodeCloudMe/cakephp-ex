@@ -1,0 +1,29 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Browser_Control "Uploader" --}
+		{Browser_Control}
+			{Name}Uploader{/Name}
+			{Content}
+				<div class="Uploader">
+					<div class="Uploader_Header">
+						<h4 style="float:left;">Uploading File...<!--"<b>FILENAME</b>"--></h4>
+						<img style="position:relative; top:3px;float:right;"src="[Globals.URL_Prefix No_Wrap /]/jelly/images/Loading.gif"/>
+						<br class="Jelly_Clear" />
+					</div>
+					<div class="Uploader_Bar">	
+						<div id="NAMESPACE_Uploader_Bar_Fill" class="Uploader_Bar_Fill">
+							<div class="Uploader_Bar_Label">
+								<span id="NAMESPACE_Uploader_Bar_Progress" style="font-size: 16px;">0</span>
+								<span style="font-size:10px;">%</span>
+							</div>
+						</div>
+					</div>
+					<div class="Uploader_Footer">
+						<a href="#" onclick="Upload_Cancel();Hide_Window();return false;">Cancel Upload</a>
+					</div>
+				</div>
+			{/Content}
+		{/Browser_Control}
+	
+{/Jelly}

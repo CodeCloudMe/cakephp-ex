@@ -1,0 +1,177 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Page "Community" Scripting_Module --}
+		{Scripting_Module}
+			{Page}Community{/Page}
+			{Package}Local{/Package}
+			{Script}
+				<span class="Big_List Team_List">
+					<span class="Big_List_Items">
+						[Team from Database where Allow_Anyone_To_See_Members]
+							[Set Current_Team to This /]
+							<span class="Big_List_Item" style="margin-bottom: 15px; background-color:#efefef;">
+								<span class="Big_List_Item_Details">
+									[Link to Team by Alias with Class = "Plain_Link"]
+										<span class="Big_List_Item_Cover">
+											[Team as Cover /]
+										</span>
+										<span class="Big_List_Item_Name">
+											[Team.Name /]
+										</span>
+									[/Link]
+	
+									[Set Current_Team.Variables.Show_Email_Team to False/]
+									[If Current_Team.Allow_Any_Member_To_Email_Entire_Team]
+										[Then]
+											[Guest]
+												[Else]
+													[Set Current_Team.Variables.Show_Email_Team to True/]
+												[/Else]
+											[/Guest]
+										[/Then]
+										[Else]
+											[Admin]
+												[Set Current_Team.Variables.Show_Email_Team to True/]
+											[/Admin]
+										[/Else]
+									[/If]
+	
+									[Set Current_Team.Variables.Show_Text_Team to False/]
+									[If Current_Team.Allow_Any_Member_To_Text_Entire_Team]
+										[Then]
+											[Guest]
+												[Else]
+													[Set Current_Team.Variables.Show_Text_Team to True/]
+												[/Else]
+											[/Guest]
+										[/Then]
+										[Else]
+											[Admin]
+												[Set Current_Team.Variables.Show_Text_Team to True/]
+											[/Admin]
+										[/Else]
+									[/If]
+	
+									<span class="Big_List_Item_Content">
+										<span class="Big_List_Item_Value">
+											[Team.Tagline /]
+										</span>
+									</span>
+	
+									[If Current_Team.Variables.Show_Email_Team or Current_Team.Variables.Show_Text_Team]
+									<span class="Communications">
+										[If Current_Team.Variables.Show_Email_Team]
+											[Link to "Team/[Current_Team.ID no_wrap/]/Email_Team" into "Window" with Class="Big_List_Item_Mail"]
+												<img data-state="closed" data-src="/jelly/libraries/iconic/svg/smart/envelope.svg" class="iconic" alt="mail" />
+												<span class="Label">Email</span>
+											[/Link]
+										[/If]
+		
+										[If Current_Team.Variables.Show_Text_Team]
+											[Link to "Team/[Current_Team.ID no_wrap/]/Send_Text_To_Team" into "Window" with Class="Big_List_Item_Text"]
+												<img data-state="closed" data-src="/jelly/images/flaticon/chat81.svg" class="iconic" alt="mail" />
+												<span class="Label">Text</span>
+											[/Link]
+										[/If]
+									</span>
+									[/If]
+	
+								</span>
+								<span class="Big_List_Item_Value">
+									<span class="Row">
+										[Team.Member by Title Descending]
+											[Link to this by Alias with Class = "Plain_Link Left Team_Member[If This.Title] With_Title[/If]"]
+												<span class="General_User_Cover">
+													[This as Cover with Maximum_Width = 175/]
+												</span>
+												<span class="Name" style="text-align: center;">
+													[This.Name /]
+												</span>
+												[If This.Title]
+													<span class="Title">
+														[This.Title/]
+													</span>
+												[/If]
+											[/Link]
+										[/Team.Member]
+									</span>
+								</span>
+							</span>
+						[/Team]
+		
+						[Set Scripting_Module.Variables.Show_General_Contributors to False/]
+						[User from Database where Activated]
+							[1 Team]
+								[Else]
+									[Set Scripting_Module.Variables.Show_General_Contributors to True/]
+								[/Else]
+							[/1 Team]
+						[/User]
+		
+						[If Scripting_Module.Variables.Show_General_Contributors]
+							<span class="Big_List_Item" style="margin-bottom: 15px; background-color:#efefef;">
+								<span class="Big_List_Item_Details">
+									<span class="Big_List_Item_Name">
+										General Contributors
+									</span>
+									<span class="Big_List_Item_Content"></span>
+									[Admin]
+										<span class="Communications">
+												[Link to "Action/Email_Other" into "Window" with Class="Big_List_Item_Mail"]
+													<img data-state="closed" data-src="/jelly/libraries/iconic/svg/smart/envelope.svg" class="iconic" alt="mail" />
+													<span class="Label">Email</span>
+												[/Link]
+										</span>
+									[/Admin]
+								</span>
+								<span class="Big_List_Item_Value">
+									<span class="Row">
+										[User from Database where Activated]
+											[Set Current_User to This/]
+											[1 Team]
+												[Then][/Then]
+												[Else]
+													[Link to Current_User by Alias with Class = "Plain_Link Left Team_Member[If Current_User.Title] With_Title[/If]"]
+														<span class="General_User_Cover">
+															[Current_User as Cover with Maximum_Width = 175/]
+														</span>
+														<span class="Name" style="text-align: center;">
+															[Current_User.Name /]
+														</span>
+														[If Current_User.Title]
+															<span class="Title">
+																[Current_User.Title/]
+															</span>
+														[/If]
+													[/Link]
+												[/Else]
+											[/1 Team]
+										[/User]
+									</span>
+								</span>
+							</span>
+						[/If]
+		
+						[Admin]
+							<span class="Big_List_Item" style="margin-bottom: 15px; background-color:#efefef;">
+								<span class="Big_List_Item_Details">
+									<span class="Big_List_Item_Name">
+										Everyone
+									</span>									
+									<span class="Big_List_Item_Content"></span>
+									<span class="Communications">
+											[Link to "Action/Email_All_Active_Users" into "Window" with Class="Big_List_Item_Mail"]
+												<img data-state="closed" data-src="/jelly/libraries/iconic/svg/smart/envelope.svg" class="iconic" alt="mail" />
+												<span class="Label">Email</span>
+											[/Link]
+									</span>				
+								</span>
+							</span>
+						[/Admin]
+					</span>
+				</span>
+			{/Script}
+		{/Scripting_Module}
+	
+{/Jelly}

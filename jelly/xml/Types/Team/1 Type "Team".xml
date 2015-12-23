@@ -1,0 +1,18 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Team" --}
+		{Type}
+			{Name}Team{/Name}
+			{ID}7198673{/ID}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Teams{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Accounts{/Package}
+			{Starred}1{/Starred}
+			{Sort_Property_Alias}Name{/Sort_Property_Alias}
+			{Viewable_By}Public{/Viewable_By}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

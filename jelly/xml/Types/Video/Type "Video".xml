@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Video" --}
+		{Type}
+			{Name}Video{/Name}
+			{Parent_Type}File{/Parent_Type}
+			{Plural_Name}Videos{/Plural_Name}
+			{Default_Input}Video{/Default_Input}
+			{Package}Media{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

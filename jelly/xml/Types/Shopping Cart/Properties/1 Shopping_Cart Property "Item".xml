@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Property "Item" --}
+		{Property}
+			{Type}Shopping_Cart{/Type}
+			{Name}Item{/Name}
+			{Plural_Name}Items{/Plural_Name}
+			{Reverse_Name}Shopping Cart{/Reverse_Name}
+			{Relation}Many-To-Many{/Relation}
+			{Advanced}1{/Advanced}
+			{Value_Type}Item{/Value_Type}
+		{/Property}
+	
+{/Jelly}

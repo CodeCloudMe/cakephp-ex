@@ -1,0 +1,21 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Property Property "Attachment Type" --}
+	
+		{Property}
+			{Type}Property{/Type}
+			{Value_Type}Type{/Value_Type}
+			{Name}Attachment Type{/Name}
+			{Alias}Attachment_Type{/Alias}
+			{Data_Name}Attachment_Type{/Data_Name}
+			{Reverse_Name}Attachment Property{/Reverse_Name}
+			{Reverse_Alias}Attachment_Property{/Reverse_Alias}
+			{Reverse_Plural_Name}Attachment Properties{/Reverse_Plural_Name}
+			{Reverse_Plural_Alias}Attachment_Properties{/Reverse_Plural_Alias}
+			{Relation}Many-To-One{/Relation}
+			{Key}Alias{/Key}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

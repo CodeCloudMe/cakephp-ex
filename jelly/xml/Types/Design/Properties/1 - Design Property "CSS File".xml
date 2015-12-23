@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Design Property "CSS File" --}
+		{Property}
+			{Type}Design{/Type}
+			{Name}CSS File{/Name}
+			{Relation}Many-To-Many{/Relation}
+			{Value_Type}CSS_File{/Value_Type}
+		{/Property}
+	
+{/Jelly}

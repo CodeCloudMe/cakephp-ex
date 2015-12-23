@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Property "Picture" --}
+		{Property}
+			{ID}59173412{/ID}
+			{Type}Team{/Type}
+			{Name}Picture{/Name}
+			{Value_Type}Picture{/Value_Type}
+			{Relation}Many-To-One{/Relation}
+			{Viewable_By}Public{/Viewable_By}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

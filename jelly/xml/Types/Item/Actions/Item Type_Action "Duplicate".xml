@@ -1,0 +1,16 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Duplicate" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Duplicate{/Name}
+			{Content}
+				[Link to Execute /]
+			{/Content}
+			{Code}
+				[Duplicate Action.Item /]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

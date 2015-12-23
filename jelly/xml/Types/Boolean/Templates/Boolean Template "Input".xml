@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Boolean Template "Input" --}
+		{Template}
+			{Type}Boolean{/Type}
+			{Name}Input{/Name}
+			{Content}[Input "Check Box" with Alias Boolean.Alias, Value Boolean.Value/]{/Content}
+		{/Template}
+	
+{/Jelly}

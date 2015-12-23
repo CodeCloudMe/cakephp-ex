@@ -1,0 +1,618 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_Module Template "Default" --}
+		{Template}
+			{Type}Property_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Requires: Current_Item -->
+				<!-- Disambiguate -->
+				[Set Current_Property_Module to This /]
+
+				<!-- Get the property module's property -->
+				[Current_Property_Module.Property_Item]
+					<!-- Disambiguate -->
+					[Set Current_Property to This /]
+	
+					[Set Current_Property_Module_Property_Alias to Current_Property.Alias /]
+					<!-- Property Module (Alias: [Current_Property_Module_Property_Alias no_wrap /]) -->
+	
+					[If Path_Variables.Display]
+						[Then]
+							[Set Current_Property_Module_Display to Path_Variables.Display/]
+						[/Then]
+						[Else]
+							[Set Current_Property_Module_Display to Current_Property_Module.Display/]
+						[/Else]
+					[/If]
+	
+					<!-- Resolve Direction -->
+					[If Current_Property_Module.Reverse]
+						[Then]
+							<!-- Swap and store reverse property values -->
+							[Set Current_Property.Variables.Current_Type to Current_Property.Values.Value_Type /]
+							[Set Current_Property.Variables.Current_Value_Type to Current_Property.Values.Type /]
+							[Set Current_Property.Variables.Current_Label to Current_Property.Values.Reverse_Label /]
+							[Set Current_Property.Variables.Current_Name to Current_Property.Values.Reverse_Name /]
+							[Set Current_Property.Variables.Current_Plural_Name to Current_Property.Values.Reverse_Plural_Name /]
+							[Set Current_Property.Variables.Current_Alias to Current_Property.Values.Reverse_Alias /]
+							[If Current_Property.Values.Relation is "Many-To-One"]
+								[Set Current_Property.Variables.Current_Relation to "One-To-Many" /]
+							[/If]
+							[If Current_Property.Values.Relation is "One-To-Many"]
+								[Set Current_Property.Variables.Current_Relation to "Many-To-One" /]
+							[/If]
+							[If Current_Property.Values.Relation is "Many-To-Many"]
+								[Set Current_Property.Variables.Current_Relation to Current_Property.Values.Relation /]
+							[/If]
+						[/Then]
+						[Else]
+							<!-- Store forward property values -->
+							[Set Current_Property.Variables.Current_Type to Current_Property.Values.Type /]
+							[Set Current_Property.Variables.Current_Value_Type to Current_Property.Values.Value_Type /]
+							[Set Current_Property.Variables.Current_Label to Current_Property.Values.Label /]
+							[Set Current_Property.Variables.Current_Name to Current_Property.Values.Name /]
+							[Set Current_Property.Variables.Current_Alias to Current_Property.Values.Alias /]
+							[If Current_Property.Variables.Current_Value_Type is complex type]
+								[Set Current_Property.Variables.Current_Plural_Name to Current_Property.Values.Plural_Name /]
+								[Set Current_Property.Variables.Current_Relation to Current_Property.Values.Relation /]
+							[/If]
+						[/Else]
+					[/If]
+					[If Current_Property.Variables.Current_Relation is "One-To-Many" or Current_Property.Variables.Current_Relation is "Many-To-Many"]
+						[Set Current_Property.Variables.Current_Multiple to true /]
+					[/If]
+					[If Current_Property.Variables.Current_Value_Type is complex type]
+						[Set Current_Property.Variables.Current_Complex to true /]
+					[/If]
+	
+					<!-- TODO finish -->
+	
+					<!-- Determine editable setting --> 
+
+					<!-- Default to not editable -->
+					[Set Current_Property.Variables.Editable to false /]
+
+					<!-- Allow admins to edit all properties -->
+					[Admin]
+						[Set Current_Property.Variables.Editable to true /]
+					[/Admin]
+	
+					<!-- Allow members to edit their own properties, unless they're admin properties -->
+					[Member]
+						[If Current_Item.Type.Alias is "User"]
+							[If Current_Item.ID is Current_Session.User.ID]	
+								[If Current_Property.Viewable_By.Alias is not "Admin"]
+									[Set Current_Property.Variables.Editable to true /]
+								[/If]
+							[/If]
+						[/If]
+					[/Member]
+	
+					<!-- Special case --> 
+					<!-- Do not allow editing of Admin team's name -->
+					[If Current_Item.Type.Alias is "Team" and Current_Item.Name is "Admin" and Current_Property.Variables.Current_Alias is "Name"]
+						[Set Current_Property.Variables.Editable_Override to true /]
+					[/If]
+	
+					<!-- Determine modifiable setting --> 
+	
+					<!-- Default to modifiable --> 
+					[Set Current_Property.Variables.Modifiable to Current_Property.Variables.Editable /]
+
+					<!-- If core property, no one can modify it -->
+					[If Current_Property.Core]
+						[Set Current_Property.Variables.Modifiable to false /]
+					[/If]
+		
+					<!-- Determine visibility setting --> 
+	
+					<!-- Default to visible -->
+					[Set Current_Property.Variables.Show to true /]
+	
+					[If Current_Session.Preview_Mode]
+						[Set Current_Property.Variables.Editable to false/]
+						[Set Current_Property.Variables.Modifiable to false/]
+					[/If]
+	
+					<!-- Everything editable is visible --> 
+					[If Not Current_Property.Variables.Editable]
+						<!-- Set offset of properties used as a cover -->
+						[If Current_Item.Type.Cover_Property_Item.ID is Current_Property.ID]
+							[Set Current_Property.Variables.Offset to 1 /]
+						[/If]
+		
+						<!-- Hide blank value properties --> 
+						[If Current_Property.Variables.Current_Complex]
+							[Then]
+								[1 Current_Item.[Current_Property_Module_Property_Alias no_wrap /][If Current_Property.Variables.Offset] at [Current_Property.Variables.Offset no_wrap /][/If]]
+									[Else]
+										[Set Current_Property.Variables.Show to false /]
+									[/Else]
+								[/Current_Item.[Current_Property_Module_Property_Alias no_wrap /]]
+							[/Then]
+							[Else]
+								[If (Current_Property.Variables.Current_Value_Type.Alias is "Text" or Current_Property.Variables.Current_Value_Type.Alias is "Long_Text" or Current_Property.Variables.Current_Value_Type.Alias is "Date" or Current_Property.Variables.Current_Value_Type.Alias is "Time" or Current_Property.Variables.Current_Value_Type.Alias is "Date_Time") and not Current_Item.[Current_Property_Module_Property_Alias no_wrap /]]
+									[Set Current_Property.Variables.Show to false /]
+								[/If]
+							[/Else]
+						[/If]
+		
+						<!-- Hide members only properties from guests --> 
+						[If Current_Property.Viewable_By.Alias = "Members"]
+							[Guest]
+								[Set Current_Property.Variables.Show to false /]
+							[/Guest]
+						[/If]
+		
+						<!-- Hide private properties from anyone but the admin and the current member --> 
+						[If Current_Property.Viewable_By.Alias = "Private"]
+							[If Current_Item.ID is not Current_Session.User.ID]
+								[Admin]
+									[Else]
+										[Set Current_Property.Variables.Show to false /]
+									[/Else]
+								[/Admin]
+							[/If]
+							[If Current_Session.Preview_Mode][Set Current_Property.Variables.Show to false /][/]
+						[/If]
+		
+						<!-- Hide admin-only properties from anyone but the admin --> 
+						[If Current_Property.Viewable_By.Alias = "Admin"]
+							[Admin]
+								[Else]
+									[Set Current_Property.Variables.Show to false /]
+								[/Else]
+							[/Admin]
+						[/If]
+
+						<!-- Special cases --> 
+						[If Current_Property.Variables.Current_Alias is "Name"]
+							[Set Current_Property.Variables.Show to false /]
+						[/If]
+						[If Current_Property.Variables.Current_Alias is "First_Name"]
+							[Set Current_Property.Variables.Show to false /]
+						[/If]
+						[If Current_Property.Variables.Current_Alias is "Last_Name"]
+							[Set Current_Property.Variables.Show to false /]
+						[/If]
+		
+	
+						<!-- TODO - We need per item privacy eventually...-->
+						[If Current_Item.Type.Alias = "User" and Current_Property.Variables.Current_Alias is "Phone_Number"]
+							[If not Current_Item.Allow_Community_Members_to_Contact_Me]
+								[Set Current_Property.Variables.Show to false /]							
+							[/If]
+						[/If]
+						[If Current_Item.Type.Alias = "User" and Current_Property.Variables.Current_Alias is "Email_Address"]
+							[If not Current_Item.Allow_Community_Members_to_Contact_Me]
+								[Set Current_Property.Variables.Show to false /]							
+							[/If]
+						[/If]
+	
+						[If Current_Item.Type.Alias is "Team" and not Current_Item.Allow_Anyone_To_See_Members and Current_Property.Variables.Current_Alias is "Member"]
+							[Set Current_Property.Variables.Show to false /]
+						[/If]
+					[/If]
+	
+					[If Current_Property.Variables.Show]
+						<!-- Check if showing label -->
+						<!-- TODO broken if clean these up -->
+						<span class="Property_Module Module_Content" data-module="Property_Module" data-size="[This.Size no_wrap /]" data-width="[This.Width no_wrap /]" data-overlay="[This.Overlay no_wrap /]" data-show-label="[This.Show_Label no_wrap /]" data-display="[Current_Property_Module_Display no_wrap /]">
+							<span class="Property_Module_Header">
+								<!-- Look up current property -->
+								<!-- TODO broken if used inline without tag-in-tag -->
+
+								<span class="Property_Module_Label_Content">
+									<!-- Label -->
+									<span class="Property_Module_Label_Value">
+										[If Current_Property.Variables.Current_Type.Alias = "User" and Current_Property.Variables.Current_Name = "Team"]
+											[Then]
+												Reach out to me about
+											[/Then]
+											[Else]
+												[If Current_Property.Variables.Current_Complex]
+													[Then]
+														[If Current_Property.Variables.Current_Multiple]
+															[Then]
+																[If Current_Property.Variables.Current_Label]
+																	[Then]
+																		[Current_Property.Variables.Current_Label /]
+																	[/Then]
+																	[Else]
+																		[If Current_Property.Variables.Current_Plural_Name]
+																			[Then][Current_Property.Variables.Current_Plural_Name /][/Then]
+																			[Else][Current_Property.Variables.Current_Name /][/Else]
+																		[/If]
+																	[/Else]
+																[/If]
+															[/Then]
+															[Else]
+																[If Current_Property.Variables.Current_Label]
+																	[Then][Current_Property.Variables.Current_Label /][/Then]
+																	[Else][Current_Property.Variables.Current_Name /][/Else]
+																[/If]
+															[/Else]
+														[/If]
+													[/Then]
+													[Else]
+														[If Current_Property.Variables.Current_Label]
+															[Then][Current_Property.Variables.Current_Label /][/Then]
+															[Else][Current_Property.Variables.Current_Name /][/Else]
+														[/If]
+													[/Else]
+												[/If]
+											[/Else]
+										[/If]
+									</span>
+									[If Current_Property.Variables.Modifiable]
+										[Admin]
+											<!-- Settings Link -->
+											<a href="#" class="Property_Module_Settings_Link Property_Module_[Current_Property_Module.ID no_wrap /]" onclick="Jelly.jQuery('.Page_Settings.Property_Module_[Current_Property_Module.ID no_wrap /]').toggleClass('Visible');Jelly.jQuery('.Property_Module_Settings_Link.Property_Module_[Current_Property_Module.ID no_wrap /]').toggleClass('Selected');return false;" tabindex="-1">
+												<img class="iconic iconic-sm" data-src="/jelly/libraries/iconic/svg/smart/chevron.svg" data-direction="bottom">
+											</a>
+										[/Admin]
+									[/If]
+									[If Current_Property.Variables.Editable or Current_Session.Preview_Mode]
+										[Set Current_Property.Variables.Current_Privacy = Current_Property.Viewable_By.Alias/]
+										[Set Current_Property.Variables.Current_Privacy_Explanation = Current_Property.Viewable_By.Explanation/]
+		
+										<!-- Special cases --> 
+										<!-- TODO : until someone changes this...--> 
+										[If Current_Property.Variables.Current_Type.Alias = "User" and Current_Property.Variables.Current_Name = "Title"]
+											[Set Current_Property.Variables.Current_Privacy = "Special"/]
+											[Set Current_Property.Variables.Current_Privacy_Explanation = "Everyone can see this, but only admins can edit this."/]
+										[/If]
+		
+										[If Current_Property.Variables.Current_Type.Alias = "Team" and Current_Property.Variables.Current_Name = "Tagline"]
+											[Set Current_Property.Variables.Current_Privacy = "Public"/]
+											[Set Current_Property.Variables.Current_Privacy_Explanation = "Everyone can see this."/]
+										[/If]
+		
+										<!-- We need per item per property privacy or maybe not --> 
+										[If Current_Item.Type.Alias = "User" and (Current_Property.Variables.Current_Alias is "Phone_Number" or Current_Property.Variables.Current_Alias is "Email_Address")]
+											[If not Current_Item.Allow_Community_Members_to_Contact_Me]
+												[Set Current_Property.Variables.Current_Privacy = "Private"/]
+												[Privacy "Private" from Database]
+													[Set Current_Property.Variables.Current_Privacy_Explanation = This.Explanation/]
+												[/Privacy]
+											[/If]
+										[/If]
+		
+										[If Current_Item.Type.Alias is "Team" and not Current_Item.Allow_Anyone_To_See_Members and Current_Property.Variables.Current_Alias is "Member"]
+											[Set Current_Property.Variables.Current_Privacy = "Private"/]
+											[Privacy "Private" from Database]
+												[Set Current_Property.Variables.Current_Privacy_Explanation = This.Explanation/]
+											[/Privacy]
+										[/If]
+
+										[If Current_Property.Variables.Editable or (Current_Session.Preview_Mode and Current_Property.Variables.Current_Privacy = "Members")]
+											<span class="Property_Module_Privacy [Current_Property.Variables.Current_Privacy no_wrap/]">
+												<img class="iconic iconic-sm" data-src="/jelly/images/privacy/[Current_Property.Variables.Current_Privacy no_wrap/].svg" data-direction="bottom">
+												<span class="Explanation">[Current_Property.Variables.Current_Privacy_Explanation/]</span>
+											</span>
+										[/If]
+									[/If]
+									<span class="Property_Module_Controls">
+										[If Current_Property.Variables.Current_Relation = "Many-To-Many" and (Current_Property.Variables.Current_Type.Alias != "User" or Current_Property.Variables.Current_Name != "Team")]
+											<span class="Property_Module_Display_Wrapper">
+											[If Current_Property.Variables.Current_Complex]
+												<span class="Display">
+													[New [Current_Property.Variables.Current_Value_Type.Alias no_wrap/]]
+														[1 This.Property where Value_Type = "Location"]
+															<a href="#" 
+																onclick="[Format as "Single Line Code"]
+																		var Property_Module_Namespace = '[Current_Property_Module.Namespace no_wrap/]';
+																		var Property_Module_Element = document.getElementById(Property_Module_Namespace);
+																		var Property_Module_Reference = Jelly.References.Get_Reference_For_Element(Property_Module_Element);
+
+																		Property_Module_Reference\['Variables'\]\['Display'\] = 'Map';
+																		Jelly.References.Trigger_Refresh(\{'Kind': 'Element', 'Element': Property_Module_Element\});
+																		Jelly.References.Refresh_All();
+
+																		return false;
+																	[/Format]" 
+																class="Display_Item Display_List">
+																<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/map-marker.svg">
+															</a>
+														[/1]
+													[/New]
+													<a href="#" 
+														onclick="[Format as "Single Line Code"]
+																var Property_Module_Namespace = '[Current_Property_Module.Namespace no_wrap/]';
+																var Property_Module_Element = document.getElementById(Property_Module_Namespace);
+																var Property_Module_Reference = Jelly.References.Get_Reference_For_Element(Property_Module_Element);
+
+																Property_Module_Reference\['Variables'\]\['Display'\] = 'Grid';
+																Jelly.References.Trigger_Refresh(\{'Kind': 'Element', 'Element': Property_Module_Element\});
+																Jelly.References.Refresh_All();
+
+																return false;
+															[/Format]" 
+														class="Display_Item Display_Grid">
+														<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/grid.svg">
+													</a>
+													<a href="#" 
+														onclick="[Format as "Single Line Code"]
+																var Property_Module_Namespace = '[Current_Property_Module.Namespace no_wrap/]';
+																var Property_Module_Element = document.getElementById(Property_Module_Namespace);
+																var Property_Module_Reference = Jelly.References.Get_Reference_For_Element(Property_Module_Element);
+
+																Property_Module_Reference\['Variables'\]\['Display'\] = 'List';
+																Jelly.References.Trigger_Refresh(\{'Kind': 'Element', 'Element': Property_Module_Element\});
+																Jelly.References.Refresh_All();
+
+																return false;
+															[/Format]" 
+														class="Display_Item Display_List">
+														<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/list.svg">
+													</a>
+												</span>
+											[/If]
+										</span>
+										[/If]
+										[If Current_Property.Variables.Editable]
+											[If Current_Property.Variables.Current_Complex]
+												[If Current_Property.Variables.Current_Multiple]
+													[Then]
+														<span class="Property_Module_Add_Wrapper">
+															[If Current_Property.Variables.Current_Type.Alias = "User" and Current_Property.Variables.Current_Name = "Team"]
+																[Then]
+																	[Link to "/[Current_Item.Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Add_Value_Clean:Property_Alias=[Current_Property.Variables.Current_Alias no_wrap /]" into "Window" with Class = "Property_Module_Add_Link"]Join a  [Current_Property.Variables.Current_Value_Type.Name /][/Link]
+																[/Then]
+																[Else]
+																	[Link to "/[Current_Item.Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Add_Value_Clean:Property_Alias=[Current_Property.Variables.Current_Alias no_wrap /]" into "Window" with Class = "Property_Module_Add_Link"]Add [Current_Property.Variables.Current_Value_Type.Name /][/Link]
+																[/Else]
+															[/If]
+														</span>
+													[/Then]
+													[Else]
+														<span class="Property_Module_Set_Wrapper">
+															[Link to "/Action/Set_Complex_Value:Item=[Current_Item.ID no_wrap /],Item_Type=[Current_Item.Type.Alias no_wrap /],Property_Alias=[Current_Property.Variables.Current_Alias no_wrap /]" into "Window" with Class = "Property_Module_Set_Link"]Set [Current_Property.Variables.Current_Value_Type.Name /][/Link]
+														</span>
+													[/Else]
+												[/If]
+												[Ignore]
+													<!-- Todo I think this is tristan's security work --> 
+													[If Current_Property.Variables.Current_Value_Type.Alias is "Picture" or Current_Property.Variables.Current_Value_Type.Alias is "Video" or Current_Property.Variables.Current_Value_Type.Alias is "File" or Current_Property.Variables.Current_Value_Type.Alias is "Website"]
+													[/If]
+												[/Ignore]
+											[/If]
+										[/If]
+									</span>
+									<!-- TODO Search/Display -->
+								</span>
+								[Admin]
+									<span class="Page_Settings Property_Module_[Current_Property_Module.ID no_wrap /]">
+										<span class="Setting_Row">
+											<span class="Setting_Label">
+												Name:
+											</span>
+											<span class="Setting_Value">
+												[If Current_Property_Module.Reverse]
+													[Then]
+														<!-- TODO reverse label shit --> 
+														[Current_Property.Action "Edit Text Property" with Property_Alias = "Reverse_Label" /]
+													[/Then]
+													[Else]
+														[Current_Property.Action "Edit Text Property" with Property_Alias = "Label" /]
+													[/Else]
+												[/If]
+											</span>
+										</span>
+		
+										<span class="Setting_Row">
+											<span class="Setting_Label">
+												Privacy:
+											</span>
+											<span class="Setting_Value">
+												<a class="Setting_Privacy_Menu_Link" href="#" onclick="Jelly.Interface.Create_Menu(\{URL: '/Action/Set_Property_Privacy_Clean:Item=[Current_Property.ID no_wrap /],Item_Type=Property', 'Alias': 'Privacy_Menu', Menu_Namespace: '[Namespace no_wrap /]_Menu', Attach: 'Element', Attach_Element: this, Edge: 'Bottom'\});return false;">
+													[Current_Property.Viewable_By.Alias/]
+												</a>
+												<span class="Setting_Privacy_Menu_Chevron">
+													<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/chevron.svg" data-direction="bottom">
+												</span>									
+											</span>
+										</span>
+										[Ignore]
+											[If Current_Property.Variables.Current_Multiple]
+												<span class="Setting_Row">
+													<span class="Setting_Label">
+														Plural Name:
+													</span>
+													<span class="Setting_Value">
+														[If Current_Property_Module.Reverse]
+															[Then]
+																[Current_Property.Action "Edit Text Property" with Property_Alias = "Reverse_Plural_Name" /]
+															[/Then]
+															[Else]
+																[Current_Property.Action "Edit Text Property" with Property_Alias = "Plural_Name" /]
+															[/Else]
+														[/If]
+													</span>
+												</span>
+											[/If]
+										[/Ignore]
+										[Ignore]
+											<!-- TODO -->
+											Hide Property
+										[/Ignore]
+	
+										[Ignore]
+											<!-- TODO Changing value types -->
+											Value Type: [Current_Property.Variables.Current_Value_Type.Alias /]<br/>
+										[/Ignore]
+										[Ignore]
+											[If Current_Property.Variables.Current_Complex]
+												<span class="Setting_Row">
+													<!-- Relation property -->
+													[Action "Set Property Relation Clean" with Current_Property = Current_Property /]
+												</span>
+											[/If]
+										[/Ignore]
+	
+										<!-- Check if the property is of the current type instead of a parent type -->
+										[If Current_Property.Variables.Current_Type.ID = Current_Item.Type.ID]
+											<span class="Setting_Row">
+												<!-- Delete property -->
+												<span class="Setting_Value">
+													[Link to remove Current_Property]Delete[/Link] [Current_Property_Module.Action "Move Up"/]  [Current_Property_Module.Action "Move Down"/]
+												</span>
+											</span>
+										[/If]
+									</span>
+								[/Admin]
+							</span>
+			
+							[Member]
+								[If Current_Property.Variables.Current_Value_Type.Alias = "User"]
+									<span class="Property_Module_Communications">
+										[Link to "/[Current_Item.Type.Alias no_wrap/]/[Current_Item.ID no_wrap/]/Email_Group:Property_Alias=[Current_Property.Variables.Current_Alias no_Wrap/]" into "Window" with Class="Big_List_Item_Mail"]
+											<img data-state="closed" data-src="/jelly/libraries/iconic/svg/smart/envelope.svg" class="iconic" alt="mail" />
+											<span class="Label">Email</span>
+										[/Link]
+
+										[Link to "/[Current_Item.Type.Alias no_wrap/]/[Current_Item.ID no_wrap/]/Text_Group:Property_Alias=[Current_Property.Variables.Current_Alias no_Wrap/]" into "Window" with Class="Big_List_Item_Text"]
+											<img data-state="closed" data-src="/jelly/images/flaticon/chat81.svg" class="iconic" alt="mail" />
+											<span class="Label">Text</span>
+										[/Link]
+									</span>
+								[/If]
+							[/Member]
+			
+							<!-- Value -->
+							<span class="Property_Module_Value">
+								<!-- Check if property is simple or complex -->
+								[If Current_Property.Variables.Current_Value_Type is simple type]
+									[Then]
+										<!-- Simple Value Type -->
+										[If Current_Property.Variables.Editable and not Current_Property.Variables.Editable_Override]
+											[Then]
+												[Current_Item.Action "Edit Text Property" with Property_Alias = Current_Property_Module_Property_Alias, Property_Value_Type = Current_Property.Variables.Current_Value_Type.Alias /]
+											[/Then]
+											[Else]
+												[If Current_Property.Variables.Current_Value_Type.Alias is "Boolean"]
+													[Then]
+														[If Current_Item.[Current_Property_Module_Property_Alias no_wrap /]]
+															[Then]Yes[/Then]
+															[Else]No[/Else]
+														[/If]
+													[/Then]
+													[Else]
+														[Current_Item.[Current_Property_Module_Property_Alias no_wrap /] /]
+													[/Else]
+												[/If]
+											[/Else]
+										[/If]
+									[/Then]
+									[Else]
+										<!-- Complex Value Type -->
+		
+										<!-- TODO: Single vs. Multiple -->
+										<!-- TODO: Passing this in as a Data_Module in order to use the same kind of property list -->
+		
+										<!-- Update cover -->
+										<!-- TODO should this be here? -->
+										[This.Action "Set Cover Property Item" as Execute /]
+		
+										<!-- Update explanation -->
+										[This.Action "Set Explanation Property Item" as Execute /]
+		
+										[If Current_Property_Module_Display = "Map"]
+											[Then]
+												<!-- Map -->
+												<span class="Big_List Map">
+													<span class="Big_List_Items">
+														<span class="List_Map" id="[Current_Property_Module.Namespace no_wrap /]_Map">
+														</span>
+													</span>
+												</span>
+												[External_Script]
+													Jelly.Interface.Generate_Map(\{
+															Alias: "[Current_Property_Module.Namespace no_wrap /]_Map",
+															Locate_User: true
+														\});
+												[/External_Script]
+
+												[Current_Item.[Current_Property.Variables.Current_Alias no_wrap /] [If Current_Property_Module.Where_Clause]where [Current_Property_Module.Where_Clause no_wrap /][/If]]
+													[Set Current_Value to This /]
+													[1 Current_Value.Property where Value_Type is "Location"]
+														[Set Current_Location_Property to This/]
+														[Current_Value.[Current_Location_Property.Alias no_wrap/]]
+															[External_Script]
+																// Add marker to map
+																Jelly.Interface.Create_Location(
+																		\{
+																			[If Current_Value.Type.Alias = "User"]"Icon": "heart",[/If]
+																			"Map_Alias": "[Current_Property_Module.Namespace no_wrap /]_Map",
+																			"Position": \[[This.Latitude no_wrap /], [This.Longitude no_wrap /]\],
+																			"Content": "[Format as "Javascript String"]
+																				<span class="Big_List Popup">
+																					<span class="Big_List_Item">
+																						[Link to Current_Value by Alias with Class = "Big_List_Item_Details"]
+																							<span class="Big_List_Item_Cover">
+																								[1 Current_Value.Property where Value_Type = "Picture"]
+																									[Set Current_Cover_Property to This/]
+																									[Current_Value.[Current_Cover_Property.Alias no_wrap/] as Cover/]
+																								[/]
+																							</span>
+																							<span class="Big_List_Item_Name">
+																								[Current_Value.Name /]
+																							</span>
+																						[/Link]
+																						<span class="Big_List_Item_Actions">
+																							[Admin]
+																								[If not Current_Item.Core]
+																									[Link to "/Type/[Current_Value.Type.Alias no_wrap /]/[Current_Value.ID no_wrap /]/Remove" into "Window" with Class = "Delete"]
+																										<span class="Content">
+																											<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
+																										</span>
+																									[/Link]
+																								[/If]
+																							[/Admin]
+																						</span>
+																					</span>
+																				</span>
+																			[/Format]"
+																		\}
+																	);
+															[/External_Script]
+														[/]
+													[/1 Current_Value.Property]
+												[/]
+												[External_Script]
+													Jelly.Interface.Show_All_Locations(\{"Map_Alias": "[Current_Property_Module.Namespace no_wrap /]_Map"\});
+												[/External_Script]
+											[/Then]
+											[Else]
+												<!-- Items -->
+												<span class="Big_List [If Current_Property_Module_Display][Then][Current_Property_Module_Display no_wrap /][/Then][Else]List[/Else][/If] [If Current_Property_Module.Size][Then][Current_Property_Module.Size no_wrap /][/Then][Else]Normal[/Else][/If]">
+													[Current_Item.[Current_Property.Variables.Current_Alias no_wrap /]
+														[If Current_Property_Module.Where_Clause]where [Current_Property_Module.Where_Clause no_wrap /][/If]
+														[If Current_Property.Variables.Offset]at [Current_Property.Variables.Offset no_wrap /][/If]
+														[If Current_Property_Module.Sort_Property_Alias]by [Current_Property_Module.Sort_Property_Alias no_wrap/][If Current_Property_Module.Sort_Reverse] Descending[/If][/If]														
+														as Property_Module_List_Item 
+														iterator_classes "Big_List_Items" 
+														item_classes "Big_List_Item Hover" 
+														with 
+															Data_Module = Current_Property_Module, 
+															Current_Item = Current_Item, 
+															Current_Property_Value_Type = Current_Property.Variables.Current_Value_Type, 
+															Current_Property_Alias = Current_Property.Variables.Current_Alias, 
+															Editable = Current_Property.Variables.Editable 
+													/]
+												</span>
+
+											[/Else]
+										[/If]		
+									[/Else]
+								[/If]
+							</span>
+						</span>
+					[/If]
+				[/Current_Property_Module.Property_Item]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

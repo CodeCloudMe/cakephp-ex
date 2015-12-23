@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Backup" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Backup{/Name}
+			{Content_Type}application/unknown{/Content_Type}
+			{Content}
+				[Admin][This as "[If Path_Variables.Format exists][Then][URL:Format /][/Then][Else]SQL[/Else][/If]"/][/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

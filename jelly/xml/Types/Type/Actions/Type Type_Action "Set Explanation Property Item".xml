@@ -1,0 +1,49 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Type_Action "Set Explanation Property Item" --}
+		{Type_Action}
+			{Type}Type{/Type}
+			{Name}Set Explanation Property Item{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					[Link to Execute /]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- TODO: Reverse (MAYBE, left over from cover) -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Type to This.Target /]
+				
+				<!-- Check if a explanation property has already been set -->
+				<!-- TODO better way to figure out when to run this? -->
+				[If Current_Type.Explanation_Property_Item does not exist]
+					<!-- Check if the type has a property with a explanation -->
+					<!-- TODO check Pictures first, etc. -->
+					[New [Current_Type.Alias no_wrap /]]
+						<!-- Disambiguate -->
+						[Set Current_Explanation_Item to This /]
+						
+						<!-- Find a property that can be used as an explanation -->
+
+						<!-- TODO the count is not passed in to Property value queries -->
+						[1 Current_Explanation_Item.Properties Where Name = "Tagline" or Name = "Explanation" by Name Descending]
+							[If Current_Type.Explanation_Property_Item does not exist]
+								<!-- Check if the explanation property is actually a property of the current item -->
+								<!-- TODO this seems hacky -->
+								[If This.Values.Type is Parent Type of Current_Explanation_Item.Type]
+									<!-- Set explanation property for data module -->
+									<!-- TODO sets by ID as a hack because the item won't be available later during the current page load after this iterator moves on -->
+									[Set Current_Type.Explanation_Property_Item to This.ID /]
+									[Save Current_Type /]
+								[/If]
+							[/If]
+						[/Current_Explanation_Item.Properties]
+					[/New]
+				[/If]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

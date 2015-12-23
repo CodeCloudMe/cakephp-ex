@@ -1,0 +1,31 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Refresh Website Properties" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Refresh Website Properties{/Name}
+			{Content}
+				[Link to execute /]
+				[Action as "Loading"/]
+			{/Content}
+			{Code}
+				<!-- Disambiguate -->
+				[Set Current_Item to Current_Action.Target /]
+				
+				<!-- Find website properties -->
+				[Current_Item.Property where Value_Type is "Website"]
+					<!-- Disambiguate -->
+					[Set Current_Property to this /]
+					[Set Current_Property_Alias to Current_Property.Alias /]
+					
+					<!-- Cycle over websites -->
+					[Current_Item.[Current_Property_Alias no_wrap /]]
+						<!-- Refresh the website -->
+						[This.Action "Refresh Website" as Execute /]
+					[/Current_Item.[Current_Property_Alias no_wrap /]]
+				[/Current_Item.Property]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

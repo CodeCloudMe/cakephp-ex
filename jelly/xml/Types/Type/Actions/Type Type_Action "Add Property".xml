@@ -1,0 +1,38 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Type_Action "Add Property" --}
+		{Type_Action}
+			{Type}Type{/Type}
+			{Name}Add Property{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Execute link for manual implementations -->
+					[Input "Text Field" with Name = "Property Name" /]
+					
+					[Link to Execute]Create[/Link]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Create property -->
+					<!-- TODO set type not as alias? -->
+					[New Property with Name = Form.Property_Name, Type = Current_Action.Target.Alias]
+						<!-- Save item -->
+						[Save This /]
+					[/New]
+						
+					<!-- Trigger Edited Event -->
+					[External_Script]
+						<!-- TODO: Calling handlers this many levels down doesn't seem to be working -->
+						Jelly.Interface.Close_Top_Window();				
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

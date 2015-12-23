@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Sound Template "Badge" --}
+		{Template}
+			{Type}Sound{/Type}
+			{Name}Badge{/Name}
+			{Content}
+				[This as Data_Module_List_Item with No_Details = true /]				
+			{/Content}
+		{/Template}
+	
+{/Jelly}

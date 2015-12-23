@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Payment_Transaction Property "First Name" --}
+		{Property}
+			{Type}Payment_Transaction{/Type}
+			{Name}First Name{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

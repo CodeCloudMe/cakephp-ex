@@ -1,0 +1,31 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Donate" --}
+		{Action}
+			{Name}Donate{/Name}
+			{Content}
+				[Link to Execute with Class = "Button"]Donate[/Link]
+				<span style="display:none;">[Action as "Result"/]</span>
+			{/Content}
+			{Code}
+				<!-- Create Shopping Cart -->
+				[New Shopping_Cart]
+					<!-- Disambiguate -->
+					[Set Current_Shopping_Cart to This /]
+				
+					<!-- Save Shopping Cart -->
+					[Save Current_Shopping_Cart /]
+					
+					[Set Current_Shopping_Cart.Donation to 25 /]
+								
+					<!-- Recalculate total -->
+					[Current_Shopping_Cart.Action "Recalculate" as Execute /]
+				
+					<!-- Show checkout window -->
+					[Go to "/[Current_Shopping_Cart.Type.Alias no_wrap /]/[Current_Shopping_Cart.ID no_wrap /]/simple_donation_checkout" into "Window" /]
+				[/New Shopping_Cart]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

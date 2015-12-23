@@ -1,0 +1,22 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type Property "Default Input" --}
+	
+		{Property}
+			{Type}Type{/Type}
+			{Value_Type}Input{/Value_Type}
+			{Name}Default Input{/Name}
+			{Alias}Default_Input{/Alias}
+			{Reverse_Name}Reverse Default Input Type{/Reverse_Name}
+			{Reverse_Alias}Reverse_Default_Input_Type{/Reverse_Alias}
+			{Reverse_Plural_Name}Reverse Default Input Types{/Reverse_Plural_Name}
+			{Reverse_Plural_Alias}Reverse_Default_Input_Types{/Reverse_Plural_Alias}
+			{Data_Name}Default_Input{/Data_Name}
+			{Default_Value}Menu{/Default_Value}
+			{Key}Alias{/Key}
+			{Relation}Many-To-One{/Relation}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

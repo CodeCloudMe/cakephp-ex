@@ -1,0 +1,39 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Sharing Links" --}
+		{Block}
+			{Name}Sharing Links{/Name}
+			{Content}
+				<div style="width: 200px; padding: 6px;">
+					<div id="URL_Field" style="padding-bottom: 5px; font-weight: bold;">
+					</div>
+					
+					<div style="font-weight: bold;padding-bottom: 2px;">
+						Services:
+					</div>
+					<div style="font-weight: bold;">
+						<div style="padding-bottom: 2px;">
+							- <a href="#" onclick="Share_Page(\{'Target': 'Email'\}); Refresh_Email_Link(); return false;" id="Sharing_Email_Link">Email to a friend</a>
+						</div>
+						<div style="padding-bottom: 2px;">
+							- <a href="#" onclick="Share_Page(\{'Target': 'del.icio.us'\}); return false;">Post to del.icio.us</a>
+						</div>
+						<div style="padding-bottom: 2px;">
+							- <a href="#" onclick="Share_Page(\{'Target': 'digg'\}); return false;">Post to digg</a>
+						</div>
+						<div style="padding-bottom: 2px;">
+							- <a href="#" onclick="Share_Page(\{'Target': 'reddit'\}); return false;">Post to reddit</a>
+						</div>
+						<div style="padding-bottom: 2px;">
+							- <a href="#" onclick="Share_Page(\{'Target': 'Facebook'\}); return false;">Post to Facebook</a>
+						</div>
+					</div>
+				</div>
+				[External_Script]
+//					Refresh_Sharing_Links();
+				[/External_Script]
+			{/Content}
+		{/Block}
+	
+{/Jelly}

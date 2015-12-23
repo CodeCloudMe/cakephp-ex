@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Package "Test" --}
+		{Package}
+			{Name}Simple{/Name}
+			{Package}Core{/Package}
+			{Order}1{/Order}
+		{/Package}
+	
+{/Jelly}

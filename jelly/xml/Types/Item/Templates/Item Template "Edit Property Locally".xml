@@ -1,0 +1,30 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Edit Property Locally" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Edit Property Locally{/Name}
+			{Content}
+				[Set Edit_Item to This /]
+				[Header "Content-type" Value "jelly/edit" /]
+				[Header "Content-Disposition" Value "attachment; filename=[Edit_Item:Self_Type:Name No_Wrap /] [Edit_Item:Name No_Wrap /] [URL:Property_Alias No_Wrap /] ([Edit_Item:ID No_Wrap /]).jly" /]
+				<?xml version="1.0"?>
+				[Admin]
+					<Jelly_Item>
+						<Site_Name>[Format as "XML Data"][Site:Name no_wrap /][/Format]</Site_Name>
+						<Site_URL>[Format as "XML Data"][HTTP_Host no_wrap /][Directory no_wrap /][/Format]</Site_URL>
+						<Current_User_Alias>[Format as "XML Data"][Current_User:Alias no_wrap /][/Format]</Current_User_Alias>
+						<Type_Name>[Format as "XML Data"][Edit_Item:Type:Name no_wrap /][/Format]</Type_Name>
+						<Type_Alias>[Format as "XML Data"][Edit_Item:Type:Alias no_wrap /][/Format]</Type_Alias>
+						<Item_Name>[Format as "XML Data"][Edit_Item:Name no_wrap /][/Format]</Item_Name>
+						<Item_Alias>[Format as "XML Data"][Edit_Item:Alias no_wrap /][/Format]</Item_Alias>
+						<Property_Alias>[Format as "XML Data"][URL:Property_Alias no_wrap /][/Format]</Property_Alias>
+						<Property_Value>[Format as "XML Data"][Process_Once][This:[URL:Property_Alias no_wrap /] /][/Process_Once][/Format]</Property_Value>
+					</Jelly_Item>
+				[/Admin]
+				{/Content}
+			{Content_Type}text/plain{/Content_Type}
+		{/Template}
+	
+{/Jelly}

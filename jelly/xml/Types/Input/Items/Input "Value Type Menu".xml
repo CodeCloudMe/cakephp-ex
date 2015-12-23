@@ -1,0 +1,62 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Value Type Menu" --}
+		{Input}
+			{Name}Value Type Menu{/Name}
+			{Content}
+				[Set Current_Input to This/]
+				[Set Current_Input_Namespace to Current_Input.Namespace/]
+
+				[Input "Hidden" Preserve_Namespace with 
+						Alias = Current_Input.Variables.Alias,
+						Value_Type = "Type",
+						Value = "Long_Text"
+					/]
+
+				<!-- Closed Menu -->
+				<div
+					class="Value_Type_Closed_Menu"
+					id="[Current_Input_Namespace No_Wrap /]_Menu"
+					onmousemove="jQuery(this).addClass('Jelly_Closed_Menu_Hover');"
+					onmouseout="jQuery(this).removeClass('Jelly_Closed_Menu_Hover');"
+					onclick="[Format as "Single Line Code"]
+						var This_Item = this;
+						var Menu_Reference = Jelly.Interface.Create_Menu(
+						\{
+							Alias: 'Menu_List',
+							Attach: 'Element',
+							Attach_Element: document.getElementById('[Current_Input_Namespace No_Wrap /]_Menu'),
+							URL: '/Block/Select_Value_Type/Raw',
+							Do_Not_Focus_First_Item: true,
+							Do_Not_Focus_On_Hover: true,
+						\});
+						return false;
+					[/Format]"
+				>
+					<div class="Value_Type_Closed_Menu_Arrow">
+						&#x25BC;
+					</div>
+					<div id="[Current_Input_Namespace No_Wrap /]_Menu_Trigger" class="Jelly_Closed_Menu_Badge Value_Type_Badge">
+						<figure class="Cover" style="background-image:url(/jelly/images/types/text.png);"></figure>
+						<span class="Label">Text</span>
+					</div>
+				</div>
+
+				[External_Script]
+					// Selected Handler
+					Jelly.Handlers.Register_Handler(
+					\{
+						"Element": document.getElementById("[Current_Input_Namespace No_Wrap /]"),
+						"Event": \["Selected"\],
+						"Code": function (Parameters)
+						\{
+							document.getElementById("[Current_Input_Namespace No_Wrap /]_Value").value = Parameters\["Item"\];
+							document.getElementById("[Current_Input_Namespace No_Wrap /]_Menu_Trigger").innerHTML = Parameters\["Badge"\];			
+						\}
+					\});
+				[/External_Script]
+
+			{/Content}
+		{/Input}	
+{/Jelly}

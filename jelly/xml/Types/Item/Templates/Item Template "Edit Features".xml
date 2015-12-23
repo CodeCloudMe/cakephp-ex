@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Edit Features" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Edit Features{/Name}
+			{Content}<!--TODO: make sure reset_Database supports empty-string non-default values -->{/Content}
+		{/Template}
+	
+{/Jelly}

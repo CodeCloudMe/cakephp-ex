@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Text_Module Property "Body" --}
+		{Property}
+			{Type}Text_Module{/Type}
+			{Name}Body{/Name}
+			{Value_Type}Long_Text{/Value_Type}
+			{Default_Value}<p></p>{/Default_Value}
+		{/Property}
+	
+{/Jelly}

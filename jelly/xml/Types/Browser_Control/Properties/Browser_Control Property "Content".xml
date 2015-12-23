@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Browser_Control Property "Content" --}
+		{Property}
+			{Type}Browser_Control{/Type}
+			{Name}Content{/Name}
+			{Value_Type}Long_Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

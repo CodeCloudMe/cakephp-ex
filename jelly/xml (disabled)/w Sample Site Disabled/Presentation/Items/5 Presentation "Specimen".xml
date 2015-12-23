@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Specimen" --}
+		{Presentation}
+			{Name}Specimen{/Name}
+			{Website}http://sharkbox.com/{/Website}
+			{Description}Charlie Whitney is an artist and coder who explores the narrowing gap between digital and physical spaces through interactive installations, fabrication, and projection. He cofounded and helped develop Specimen, an iPhone game about perception.{/Description}
+			{Picture}Specimen{/Picture}
+		{/Presentation}
+	
+{/Jelly}

@@ -1,0 +1,144 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Select Clean" --}
+		{Input}
+			{Name}Select Clean{/Name}
+			{Content}
+				[Set Current_Input to This /]
+
+				<!-- Update cover/expanation property --> 
+				[Current_Input.Variables.Value_Type.Action "Set Cover Property Item" as Execute /]
+				[Current_Input.Variables.Value_Type.Action "Set Explanation Property Item" as Execute /]
+
+				[If Not Current_Input.Variables.Allow_Multiple_Values]
+					<!-- Input for selected item -->
+					<span id="[Current_Input.Namespace no_wrap /]_Value_Input_Finder">
+						[Input "Hidden" with Name = Current_Input.Variables.Name, Value_Type = Current_Input.Variables.Value_Type[If Current_Input.Variables.Execute_On_Change], Execute_On_Change = 1[/If] /]
+					</span>
+				[/If]
+
+				<!-- Add input for pictures/videos/locations -->
+				[If Current_Input.Variables.Value_Type.Alias is "Picture" or Current_Input.Variables.Value_Type.Alias is "Video" or Current_Input.Variables.Value_Type.Alias is "Location" or Current_Input.Variables.Value_Type.Alias is "Website" or Current_Input.Variables.Value_Type.Alias is "Sound" or Current_Input.Variables.Value_Type.Alias is "Social_Media"]
+					<div class="Row" style="margin-bottom:18px;">
+						[Link to add "[Current_Input.Variables.Value_Type.Alias no_wrap /]" /]
+					</div>
+				[/If]
+
+				<!-- TODO Hack to only show visible teams -->
+				[Admin]
+					[Else]
+						[If Current_Input.Variables.Value_Type.Alias is "Team"]
+							[Set Current_Input.Variables.Where_Clause to "Allow_Anyone_To_Join" /]
+						[/If]
+					[/Else]
+				[/Admin]
+
+				<!-- Only admins can select from existing items -->
+				<!-- TODO - the above sentence does not appear to be implemented -- 
+				<!-- List -->
+				[Set Current_Input.Variables.Selectable = True/]
+				[If Current_Input.Variables.Value_Type.Alias is "Picture" or Current_Input.Variables.Value_Type.Alias is "Video" or Current_Input.Variables.Value_Type.Alias is "Location" or Current_Input.Variables.Value_Type.Alias is "Website" or Current_Input.Variables.Value_Type.Alias is "Sound" or Current_Input.Variables.Value_Type.Alias is "Social_Media"]
+					[Admin]
+						[Else]
+							[Set Current_Input.Variables.Selectable = False/]
+						[/Else]
+					[/Admin]
+				[/If]
+
+				[If Current_Input.Variables.Selectable]
+					<span class="Big_List Grid">
+					<!-- List Items -->
+						<!-- Iterate over items -->
+						[[Current_Input.Variables.Value_Type.Values.Alias no_wrap /] [If Current_Input.Variables.Where_Clause] where [Current_Input.Variables.Where_Clause no_wrap /][/If] from database iterator_classes "Big_List_Items" item_classes "Big_List_Item Hover"]
+							<!-- Disambiguate -->
+							[Set Current_List_Item to this /]
+			
+							[If Current_Input.Variables.Allow_Multiple_Values]
+								<span id="[Current_Input.Namespace no_wrap /]_[Current_List_Item.Type.Alias no_wrap/]_[Current_List_Item.ID no_wrap /]_Value_Input_Finder">
+									[Input "Hidden" with Name = "[Current_Input.Variables.Name no_wrap/] [Current_List_Item.Type.Name no_wrap/] [Current_List_Item.ID no_wrap /]", Value = "0"/]
+								</span>
+							[/If]
+			
+							<!-- List item -->
+								<!-- Details -->
+								<a class="Big_List_Item_Details" id="[Current_Input.Namespace no_wrap /]_Item_[Current_List_Item.ID no_Wrap /]" href="#" onclick="[Format as "Single Line Code"]
+										[If not Current_Input.Variables.Allow_Multiple_Values]
+											Jelly.jQuery('#[Current_Input.Namespace no_wrap /] .Big_List_Item_Details').removeClass('Selected');
+										[/If]
+										Jelly.jQuery(this).toggleClass('Selected');
+										Jelly.Handlers.Call_Handler_For_Target(
+											\{
+												'Event': 'Selected',
+												'Target': this,
+												[If Current_Input.Variables.Allow_Multiple_Values]'Value': Jelly.jQuery(this).hasClass('Selected') & 1,[/If]
+												'Item': '[Current_List_Item.ID No_Wrap /]',
+												'Item_Alias': '[Current_List_Item.Alias No_Wrap /]',
+												'Item_Type': '[Current_List_Item.Type.Alias No_Wrap /]'
+											\});
+										return false;
+									[/Format]">
+	
+									<!-- Cover Image -->
+									<!-- TODO: Use Data Module's Cover Property -->
+									<span class="Big_List_Item_Cover">
+										[Current_List_Item as Cover /]
+									</span>
+	
+									<!-- TODO: Bring over from Item Data_Module_List_Item template -->
+									<span class="Big_List_Item_Name">
+										[Current_List_Item.Name /]
+									</span>
+
+									[If Current_Input.Variables.Value_Type.Explanation_Property_Item]
+										<span class="Big_List_Item_Content">
+											<span class="Big_List_Item_Value">
+												[Current_List_Item.[Current_Input.Variables.Value_Type.Explanation_Property_Item.Alias no_wrap/] /]
+											</span>
+										</span>
+									[/If]
+								</a>
+			
+						[/[Current_Input.Variables.Value_Type.Values.Alias no_wrap /]]
+				</span>
+				[/If]
+
+				[External_Script]
+					// Selected Handler
+					Jelly.Handlers.Register_Handler(
+					\{
+						"Element": document.getElementById("[Current_Input.Namespace no_wrap /]"),
+						"Event": \["Selected"\],
+						"Code": function (Parameters)
+						\{
+							[If Current_Input.Variables.Allow_Multiple_Values]
+								[Then]
+									// Set selected to true
+									Jelly.jQuery('#[Current_Input.Namespace no_wrap /]_[Current_Input.Variables.Value_Type.Alias no_wrap/]_' + Parameters\["Item"\] + '_Value_Input_Finder \[name=[Current_Input.Variables.Alias no_wrap/]_' + Parameters\['Item_Type'\] + '_' + Parameters\['Item'\] + '\]').val(Parameters\["Value"\]);
+								[/Then]
+								[Else]
+									// Set value
+									Jelly.jQuery('#[Current_Input.Namespace no_wrap /]_Value_Input_Finder \[name=[Current_Input.Variables.Alias no_wrap /]\]').val(Parameters\['Item'\]).change();
+								[/Else]
+							[/If]
+							return false;
+						\}
+					\});
+	
+					// Added Handler
+					Jelly.Handlers.Register_Handler(
+					\{
+						"Element": document.getElementById("[Current_Input.Namespace no_wrap /]"),
+						"Event": \["Added"\],
+						"Code": function (Parameters)
+						\{
+							// Call selected handler
+							Parameters\["Event"\] = "Selected";
+							Jelly.Handlers.Call_Handler_For_Target(Parameters);
+						\}
+					\});
+				[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

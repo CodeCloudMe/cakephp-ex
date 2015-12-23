@@ -1,0 +1,68 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Template "Default" --}
+		{Template}
+			{Type}Data_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Required Variables: Data_Module -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Data_Module to This /]
+				[Set Current_Type to This.List /]
+				
+				<!-- Update cover -->
+				<!-- TODO implement Data Module-specific cover property -->
+				[Current_Type.Action "Set Cover Property Item" as Execute /]
+				[Current_Type.Action "Set Explanation Property Item" as Execute /]
+				
+				<!-- Add unadded properties -->
+				[Ignore]
+					<!-- TODO -->
+					[Current_Data_Module.Action "Add Unadded Properties" as Execute /]
+				[/Ignore]
+				
+				<!-- Body -->
+				<span class="Module_Content Data_Module" data-module="Data_Module" data-size="[This.Size no_wrap /]" data-width="[This.Width no_wrap /]" data-overlay="[This.Overlay no_wrap /]" data-display="[This.Display no_wrap /]">
+					
+					<span class="Module_Settings" id="[Current_Data_Module.Namespace no_wrap /]_Settings">
+						<span class="Setting_Row">
+							[Link to Remove Current_Data_Module]Remove[/Link]
+						</span>
+					</span>
+					
+					[ignore]
+						<!-- TODO Fix map -->
+						<!-- Map -->
+						<span class="List_Map_Wrapper">
+							<span class="List_Map" id="[Content_Module.Namespace no_wrap /]_Map">
+							</span>
+						</span>
+						[External_Script]
+							Jelly.Interface.Generate_Map(\{Alias: "[Content_Module.Namespace no_wrap /]_Map"\});
+						[/External_Script]
+					[/ignore]
+					
+					<!-- Iterate over items -->
+					<!-- TODO add No_Child_Types Support --> 
+					<!-- TODO filters -->
+					<span class="Big_List [This.Display no_wrap /]">
+						[[Current_Type.Alias No_Wrap /] from Database By Name Iterator_Classes "Data_Module_List [This.Display no_wrap /]" Item_Classes "Data_Module_List_Item" as Data_Module_List_Item iterator_classes "Big_List_Items" item_classes "Big_List_Item Hover" with Current_Data_Module = This /]
+					</span>
+								
+					[Admin]
+						<!-- Admin Only... -->
+						
+						<!-- Edit Controls -->
+						<div id="[This.ID no_wrap /]_Edit_Link_Finder">
+							<a href="#" onclick="Jelly.jQuery(this).toggleClass('Selected');Jelly.jQuery('#[Current_Data_Module.Namespace no_wrap /]_Settings').toggleClass('Visible'); return false;" class="Module_Edit_Link">
+								<img class="iconic iconic-sm" data-src="/jelly/libraries/iconic/svg/smart/pencil.svg">
+							</a>
+						</div>
+					[/Admin]
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

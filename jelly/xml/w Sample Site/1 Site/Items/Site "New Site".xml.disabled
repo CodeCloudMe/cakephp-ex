@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site "New Site" --}
+	
+		{Site}
+			{Name}New Site{/Name}
+			{Default_Item}Home{/Default_Item}
+			{Design}Simple_Design{/Design}
+			{Summary}{/Summary}
+			{Package}Local{/Package}
+		{/Site}
+	
+{/Jelly}

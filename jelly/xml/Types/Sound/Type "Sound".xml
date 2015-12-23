@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Video" --}
+		{Type}
+			{Name}Sound{/Name}
+			{Parent_Type}File{/Parent_Type}
+			{Plural_Name}Sounds{/Plural_Name}
+			{Default_Input}Sound{/Default_Input}
+			{Package}Media{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

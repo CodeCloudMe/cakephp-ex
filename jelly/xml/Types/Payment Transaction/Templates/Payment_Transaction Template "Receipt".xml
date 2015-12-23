@@ -1,0 +1,22 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Payment_Transaction Template "Receipt" --}
+		{Template}
+			{Type}Payment_Transaction{/Type}
+			{Name}Receipt{/Name}
+			{Content}
+				<div>
+					Receipt
+				</div>
+				<div>
+					[Payment_Transaction.First_Name /]
+					[Payment_Transaction.Last_Name /]
+					[Payment_Transaction.Quantity /]x
+					$[Format Decimals 2][Payment_Transaction.Total /][/Format]
+					[Payment_Transaction.Item as Badge /]
+				[/Event.Payment_Transaction]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

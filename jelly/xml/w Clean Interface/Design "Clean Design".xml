@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- Design "Clean Design" --}
+		{Design}
+			{Name}Clean Design{/Name}
+			{Theme}Clean_Theme{/Theme}
+			{Content}
+				<!-- Container -->
+				[Container /]
+			{/Content}
+			{Package}Design{/Package}
+		{/Design}
+	
+{/Jelly}

@@ -1,0 +1,98 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Remove Value" --}
+		{Action}
+			{Name}Remove Value{/Name}
+			{Content}
+				[Current_Action.Variables.Item]
+					<!-- Disambiguate -->
+					[Set Current_Item to This /]
+					
+					<!-- Check if the item is editable -->
+					[Set Current_Item.Variables.Editable to false /]
+					[Admin]
+						[Set Current_Item.Variables.Editable to true /]
+					[/Admin]
+					[Member]
+						[If Current_Item.Type.Alias is "User"]
+							[If Current_Item.ID is Current_Session.User.ID]
+								[Set Current_Item.Variables.Editable to true /]
+							[/If]
+						[/If]
+					[/Member]
+						
+					<!-- Check if editable -->
+					[If Current_Item.Variables.Editable]
+						<!-- Pass item to the action -->
+						[Input "Hidden" with Name = "Item", Value = Current_Item /]
+						
+						<!-- Pass value to the action -->
+						[Input "Hidden" with Name = "Value", Value = Action.Variables.Value /]
+						
+						<!-- Pass value to the action -->
+						[Input "Hidden" with Name = "Property Alias", Value = Action.Variables.Property_Alias /]
+						
+						<span class="Remove_Value_Window">
+							<!-- Close Button -->
+							<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+								<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+							</a>
+							
+							<span class="Header">
+								Remove this value?
+							</span>
+							
+							<span class="Text">
+								Are you sure you want to remove this value?
+							</span>
+							
+							<span class="Execute">
+								<!-- Execute link -->
+								[Link to execute]Remove[/Link]
+							</span>
+						</span>
+					[/If]
+				[/Current_Action.Variables.Item]
+			{/Content}
+			{Code}
+				[Form.Item]
+					<!-- Disambiguate -->
+					[Set Current_Item to This /]
+					
+					<!-- Check if the item is editable -->
+					[Set Current_Item.Variables.Editable to false /]
+					[Admin]
+						[Set Current_Item.Variables.Editable to true /]
+					[/Admin]
+					[Member]
+						[If Current_Item.Type.Alias is "User"]
+							[If Current_Item.ID is Current_Session.User.ID]
+								[Set Current_Item.Variables.Editable to true /]
+							[/If]
+						[/If]
+					[/Member]
+				
+					<!-- Check if editable -->
+					[If Current_Item.Variables.Editable]
+						<!-- Disambiguate -->
+						[Set Current_Property_Alias to Form.Property_Alias /]
+						
+						<!-- Remove the item -->
+						[Remove Form.Value no_refresh /]
+						
+						[External_Script]
+							// Refresh property
+							Jelly.jQuery('\[data-parent=[Current_Item.ID no_wrap /]\]\[data-property=[Current_Property_Alias no_wrap /]\]').each(function (index) \{
+								Jelly.References.Trigger_Refresh(\{Kind: 'Element', Element: this\});
+							\});
+							
+							// Close window
+							// TODO hack
+							Jelly.Interface.Close_Top_Window();
+						[/External_Script]
+					[/If]
+				[/Form.Item]
+			{/Code}
+		{/Action}
+{/Jelly}

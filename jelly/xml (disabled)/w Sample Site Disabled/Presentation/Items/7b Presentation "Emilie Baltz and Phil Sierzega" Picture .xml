@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Emilie Baltz and Phil Sierzega" Picture --}
+		{Picture}
+			{Name}Emilie Baltz and Phil Sierzega{/Name}
+			{Path}jelly_data/Files/File/Presentation_Emilie.jpg{/Path}
+		{/Picture}
+	
+{/Jelly}

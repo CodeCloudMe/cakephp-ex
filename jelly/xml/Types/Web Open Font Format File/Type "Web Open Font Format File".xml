@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Web Open Font Format File" --}
+		{Type}
+			{Name}Web Open Font Format File{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Web Open Font Format Files{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Website{/Package}
+		{/Type}
+	
+{/Jelly}

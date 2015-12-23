@@ -1,0 +1,23 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Add Type" --}
+		{Action}
+			{Name}Add Type{/Name}
+			{Content}
+				[Admin]
+					[Input "Text Field" with Name = "New Name" /]
+					[Input "Text Field" with Name = "New Parent Type", Value = "Item" /]
+					[Link to Execute /]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					[New Type with Name = Form.New_Name, Parent_Type = "[Form.New_Parent_Type as Alias no_wrap /]"]
+						[Save Type /]
+					[/Type]
+				[/Admin]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

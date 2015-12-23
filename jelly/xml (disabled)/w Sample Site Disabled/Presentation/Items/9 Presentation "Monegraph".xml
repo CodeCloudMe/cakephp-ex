@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Better" --}
+		{Presentation}
+			{Name}Monegraph{/Name}
+			{Website}http://monegraph.com/{/Website}
+			{Description}Monegraph is revolutionizing the way content is shared and distributed so that a new marketplace for content creation
+and distribution can emerge. Monegraph uses a public ledger to mark ownership over works and gives its users unlimited access to a selection of customized licenses.{/Description}
+			{Picture}Monegraph{/Picture}
+		{/Presentation}
+	
+{/Jelly}

@@ -1,0 +1,107 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Design "Default Design" --}
+	
+		{Design}
+			{Name}Default Design{/Name}
+			{Content}
+				<div class="Header">
+					[Site][Site.Name /][/Site]
+					<div class="Header_Links">
+						[Page from Database as Link /]
+						[Admin]
+							[Link to Add Page /]
+						[/Admin]
+					</div>
+				</div>
+				<div class="Content">
+					[Container /]
+				</div>
+				<div class="Footer">
+					Copyright &copy; [Site.Created][Year /][/Site.Created]
+				</div>
+			{/Content}
+			{Less_Style}
+				/* Defaults */
+				.Header \{.Block; font-family: "Karla";\}
+				h1, .H1 \{.Header; font-family: "Montserrat"; font-size: 35px; margin-bottom: 25px; text-align: center; text-transform:uppercase;\}
+				h2, .H2 \{.Header; font-size: 25px; margin-top:20px; margin-bottom: 15px;\}
+				h3, .H3 \{.Header; font-size: 30px;\}
+				h4, .H4 \{.Header; font-size: 25px;\}
+				h5, .H5 \{.Header; font-size: 20px;\}
+				h6, .H6 \{.Header; font-size: 15px;\}
+				h7, .H7 \{.Header; font-size: 12px;\}
+				
+				p \{margin-bottom: 8px;\}
+
+				/* Links */
+				a \{color: #5555CC; text-decoration: none;\}
+				a:hover \{color: #555599; text-decoration: underline;\}
+
+				/* Body */
+				body \{background-color: white; margin: 0px; margin-bottom: 0px; background-color: white;\}
+				div.Jelly_Loading \{background-color: #dddddd;\}
+
+				/* Layout */
+				.Design_Default_Template \{.Block; width: 800px; margin: auto; background-color: white; font-family: "Lato"; padding: 75px; font-size: 15px; color: #555555; line-height: 125%;
+	
+					.Header \{margin-bottom: 15px;
+						.Site_Name_Property \{.H1;\}
+						.Header_Links \{text-align: center; .Border_Top; .Border_Bottom; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-bottom: 10px;
+								.Header_Link, .Page_Item \{display: inline-block; margin-left: 8px; margin-right: 8px;\}
+							\}
+						\}
+					.Footer \{.Border_Top; padding-top: 15px; margin-top: 15px; .Center; font-size: 10px;\}
+				\}
+				.Content \{line-height: 150%;\}
+				h3 \{font-size: 16px; margin-bottom: 5px; text-transform: uppercase; font-weight: bold;\}
+				.Navigation \{\}
+				.Navigation_Header \{padding-bottom: 5px;\}
+				.Navigation_Content \{\}
+				div.Example \{padding: 15px; margin-bottom: 15px; background-color: #EEEEFF; border-style: solid;\}
+				.Grey \{color: #888888;\}
+				.Center \{text-align: center;\}
+
+				/* Sections */
+				.Section \{margin-bottom: 25px;\}
+				.Spaced \{margin-bottom: 6px;\}
+				.Left \{float: left;\}
+				.Left_Item \{float: left; margin-right: 15px;\}
+				.Right \{float: right;\}
+				.Right_Item \{float: left; margin-left: 15px;\}
+				.Clear \{clear: both;\}
+				.Block \{display: block;\}
+
+				/* Borders */
+				.Border_Left \{border-left-color: #cccccc; border-left-style: solid; border-left-width: 1px;\}
+				.Border_Top \{border-top-color: #cccccc; border-top-style: solid; border-top-width: 1px;\}
+				.Border_Right \{border-right-color: #cccccc; border-right-style: solid; border-right-width: 1px;\}
+				.Border_Bottom \{border-bottom-color: #cccccc; border-bottom-style: solid; border-bottom-width: 1px;\}
+
+				/* Text Styles */
+				.Small \{font-size: 11px; font-family: Arial;\}
+				.Bold \{font-weight: bold;\}
+				.Italic \{font-style: italic;\}
+				.Error \{color: red;\}
+				.Result \{color: red;\}
+
+				/* Remove */
+				.Sound_Progress_Bar \{position: relative; width: 200px; height: 10px; background-color: white; border-style: solid;\}
+				.Sound_Progress_Bar_Loaded \{position: absolute; width: 0%; height: 10px; background-color: blue;\}
+				.Sound_Progress_Bar_Position \{position: absolute; width: 0%; height: 10px; background-color: green;\}
+			{/Less_Style}
+			{Package}Local{/Package}
+			{Web_Font}Inconsolata{/Web_Font}
+			{Web_Font}Karla{/Web_Font}
+			{Web_Font}Lato{/Web_Font}
+			{Web_Font}Libre_Baskerville{/Web_Font}
+			{Web_Font}Montserrat{/Web_Font}
+			{Web_Font}Open_Sans{/Web_Font}
+			{Web_Font}Playfair_Display{/Web_Font}
+			{Web_Font}Raleway{/Web_Font}
+			{Web_Font}Roboto{/Web_Font}
+			{Web_Font}Source_Sans_Pro{/Web_Font}
+		{/Design}
+	
+{/Jelly}

@@ -1,0 +1,329 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Get Involved" --}
+		{Action}
+			{Name}Get Involved{/Name}
+			{Viewable_By}Public{/Viewable_By}
+			{Package}Local{/Package}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Action to this /]
+
+				<span class="Page_Item Get_Involved">
+					<span class="Page_Header">
+						<span class="Page_Title">
+							<span class="Left_And_Right">
+								<span class="Page_Name">
+									Join the [1 Site from Database][Name /][/1] Community
+								</span>
+								[Ignore]
+									<!-- TODO finish -->
+									<span class="Right">
+										[Admin]
+											<span class="Settings">
+												<a href="#" onclick="Jelly.jQuery('.Page_Settings.Item_Settings').toggleClass('Visible');Jelly.jQuery('.Settings_Link').toggleClass('Selected');return false;" class="Settings_Link">
+													<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/cog.svg">
+												</a>
+											</span>
+										[/Admin]
+									</span>
+								[/Ignore]
+							</span>
+							[Admin]
+								<span class="Page_Settings Item_Settings">
+									[Current_Action as Action_Settings /]
+								</span>
+							[/Admin]
+						</span>
+					</span>
+
+					<!-- Content Modules -->
+					<div class="Page_Modules">
+						[Action_Content_Module where Action_Item = Current_Action item_wrap_element "section" by Order no_refresh]
+							[If Content_Module.Visible][Content_Module as Default no_refresh/][/If]
+						[/] 
+					</div>
+
+					<!-- TODO move structure to template -->
+
+					[Admin]
+						<!-- Admin Only -->
+						<span class="Page_Content_Actions" style="margin-top:10px; margin-bottom:75px;">
+							[Current_Action.Action "Add Text Module" /]
+							[Link to "/Action/[Current_Action.ID no_wrap /]/Add_Picture_Module" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/image.svg" data-orientation="landscape" > Picture[/Link]
+							[Link to "/Action/[Current_Action.ID no_wrap /]/Add_Video_Module" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/video.svg"> Video[/Link]
+							[Ignore]
+								[Current_Action.Action "Add Scripting Module" /]
+							[/Ignore]
+							[Link to "/Action/Add_Input_Module:Current_Item=[Current_Action.ID no_wrap /],Current_Item_Type=[Current_Action.Type.Alias no_wrap /],Type_Alias=User" into "Window"]
+								<img class="iconic" data-src="/jelly/images/question.svg" data-orientation="landscape">
+								Question
+							[/Link]
+						</span>
+					[/Admin]
+
+					[1 Team from Database where Allow_Anyone_To_Join]
+						<span class="Section">
+							<span class="Label">
+								How are you interested in helping out? (Join as many teams as you'd like.)
+							</span>
+							<span class="Value">
+								<span class="Big_List Join_Team">
+									<span class="Big_List_Items">
+										[Team from Database where Allow_Anyone_To_Join]
+											<!-- Disambiguate -->
+											[Set Current_Team to This /]
+
+											<span class="[Current_Team.Namespace no_wrap /]_Team_Input_Finder">
+												[Input "Hidden" with Name = "Team_[Current_Team.ID no_wrap /]", Value = "0" /]
+											</span>
+
+											<span class="Big_List_Item Hover">
+												<a id="Team_[Current_Team.ID no_wrap/]_Toggle" href="#" onclick="Jelly.jQuery(this).toggleClass('Selected');var Value = '0'; if (Jelly.jQuery(this).hasClass('Selected')) Value = '1'; Jelly.jQuery('.[Current_Team.Namespace no_wrap /]_Team_Input_Finder input\[name=Team_[Current_Team.ID no_wrap /]\]').val(Value); return false;" class="Big_List_Item_Details">
+													<span class="Big_List_Item_Cover">
+														[Team as Cover /]
+													</span>
+													<span class="Big_List_Item_Name">
+														[Team.Name /]
+													</span>
+													<span class="Big_List_Item_Content">
+														<span class="Big_List_Item_Value">
+															[Team.Tagline /]
+														</span>
+													</span>
+												</a>
+												<span class="Big_List_Item_Actions">
+													[Link to "/Team/[Current_Team.ID no_wrap /]:In_Window=1" into "Window"]
+														More Info
+													[/Link]
+												</span>
+											</span>
+											[External_Script]
+												[If Join_Team = Current_Team.Alias]
+													Jelly.jQuery('#Team_[Current_Team.ID no_wrap/]_Toggle').toggleClass('Selected');
+													Jelly.jQuery('.[Current_Team.Namespace no_wrap /]_Team_Input_Finder input\[name=Team_[Current_Team.ID no_wrap /]\]').val(1);
+												[/If]
+											[/External_Script]
+										[/Team]
+									</span>
+								</span>
+							</span>
+						</span>
+					[/1 Team]
+
+					<span class="Link">
+						<!-- Execute -->
+							[Action as Loading/] [Link to Execute]Sign Up[/Link] [Action as Result /]
+					</span>
+
+				</span>
+
+				[If Globals.Allow_Tracking]
+					[External_Script]
+						// Don't die on adblock
+						if (mixpanel)
+						\{
+							[Current_Session.User]
+								[If Current_Session.User.Email_Address]
+									mixpanel.identify("[Current_Session.User.Email_Address no_wrap/]:[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]");
+								[/If]
+							[/Current_Session.User]
+							mixpanel.track(
+									'Visit Page', 
+									\{	
+										'Name': '[Current_Action.Name no_wrap/]',
+										'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]'
+									\}
+								);
+						\}
+					[/External_Script]
+				[/If]
+			{/Content}
+			{Code}
+				[Set Form.Error to False/]
+
+				<!-- TODO Reverse -->
+				[If not Form.Name]
+					[Then]
+						[Show Error for "Name"]Please enter a name.[/Show]
+					[/Then]
+					[Else]
+						[1 User from Database where Name = Form.Name]
+							[Show Error for "Name"]Oops! At this stage we can only support one user with a particular name, and this name is taken! Sorry! Can you choose another?[/If]
+						[/1 User]	
+					[/Else]
+				[/If]
+
+
+				[If not Form.Email_Address]
+					[Then]
+						[Show Error for "Email_Address"]Please enter an email address.[/Show]
+					[/Then]
+					[Else]
+						[1 User from Database where Email_Address = Form.Email_Address]
+							[Show Error for "Email_Address"]This email address already has an account.  [Link to "forgot_password"]Forgot your password?[/Link][/Show]
+						[/1 User]
+					[/Else]	
+				[/If]
+
+				[1 User from Database where Name = Form.Name]
+					[Show Error for "Name"]Oops! At this stage we can only support one user with a particular name, and this name is taken! Sorry! Can you choose another?[/If]
+				[/1 User]
+
+				[If not Form.Error]
+					<!-- Create user -->
+					[New User]
+						<!-- Disambiguate -->
+						[Set New_Item to This /]
+	
+						<!-- Save item so items can be added to it -->
+						[Save New_Item no_refresh /]
+	
+						<!-- Cycle over input modules -->
+						[Current_Action.Content_Module restrict_type Input_Module where Visible]
+							<!-- Disambiguate -->
+							[Set Current_Input_Module to This /]
+							[Set Current_Property to Current_Input_Module.Property_Item /]
+		
+							<!-- Set value on user -->
+							[If Current_Property.Value_Type is complex type]
+								[Then]
+									[If Current_Property.Relation is "Many-To-Many" or Current_Property.Relation is "One-To-Many"]
+										[Then]
+											[If Form.[Current_Property.Alias no_wrap /]]
+												<!-- If a single value set, add it. --> 							
+												[Then]
+													[Add Form.[Current_Property.Alias no_wrap /] to New_Item.[Current_Property.Alias no_wrap /] /]
+												[/Then]
+												<!-- or check if multiple values were set, and add all of them--> 
+												[Else]
+													[[Current_Property.Value_Type.Alias/] from Database]
+														[Set Current_Value_Item to This/]
+														[If Form.[Current_Property.Alias no_wrap /]_[Current_Property.Value_Type.Alias no_wrap /]_[Current_Value_Item.ID no_wrap/]]
+															[Add Current_Value_Item to New_Item.[Current_Property.Alias no_wrap /]/]
+														[/If]
+													[/]
+												[/Else]
+											[/If]
+										[/Then]
+										[Else]
+											[If Form.[Current_Property.Alias no_wrap /]]
+												[Set New_Item.[Current_Property.Alias no_wrap /] to Form.[Current_Property.Alias no_wrap /] /]
+											[/If]
+										[/Else]
+									[/If]
+								[/Then]
+								[Else]
+									[Set New_Item.[Current_Property.Alias no_wrap /] to Form.[Current_Property.Alias no_wrap /] /]
+								[/Else]
+							[/If]
+						[/Current_Action.Content_Module]
+	
+						<!-- Set full name -->
+						[If User.Name]
+							[If [PHP]return (int)(strpos('[Format as "PHP Single Quoted String"][User.Name no_wrap /][/Format]', ' ') !== false);[/PHP]]
+								[Then]
+									[Set User.First_Name to "[Format as "Jelly Attribute"][PHP]return substr('[Format as "PHP Single Quoted String"][User.Name no_wrap /][/Format]', 0, strpos('[Format as "PHP Single Quoted String"][User.Name no_wrap /][/Format]', ' '));[/PHP][/Format]" /]
+									[Set User.Last_Name to "[Format as "Jelly Attribute"][PHP]return substr('[Format as "PHP Single Quoted String"][User.Name no_wrap /][/Format]', strpos('[Format as "PHP Single Quoted String"][User.Name no_wrap /][/Format]', ' ') + 1);[/PHP][/Format]" /]
+								[/Then]
+								[Else]
+									[Set User.First_Name to User.Name /]
+								[/Else]
+							[/If]
+						[/If]
+	
+						<!-- Generate random password -->
+						[If not Form.Password]
+							[Set New_Item.Password to "[PHP]
+								$Alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+								for ($Character_Index = 0; $Character_Index < 8; $Character_Index++)
+								\{
+									$Random_Alphabet_Index = rand(0, count($Alphabet)-1);
+									$Password\[$Character_Index\] = substr($Alphabet, $Random_Alphabet_Index, 1);
+								\}
+								return $Password;
+								[/PHP]" /]
+			
+							<!-- Reset password to "password" -->
+							<!-- TODO remove -->
+							[Set New_Item.Password to "password" /]
+						[/If]
+	
+						<!-- Mark user as activated -->
+						[Set New_Item.Activated to true /]
+	
+						<!-- Save user -->
+						[Save New_Item /]
+
+						<!-- Send welcome message --> 
+						[Message "Welcome" no_wrap with Recipient = New_Item]
+							[Set Welcome_Message to This/]
+							[New Message with
+									Subject = Welcome_Message.Subject,
+									Body = "[Format as "Jelly Attribute"][Welcome_Message.Body_Top no_wrap/][Welcome_Message.Body_Action no_wrap/][Welcome_Message.Body_Bottom no_wrap/][/Format]",
+									Recipient = New_Item
+								]
+									[Set New_Message to This/]
+
+									<!-- Set sender to site owner --> 								
+									[1 Site from Database][Set New_Message.Variables.Sender to Site.Owner/][/1]
+									[New_Message.Action "Send" as Execute/]
+							[/New Message] 
+						[/Message]
+
+						<!-- Add user to selected teams -->
+						[Team from Database where Allow_Anyone_To_Join]
+							<!-- Check if the team was selected -->
+							[If Form.Team_[Team.ID no_wrap /] is "1"]
+								<!-- Add the user to the team -->
+								[Add New_Item to Team.Member /]
+							[/If]
+						[/Team]
+	
+						<!-- Log in user -->
+						[Set Current_Session.User to New_Item /]
+						[Save Current_Session /]
+	
+						<!-- Track sign up --> 
+						[If Globals.Allow_Tracking]
+							[External_Script]
+								if (mixpanel)
+								\{
+									var Mixpanel_Super_Properties = \{\};
+
+									[If New_Item.First_Name]
+										Mixpanel_Super_Properties\['$first_name'\] = "[Format as "Javascript String"][New_Item.First_Name no_wrap/][/Format]";
+									[/If]
+			
+									[If New_Item.Last_Name]
+										Mixpanel_Super_Properties\['$last_name'\] = "[Format as "Javascript String"][New_Item.Last_Name no_wrap/][/Format]";
+									[/If]
+			
+									[If New_Item.Email_Address]
+										Mixpanel_Super_Properties\['$email'\] = "[Format as "Javascript String"][New_Item.Email_Address no_wrap/][/Format]";
+										Mixpanel_Super_Properties\['Email'\] = "[Format as "Javascript String"][New_Item.Email_Address no_wrap/][/Format]";
+										mixpanel.alias("[New_Item.Email_Address no_wrap/]:[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]");
+									[/If]
+			
+									mixpanel.register(Mixpanel_Super_Properties);
+			
+									mixpanel.track(
+											'Submit', 
+											\{	
+												'Name': '[Current_Action.Name no_wrap/]',
+												'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]'
+											\}
+										);
+								\}
+							[/External_Script]
+						[/If]
+	
+						<!-- Go to user -->
+						[Go to User by Alias /]
+					[/New]
+				[/If]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

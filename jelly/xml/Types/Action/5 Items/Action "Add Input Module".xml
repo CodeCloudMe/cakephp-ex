@@ -1,0 +1,129 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Add Input Module" --}
+		{Action}
+			{Name}Add Input Module{/Name}
+			{Content}
+				<!-- Requires: Current_Item -->
+				<!-- Optional: Type_Alias -->
+				<!-- TODO Currently only supports adding property inputs -->
+
+				<!-- Admin only -->
+				[Admin]
+					<!-- Pass Current_Item on to action -->
+					[Input "Hidden" with Name = "Current Item", Value = Current_Item /]
+	
+					<!-- Get target type -->
+					[Type from database where Alias is Current_Action.Variables.Type_Alias]
+						<!-- Disambiguate -->
+						[Set Current_Type to This /]
+		
+						<span class="Add_Input_Module_Window">
+							<!-- Close Button -->
+							<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+								<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+							</a>
+			
+							<span class="Header">
+								Add a new question to the form
+							</span>			
+
+							<div>
+								[Current_Type.Action "Add Question"/]
+							</div>
+			
+							<!-- Property List -->
+							<!-- TODO: Hacky, could be done better without a hidden input, etc -->
+							<div id="[Current_Action.Namespace no_wrap /]_Property_Item_Input_Finder">
+								[Input "Hidden" with Name = "Property Item", Value_Type = "Property", Execute_On_Change = true /]
+							</div>
+	
+							<span id="[Current_Action.Namespace no_wrap /]_Select_Property_Header" class="Header" style="display:none;">
+								Or select one
+							</span>
+			
+							[Set Current_Action.Variables.Show_Select_Property_Header to False/]
+							[New [Current_Type.Alias no_wrap /]]
+								<!-- TODO Reverse -->
+								<!-- Only show properties that are not advanced -->
+								[This.Forward_Properties where not Advanced and not Core]
+									<!-- Disambiguate -->
+									[Set Current_Property to this /]
+			
+									<!-- Check if there is a matching property module that is not visible -->
+									[Current_Item.Content_Module restrict_type Input_Module where Property_Item is Current_Property.ID]
+										[Else]
+											[Set Current_Action.Variables.Show_Select_Property_Header to True/]
+											<!-- TODO: Check if still works -->
+											<!-- Link to select property -->
+											<a href="#" onclick="Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Property_Item_Input_Finder \[name=Property_Item\]').val('[Current_Property.ID no_wrap /]').change();return false;" class="Small_Button" style="margin-bottom:3px;">[Current_Property.Name /]</a>
+										[/Else]
+									[/Current_Type.Content_Module]
+								[/Property_Lookup_Item.Forward_Properties]
+				
+								[If Current_Action.Variables.Show_Select_Property_Header]
+									[External_Script]
+										document.getElementById("[Current_Action.Namespace no_wrap /]_Select_Property_Header").style.display = "block";
+									[/External_Script]
+								[/If]
+							[/New]
+			
+						</span>
+					[/Type]
+	
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Created",
+							"Code": function (Parameters)
+							\{
+								Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Property_Item_Input_Finder \[name=Property_Item\]').val(Parameters\['Item'\]).change();
+							\}
+						\});
+		
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Added",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Requires: Form.Current_Action -->
+				
+				<!-- Admin only -->
+				[Admin]
+					<!-- Disambiguate -->
+					[Set Current_Item to Form.Current_Item /]
+					[Set Current_Property to Form.Property_Item /]
+					
+					<!-- Create input module for selected property -->
+					[New Input_Module with Property_Item = Current_Property]
+						<!-- Disambiguate -->
+						[Set New_Input_Module to This /]
+						
+						<!-- Save the new input module -->
+						[Save New_Input_Module /]
+						
+						<!-- Add input module to item -->
+						[Add New_Input_Module to Current_Item.Content_Module /]
+					[/New]
+					
+					[External_Script]
+						// Close window
+						Jelly.Interface.Close_Top_Window();
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

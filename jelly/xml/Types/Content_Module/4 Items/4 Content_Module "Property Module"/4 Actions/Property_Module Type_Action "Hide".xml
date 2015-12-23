@@ -1,0 +1,54 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_Module Type_Action "Hide" --}
+		{Type_Action}
+			{Type}Property_Module{/Type}
+			{Name}Hide{/Name}
+			{Content}
+				[Admin]
+					<!-- Execute Link -->
+					<div style="width: 300px;">
+						Hide this property? You can always show it again later by adding it back.
+					</div>
+					[Link to Execute /]
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Edited",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Hide Property Module -->
+					[Set Current_Action.Target.Visible to false /]
+					
+					<!-- Save Property Module -->
+					[Save Current_Action.Target /]
+						
+					<!-- Trigger Edited Event -->
+					<!-- TODO: Add global Deleted event -->
+					[External_Script]
+						Jelly.Handlers.Call_Handler_For_Target(
+							\{
+								"Event": "Edited",
+								"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]")
+							\});
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

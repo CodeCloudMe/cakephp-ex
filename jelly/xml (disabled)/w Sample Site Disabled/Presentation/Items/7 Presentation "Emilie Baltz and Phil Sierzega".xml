@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Emilie Baltz and Phil Sierzega" --}
+		{Presentation}
+			{Name}Emilie Baltz and Phil Sierzega{/Name}
+			{Website}http://www.emiliebaltz.com/{/Website}
+			{Description}Emilie Baltz is an experimental artist and educator with a focus on food and sensory storytelling, using the eating experience as both lens and machine for cultural reflection and creation.<br/>
+<br/>
+Philip Sierzega is a Brooklyn-based interdisciplinary artist, designer, and animator whose passion lies in experimentation that combines animation and interaction.{/Description}
+			{Picture}Emilie_Baltz_and_Phil_Sierzega{/Picture}
+		{/Presentation}
+	
+{/Jelly}

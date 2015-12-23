@@ -1,0 +1,36 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Clean Edit Inline" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Clean Edit Inline{/Name}
+			{Content}
+				<!-- Item "Clean Edit Inline" Action Content -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Item to Current_Action.Target /]
+				[Set Current_Property_Alias to Current_Action.Variables.Property_Alias /]
+				
+				<!-- Store property alias for action -->
+				[Input "Hidden" with Name = "Property_Alias", Value = Current_Property_Alias /]
+				
+				<!-- Inline edit input -->
+				[Input "Inline Text" with Name = "Value", Value = Current_Item.[Current_Property_Alias no_wrap /], Execute_On_Change = true /]
+			{/Content}
+			{Code}
+				<!-- Item "Clean Edit Inline" Action Code -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Item to Current_Action.Target /]
+				[Set Current_Property_Alias to Form.Property_Alias /]
+				
+				<!-- Set the item's value -->
+				[Set Current_Item.[Current_Property_Alias no_wrap /] to Form.Value /]
+				
+				<!-- Save the item -->
+				[Save Current_Item no_refresh /]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

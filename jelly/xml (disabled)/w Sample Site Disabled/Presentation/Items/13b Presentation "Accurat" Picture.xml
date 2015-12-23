@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Accurat" Picture --}
+		{Picture}
+			{Name}Accurat{/Name}
+			{Path}jelly_data/Files/File/Presentation_Accurat.jpg{/Path}
+		{/Picture}
+	
+{/Jelly}

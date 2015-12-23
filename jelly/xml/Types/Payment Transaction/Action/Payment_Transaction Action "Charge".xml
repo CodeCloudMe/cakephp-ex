@@ -1,0 +1,23 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Payment_Transaction Action "Charge" --}
+		{Type_Action}
+			{Type}Payment_Transaction{/Type}
+			{Name}Charge{/Name}
+			{Code}
+				<!-- Check if payment token was set -->
+				[If Current_Action.Variables.Payment_Token]
+					[Then]
+						<!-- Execute charge -->
+						[Current_Action.Variables.Payment_Service as "Charge" with Payment_Transaction = Current_Action.Target, Token = Current_Action.Variables.Payment_Token /]
+					[/Then]
+					[Else]
+						No payment token provided.
+					[/Else]
+				[/If]
+			{/Code}
+			{Content/}
+		{/Type_Action}
+	
+{/Jelly}

@@ -1,0 +1,91 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Type_Action "Change Data" --}
+		{Type_Action}
+			{Type}Data_Module{/Type}
+			{Name}Change Data{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin only -->
+					
+					<div class="Window Change_Data">
+						<div class="Close_Link">
+							<a href="#" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+						</div>
+						
+						<!-- TODO: Hack to add to refreshing -->
+						[Current_Action.Target.Specific_Item][/Current_Action.Target.Specific_Item]
+					
+						<!-- List Menu -->
+						<!-- DISABLED -->
+						[Ignore]
+							<div>
+								[Current_Action.Target.Action "Change List" /]
+							</div>
+						[/Ignore]
+					
+						<!-- List Filters -->
+						<!-- DISABLED -->
+						[Ignore]
+							[Current_Action.Target.List_Filter]
+								<!-- Edit List Filter -->
+								[This.Specific_Item]
+									<div>
+										[This.Action "Change List Filter" /]
+									</div>
+								[/This.Specific_Item]
+							[/Current_Action.Target.List_Filter]
+							[Current_Action.Target.Action "Add List Filter" /]
+						[/Ignore]
+					
+						<!-- Reset data module properties -->
+						[Current_Action.Target.Action "Reset Properties" as Execute /]
+					
+						<!-- Properties -->
+						<div class="Properties">
+							[Current_Action.Target.Child_Property_Item]
+								<div class="Clearer" style="margin-bottom: 3px;">
+								
+									<!-- Show/Hide links -->
+									<div class="Left" style="width: 60px; margin-right: 10px;">
+										[If This.Attachment.Visible]
+											[Then]								
+												[Current_Action.Target.Action "Make Property Invisible" with Data_Module_Child_Property_Item = This.Attachment /]
+											[/Then]
+											[Else]
+												[Current_Action.Target.Action "Make Property Visible" with Data_Module_Child_Property_Item = This.Attachment /]
+											[/Else]
+										[/If]
+									</div>
+									
+									<!-- Property Name -->
+									<div class="Left" style="padding-top: 5px;">
+										[This.Name /]
+									</div>
+								</div>
+							[/Current_Action.Target.Child_Property_Item]
+						</div>
+					</div>
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Edited",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Does nothing -->
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

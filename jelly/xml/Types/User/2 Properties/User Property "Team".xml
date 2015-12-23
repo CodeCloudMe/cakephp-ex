@@ -1,0 +1,18 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property "Team" --}
+		{Property}
+			{ID}98735341{/ID}
+			{Type}User{/Type}
+			{Name}Team{/Name}
+			{Plural_Name}Teams{/Plural_Name}
+			{Reverse_Name}Member{/Reverse_Name}
+			{Reverse_Plural_Name}Members{/Reverse_Plural_Name}
+			{Value_Type}Team{/Value_Type}
+			{Relation}Many-To-Many{/Relation}
+			{Advanced}0{/Advanced}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

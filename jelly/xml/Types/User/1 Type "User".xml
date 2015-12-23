@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "User" --}
+		{Type}
+			{ID}43219753{/ID}
+			{Name}User{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Users{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Accounts{/Package}
+			{Starred}1{/Starred}
+			{Viewable_By}Public{/Viewable_By}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

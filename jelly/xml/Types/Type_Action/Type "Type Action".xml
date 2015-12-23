@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Type Action" --}
+		{Type}
+			{Name}Type Action{/Name}
+			{Parent_Type}Action{/Parent_Type}
+			{Plural_Name}Type Actions{/Plural_Name}
+			{Default_Key}ID{/Default_Key}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Interaction{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

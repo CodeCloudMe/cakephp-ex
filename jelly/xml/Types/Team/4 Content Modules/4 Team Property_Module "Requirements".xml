@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Property_Module "Requirements" --}
+		{Property_Module}
+			{Type_Item}Team{/Type_Item}
+			{Property_Item}564876123{/Property_Item}
+		{/Property_Module}
+	
+{/Jelly}

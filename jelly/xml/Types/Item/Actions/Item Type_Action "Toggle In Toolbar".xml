@@ -1,0 +1,77 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Toggle In Toolbar" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Toggle In Toolbar{/Name}
+			{Content}
+				<!-- Item Action "Toggle In Toolbar" Content -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Item to Current_Action.Target /]
+				
+				<!-- Get the root navigation -->
+				[Navigation "Root" from database]
+					<!-- Disambiguate -->
+					[Set Current_Navigation to This /]
+					
+					<!-- Check if the item is already in the navigation -->
+					[Current_Navigation.Navigation_Item where ID is Current_Item.ID as_attachment]
+						[Then]
+							<!-- Link to remove the item -->
+							[Link to Execute with Class="Small_Button"]Remove[/Link]
+						[/Then]
+						[Else]
+							<!-- Link to add the item -->
+							[Link to Execute with Class="Small_Button"]Add[/Link]
+						[/Else]
+					[/This.Navigation_Item]
+				[/Navigation]
+			{/Content}
+			{Code}
+				<!-- Item Action "Toggle In Toolbar" Code -->
+				
+				[Admin]
+					<!-- Admin only -->
+				
+					<!-- Disambiguate -->
+					[Set Current_Item to Current_Action.Target /]
+					
+					<!-- Get the root navigation -->
+					[Navigation "Root" from database]
+						<!-- Disambiguate -->
+						[Set Current_Navigation to This /]
+						
+						<!-- Check if the item is already in the navigation -->
+						[Current_Navigation.Navigation_Item where ID is Current_Item.ID as_attachment]
+							[Then]
+								<!-- Remove the item from the navigation -->
+								[Remove this no_refresh /]
+							[/Then]
+							[Else]
+								<!-- Add the item to the navigation -->
+								[Add Current_Item to Current_Navigation.Navigation_Item no_refresh /]
+								
+								<!-- Set to public, if not already set -->
+								<!-- TODO this causes a full refresh -->
+								[If Current_Item.Viewable_By.Alias != "Public"]
+									[Set Current_Item.Viewable_By to "Public"/]
+									[Save Current_Item /]
+								[/If]
+							[/Else]
+						[/This.Navigation_Item]
+					[/Navigation]
+								
+					[External_Script]
+						// Refresh toolbar
+						Jelly.References.Trigger_Refresh(\{Kind: 'Element', Element: Jelly.jQuery('.Toolbar_Content').get(0)\});
+						
+						// Refresh item settings
+						Jelly.References.Trigger_Refresh(\{Kind: 'Element', Element: Jelly.jQuery('.Page_Settings_Content').get(0)\});
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

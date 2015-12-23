@@ -1,0 +1,26 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Create Event" --}
+		{Action}
+			{Name}Create Event{/Name}
+			{Content}
+				[Admin]
+					[Link to Execute]Event[/Link]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					[New Event]
+						[Set This.Name to "New Event" /]
+						[Save this /]
+						[Go to this by Alias /]
+					[/Event]
+					[External_Script]
+						Jelly.Interface.Close_Top_Window();
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

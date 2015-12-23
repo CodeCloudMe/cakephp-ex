@@ -1,0 +1,18 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Content_Module Template "Default" --}
+		{Template}
+			{Type}Content_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Content_Module to This /]
+				
+				<!-- Display specific item -->
+				<!-- TODO Shouldn't need no_refresh when system is aware of properties from outside current item -->
+				[This.Specific_Item with Current_Item = This.Variables.Current_Item /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

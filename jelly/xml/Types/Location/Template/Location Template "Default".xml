@@ -1,0 +1,25 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Website Template "Default" --}
+		{Template}
+			{Type}Location{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Location Template "Default" -->
+
+				<!-- Go to location -->
+				<!-- TODO: better to handle this on the link to the Location, instead of the Location Default template? -->
+				[External_Script]
+					document.location = "https://www.google.com/maps/search/[Format as URL][Location.Original_Address no_wrap/][/Format]/@[Location.Latitude no_wrap/],[Location.Longitude no_wrap/],17z"
+				[/External_Script]
+
+				<!-- Redirecting text -->
+				<div>
+					Redirecting to: <a href="[Format as URL]https://www.google.com/maps/dir/[Location.Original_Address no_wrap/]/@[Location.Latitude no_wrap/],[Location.Longitude/],17z[/Format]">[This.Original_Address /] on Google Maps</a>
+				</div>
+			{/Content}
+			{Package}Places{/Package}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,30 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- RSVP_Module Template "Editing" --}
+		{Template}
+			{Type}RSVP_Module{/Type}
+			{Name}Editing{/Name}
+			{Content}
+				<!-- Show default template -->
+				[This as Default /]
+				
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Module controls -->
+					<div class="Module_Controls">
+						<!-- Save -->
+						[Link to "/[Current_Item.Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Viewing_Content_Module:Content_Module_ID=[Current_Content_Module.ID no_wrap /]" into "[Current_Content_Module_Namespace no_wrap /]"]
+							Done
+						[/Link]
+						
+						<!-- Delete Module -->
+						<!-- TODO Clean up link -->
+						[Link to "/Content_Module/[This.ID no_wrap /]/Delete" into "Window"]Delete[/Link]
+					</div>
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

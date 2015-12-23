@@ -1,0 +1,79 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Website" --}
+		{Input}
+			{Name}Website{/Name}
+			{Content}
+				[Set Current_Input to this /]
+				
+				[Input "Hidden" with Name = Current_Input.Variables.Name, Value = Current_Input.Variables.Value, Value_Type = "Website"/]
+				
+				<!-- Determine local values from hidden input --> 
+				<!-- TODO - henceforth will be cleaner --> 
+				[If Form.Local_[Current_Input_Namespace No_Wrap /]_Input_[Input "Hidden" No_Wrap][ID No_Wrap /][/Input]_Value Exists]
+					[Set Current_Input.Variables.Value to Form.Local_[Current_Input_Namespace No_Wrap /]_Input_[Input "Hidden" No_Wrap][ID No_Wrap /][/Input]_Value /]
+				[/If]
+				
+				<span class="Row">
+					<span class="Left" style="width: calc(100% - 75% - 10px); margin-right: 10px;">
+						<span class="Big_List_Item_Top_Image" id="[Current_Input.Namespace no_wrap /]_Badge">
+						</span>
+					</span>
+					
+					<span class="Left" style="width: 75%;">
+						[New Website as "Add_Link" No_Refresh with Label = Input.Label, Current_Input = Current_Input /]
+					</span>
+				</span>
+				
+				[External_Script]
+					Jelly.Handlers.Register_Handler(
+					\{
+						'Element': document.getElementById("[Current_Input_Namespace No_Wrap /]"),
+						'Event': 'Added',
+						'Code': function(Parameters)
+						\{
+							// Badge
+							Jelly.jQuery('#[Current_Input.Namespace no_wrap /]_Badge').html(Parameters\["Badge"\]);
+							
+							var Value_Input = 
+							Jelly.Actions.Get_Input_From_Action_By_Alias(
+									\{
+										'Namespace': '[Current_Action_Namespace No_Wrap /]', 
+										'Alias': '[Current_Input.Variables.Alias No_Wrap /]'
+									\}
+								);
+							Value_Input.value = Parameters\["Item"\];
+							
+							var Value_Type_Input = 
+							Jelly.Actions.Get_Input_From_Action_By_Alias(
+									\{
+										'Namespace': '[Current_Action_Namespace No_Wrap /]', 
+										'Alias': '[Current_Input.Variables.Alias No_Wrap /]_Type'
+									\}
+								);
+							Value_Type_Input.value = Parameters\["Item_Type"\];
+				
+							// TODO - commented out until we get rid of the image loading flicker effect. gets taken care of by local values for now
+							// var Badge_Element = document.getElementById("[Current_Input_Namespace No_Wrap /]_Badge_Wrapper");
+							// if (Badge_Element)
+							// \{
+							//		Badge_Element.style.display = "block";
+							//		Badge_Element.innerHTML = Parameters\["Badge"\];
+							// \}
+							
+							[If Input.Execute_On_Change]
+								Jelly.Handlers.Call_Handler_For_Target(
+										\{
+											'Event': 'Execute', 
+											'Target': Value_Input,
+										\}
+									);
+							[/If]
+						\}
+					\});
+				[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

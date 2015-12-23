@@ -1,0 +1,18 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Template "Badge" --}
+		{Template}
+			{Type}User{/Type}
+			{Name}Badge{/Name}
+			{Content}
+				<div style="display: inline-block; margin-bottom: 2px; margin-right: 5px; width: 32px; height: 32px; border-style: solid;">
+					[1 User.Picture with Maximum_Width = 32, Maximum_Height = 32, Crop = 1 /]
+				</div>
+				<div style="display: inline-block;">
+					[User.Name /]
+				</div>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

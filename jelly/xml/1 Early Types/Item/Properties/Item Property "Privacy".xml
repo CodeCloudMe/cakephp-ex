@@ -1,0 +1,16 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "Viewable_By" --}
+	
+		{Property}
+			{Type}Item{/Type}
+			{Value_Type}Privacy{/Value_Type}
+			{Name}Viewable By{/Name}
+			{Alias}Viewable_By{/Alias}
+			{Key}Alias{/Key}
+			{Default_Value}Admin{/Default_Value}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

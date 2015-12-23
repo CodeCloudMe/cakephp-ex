@@ -1,0 +1,96 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Drop Area" --}
+		{Input}
+			{Name}Drop Area{/Name}
+			{Content}
+				<!-- TODO: this is untouched, correct it next round -->
+				
+				<!-- Check if an input value is set -->
+				[If Input.Value Exists]
+					[Then]
+						<!-- Input value is set -->
+						
+						[Set Input.Value_Type to Input.Value.Self_Type /]
+						
+						<!-- Create hidden input that the menu will set -->
+						[Input "Hidden" with Alias Input.Alias, Value Input.Value /]
+					[/Then]
+					[Else]
+						<!-- Input value is not set -->
+						
+						<!-- Check if input value type is not already an Item -->
+						[If Not Input.Value_Type.Is_Item]
+							<!-- Look up input value type -->
+							[Type "[Input:Value_Type /]"]
+								[Set Input.Value_Type to This /]
+							[/Type]
+						[/If]
+						
+						<!-- Create hidden input that the menu will set -->
+						[Input "Hidden" with Name Input.Name /]
+						[Input "Hidden" with Name "[Input:Name no_wrap /] Type", Value Input.Value_Type.Alias /]
+					[/Else]
+				[/If]
+				
+				<div class="Jelly_Drop_Input" id="[Input.Namespace No_Wrap /]_Drop_Area">
+					[If Input.Label Exists]
+						[Then]
+							[Input:Label /]
+						[/Then]
+						[Else]
+							Drop Item
+						[/Else]
+					[/If]
+				</div>
+				
+				[External_Script]
+					Jelly.Handlers.Register_Handler(
+					\{
+						'Element': document.getElementById("[Current_Action:Namespace No_Wrap /]_[Input:Alias No_Wrap /]_Drop_Area"),
+						'Event': 'Selected',
+						'Code': function (Parameters)
+						\{
+							document.getElementById('[Current_Action:Namespace No_Wrap /]_[Input:Alias No_Wrap /]_Value').value = Parameters\['Item'\];
+							document.getElementById('[Current_Action:Namespace No_Wrap /]_[Input:Alias No_Wrap /]_Drop_Area').innerHTML = Parameters\['Badge'\];
+							
+							[If Input.Execute_On_Change]
+								Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': document.getElementById("[Current_Action:Namespace No_Wrap /]_[Input:Alias No_Wrap /]_Drop_Area")\});
+							[/If]
+						\}
+					\});
+				
+					/*
+					// TODO: disabled
+					jQuery("#[Current_Action:Namespace No_Wrap /]_[Input:Alias No_Wrap /]_Drop_Area").droppable
+					(
+						\{
+							hoverClass: "Jelly_Droppable",
+							tolerance: "pointer",
+							greedy: true,
+							drop: function (Event, UI)
+							\{
+								var Draggable_Reference = Jelly.References.Get_Reference_For_Element(UI.draggable.context);
+								
+								if (Draggable_Reference.Type != "[Input:Value_Type:Alias No_Wrap /]")
+									return;
+								
+								Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									'Event': 'Selected',
+									'Target': document.getElementById('[Current_Action:Namespace No_Wrap /]_[Input:Alias No_Wrap /]_Drop_Area'),
+									'Badge': UI.draggable.context.innerHTML,
+									'Item': Draggable_Reference.ID,
+									'Item_Alias': Draggable_Reference.Alias,
+									'Item_Type': Draggable_Reference.Type
+								\});
+							\}
+						\}
+					);
+					*/
+				[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

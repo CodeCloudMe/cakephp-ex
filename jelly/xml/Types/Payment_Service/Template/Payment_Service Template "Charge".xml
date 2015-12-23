@@ -1,0 +1,18 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Payment Service Template "Default" --}
+		{Template}
+			{Type}Payment_Service{/Type}
+			{Name}Charge{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Payment_Transaction to Payment_Service.Variables.Payment_Transaction /]
+				[Set Current_Token to Payment_Service.Variables.Token /]
+				
+				<!-- Execute Charge Code -->
+				[This.Charge_Code /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

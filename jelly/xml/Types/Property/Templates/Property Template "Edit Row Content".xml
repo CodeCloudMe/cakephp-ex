@@ -1,0 +1,174 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property Template "Edit Row Content" --}
+	
+		{Template}
+			{Type}Property{/Type}
+			{Name}Edit Row Content{/Name}
+			{Content}
+				<!-- Disambiguate Property --> 
+				[Set Current_Property to Property/]
+				[Set Current_Property_Namespace to Current_Property_Namespace/]
+
+				<!-- Handle Direction --> 
+				[If Current_Property.Variables.Direction = "Reverse"]
+					[Then]
+						<!-- Reverse Direction --> 
+						[Set Current_Property.Variables.Target_Name to Current_Property.Values.Reverse_Name /]
+						[Set Current_Property.Variables.Target_Alias to Current_Property.Values.Reverse_Alias /]
+						[Set Current_Property.Variables.Target_Type to Current_Property.Values.Value_Type /]
+						[Set Current_Property.Variables.Target_Value_Type to Current_Property.Values.Type /]
+
+						[If Current_Property.Values.Relation = "Many-To-One"]
+							[Set Current_Property.Variables.Target_Relation to "One-To-Many" /]
+						[/If]
+
+						[If Current_Property.Values.Relation = "One-To-Many"]
+							[Set Current_Property.Variables.Target_Relation to "Many-To-One" /]
+						[/If]
+
+						[If Current_Property.Values.Relation = "Many-To-Many"]
+							[Set Current_Property.Variables.Target_Relation to "Many-To-Many" /]
+			
+							<!-- If this is a property that matched via attachment type, display it a many-to-one property from this direction. --> 
+							[If Current_Property.Values.Attachment_Type Exists]
+								[If Current_Property.Values.Attachment_Type is Parent Type of Current_Action.Target.Type]
+									[Set Current_Property.Variables.Target_Relation to "Many-To-One" /]
+									[Set Current_Property.Variables.Target_Type to Current_Property.Values.Attachment_Type/]
+								[/If]
+							[/If]
+						[/If]
+		
+						[If Current_Property.Values.Relation = "Commutative"]
+							[Set Current_Property.Variables.Target_Type to Current_Property.Values.Type /]
+							[Set Current_Property.Variables.Target_Relation to "Commutative" /]
+			
+							<!-- If this is a property that matched via attachment type, display it a many-to-one property from this direction. --> 
+							[If Current_Property.Values.Attachment_Type Exists]
+								[If Current_Property.Values.Attachment_Type is Parent Type of Current_Action.Target.Type]
+									[Set Current_Property.Variables.Target_Relation to "Many-To-One" /]
+									[Set Current_Property.Variables.Target_Type to Current_Property.Values.Attachment_Type/]
+									[Set Current_Property.Variables.Target_Name to "Other [Current_Property.Values.Name No_Wrap /]" /]
+									[Set Current_Property.Variables.Target_Alias to "Other_[Current_Property.Values.Alias No_Wrap /] /]
+								[/If]
+							[/If]
+						[/If]
+
+					[/Then]
+					[Else]
+						<!-- Forward or Unspecified Direction --> 
+						[Set Current_Property.Variables.Target_Name to Current_Property.Values.Name /]
+						[Set Current_Property.Variables.Target_Alias to Current_Property.Values.Alias /]
+						[Set Current_Property.Variables.Target_Type to Current_Property.Values.Type/]
+						[Set Current_Property.Variables.Target_Value_Type to Current_Property.Values.Value_Type /]
+						[Set Current_Property.Variables.Target_Relation to Current_Property.Values.Relation /]
+		
+						[If Current_Property.Values.Relation = "Many-To-Many"]
+							<!-- If this is a property that matched via attachment type, display it a many-to-one property from this direction. --> 
+							[If Current_Property.Values.Attachment_Type Exists]
+								[If Current_Property.Values.Attachment_Type is Parent Type of Current_Action.Target.Type]
+									[Set Current_Property.Variables.Target_Relation to "Many-To-One" /]
+								[/If]
+							[/If]
+						[/If]
+		
+						[If Current_Property.Values.Relation = "Commutative"]
+							[Set Current_Property.Variables.Target_Value_Type to Current_Property.Values.Type /]
+		
+							<!-- If this is a property that matched via attachment type, display it a many-to-one property from this direction. -->
+							[If Current_Property.Values.Attachment_Type Exists]
+								[If Current_Property.Values.Attachment_Type is Parent Type of Current_Action.Target.Type]
+									[Set Current_Property.Variables.Target_Relation to "Many-To-One" /]
+									[Set Current_Property.Variables.Target_Type to Current_Property.Values.Attachment_Type /]
+								[/If]
+							[/If]
+						[/If]
+
+					[/Else]
+				[/If]
+
+				<span class="Jelly_[Current_Property.Value_Type.Alias No_Wrap /]_Input_Wrapper">
+
+					<!-- Handle special cases... -->
+					[Set Is_Special_Case to False/]
+	
+					<!-- Handle Property.Type -->
+					[If Current_Property.Variables.Target_Type.Alias = "Property" and Current_Property.Variables.Target_Alias = "Type"]
+						[Set Is_Special_Case to True/]
+						[Input "Menu"
+							with
+							Name = "Edited Type",
+							Value_Type = Current_Property.Variables.Target_Value_Type,
+							Value = Current_Property.Variables.Edit_Item.Values.Type,	
+							Parent = Current_Property.Variables.Edit_Item,
+							Parent_Property = Current_Property,
+							Execute_On_Change = Current_Property.Variables.Execute_On_Change,
+							Show_None = False
+						/]
+					[/If]
+
+					<!-- Handle Property.Value_Type -->
+					[If Current_Property.Variables.Target_Type.Alias = "Property" and Current_Property.Variables.Target_Alias = "Value_Type"]
+						[Set Is_Special_Case to True/]
+						[Input "Menu"
+							with
+							Name = "Edited Value Type",
+							Value_Type = Current_Property.Variables.Target_Value_Type,
+							Value = Current_Property.Variables.Edit_Item.Values.Value_Type,	
+							Parent = Current_Property.Variables.Edit_Item,
+							Parent_Property = Current_Property,
+							Execute_On_Change = Current_Property.Variables.Execute_On_Change,
+							Show_None = False,
+							On_Selected = "[No_Wrap][Format as "Single Line Code"]
+								Parameters\\[\"Namespace\"\\] = \"[Current_Action_Namespace No_Wrap /]\";
+								Jelly.Actions.On_Property_Value_Type_Selected(Parameters);
+							[/Format][/No_Wrap]"
+						/]
+					[/If]
+
+					<!-- Handle Property.Relation -->
+					[If Current_Property.Variables.Target_Type.Alias = "Property" and Current_Property.Variables.Target_Alias = "Relation"]
+						[Set Is_Special_Case to True/]
+						[Input "Relation"
+							with
+							Name = "Edited Relation",
+							Value = Current_Property.Variables.Edit_Item.Values.Relation,
+							Parent = Current_Property.Variables.Edit_Item,
+							Parent_Property = Current_Property,
+							Execute_On_Change = Current_Property.Variables.Execute_On_Change							
+						/]
+					[/If]
+	
+					<!-- TODO - handle other special case properties...--> 
+	
+	
+					<!-- Handle General Case--> 
+					[If not Current_Property.Variables.Is_Special_Case]
+						<!-- General Properties -->
+						[If Current_Property.Variables.Target_Relation = "Many-To-Many" or Current_Property.Variables.Target_Relation = "One-To-Many" or Current_Property.Variables.Target_Relation = "Commutative"]
+							[Then]
+								<!-- Multiple -->
+								[Block "List" No_Refresh /]
+							[/Then]
+							[Else]
+								<!-- Single -->
+								[Current_Property.Variables.Target_Value_Type.Default_Input
+									with
+									Name = "Edited [Current_Property.Variables.Target_Name No_Wrap /]",
+									Value = Current_Property.Variables.Edit_Item.Values.[Current_Property.Variables.Target_Alias No_Wrap /],
+									Value_Type = Current_Property.Variables.Target_Value_Type,
+									Parent = Current_Property.Variables.Edit_Item,
+									Parent_Property = Current_Property,
+									Execute_On_Change = Current_Property.Variables.Execute_On_Change,
+									Show_Edit_Window_Features = True
+								/]
+							[/Else]
+						[/If]
+					[/If]
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}
+

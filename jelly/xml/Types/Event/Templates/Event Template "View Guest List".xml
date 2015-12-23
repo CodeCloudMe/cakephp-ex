@@ -1,0 +1,85 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Template "View Guest List" --}
+		{Template}
+			{Type}Event{/Type}
+			{Name}View Guest List{/Name}
+			{Content}
+				[Set Current_Event to This/]
+
+				[Admin Ignore_Preview_Mode]	
+					<span class="Page_Item">
+						<span class="Page_Header">
+							<span class="Page_Title">
+								<span class="Left_And_Right">
+									<span class="Page_Name">
+										[Current_Event as Inline_Title /] - Guest List
+									</span>
+									<span class="Right">
+										<!-- Preview Mode --> 
+										[Item.Action "Toggle Preview Mode"/]
+									</span>
+								</span>
+							</span>
+						</span>
+	
+						[Admin]
+							<!-- Check if a cover property has been set -->
+							<span class="Page_Cover">
+								[Current_Event as Cover /]
+							</span>
+	
+							<span class="Page_Modules">	
+		
+								<!-- Calculate total guests--> 
+								[Set Current_Event.Variables.Guest_List_Count to 0/]
+								[Current_Event.Shopping_Cart As_Attachment where Completed]
+									[Set Current_Shopping_Cart_Item to This/]
+									[Set Current_Event.Variables.Guest_List_Count to [Math Current_Event.Variables.Guest_List_Count + Current_Shopping_Cart_Item.Quantity/]/]
+								[/Current_Event.Shopping_Cart]
+			
+								<!-- Guest list total --> 
+								<h2>Guest List &ndash; [Current_Event.Variables.Guest_List_Count/] tix</h2>
+	
+								<!-- Guest list individuals --> 
+								[Current_Event.Shopping_Cart As_Attachment where Completed by Last_Name
+										iterator_wrap_element "ul"
+										iterator_classes "Event_Guest_List"
+										item_wrap_element "li" 
+									]
+									[Set Current_Shopping_Cart_Item to This/]
+									<h3>
+										[This.Shopping_Cart][First_Name/] [Last_Name/][/This.Shopping_Cart]
+										[If This.Quantity > 1]
+											<span class="Plus">
+												+[Math [This.Quantity/]-1/]
+											</span>
+										[/If] 
+									</h3>
+									[This.Shopping_Cart]
+										[If This.Reward]
+											<span class="Donation">
+												$[This.Reward.Amount/] Donation for [This.Reward.Name/]
+											</span>
+										[/If]
+									[/This.Shopping_Cart]
+								[/Current_Event.Shopping_Cart] 
+							</span>
+		
+							<span class="Section" style="text-align: center; margin-top:75px; margin-bottom:60px;">
+								<a href="/Event/[Current_Event.ID no_wrap/]/Export_Guest_List" with Class="Button">Export Guest List</a>
+							</span>		
+						</span>
+					[/Admin]
+
+				[/Admin]
+
+
+
+
+			
+			{/Content}
+		{/Template}
+	
+{/Jelly}

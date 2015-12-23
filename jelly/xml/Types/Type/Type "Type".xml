@@ -1,0 +1,19 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type "Type" --}
+	
+	{Type}
+		{Name}Type{/Name}
+		{Parent_Type}Item{/Parent_Type}
+		{Alias}Type{/Alias}
+		{Plural_Name}Types{/Plural_Name}
+		{Plural_Alias}Types{/Plural_Alias}
+		{Data_Name}Type{/Data_Name}
+		{Default_Key}Alias{/Default_Key}
+		{Default_Input}Menu{/Default_Input}
+		{Package}Core{/Package}
+		{Core}1{/Core}
+	{/Type}
+	
+{/Jelly}

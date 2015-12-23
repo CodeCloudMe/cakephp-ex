@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property "Email Address" --}
+		{Property}
+			{ID}31295743{/ID}
+			{Type}User{/Type}
+			{Name}Email Address{/Name}
+			{Viewable_By}Members{/Viewable_By}
+			{Value_Type}Text{/Value_Type}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

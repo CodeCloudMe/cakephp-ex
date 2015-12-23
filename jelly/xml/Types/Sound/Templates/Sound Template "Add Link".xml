@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Sound Template "Add Link" --}
+		{Template}
+			{Type}Sound{/Type}
+			{Name}Add Link{/Name}
+			{Content}
+				<!-- Add from URL -->
+				[Action "Add Item From URL" from Database with Type_Alias = "Sound", Result_Element_ID = "[Namespace no_wrap /]_Badge" /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

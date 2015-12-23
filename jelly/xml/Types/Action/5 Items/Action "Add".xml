@@ -1,0 +1,55 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Add" --}
+		{Action}
+			{Name}Add{/Name}
+			{Content}
+				<!-- TODO - seems outdated --> 
+				[Link to Execute][Add_Label /][/Link]
+			{/Content}
+			{Code}
+				<!-- Add Action Code -->
+				<!-- TODO -  should we work on new variable naming throughout this code? --> 
+				[Set Current_Action to This /]
+				
+				[If Form.Target Exists]
+					[Then]
+						<!-- If form handling created an item, use it as this action's target -->
+						[Set Current_Action.Target to Form.Target /]
+					[/Then]
+					[Else]
+						<!-- Otherwise, create new item --> 
+						[New [Form.Add_Type.Alias no_wrap /]]
+							[Set Current_Action.Target to This /]
+						[/New [Form.Add_Type.Alias no_wrap /]]
+					[/Else]
+				[/If]
+				
+				<!-- Set item's status to unsaved -->
+				[Set Current_Action.Target.Status to "Unsaved" /]
+					
+				<!-- Call Item's Edit Action to Save the New Item -->
+				[Current_Action.Target.Action "Edit" as Execute with Suppress_Edited_Handler = 1[If Current_Action.Variables.No_Refresh], No_Refresh = true[/If] /]
+						
+				[If Current_Action.Target.Status.Alias = "Unsaved"]
+					[External_Script]
+						// Call "Added_Unsaved" handler for items that remain "Unsaved" after Adding them. -->
+						//  TODO - cleanup Item_ID, Item
+				
+						Jelly.Handlers.Call_Handler_For_Target
+						(
+							\{
+								"Event": "Added_Unsaved",
+								"Target": document.getElementById("[Current_Action.Namespace no_wrap /]"),
+								"Item": "[Current_Action.Target as Key No_Wrap /]",
+								"Item_ID": "[Current_Action.Target.ID No_Wrap /]",
+								"Item_Type": "[Current_Action.Target.Type.Alias No_Wrap /]",
+							\}
+						);
+					[/External_Script]
+				[/If]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

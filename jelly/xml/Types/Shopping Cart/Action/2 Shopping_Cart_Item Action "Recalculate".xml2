@@ -1,0 +1,24 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart_Item Action "Recalculate" --}
+		{Type_Action}
+			{Type}Shopping_Cart_Item{/Type}
+			{Name}Recalculate{/Name}
+			{Code}
+				<!-- Set subtotal to quantity x price-->
+				[Set Shopping_Cart_Item.Subtotal to [Math Shopping_Cart_Item.Quantity * Shopping_Cart_Item.Price/] /]
+
+				<!-- Set application fee to 2.5% + $1/ticket  --> 
+				[Set Shopping_Cart_Item.Application_Fee to 	
+					[Math Shopping_Cart_Item.Subtotal * .025/] +
+					[Math Shopping_Cart_Item.Quantity * 1/]
+				/]
+
+				<!-- Save item -->
+				[Save Shopping_Cart_Item [If Execute_With_No_Refresh]No_Refresh[/If]/]
+			{/Code}
+			{Content/}
+		{/Type_Action}
+	
+{/Jelly}

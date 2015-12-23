@@ -1,0 +1,36 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Inline Text" --}
+		{Input}
+			{Name}Inline Text{/Name}
+			{Content}
+				<div
+					contenteditable="true"
+					name="[Input.Variables.Alias No_Wrap /]"
+					id="[Input.Namespace No_Wrap /]_Value"
+					class="[Input.Variables.Class No_Wrap /] Inline_Text"
+					style="[Input.Variables.Style No_Wrap /]"
+					[If Input.Variables.Attributes exists][Input.Variables.Attributes No_Wrap /][/If]
+					>[Input.Variables.Value Process_Once No_Wrap /]</div>
+				
+				[External_Script]
+					// Register input to the current namespace.
+					Jelly.Actions.Register_Action_Input(\{Namespace: "[Current_Action.Namespace No_Wrap /]", Element: document.getElementById("[Input.Namespace No_Wrap /]_Value"), Alias: '[Input.Variables.Alias No_Wrap /]'\});
+					
+					// Focus and select all text
+					// Jelly.jQuery("#[Input.Namespace No_Wrap /]_Value").focus();
+					// document.execCommand('selectAll', false, null);
+					
+					[If Input.Variables.Execute_On_Change]
+						// Trigger action execution timer on blur
+						Jelly.jQuery("#[Input.Namespace No_Wrap /]_Value").blur(function()
+							 \{	
+								Jelly.Actions.Execute_Action_Timer(\{'Namespace': '[Current_Action.Namespace no_wrap /]'\});
+							\});
+					[/If]
+				[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

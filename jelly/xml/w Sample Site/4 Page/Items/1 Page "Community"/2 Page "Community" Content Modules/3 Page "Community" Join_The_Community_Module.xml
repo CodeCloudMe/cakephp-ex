@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Page "Community" Get_Involved_Module --}
+		{Get_Involved_Module}
+			{Name}Community Get Involved Module{/Name}
+			{Package}Local{/Package}
+			{Page}Community{/Page}
+		{/Get_Involved_Module}
+	
+{/Jelly}

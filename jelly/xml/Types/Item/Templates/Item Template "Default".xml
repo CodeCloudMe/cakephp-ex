@@ -1,0 +1,331 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Default" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Hack to trigger refreshes --> 
+				[Current_Session][/Current_Session]
+
+				<!-- Disambiguate -->
+				[Set Current_Item to This /]
+				[Set Current_Type to Current_Item.Type /]
+
+				<!-- Determine if item is visible to visitor -->
+				[Set Current_Item.Variables.Visible to true /]
+				[Admin Ignore_Preview_Mode]
+					[Then]
+						[If Current_Session.Preview_Mode and Current_Type.Viewable_By.Alias = "Admin"]
+							[Set Current_Item.Variables.Visible to false /]
+							<span class="Page_Item">
+								<span class="Page_Header">
+									<span class="Page_Title">
+										<span class="Left_And_Right">
+											<span class="Right">
+												<!-- Preview Mode --> 
+												[Item.Action "Toggle Preview Mode"/]
+											</span>
+										</span>
+									</span>
+								</span>
+							</span>
+						[/If]
+					[/Then]
+					[Else]
+						<!-- Do not show types that are not public -->
+						<!-- TODO - nuanced privacy --> 
+						[If Current_Type.Viewable_By.Alias != "Public"]
+							[Set Current_Item.Variables.Visible to false /]
+						[/If]
+	
+						<!-- Do not show users that are not activated -->
+						[If Current_Type.Alias is "User" and not Current_Item.Activated]
+							[Set Current_Item.Variables.Visible to false /]
+						[/If]
+	
+						<!-- TODO Hack to hide teams that are not visible -->
+						[If Current_Type.Alias is "Team" and not Current_Item.Allow_Anyone_To_See_Members]
+							[Set Current_Item.Variables.Allow_Anyone_To_See_Members to false /]
+						[/If]
+					[/Else]
+				[/Admin]
+
+				[If Current_Type.Alias is "User" and not Current_Item.Activated]
+					[If Current_Item.Variables.Invitation_Code]
+						[Then]
+							<!-- Search for a matching invitation code -->
+							[Invitation_Code from database where Name is Current_Item.Variables.Invitation_Code]
+								<!-- Disambiguate -->
+								[Set Current_Invitation_Code to this /]
+
+								<!-- Check if the user is currently on the matching user page -->
+								[If Current_Invitation_Code.User.ID is Current_Item.ID]
+
+									<!-- Check if the invitation code was already used -->
+									[If not Current_Invitation_Code.Used]
+
+										<!-- If an activation code was supplied, show the matching user -->
+										[Set Current_Item.Variables.Visible to true /]					
+
+										<!-- Accept invitation code action -->
+										[Action "Accept Invitation" from database with Invitation_Code = Current_Item.Variables.Invitation_Code /]
+
+									[/If]
+								[/If]
+							[/Invitation_Code]		
+						[/Then]
+
+						[Else]
+						<!-- Disclaimer for unactivated accounts. -->
+							<div style="background-color: #ffffee; padding: 25px; text-align: center; margin-bottom: 25px;">
+								<p style="margin-bottom:15px;line-height:1.5;">
+									This account has not been activated yet
+								</p>
+								[Admin]
+									[If Current_Item.Received_Invitation]			
+										<p style="margin-bottom:15px;line-height:1.5;">
+											(Last invitation sent on [Current_Item.Last_Received_Invitation_Date/])
+										</p>
+									[/If]				
+									[Link to "/User/[Current_Item.ID no_wrap/]/Send_Invitation" into "Window" with Class="Button"]Send Invitation[If Current_Item.Received_Invitation] Again[/If]...[/]
+								[/Admin]
+								</p>
+							</div>
+						[/Else]
+					[/If]
+				[/If]
+
+				<!-- Check if item is visible to visitor -->
+				[If Current_Item.Variables.Visible]
+
+					<!-- Make sure content modules are up-to-date -->
+					[This.Type.Action "Update Detail Properties" as Execute /]
+
+					<!-- Update cover -->
+					[This.Type.Action "Set Cover Property Item" as Execute /]
+
+					<!-- Update explanation -->
+					[This.Type.Action "Set Explanation Property Item" as Execute /]
+
+					<!-- Select item in toolbars -->
+					[External_Script]
+						if (Jelly.jQuery("#Jelly_Sidebar .Folder_Item.Item_[This.ID no_wrap /]").length)
+						\{
+							Jelly.jQuery("#Jelly_Sidebar .Folder_Item").removeClass("Selected");
+							Jelly.jQuery("#Jelly_Sidebar .Folder_Item.Item_[This.ID no_wrap /]").addClass("Selected");
+						\}
+						if (Jelly.jQuery("#Jelly_Toolbar .Navigation_Item.Item_[This.ID no_wrap /]").length)
+						\{
+							Jelly.jQuery("#Jelly_Toolbar .Navigation_Item").removeClass("Selected");
+							Jelly.jQuery("#Jelly_Toolbar .Navigation_Item.Item_[This.ID no_wrap /]").addClass("Selected");
+						\}
+						if (Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item.Item_[This.ID no_wrap /]").length)
+						\{
+							Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item").removeClass("Selected");
+							Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item.Item_[This.ID no_wrap /]").addClass("Selected");
+						\}
+					[/External_Script]
+
+					<span class="Page_Item [If Current_Item.Variables.In_Window]Clean_Window[/If]">
+
+						[If Current_Item.Variables.In_Window]
+							<!-- Close Button -->
+							<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+								<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+							</a>
+						[/If]
+	
+						<!-- Header -->
+						<span class="Page_Header">
+							<span class="Page_Title">
+								<span class="Left_And_Right">
+									<span class="Page_Name">
+										[If Current_Type.Name = "User"]
+											[Else]
+												<!-- Type Name -->
+												[If Current_Type.Plural_Name][Then][Current_Type.Plural_Name /][/Then][Else][Current_Type.Name /][/Else][/If]
+												&ndash;
+											[/Else]										
+										[/If]
+	
+										<!-- Item Name -->
+										[Current_Item as Inline_Title /]
+									</span>
+									<span class="Right">
+										[If Current_Type.Name = "Team"]
+											[Guest]
+												[Link to "/Action/Get_Involved:Join_Team=[Current_Item.Alias no_wrap/]" with Class="Button"]Join this Team[/Link]
+											[/Guest]
+										[/If]
+		
+										[Admin]
+											<!-- Settings Link -->
+											<span class="Settings">
+												<a href="#" class="Settings_Link" onclick="Jelly.jQuery('.Page_Settings.Item_Settings').toggleClass('Visible');Jelly.jQuery('.Settings_Link').toggleClass('Selected');return false;">
+													<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/cog.svg">
+												</a>
+											</span>
+										[/Admin]
+		
+										<!-- Preview Mode --> 
+										[Set Current_Item.Variables.Show_Toggle_Preview_Mode to False/]
+										[Admin Ignore_Preview_Mode][Set Current_Item.Variables.Show_Toggle_Preview_Mode to True/][/Admin]
+										[If Current_Item.ID = Current_Session.User.ID][Set Current_Item.Variables.Show_Toggle_Preview_Mode to True/][/If]
+										[If Current_Item.Variables.Show_Toggle_Preview_Mode]
+											[Item.Action "Toggle Preview Mode"/]
+										[/If]
+									</span>
+								</span>
+								[Admin]
+									<!-- Settings -->
+									<span class="Page_Settings Item_Settings">
+										[Current_Item as Item_Settings /]
+									</span>
+								[/Admin]
+							</span>
+						</span>
+	
+						<!-- Check if a cover property has been set -->
+						<!-- TODO: Reverse -->
+						<span class="Page_Cover">
+							[Current_Item as Cover /]
+						</span>
+	
+						[If Current_Type.Alias is "User"]
+							<!-- Determine communicatons visibility --> 
+							[Set Current_Item.Variables.Show_Communications to False/]
+							[If Current_Item.ID is not Current_Session.User.ID]
+								[If Current_Item.Allow_Community_Members_To_Contact_Me]
+									[Then][Member][Set Current_Item.Variables.Show_Communications to True/][/Member][/Then]
+									[Else][Admin][Set Current_Item.Variables.Show_Communications to True/][/Admin][/Else]
+								[/If]
+							[/If]
+
+							[If Current_Item.Variables.Show_Communications]
+								<span class="Page_Communications">
+									[If Current_Item.Email_Address]
+										[Link to "mailto:[Current_Item.Email_Address no_wrap/]" with Class="Big_List_Item_Mail"]
+											<img data-state="closed" data-src="/jelly/libraries/iconic/svg/smart/envelope.svg" class="iconic" alt="mail" />
+											<span class="Label">Email</span>
+										[/Link]
+									[/If]
+
+									[If Current_Item.Phone_Number]
+										[Link to "/User/[Current_Item.ID no_wrap/]/Send_Text" into "Window" with Class="Big_List_Item_Text_Desktop"]
+											<img data-state="closed" data-src="/jelly/images/flaticon/chat81.svg" class="iconic" alt="mail" />
+											<span class="Label">Text</span>
+										[/Link]
+	
+										[Link to "sms:[Current_Item.Phone_Number no_wrap/]" with Class="Big_List_Item_Text_Mobile"]
+											<img data-state="closed" data-src="/jelly/images/flaticon/chat81.svg" class="iconic" alt="mail" />
+											<span class="Label">Text</span>
+										[/Link]
+	
+										[Link to "tel:[Current_Item.Phone_Number no_wrap/]" with Class="Big_List_Item_Call"]
+											<img data-state="closed" data-src="/jelly/images/flaticon/phone325.svg" class="iconic" alt="mail" />
+											<span class="Label">Call</span>
+										[/Link]
+									[/If]
+								</span>
+							[/If]
+						[/If]
+		
+						[If Current_Type.Alias is "Event"]
+							[If Current_Item.On_Sale]
+								<span class="Page_Purchases">
+									[Link to "/[Current_Type.Alias/]/[Current_Item.ID/]/Purchase" into "Window" with Class="Purchase_Tickets_Button"]
+										<span class="Content">
+											<span class="Icon"><img class="iconic" data-src="/jelly/images/flaticon/ticket6.svg"></span>
+											<span class="Label">Buy Tickets</span>
+										</span>
+									[/Link]
+								</span>
+							[/If]
+						[/If]
+	
+						<!-- Modules -->
+						<span class="Page_Modules">
+							<!-- Content Modules -->
+							<!-- TODO - This luckily bypasses the usual parent type stuff because of the auto content module refreshing...-->
+							[Type_Content_Module from Database where Type_Item = Current_Type.Alias by Order item_wrap_element "section"]
+								[If Content_Module.Visible][Content_Module as Default with Current_Item = Current_Item/][/If]
+							[/]
+						</span>
+	
+						[Admin]
+							<!-- Add property -->
+							<span class="Page_Add_Property">
+								<a class="Page_Add_Property_Link" href="#" onclick="Jelly.Interface.Create_Menu(\{URL: '/Action/Create_Property_Clean:Item=[Current_Item.ID no_wrap /],Item_Type=[Current_Item.Type.Alias no_wrap /]', 'Alias': 'New_Item_Menu', Menu_Namespace: '[Namespace no_wrap /]_Menu', Attach: 'Element', Attach_Element: this, Edge: 'Bottom'\});return false;">
+									Add Property
+								</a>
+							</span>
+			
+							[If Current_Type.Alias ="Event"]
+								[If Current_Item.On_Sale]
+									[Then]
+										<span class="Section" style="text-align: center; margin-top:75px; margin-bottom:60px;">
+											[Link to "/Event/[Current_Item.ID no_wrap/]/update_tickets" into "Window" with Class="Button"]Modify Tickets[/Link]
+											[Current_Item.Action "Stop Selling Tickets"/]
+											[Link to "/Event/[Current_Item.ID no_wrap/]/view_guest_list" with Class="Button"]View Guest List[/Link]
+										</span>
+									[/Then]
+									[Else]
+										<span class="Section" style="text-align: center; margin-top:75px; margin-bottom:60px;">
+											[Link to "/Event/[Current_Item.ID no_wrap/]/update_tickets" into "Window" with Class="Button"]Sell Tickets[/Link]
+										</span>
+									[/Else]
+								[/If]
+							[/If]
+						[/Admin]
+
+						[If Current_Item.ID = Current_Session.User.ID]
+							<span class="Section" style="text-align: center; margin-top:75px; margin-bottom:60px;">
+								[If not Current_Session.Preview_Mode]
+									[Link to "/User/[Current_Session.User.ID/]/Change_Password" into "Window" with Class = "Button"]Change Password[/Link]
+								[/If]
+								[Action "Logout" from database /]
+							</span>
+						[/If]
+		
+					</span>
+						[If Globals.Allow_Tracking]
+							[External_Script]
+								// Don't die on adblock
+	
+								if (mixpanel)
+								\{
+									[Current_Session.User]
+										[If Current_Session.User.Email_Address]
+											mixpanel.identify("[Current_Session.User.Email_Address no_wrap/]:[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]");
+										[/If]
+									[/Current_Session.User]
+									mixpanel.track(
+											'Visit Data', 
+											\{	
+												'Type': '[Current_Type.Name no_wrap/]',
+												'Name': '[Current_Item.Name no_wrap/]',
+												'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]'
+											\}
+										);
+
+									[If Current_Type.Alias is "Event"]
+										[If Current_Item.On_Sale]
+											mixpanel.track(
+													'View Event With Ticket', 
+													\{
+														'Name': '[Current_Item.Name no_wrap/]',
+														'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]'
+													\}
+												);
+										[/If]	
+									[/If]
+								\}
+							[/External_Script]
+						[/If]
+				[/If]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

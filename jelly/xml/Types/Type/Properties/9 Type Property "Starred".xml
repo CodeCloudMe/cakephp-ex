@@ -1,0 +1,12 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type Property "Starred" --}
+	
+		{Property}
+			{Type}Type{/Type}
+			{Value_Type}Boolean{/Value_Type}
+			{Name}Starred{/Name}
+		{/Property}
+	
+{/Jelly}

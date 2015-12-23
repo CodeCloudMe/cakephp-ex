@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Picture Template "Cover" --}
+		{Template}
+			{Type}Picture{/Type}
+			{Name}Cover{/Name}
+			{Content}
+				<div class="Cover_Content">
+					<div class="Cover_Picture" style="background-image: url(/Picture/[This.ID no_wrap /]/File:Maximum_Width=1000);">
+						<img src="/Picture/[This.ID no_wrap /]/File:Maximum_Width=1000" style="display:none;"/>
+					</div>
+				</div>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

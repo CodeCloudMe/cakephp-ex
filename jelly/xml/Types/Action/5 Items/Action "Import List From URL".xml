@@ -1,0 +1,98 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Import List From URL" --}
+		{Action}
+			{Name}Import List From URL{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin only -->
+					
+					<div class="Window Import_List_From_URL">
+						<h1>
+							Import Data From URL
+						</h1>
+						<section>
+							[Input "Text Field" with Name = "URL" /]
+						</section>
+						<section class="Bottom_Links">
+							[Link to Execute]Import[/Link]
+						</section>
+					</div>
+				[/Admin]
+			{/Content}
+			{Code}
+					
+				[Admin]
+					<!-- Admin only -->
+					
+					<!-- Create new data module -->
+					[New Data_Module]
+						[Set Current_New_Item to This /]
+					
+						<!-- Set data module's list to Presentation -->
+						[Set Current_New_Item.List to "Presentation" /]
+					
+						<!-- Display as grid -->
+						[Set Current_New_Item.Display to "Grid" /]
+					
+						<!-- Save data module -->
+						[Save Current_New_Item /]
+					
+						<!-- Reset presentation's properties -->
+						[Current_New_Item.Action "Reset Properties" as Execute/]
+						
+						<!-- Magic --> 
+						[PHP]
+							sleep(2);
+						[/PHP]
+					
+						[Page "Home"]
+							<!-- Delete all content modules from home page -->
+							[This.Content_Module]
+								[Remove this /]
+							[/This.Content_Module]
+						
+							<!-- Add data module to home page -->
+							[Add Current_New_Item to This.Content_Module /]
+						
+							<!-- Rename home page to Presentations -->
+							[Set This.Name to "Presentations" /]
+						
+							<!-- Save home page -->
+							[Save This /]
+						[/Page]
+					
+						<!-- Trigger Added Event -->
+						[External_Script]
+							Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									"Event": "Added",
+									"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+									"Item": "[Current_New_Item.ID no_wrap /]",
+									"Item_Type": "[Current_New_Item.Type as Alias No_Wrap /]",
+									"Badge": "[Format as "Javascript String"][Current_New_Item as Badge with No_Drag = 1 /][/Format]"
+								\});
+						[/External_Script]					
+					[/New]
+				[/Admin]
+			
+			
+				[Admin]
+					<!-- Admin Only -->
+					
+					
+					
+					[External_Script]
+						<!-- Trigger Dismiss Event -->
+						Jelly.Handlers.Call_Handler_For_Target(
+							\{
+								"Event": "Dismiss",
+								"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+							\});
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

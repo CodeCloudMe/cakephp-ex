@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_List_Filter Property "Property Alias" --}
+		{Property}
+			{Type}Property_List_Filter{/Type}
+			{Name}Property Alias{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

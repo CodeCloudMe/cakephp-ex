@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Video Template "Cover" --}
+		{Template}
+			{Type}Video{/Type}
+			{Name}Cover{/Name}
+			{Content}
+				<!-- Video Template "Cover" -->
+				
+				<span class="Cover_Content">
+					[Video as Default /]
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

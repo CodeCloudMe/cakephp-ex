@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Package "User" --}
+		{Package}
+			{Name}User{/Name}
+			{Package}Core{/Package}
+			{Order}0{/Order}
+		{/Package}
+	
+{/Jelly}

@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Map Property "Location" --}
+		{Property}
+			{Type}Map{/Type}
+			{Name}Location{/Name}
+			{Value_Type}Location{/Value_Type}
+			{Relation}One-To-Many{/Relation}
+		{/Property}
+	
+{/Jelly}

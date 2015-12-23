@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Error" --}
+		{Type}
+			{Name}Error{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Errors{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Core{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

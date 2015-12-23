@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action Template "Result" --}
+		{Template}
+			{Type}Action{/Type}
+			{Name}Loading{/Name}
+			{Content}
+				<div id="[Current_Action_Namespace No_Wrap /]_Loading" class="Jelly_Loading"></div>
+
+				[External_Script]
+					Jelly.Actions.Register_Action_Loading_Element(\{Namespace: "[Current_Action_Namespace No_Wrap /]", Loading_Element: document.getElementById("[Current_Action_Namespace No_Wrap /]_Loading")\});
+				[/External_Script]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

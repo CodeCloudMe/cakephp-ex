@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action Property "Content Module" --}
+		{Property}
+			{Type}Action{/Type}
+			{Name}Content Module{/Name}
+			{Plural_Name}Content Modules{/Plural_Name}
+			{Value_Type}Content_Module{/Value_Type}
+			{Reverse_Name}Action Item{/Reverse_Name}
+			{Reverse_Plural_Name}Action Items{/Reverse_Plural_Name}
+			{Relation}Many-To-Many{/Relation}
+		{/Property}
+	
+{/Jelly}

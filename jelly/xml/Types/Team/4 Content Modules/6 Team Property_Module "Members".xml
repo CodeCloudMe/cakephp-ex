@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Property_Module "Members" --}
+		{Property_Module}
+			{Type_Item}Team{/Type_Item}
+			{Property_Item}98735341{/Property_Item}
+			{Display}Grid{/Display}
+			{Reverse}1{/Reverse}
+		{/Property_Module}
+	
+{/Jelly}

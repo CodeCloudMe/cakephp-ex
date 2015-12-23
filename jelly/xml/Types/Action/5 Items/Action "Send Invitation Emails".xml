@@ -1,0 +1,88 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Send Invitation Emails" --}
+		{Action}
+			{Name}Send Invitation Emails{/Name}
+			{Content}
+				<!-- Admin only -->
+				[Admin]
+					<span class="Send_Invitation_Window">	
+						<!-- Close Button -->
+						<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+						</a>
+
+						<span class="Header">
+							Send Invitations to All New Accounts
+						</span>	
+	
+						[1 User where not Activated and not Received_Invitation]
+							[Then]
+								[Set Current_Action.Variables.Preview_User to User/]
+								[Message "Invitation" with Recipient = Current_Action.Variables.Preview_User]
+									<span class="Section">
+										<span class="Label">
+											Subject
+										</span>
+										<span class="Input" style="clear:left;'">
+											<div style="padding:5px;background-color:#ffffcc">
+												[Message.Subject no_wrap/]
+											</div>
+										</span>
+									</span>
+
+									<span class="Section">
+										<span class="Label">
+											Body
+										</span>
+
+										<span class="Input" style="clear:left; padding:5px; background-color:#ffffcc">
+											<div style="height:300px; overflow:scroll;">
+												[Message.Body_Top no_wrap/]
+												[Message.Body_Action no_wrap/]
+												[Message.Body_Bottom no_wrap/]
+											</div>
+										</span>
+									</span>
+								[/Message]
+
+								<span class="Section">
+									<span class="Label" style="float:none;">
+										To customize invitations, send them directly from member profiles.
+									</span>
+								</span>
+
+								<span class="Execute">
+									<!-- Execute link -->
+									[Link to Execute with Class="Button"]
+										Send Invitations to All New Accounts
+									[/Link]
+								</span>
+							[/Then]
+							[Else]
+								There are no new accounts to send an invitation to. 
+							[/Else]
+						[/1]
+					</span>
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Filter users that have not activated and have not received an invitation -->
+				[User where not Activated and not Received_Invitation]
+					[Set Current_User to This/]
+					[Message "Invitation" with Recipient = Current_User]
+						<!-- Generate form values--> 
+						[Set Form.Subject to "[Format as "Jelly Attribute"][Message.Subject no_wrap/][/Format]"/]
+						[Set Form.Body_Top to "[Format as "Jelly Attribute"][Message.Body_Top no_wrap/][/Format]"/]
+						[Set Form.Body_Bottom to "[Format as "Jelly Attribute"][Message.Body_Bottom no_wrap/][/Format]"/]
+		
+						<!-- Send the invitation -->
+						[Current_User.Action "Send Invitation" as Execute /]
+					[/Message]
+				[/User]
+				Done.
+			{/Code}
+		{/Action}
+	
+{/Jelly}

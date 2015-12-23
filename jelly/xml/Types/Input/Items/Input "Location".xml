@@ -1,0 +1,51 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Location" --}
+		{Input}
+			{Name}Location{/Name}
+			{Content}
+				<!-- Current value -->
+				[Input "Hidden" Preserve_Namespace with 
+					Alias = Current_Input.Variables.Alias,
+					Value_Type = Current_Input.Variables.Value_Type
+					[If Current_Input.Variables.Execute_On_Change], Execute_On_Change = Current_Input.Variables.Execute_On_Change[/If]
+					[If Current_Input.Variables.Value Exists], Value = Current_Input.Variables.Value[/If]
+				/]
+
+				<span class="Row">
+					<span class="Left" style="width: calc(100% - 75% - 10px); margin-right: 10px;">
+						<span class="Big_List_Item_Top_Image" id="[Current_Input.Namespace No_Wrap /]_Geocoded_Marker">
+							[If Current_Input.Variables.Value][Current_Input.Variables.Value /][/If]
+						</span>
+					</span>
+	
+					<span class="Left" style="width: 75%;">
+						<!-- Geocode new address action -->
+						[Action "Geocode" with Address = Current_Input.Variables.Value.Name, Parent_Input_Namespace = Current_Input.Namespace /]
+					</span>
+				</span>
+
+
+				[External_Script]
+					// Added Handler
+					Jelly.Handlers.Register_Handler(
+					\{
+						"Element": document.getElementById("[Current_Input.Namespace No_Wrap /]"),
+						"Event": \["Added"\],
+						"Code": function (Parameters)
+						\{
+							// Set input value
+							document.getElementById("[Current_Input.Namespace No_Wrap /]_Value").value = Parameters\["Item"\];
+			
+							Jelly.jQuery(document.getElementById("[Current_Input.Namespace No_Wrap /]_Value")).change();
+			
+							// Display badge
+							document.getElementById("[Current_Input.Namespace No_Wrap /]_Geocoded_Marker").innerHTML = Parameters\["Badge"\];
+						\}
+					\});
+				[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

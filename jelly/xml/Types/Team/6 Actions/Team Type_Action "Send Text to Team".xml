@@ -1,0 +1,158 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Type_Action "Send Text to Team" --}
+		{Type_Action}
+			{Type}Team{/Type}
+			{Name}Send Text to Team{/Name}
+			{Content}
+				[Set Current_Action.Variables.Visible = False/]
+				[If Current_Action.Target.Allow_Any_Member_To_Text_Entire_Team]	
+					[Then][Member][Set Current_Action.Variables.Visible = True/][/Member][/Then]
+					[Else][Admin][Set Current_Action.Variables.Visible = True/][/Admin][/Else]
+				[/If]
+
+				[If Current_Action.Variables.Visible]
+					<span class="Send_Text_Window">	
+						<!-- Close Button -->
+						<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+						</a>
+
+						<span class="Header">
+							Send Text to [Action.Target.Name /] Team
+						</span>	
+	
+						[Action as Result/]	
+		
+						[Set Action.Variables.Team_Has_Valid_Recipients to 	False/]
+						[1 Action.Target.Member where Activated and Phone_Number exists and Phone_Number is not "" and Allow_Community_Members_To_Contact_Me and ID is not Current_Session.User.ID]
+							[Set Action.Variables.Team_Has_Valid_Recipients to 	True/]
+						[/]
+
+						[If Action.Variables.Team_Has_Valid_Recipients]
+							[Then]
+								<span class="Recipients">
+									<label>To:</label>
+		
+									<div class="Input_Wrapper Big_List Grid Tiny">
+										[Action.Target.Member where Activated and Phone_Number exists and Phone_Number is not "" and Allow_Community_Members_To_Contact_Me and ID is not Current_Session.User.ID iterator_classes "Big_List_Items" item_classes "Big_List_Item Hover"]
+											[Set Current_Member to this /]
+				
+											<span id="[Current_Action.Namespace no_wrap /]_Recipient_[Current_Member.ID no_wrap /]_Value_Input_Finder">
+												[Input "Hidden" with Name = "Recipient [Current_Member.ID no_wrap /]", Value = "1"/]
+											</span>
+				
+											<!-- Details -->
+											<a class="Big_List_Item_Details Selected" id="[Current_Action.Namespace no_wrap /]_Recipient_[Current_Member.ID no_wrap /]" href="#" onclick="[Format as "Single Line Code"]
+													Jelly.jQuery(this).toggleClass('Selected');
+													Jelly.jQuery('#' + this.id + '_Value_Input_Finder input').val(Jelly.jQuery(this).hasClass('Selected') & 1);
+													return false;
+												[/Format]">
+							
+												<!-- Cover Image -->
+												<span class="Big_List_Item_Cover">
+													[Current_Member as Cover /]
+												</span>
+					
+												<span class="Big_List_Item_Name">
+													[Current_Member.Name /]
+												</span>
+					
+												<span class="Big_List_Item_Check">√</span>
+											</a>
+										[/]		
+									</div>		
+								</span>
+		
+								<span class="Author">
+									<!-- Set sender to current user, or site owner as fallback --> 
+									[If Current_Session.User]
+										[Then][Set Current_Action.Variables.Sender = Current_Session.User/][/Then]
+										[Else][1 Site from Database][Set Current_Action.Variables.Sender to Site.Owner/][/1][/Else]
+									[/If]		
+									[Input "Hidden" with Name = "Sender", Value = Current_Action.Variables.Sender/]
+								</span>
+		
+								<span class="Message">
+									<label>Message:</label>
+									[Input "Text Area" with Name = "Body"/]
+		
+									[Set Current_Action.Variables.Signature to "&#x1f4e8; Sent from [Site.Name/]! Respond to [Current_Action.Variables.Sender.First_Name/] @ [Current_Action.Variables.Sender.Phone_Number/]. (Don't reply)"/] 
+									[Input "Hidden" with Name = "Signature", Value = Current_Action.Variables.Signature/]
+									<div class="Signature">[Current_Action.Variables.Signature/]</div>
+								</span>
+	
+								<span class="Execute">
+									<!-- Execute link -->
+									[Link to Execute]Send[/Link]
+								</span>
+							[/Then]
+							[Else]
+								<div style="padding:25px;">
+									There are no members of this team that you can contact this way.
+								</div>
+								<span class="Execute">
+									<!-- close link -->
+									<a href="javascript:Jelly.Interface.Close_Top_Window();" class="Button">Close</a>
+								</span>
+							[/Else]
+						[/If]
+					</span>
+				[/If]
+			{/Content}
+			{Code}
+				[If not Form.Body]
+					[Show Error for "Body"]Please enter a message[/Show]
+				[/If]
+
+				[If not Form.Sender.First_Name or Form.Sender.Phone_Number does not exist or Form.Sender.Phone_Number = ""]
+					[Show Error]Complete your profile with your name and phone number to send team texts.[/Show]
+				[/If]
+
+				[Set Current_Action.Variables.Traversed = False/]
+				[Current_Action.Target.Member where Activated and Phone_Number exists and Phone_Number is not "" and Allow_Community_Members_To_Contact_Me and ID is not Current_Session.User.ID]
+					[Set Current_Member to This/]
+					[If Form.Recipient_[Current_Member.ID no_wrap/]][Set Current_Action.Variables.Traversed = True/][/If]
+				[/]
+				[If not Current_Action.Variables.Traversed]
+					[Show Error]Please select at least one recipient.[/Show Error]
+				[/If]
+
+				[If not Form.Error]
+					<!-- Send message --> 
+					[PHP]	
+						// this line loads the library 
+						require_once('jelly/php/libraries/twilio/twilio.php'); 
+	
+						// TODO - generalize configuration process for API keys etc
+						$Configuration_File_Path = &New_String('jelly_data/Jelly_Configuration.php');
+						$Configuration = include($Configuration_File_Path);
+	
+						$Account_SID = $Configuration\['API_Keys'\]\['Twilio'\]\['Account_SID'\];
+						$Auth_Token = $Configuration\['API_Keys'\]\['Twilio'\]\['Auth_Token'\];
+						$From = $Configuration\['API_Keys'\]\['Twilio'\]\['From'\];
+						$Client = new Services_Twilio($Account_SID, $Auth_Token); 
+	
+						[Current_Action.Target.Member where Activated and Phone_Number exists and Phone_Number is not "" and Allow_Community_Members_To_Contact_Me and ID is not Current_Session.User.ID no_wrap]
+							[Set Current_Member to This/]
+							[If Form.Recipient_[Current_Member.ID no_wrap/]]
+								$Client->account->messages->create(array( 
+									'To' => '[Current_Member.Phone_Number no_wrap/]', 
+									'From' => $From,
+									'Body' => html_entity_decode("[Form.Body no_wrap/]" . " " . "[Form.Signature no_wrap/]")
+								));
+							[/If]
+						[/Current_Action]
+					[/PHP]	
+
+					[External_Script]
+						[Block "Text Sent Confirmation"]
+							[Go to This into "[Form.Calling_Namespace no_wrap/]"/]
+						[/Block]
+					[/External_Script]
+				[/If]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Social_Media Property "Path" --}
+		{Property}
+			{Type}Social_Media{/Type}
+			{Name}Path{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Map Property "Width" --}
+		{Property}
+			{Type}Map{/Type}
+			{Name}Width{/Name}
+			{Value_Type}Number{/Value_Type}
+			{Default_Value}1000{/Default_Value}
+		{/Property}
+	
+{/Jelly}

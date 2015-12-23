@@ -1,0 +1,71 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_Module Type_Action "Change Label" --}
+		{Type_Action}
+			{Type}Property_Module{/Type}
+			{Name}Change Label{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin only -->
+					
+					<!-- Link to select property -->
+					<div class="Inner_Group">
+						<div class="Items" data-target-property="Show_Label" data-value="[Current_Action.Target.Show_Label no_wrap /]">
+							<span id="[Current_Action.Namespace no_wrap /]_Show_Label_Input_Finder">
+								[Input "Hidden" with Name = "Show Label", Execute_On_Change = 1 /]
+							</span>
+							
+							[Set Data_Target_Property = "Show_Label" /]
+							[Set Data_Target_Attribute = "data-show-label" /]
+							
+							[Set Data_Value = True /]
+							[Set Data_Name = "On" /]
+							<a href="#" [Data_Target_Attribute no_wrap /]="[Data_Value no_wrap /]" [If Current_Action.Target.[Data_Target_Property no_wrap /] is Data_Value]class="Selected"[/If] onclick="[Format as "Single Line Code"]
+									Jelly.jQuery('#[Current_Action.Target.Namespace no_wrap /] .Module_Content').attr('[Data_Target_Attribute no_wrap /]', '[Data_Value no_wrap /]');
+									Jelly.jQuery(this).siblings('a').removeClass('Selected');
+									Jelly.jQuery(this).addClass('Selected');
+									Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_[Data_Target_Property no_wrap /]_Input_Finder \[name=[Data_Target_Property no_wrap /]\]').val('[Data_Value no_wrap /]').change();
+									return false;
+							[/Format]">[Data_Name no_wrap /]</a>
+							
+							[Set Data_Value = False /]
+							[Set Data_Name = "Off" /]
+							<a href="#" [Data_Target_Attribute no_wrap /]="[Data_Value no_wrap /]" [If Current_Action.Target.[Data_Target_Property no_wrap /] is Data_Value]class="Selected"[/If] onclick="[Format as "Single Line Code"]
+									Jelly.jQuery('#[Current_Action.Target.Namespace no_wrap /] .Module_Content').attr('[Data_Target_Attribute no_wrap /]', '[Data_Value no_wrap /]');
+									Jelly.jQuery(this).siblings('a').removeClass('Selected');
+									Jelly.jQuery(this).addClass('Selected');
+									Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_[Data_Target_Property no_wrap /]_Input_Finder \[name=[Data_Target_Property no_wrap /]\]').val('[Data_Value no_wrap /]').change();
+									return false;
+							[/Format]">[Data_Name no_wrap /]</a>
+						</div>
+						<div class="Label">
+							Label
+						</div>
+					</div>
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Hide Label -->
+					[Set Current_Action.Target.Show_Label to Form.Show_Label /]
+					
+					<!-- Save Property Module -->
+					[Save Current_Action.Target no_refresh /]
+						
+					<!-- Trigger Edited Event -->
+					<!-- TODO: Add global Deleted event -->
+					[External_Script]
+						Jelly.Handlers.Call_Handler_For_Target(
+							\{
+								"Event": "Edited",
+								"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]")
+							\});
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

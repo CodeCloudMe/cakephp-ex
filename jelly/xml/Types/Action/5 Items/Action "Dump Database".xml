@@ -1,0 +1,53 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Dump Database" --}
+		{Action}
+			{Name}Dump Database{/Name}
+			{Content}
+				[Admin]
+					<div style="margin-bottom: 5px;">
+						Run: [Link to Execute /]
+					</div>
+					<div style="margin-bottom: 5px;">
+						(This will save a backup of your current database using MySQL's own "mysqldump" function to "/jelly_data/Backups/MySQL". The resulting file will contain your entire database, and can be used to restore the site, excluding any files stored on disk. All files (pictures, videos, etc) do not have their data stored in the database and so must be backed up separately.)
+					</div>
+					<div style="color: red;">
+						[Action:Result /]
+					</div>
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					[PHP]
+						// Prepare directory
+						$MySQL_Backup_Directory = "jelly_data/Backups/Database/[New Date nowrap][Year No_Wrap /]-[Month No_Wrap /]-[Day No_Wrap /] [Hour_24 No_Wrap /]h[Minute No_Wrap /][/Date]";
+						$MySQL_Backup_File_Name = "[Site nowrap][Name No_Wrap /][/Site] Database Backup (" . $GLOBALS\["Database"\]\["Database_Name"\] . ").sql";
+						$MySQL_Backup_Path = $MySQL_Backup_Directory . "/" . $MySQL_Backup_File_Name;
+						Make_Directories_If_Nonexistent($MySQL_Backup_Directory);
+						
+						// Get path to mysqldump
+						$MySQL_Path_Query = "SELECT @@basedir";
+						$MySQL_Path_Result = mysqli_query($MySQL_Path_Query);
+						$MySQL_Path_Row = mysqli_fetch_assoc($MySQL_Path_Result);
+						$mysqldump_Path = $MySQL_Path_Row\["@@basedir"\] . "/bin/mysqldump";
+						
+						$Shell_Command = "$mysqldump_Path --force --opt --user=\"" . $GLOBALS\["Database"\]\["Username"\] . "\" --password=\"" . $GLOBALS\["Database"\]\["Password"\] . "\" --databases \"" . $GLOBALS\["Database"\]\["Database_Name"\] . "\" --result-file=\"$MySQL_Backup_Path\"";
+						
+						// Dump database
+						$Result = exec($Shell_Command);
+						
+						// Check if file was written properly
+						if (!file_exists($MySQL_Backup_Path))
+							return "An error seems to have occurred during the backup, since the backup file does not exist. The result was \"$Result\". Attempted to execute the following command: $Shell_Command";
+						$MySQL_Backup_File_Size = filesize($MySQL_Backup_Path);
+						if ($MySQL_Backup_File_Size == 0)
+							return "An error seems to have occurred during the backup, since the backup file size is 0 bytes. Attempted to execute the following command: $Shell_Command";
+						
+						return "Backed up to $MySQL_Backup_Path ($MySQL_Backup_File_Size bytes)";
+					[/PHP]
+				[/Admin]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

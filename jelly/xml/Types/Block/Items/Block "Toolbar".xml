@@ -1,0 +1,252 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Toolbar" --}
+		{Block}
+			{Name}Toolbar{/Name}
+			{Content}
+				<span class="Toolbar_Content">
+					<span class="Left_Items">
+						<span class="Logo"></span>
+						<a class="Site_Menu" onclick="Jelly.jQuery('.Navigation').toggleClass('Visible');">
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/menu.svg" data-direction="bottom">
+						</a>
+						<span class="Site_Name">
+							[Site.Name /]
+						</span>
+						<span class="Navigation">
+							[Navigation "Root" from Database]
+								[Navigation.Navigation_Item]
+									[This.Specific_Item]
+										<!-- Disambiguate -->
+										[Set Current_Item to This /]
+	
+										<!-- Determine if item is visible to visitor -->
+										[Set Current_Item.Variables.Visible to true /]
+										[Admin]
+											[Else]
+												[If Current_Item.Type.Alias is "Type" or Current_Item.Type.Alias is "Page" or Current_Item.Type.Alias = "Action"]
+													[Then]
+														<!-- TODO - nuanced privacy --> 
+														[If Current_Item.Viewable_By.Alias != "Public"]
+															[Set Current_Item.Variables.Visible to false /]
+														[/If]
+													[/Then]
+													[Else]
+														<!-- TODO - nuanced privacy --> 
+														[If Current_Item.Type.Viewable_By.Alias != "Public"]
+															[Set Current_Item.Variables.Visible to false /]
+														[/If]
+													[/Else]
+												[/If]
+											[/Else]
+										[/Admin]
+		
+										<!-- Check if item is visible to visitor -->
+										[If Current_Item.Variables.Visible]
+											<a href="#" onclick="Jelly.Handlers.Visit_Link(\{URL: '/[This.Type.Alias no_wrap /]/[This.Alias no_wrap /]'\}); Jelly.jQuery('.Navigation').removeClass('Visible'); return false;" class="Navigation_Item Item_[This.ID no_wrap /]">
+												[If This.Type.Alias is "Type"]
+													[Then]
+														[If This.Plural_Name][Then][This.Plural_Name /][/Then][Else][This.Name /][/Else][/If]
+													[/Then]
+													[Else]
+														[This.Name /]
+													[/Else]
+												[/If]
+											</a>
+										[/If]
+									[/This.Specific_Item]
+								[/Navigation.Navigation_Item]
+							[/Navigation]
+							[Member]<a target="_blank"class="Navigation_Item Feedback" href="http://community.better.space/share_feedback">Feedback</a>[/Member]
+							[Admin]<a target="_blank"class="Navigation_Item Support" href="http://community.better.space/support">Help</a>[/Admin]
+							[If Site.Show_Link_To_Better]
+								<a target="_blank" href="http://better.space/learn_more" class="Navigation_Item About_Better">About Better</a>
+							[/If]
+						</span>
+					</span>
+					<span class="Right_Items">
+						[Member]
+							<span class="Feedback" [Admin][Else]style="margin-right:20px;"[/Else][/Admin]>
+								<a target="_blank" href="http://community.better.space/share_feedback">Feedback</a>
+							</span>
+						[/Member]
+		
+						[Admin]
+							<span class="Support">
+								<a target="_blank" href="http://community.better.space/support">Help</a>
+							</span>		
+						[/Admin]
+		
+						[Member]
+							[Then]
+								<span class="User">
+									[Link to Current_Session.User with Class="User_Menu_Link"]
+										[If Current_Session.User.Picture]
+											[Then]
+												<figure class="Picture" style="background-image:url(/Picture/[Current_Session.User No_Wrap][Picture.ID no_wrap /][/Current_Session.User]/File:Maximum_Width=28,Maximum_Height=28);"></figure>
+											[/Then]
+											[Else]
+												<figure class="Picture" style="background-image:url(/jelly/images/cuterabbit.png);"></figure>
+											[/Else]
+										[/If]
+										<figcaption class="Label">Hi, [If Current_Session.User.First_Name][Then][Current_Session.User.First_Name /][/Then][Else][Current_Session.User.Name /][/Else][/If]</figcaption>
+									[/Link]
+								</span>
+				
+								[Ignore]
+									<span class="User_Settings">
+										<a class="User_Settings_Link" href="#" onclick="Jelly.jQuery('#Change_User_Menu').css('display', 'block'); return false;">
+											<img class="iconic iconic-sm" data-src="/jelly/libraries/iconic/svg/smart/caret.svg" data-direction="bottom">
+										</a>
+									</span>
+
+									[Action "Change User"/]
+								[/Ignore]
+							[/Then]
+							[Else]
+								<span class="User">
+									[Link to "/member_login" with Class = "User_Menu_Link"]
+										<span class="Login">
+											Login
+										</span>
+									[/Link]
+								</span>
+							[/Else]
+						[/Member]
+					</span>
+	
+	
+					[ignore]
+	
+					[Admin]
+						<button class="Better_Toolbar_Manage" onclick="Jelly.Interface.Manage_Container();"></button>
+					[/Admin]
+	
+					[Admin]
+						[Action "Add Assistant"]
+							[Link to Action into "Window"]
+								<button class="Better_Toolbar_Add">
+									<figure>+</figure>
+									Add
+								</button>
+							[/Link]
+						[/Action]
+					[/Admin]
+	
+					[Current_Session]
+						[Current_Session.User.Property "Following"]
+							[Current_Session.User]
+								[1 Following]	
+									<span class="Better_Following_Hover">
+										<button class="Better_Following"></button>
+										[Current_Session.User.Following]
+											[Then]	
+												<table>
+													[Current_Session.User.Following]
+													<tr onclick="Jelly.Handlers.Handle_Link_From_Click(event, \{'Namespace':'[Namespace no_wrap /]','URL':'/[This.Type.Alias No_Wrap/]/[This.Alias No_Wrap/]'\});">
+														<td class="Image" valign="middle">
+															<figure style="background-image:url(/Picture/[Picture.ID no_wrap /]/File:Maximum_Width=100,Maximum_Height=100); width:100px; height: 50px; background-size:cover; background-position: 50% 50%; background-repeat: no-repeat; display:block;">
+															</figure>
+														</td>
+														<td class="Name" valign="middle">
+															[This.Name/]
+														</td>
+													</tr>
+													[/Current_Session.User.Following]
+												</table>
+											[/Then]
+										[/Current_Session.User.Following]
+									</span>
+								[/1 Following]
+							[/Current_Session.User]
+						[/Current_Session.User.Property]
+		
+						[Current_Session.User.Property "RSVPd_Events_As_Rider"]
+							[Current_Session.User]
+								[1 RSVPd_Events_As_Rider]	
+									<span class="Better_RSVPd_Events_As_Rider_Hover">
+										<button class="Better_RSVPd_Events_As_Rider"></button>
+										[Current_Session.User.RSVPd_Events_As_Rider]
+											[Then]
+												<table>
+													[Current_Session.User.RSVPd_Events_As_Rider]
+														<tr onclick="Jelly.Handlers.Handle_Link_From_Click(event, \{'Namespace':'[Namespace no_wrap /]','URL':'/[This.Type.Alias No_Wrap/]/[This.Alias No_Wrap/]'\});">
+															<td class="Image" valign="middle">
+																<figure style="background-image:url(/Picture/[Picture.ID no_wrap /]/File:Maximum_Width=100,Maximum_Height=100); width:100px; height: 50px; background-size:cover; background-position: 50% 50%; background-repeat: no-repeat; display:block;">
+																</figure>
+															</td>
+															<td class="Name" valign="middle">
+																[This.Name/] (Rider)
+															</td>
+														</tr>
+													[/Current_Session.User.RSVPd_Events_As_Rider]
+												</table>
+											[/Then]
+										[/Current_Session.User.RSVPd_Events_As_Rider]
+									</span>
+								[/1 RSVPd_Events_As_Rider]
+							[/Current_Session.User]
+						[/Current_Session.User.Property]
+		
+						[Current_Session.User.Property "RSVPd_Events_As_Captain"]
+							[Current_Session.User]
+								[1 RSVPd_Events_As_Captain]	
+									<span class="Better_RSVPd_Events_As_Captain_Hover">
+										<button class="Better_RSVPd_Events_As_Captain"></button>
+										[Current_Session.User.RSVPd_Events_As_Captain]
+											[Then]	
+												<table>
+													[Current_Session.User.RSVPd_Events_As_Captain]
+														<tr onclick="Jelly.Handlers.Handle_Link_From_Click(event, \{'Namespace':'[Namespace no_wrap /]','URL':'/[This.Type.Alias No_Wrap/]/[This.Alias No_Wrap/]'\});">
+															<td class="Image" valign="middle">
+																<figure style="background-image:url(/Picture/[Picture.ID no_wrap /]/File:Maximum_Width=100,Maximum_Height=100); width:100px; height: 50px; background-size:cover; background-position: 50% 50%; background-repeat: no-repeat; display:block;">
+																</figure>
+															</td>
+															<td class="Name" valign="middle">
+																[This.Name/] (Captain)
+															</td>
+														</tr>
+													[/Current_Session.User.RSVPd_Events_As_Captain]
+												</table>
+											[/Then]
+										[/Current_Session.User.RSVPd_Events_As_Captain]
+									</span>
+								[/1 RSVPd_Events_As_Captain]
+							[/Current_Session.User]
+						[/Current_Session.User.Property]
+		
+						[Current_Session.User.Property "Meeting"]
+							[Current_Session.User]
+								[1 Meeting]
+									<span class="Better_Events_Hover">
+										<button class="Better_Events"></button>
+										[Current_Session.User.Meeting]
+											[Then]	
+												<table>
+													[Current_Session.User.Meeting]
+													<tr onclick="Jelly.Handlers.Handle_Link_From_Click(event, \{'Namespace':'[Namespace no_wrap /]','URL':'/[This.Project.Type No_Wrap][Alias No_Wrap/][/]/[This.Project.Alias No_Wrap/]'\});">
+														<td class="Image" valign="middle">
+															<figure style="background-image:url(/Picture/[Project.Picture No_Wrap][ID no_wrap /][/]/File:Maximum_Width=100,Maximum_Height=100); width:100px; height: 50px; background-size:cover; background-position: 50% 50%; background-repeat: no-repeat">
+															</figure>
+														</td>
+														<td class="Name" valign="middle">
+															<span style="font-weight:bold;">Lunch with [This.Project.Name/]</span><br/>
+															[This.Start_Time/]
+														</td>
+													</tr>
+													[/Current_Session.User.Meeting]
+												</table>
+											[/Then]
+										[/Current_Session.User.Meeting]
+									</span>
+								[/1 Meeting]
+							[/Current_Session.User]
+						[/Current_Session.User.Property]
+					[/Current_Session]
+					[/Ignore]
+				</span>
+			{/Content}
+		{/Block}
+	
+{/Jelly}

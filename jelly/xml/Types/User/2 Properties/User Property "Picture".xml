@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property "Picture" --}
+		{Property}
+			{ID}39591837{/ID}
+			{Type}User{/Type}
+			{Name}Picture{/Name}
+			{Value_Type}Picture{/Value_Type}
+			{Relation}Many-To-One{/Relation}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

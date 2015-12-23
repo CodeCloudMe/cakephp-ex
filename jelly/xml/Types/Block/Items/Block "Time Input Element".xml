@@ -1,0 +1,141 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Time Input Element" --}
+		{Block}
+			{Name}Time Input Element{/Name}
+			{Content}
+				<!-- Interface time input -->
+				<input
+					type="text"
+					name="[Input.Variables.Alias No_Wrap /]_Time_Input"
+					id="[Input.Namespace No_Wrap /]_Time_Input"
+					value="[Input.Variables.Value no_wrap][Hour no_wrap/]:[Minute no_wrap/] [Period no_wrap/][/Input.Variables.Value]"
+					class="Jelly_Text_Input Jelly_Time_Input[If Input.Variables.Class exists] [Input.Variables.Class no_wrap /][/If]"
+				/>
+				
+				[External_Script]
+					// Set default target on focus, prevent refreshing on focus, release hold on blur.
+					Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Time_Input").focus(function()
+						 \{	
+							// Set default target
+							Jelly.Handlers.Set_Default_Target(this);
+							
+							// Block refresh
+							Jelly.References.Block_Refresh(\{'Namespace': "[Current_Action.Namespace no_wrap /]"\});
+							
+							// TODO - Dont know what this does, or why it's here.
+							if (Jelly.Interface.Bubble_Event_Protection('Click'))
+							\{
+								this.click();
+							\}
+						\});
+
+					Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Time_Input").blur(function()
+						 \{	
+							// Release refresh
+							Jelly.References.Release_Refresh(\{'Namespace': "[Current_Action.Namespace no_wrap /]"\});
+							
+							// Clean time input
+							Jelly.Interface.Clean_Time_Input("[Input.Namespace No_Wrap /]");
+						\});
+						
+					// Handle execute on change. 
+					[If Input.Variables.Execute_On_Change]					
+						// Restart action execution timer on change
+						Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Time_Input").keyup(function()
+							 \{			
+								// Restart action timer
+								// TODO - might have some clean date input conversion errors
+								Jelly.Actions.Restart_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+							 \});
+
+						// Trigger action execution timer on blur
+						Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Time_Input").blur(function()
+							 \{	
+								Jelly.Actions.Execute_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+							\});
+					[/If]						
+						
+				[/External_Script]
+				
+				[Ignore]
+					<!-- TODO - Old click handler--> 
+					onclick="[Format as "Single Line Code"]
+						if (Jelly.Interface.Check_Event_Protection('Click'))
+						\{
+								this.Menu_Reference = Jelly.Interface.Create_Menu(
+									\{
+										Alias: 'Time_Menu',
+										Source_Element_ID: '[Input.Namespace No_Wrap /]_Time_Menu',
+										Attach: 'Element',
+										Attach_Element: this,
+										Edge: 'Bottom',
+										Restrict_Position: true,
+										Do_Not_Focus_First_Item: true,
+										Do_Not_Focus_On_Hover: true,
+										Click_On_Hover: true
+									\});
+						\}
+						[/Format]"
+						
+					<!-- TODO - Old blur handler --> 
+					onblur="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+										\{
+											'Event': 'Dismiss', 
+											'Target': this.Menu_Reference\['Wrapper_Element'\]
+										\}
+									); 
+						[/Format]"
+						
+					<!-- TODO:  To be consistent, this would go in browser controls... --> 
+					<div id="[Current_Action.Namespace No_Wrap /]_[Input.Variables.Alias No_Wrap /]_Time_Menu" style="display: none;">
+						<table>
+							[For Hour_Number From 0 to 23]
+								[If Hour_Number < 12]
+									[Then]
+										[If Hour_Number is 0]
+											[Then]
+												[Set Actual_Number to 12 /]
+											[/Then]
+											[Else]
+												[Set Actual_Number to Hour_Number /]
+											[/Else]
+										[/If]
+										[Set AM_PM to "am" /]
+									[/Then]
+									[Else]
+										[If Hour_Number is 12]
+											[Then]
+												[Set Actual_Number to 12 /]
+											[/Then]
+											[Else]
+												[Set Actual_Number to Hour_Number - 12 /]
+											[/Else]
+										[/If]
+										[Set AM_PM to "pm" /]
+									[/Else]
+								[/If]
+								[For Minute_Number From 0 to 30 by 30]
+									<!-- TODO - seems to be a typo here -->
+									<!-- TODO: this needs to finished-->
+									[Ignore]<tr class="Jelly_Menu_Row" id="[Current_Action.Namespace No_Wrap /]_[Browse_Item.ID No_Wrap /]_Row">[/Ignore]
+									<tr class="Jelly_Menu_Row" id="[Current_Action.Namespace No_Wrap /]_[Minute_Number No_Wrap /]_Row">
+										<td class="Jelly_Menu_Item">
+											<a
+												href="#"
+												class="Do_Not_Close_Menu_On_Click"
+												onclick="Jelly.Interface.Set_Time('[Current_Action.Namespace No_Wrap /]_[Input.Variables.Alias No_Wrap /]', '[Actual_Number No_Wrap /].[Format Digits 2][Minute_Number No_Wrap /][/Format][AM_PM No_Wrap /]');return false;"
+												>[Actual_Number /]:[Format Digits 2][Minute_Number /][/Format][AM_PM /]</a>
+										</td>
+									</tr>
+								[/For]
+							[/For]
+						</table>
+					</div>
+				[/Ignore]
+			{/Content}
+		{/Block}
+	
+{/Jelly}

@@ -1,0 +1,59 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Video_Module Type_Action "Change Video" --}
+		{Type_Action}
+			{Type}Video_Module{/Type}
+			{Name}Change Video{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<div style="width: 800px; height: 600px;">
+						<!-- Video Input Grid -->
+						[Type "Video"]
+							[Input "Menu" with Name = "Video", Value_Type = This, Execute_On_Change = 1, Display = "Grid", Display_Menu = "False", Display_Value = "False" /]
+						[/Type]
+					</div>
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Edited",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Set Video -->
+					[Set Current_Action.Target.Video to Form.Video /]
+				
+					<!-- Save Item -->
+					[Save Current_Action.Target /]
+					
+					<!-- Trigger Edited Event -->
+					[External_Script]
+						Jelly.Handlers.Call_Handler_For_Target(
+							\{
+								"Event": "Edited",
+								"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+								"Item": "[Current_Action.Target as Key No_Wrap /]",
+								"Item_Type": "[Current_Action.Target.Type as Alias No_Wrap /]",
+								"Badge": "[Format as "Javascript String"][Current_Action.Target as Badge with No_Drag = 1/][/Format]"
+							\});
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Javascript_Block "Jelly" --}
+	{Javascript_Block}
+		{Name}Test{/Name}
+		{Parent_Javascript_Block}Jelly{/Parent_Javascript_Block}
+		{Content}
+			Jelly.Test = \{\};
+		{/Content}
+	{/Javascript_Block}
+	
+{/Jelly}

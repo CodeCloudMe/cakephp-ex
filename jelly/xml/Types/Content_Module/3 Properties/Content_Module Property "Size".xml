@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Content_Module Property "Size" --}
+		{Property}
+			{Type}Content_Module{/Type}
+			{Name}Size{/Name}
+			{Value_Type}Text{/Value_Type}
+			{Default_Value}Normal{/Default_Value}
+		{/Property}
+	
+{/Jelly}

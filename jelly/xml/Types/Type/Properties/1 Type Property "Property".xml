@@ -1,0 +1,22 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type Property "Property" --}
+	
+		{!-- TODO: these should add/remove normally, but aren't working for some reason --}
+		
+		{Property}
+			{Type}Type{/Type}
+			{Value_Type}Property{/Value_Type}
+			{Name}Property{/Name}
+			{Alias}Property{/Alias}
+			{Reverse_Name}Type{/Reverse_Name}
+			{Reverse_Alias}Type{/Reverse_Alias}
+			{Plural_Name}Properties{/Plural_Name}
+			{Plural_Alias}Properties{/Plural_Alias}
+			{Relation}One-To-Many{/Relation}
+			{Data_Name}Type{/Data_Name}
+			{Key}Alias{/Key}
+		{/Property}
+	
+{/Jelly}

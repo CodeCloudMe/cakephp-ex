@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Date Time" --}
+		{Type}
+			{Name}Date Time{/Name}
+			{Alias}Date_Time{/Alias}
+			{Default_Input}Date_Time{/Default_Input}
+			{Package}Simple{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

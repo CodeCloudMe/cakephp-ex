@@ -1,0 +1,93 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Picture Template "File" --}
+		{Template}
+			{Type}Picture{/Type}
+			{Name}File{/Name}
+			{Content}
+				[Clean Whitespace]
+					[Set Current_Picture to This/]
+					[Set Current_Picture.Variables.Attributes_String_With_Initial_Space to 
+							"[If Current_Picture.Variables.Width Twas Set] Width Current_Picture.Variables.Width[/If]
+							[If Current_Picture.Variables.Height Twas Set] Height Current_Picture.Variables.Height[/If]
+							[If Current_Picture.Variables.Maximum_Width Twas Set] Maximum_Width Current_Picture.Variables.Maximum_Width[/If]
+							[If Current_Picture.Variables.Maximum_Height Twas Set] Maximum_Height Current_Picture.Variables.Maximum_Height[/If]"
+						/]		
+					[Cache_Transformed_Picture
+							[Current_Picture.Variables.Attributes_String_With_Initial_Space No_Wrap /]
+						/]
+	
+					[If [PHP]
+								if ($_SERVER\['HTTP_IF_MODIFIED_SINCE'\])
+								\{
+									$If_Modified_Since = strtotime($_SERVER\['HTTP_IF_MODIFIED_SINCE'\]);
+									$File_Modified_Time = filemtime("[Format as "PHP String"][Clean Whitespace]
+													[Get_Transformed_Picture_Path
+															[Current_Picture.Variables.Attributes_String_With_Initial_Space No_Wrap /]
+														/]
+												[/Clean Whitespace][/Format]");
+									return ($File_Modified_Time > $If_Modified_Since) ? "True" : "False";
+								\}
+								else
+								\{
+									return "True";
+								\}
+							[/PHP]
+						]
+						[Then][Clean Whitespace]
+							[Header 
+									"Content-Type" 
+									Value "[Format as "Jelly Attribute"][Picture.Mime_Type No_Wrap /][/Format]" 
+								/]					
+							[Header 
+									"Content-Disposition" 
+									Value "[Format as "Jelly Attribute"]inline;filename="[Format as "File Name"][Picture.Name No_Wrap /][/Format]"[/Format]" 
+								/]				
+							[Header 
+									"Content-Transfer-Encoding" 
+									Value "binary" 
+								/]				
+							[Header 
+									"Content-Length" 
+									Value "[Get_Transformed_Picture_File_Size [Current_Picture.Variables.Attributes_String_With_Initial_Space No_Wrap /]/]" 
+								/]				
+							[Header 
+									"Last-Modified" 
+									Value "[PHP]
+											return gmdate("D, d M Y H:i:s", filemtime("[Format as "PHP String"][Clean Whitespace]
+													[Get_Transformed_Picture_Path
+															[Current_Picture.Variables.Attributes_String_With_Initial_Space No_Wrap /]
+														/]
+												[/Clean Whitespace][/Format]"));
+										[/PHP] GMT"
+								/]
+							[Header 
+									"Expires" 
+									Value "[PHP]
+											return gmdate("D, d M Y H:i:s",strtotime('+1 year'));
+										[/PHP] GMT"
+								/]		
+							[Header 
+									"Cache-Control" 
+									Value "public, max-age=31622400, must-revalidate"
+								/]		
+
+							[Write_Transformed_Picture
+									[Current_Picture.Variables.Attributes_String_With_Initial_Space No_Wrap /]
+								/]
+
+						[/Clean Whitespace][/Then]
+						[Else][Clean Whitespace]
+							[Header 
+									"Status" 
+									Value "304 Not Modified"
+								/]
+						[/Clean Whitespace][/Else]
+					[/If]
+				[/Clean Whitespace]
+			{/Content}
+			{Content_Type}application/unknown{/Content_Type}
+		{/Template}
+	
+{/Jelly}

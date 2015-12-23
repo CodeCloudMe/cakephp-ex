@@ -1,0 +1,33 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Dashboard "Feed" --}
+		{Dashboard}
+			{Name}Feed{/Name}
+			{Content}
+				<span class="Dashboard_Item">
+					<span class="Feed">
+						<span class="Feed_Label">
+							Activity
+						</span>
+						<span class="Feed_Items">
+							[15 Item from Database by Modified Descending]
+								<span class="Feed_Item">
+									<span class="Label">
+										[Link to This /]
+									</span>
+									<span class="Person">
+										Edited by [User "Admin"][Link to this]Tristan[/Link][/User]
+									</span>
+									<span class="Time">
+										[This.Modified][This.Hour /]:[This.Minute /] [This.Period /][/This.Modified]
+									</span>
+								</span>
+							[/Item]
+						</span>
+					</span>
+				</span>
+			{/Content}
+		{/Dashboard}
+	
+{/Jelly}

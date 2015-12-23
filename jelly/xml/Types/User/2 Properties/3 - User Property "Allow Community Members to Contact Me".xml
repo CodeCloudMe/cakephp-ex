@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property "Allow Community Members to Contact Me" --}
+		{Property}
+			{ID}7162344{/ID}
+			{Type}User{/Type}
+			{Name}Allow Community Members to Contact Me{/Name}
+			{Viewable_By}Private{/Viewable_By}
+			{Value_Type}Boolean{/Value_Type}
+			{Default_Value}1{/Default_Value}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

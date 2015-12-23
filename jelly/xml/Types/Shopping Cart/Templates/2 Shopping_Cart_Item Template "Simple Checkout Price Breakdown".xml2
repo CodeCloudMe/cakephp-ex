@@ -1,0 +1,31 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart_Item Template "Simple Checkout Price Breakdown" --}
+		{Template}
+			{Type}Shopping_Cart_Item{/Type}
+			{Name}Simple Checkout Price Breakdown{/Name}
+			{Content}
+				<span style="font-weight:bold;">$[This.Price /]</span>
+				x <span style="font-weight:bold;">[This.Quantity /] tickets</span>
+
+				[This.Shopping_Cart]
+					[Set Current_Shopping_Cart to This/]
+					[If Current_Shopping_Cart.Reward] + <span style="font-weight:bold;">$[Current_Shopping_Cart.Reward.Amount /] donation</span>[/If]
+
+					(+ $[Format decimals 2][Math Current_Shopping_Cart.Processing_Fee + Current_Shopping_Cart.Application_Fee/])[/Format] fee) 
+
+					[If Current_Shopping_Cart.Discount exists and Current_Shopping_Cart.Discount is not "" and Current_Shopping_Cart.Discount is not 0]
+						<span class="Discount">-
+							$[PHP]		
+								$Discount = [Current_Shopping_Cart.Discount no_wrap/];
+								return ($Discount * -1);
+							[/PHP] 
+							discount
+						</span>
+					[/If]
+				[/This.Shopping_Cart]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

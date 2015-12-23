@@ -1,0 +1,20 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Javascript_Block Template "Default" --}
+		{Template}
+			{Type}Javascript_Block{/Type}
+			{Name}Default{/Name}
+			{Content}
+			
+				[Javascript_Block.Content No_Wrap /]
+				
+				// TODO: hack to not wrap javascript, even though content-type is javascript
+				
+				[Javascript_Block.Child_Javascript_Block No_Wrap /]
+				
+			{/Content}
+			{Content_Type}text/javascript{/Content_Type}
+		{/Template}
+	
+{/Jelly}

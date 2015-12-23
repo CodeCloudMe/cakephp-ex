@@ -1,0 +1,138 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Type_Action "Add Question" --}
+		{Type_Action}
+			{Type}Type{/Type}
+			{Name}Add Question{/Name}
+			{Content}
+				<!-- Admin only -->
+				[Admin]
+					<span class="Input_Row">
+						<span class="Description">
+							Question:
+						</span>
+						<span class="Input">
+							[Input "Text Field" with Name = "Question"/]
+						</span>
+					</span>
+	
+					<span class="Input_Row">
+						<span class="Description">
+							Type of Answer:
+						</span>
+						<span class="Input">
+							[Input "Value Type Menu" with Name = "Answer Type"/]
+						</span>
+					</span>
+	
+					<span class="Input_Row">
+						<span class="Link">
+							[Link to Execute]Add Question[/Link]
+						</span>
+					</span>	
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Store action namespace --> 
+				[Set Current_Action_Namespace to This.Namespace/]
+
+				<!-- Admin only -->
+				[Admin]
+					<!-- Disambiguate -->
+					[Set Current_Type to Action.Target /]
+	
+					<!-- Get value type -->
+					[Form.Values.Answer_Type]
+						<!-- Disambiguate -->
+						[Set Current_Value_Type to This /]
+		
+						<!-- Create property -->
+						[New Property]
+							<!-- Disambiguate -->
+							[Set New_Property to This /]
+			
+							<!-- Set property type -->
+							[Set New_Property.Type to Current_Type.Alias /]
+			
+							<!-- Set property value type -->
+							[Set New_Property.Value_Type to Current_Value_Type.Alias /]
+			
+							<!-- Auto set name (lol) --> 
+							[If Form.Question exists and Form.Question is not ""]
+								[Then]	
+									[Set New_Property.Name to Form.Question/]
+								[/Then]
+								[Else]
+									[If Current_Value_Type is simple type]
+										[Then]
+											<!-- Set default property name -->
+											[Set New_Property.Name to Form.Question/]
+					
+											<!-- Special case value types -->
+											[If Current_Value_Type.Alias is "Long_Text"]
+												[Current_Item.Property where Name = "Description"]
+													[Else][Set New_Property.Name to "Description"/][/Else]
+													[Then][Current_Item.Target.Property where Name = "Details"][Else][Set New_Property.Name to "Details"/][/Else][/Current_Action.Target.Property][/Then]
+												[/Current_Action.Target.Property]
+											[/If]
+											[If Current_Value_Type.Alias is "Number"]
+												[Current_Item.Property where Name = "Amount"]
+													[Else][Set New_Property.Name to "Amount" /][/Else]
+												[/Current_Action.Target.Property]
+											[/If]
+											[If Current_Value_Type.Alias is "Date_Time"]
+												[Current_Item.Property where Name = "Start Time"]
+													[Else][Set New_Property.Name to "Start Time"/][/Else]
+													[Then][Current_Item.Target.Property where Name = "End Time"][Else][Set New_Property.Name to "End Time"/][/Else][/Current_Action.Target.Property][/Then]
+												[/Current_Action.Target.Property]
+											[/If]
+										[/Then]
+										[Else]
+											<!-- Set property name to value type's name -->
+											[Set New_Property.Name to Current_Value_Type.Name /]
+											[Set New_Property.Plural_Name to Current_Value_Type.Plural_Name /]
+							
+											<!-- Special case value types -->
+											[If Current_Value_Type.Alias is "Location"]
+												[Current_Item.Property where Name = "Location"]
+													[Else][Set New_Property.Name to "Location"/][/Else]
+												[/Current_Action.Target.Property]
+											[/If]
+										[/Else]
+									[/If]
+								[/Else]
+							[/If]
+			
+							[If Current_Value_Type is simple type]
+								[Else]		
+									<!-- Set relation to multiple -->
+									[Set New_Property.Relation to "Many-To-Many"/]
+					
+									<!-- Special case value types -->
+									[If Current_Value_Type.Alias is "Location"]
+										[Set New_Property.Relation to "Many-To-One"/]
+									[/If]
+								[/Else]
+							[/If]
+			
+							<!-- Save new property -->
+							[Save New_Property No_Refresh/]
+			
+							<!-- Scripts --> 
+							[External_Script]
+								Jelly.Handlers.Call_Handler_For_Target(
+										\{
+											'Event': 'Created',
+											'Item': [New_Property.ID No_Wrap/],
+											'Target': document.getElementById('[Current_Action_Namespace No_Wrap /]')
+										\}
+									);
+							[/External_Script]
+						[/New]
+					[/Type]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

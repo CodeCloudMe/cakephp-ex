@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Connected_Account Property "Service" --}
+		{Property}
+			{Type}Connected_Account{/Type}
+			{Name}Service{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

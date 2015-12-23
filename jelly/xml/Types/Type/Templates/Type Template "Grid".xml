@@ -1,0 +1,105 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "Grid" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}Grid{/Name}
+			{Content}
+				<!-- TODO Turn into Grid_View, Default_Grid_View check if we go in that route.--> 
+				[Admin]
+					[Set Current_Type to This /]
+					<h2>[Current_Type.Name /]</h2>
+					<div style="padding-bottom: 5px;">
+						<!-- Grid View Link -->
+						[Link to this as Default by Alias]View as List[/Link],
+			
+						<!-- Add Item Link -->
+						[Link to Add [Current_Type.Alias No_Wrap /] /],
+
+						<!-- Edit Type Link -->
+						[Link to Edit Current_Type /]
+					</div>
+					<table class="Jelly_Grid Border" cellpadding="0" cellspacing="0" border="0">
+						[New [Type.Alias No_Wrap /] no_wrap]
+							[Set Current_Item to This /]
+							<tr class="Jelly_Grid_Header">
+								<th class="Jelly_Grid_Header_Cell Border">Item</th>
+								<th class="Jelly_Grid_Header_Cell Border">Edit</th>
+								[Current_Item.Properties Where Alias is not "Property" No_Wrap]
+									[Set Current_Property to This /]
+									[If not Current_Property.Advanced]
+										<th class="Jelly_Grid_Header_Cell Border">[Current_Property.Name /]</th>
+									[/If]
+								[/Current_Item.Properties]
+								<th class="Jelly_Grid_Header_Cell Border">[Link to add Current_Type.Property /]</th>
+							</tr>
+						[/New]
+						[[Type.Alias No_Wrap /] from Database Wrap_Element "tr" Wrap_Element_Attributes "valign=\"top\"" no_wrap]
+							<!-- TODO implement Henceforth -->
+							[Set Current_Item to This /]
+							<tr class="Jelly_Grid_Row">
+								<!--
+								<td>
+									<div>
+										DRAG
+									</div>
+								</td>
+								-->
+								<td class="Jelly_Grid_Row_Cell Border">
+									[Link to Current_Item][Current_Item as Badge /][/Link]
+								</td>
+								<td class="Jelly_Grid_Row_Cell Border">
+									[Link to Edit Current_Item]Edit[/Link]
+								</td>
+								[Current_Item.Properties Where Alias is not "Property" No_Wrap]
+									[Set Current_Property to This /]
+									[If not Current_Property.Advanced]
+										<td class="Jelly_Grid_Row_Cell Border">
+											[If Current_Property.Relation is ""]
+												[Format as "Plain Text" Characters 100][Current_Item.[Current_Property.Alias No_Wrap /] Process_Once /][/Format]
+												[Link to Edit Current_Item.[Current_Property.Alias No_Wrap /]]Edit[/Link]
+											[/If]
+											[If Current_Property.Relation is "Many-To-One"]
+												[Current_Item.[Current_Property.Alias No_Wrap /]]
+													[Then]
+														<!-- TODO: Make draggable
+														<div>DRAG</div>
+														-->
+														<div>[Link to this][This as Badge /][/Link]</div>
+													[/Then]
+													[Else]
+														<i class="Jelly_Greyed">None</i>
+													[/Else]
+												[/Current_Item.[Current_Property.Alias No_Wrap /]]
+											[/If]
+											[If Current_Property.Relation is "One-To-Many" or Current_Property.Relation is "Many-To-Many"]
+												[Current_Item.[Current_Property.Alias No_Wrap /]]
+													[Then]
+														<!-- TODO: Make draggable
+														<div>DRAG</div>
+														-->
+														<div>[Link to this][This as Badge /][/Link]</div>
+													[/Then]
+													[Else]
+														<i class="Jelly_Greyed">None</i>
+													[/Else]
+												[/Current_Item.[Current_Property.Alias No_Wrap /]]
+								
+												<!-- Add Value
+												<div>
+													(Ignore Current_Item.Action Add_Value with Target_Property = Current_Property /)
+												</div>
+												-->
+											[/If]
+										</td>
+									[/If]
+								[/Current_Item.Properties]
+							</tr>
+						[/[Type:Alias No_Wrap /]]
+					</table>
+				[/Admin]
+			{/Content}
+		{/Template}
+{/Jelly}

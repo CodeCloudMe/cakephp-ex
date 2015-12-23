@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Text Template "Input" --}
+		{Template}
+			{Type}Text{/Type}
+			{Name}Input{/Name}
+			{Content}[Input "Text Field" with Alias Text.Alias, Value Text.Value /]{/Content}
+		{/Template}
+	
+{/Jelly}

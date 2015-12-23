@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- TODO - currently too hard to implement default values for Sort Property Item, switch to alias --} 	
+	{!-- Property_Module Property "Sort Property Alias" --}
+		{Property}
+			{Type}Property_Module{/Type}
+			{Name}Sort Property Alias{/Name}
+			{Value_Type}Text{/Value_Type}
+			{Advanced}1{/Advanced}
+			{Default_Value}Name{/Default_Value}
+		{/Property}
+	
+{/Jelly}

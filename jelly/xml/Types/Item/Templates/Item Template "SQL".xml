@@ -1,0 +1,40 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "SQL" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}SQL{/Name}
+			{Content_Type}application/x-sql{/Content_Type}
+			{Content}
+				[Header "Content-Type" Value "application/x-sql" /][Header "Content-Disposition" Value "[Format as "Jelly Attribute"]attachment;filename="[Format
+		 as "File Name"][1 Site from Database:Name /] - [This:Self_Type:Name /] - [This:Name /] ([PHP]return date('Y-m-d H\hi');[/PHP]).sql[/Format]"[/Format]" /][Admin][PHP]
+					// For each Item, print an insert query.
+					$Data = mysqli_query("SELECT * FROM `[Specific_Type:Data_Name No_Wrap /]` WHERE ID = [ID No_Wrap /]");
+					$Row = mysqli_fetch_assoc($Data);
+					$Values = array();
+					foreach( $Row as $Key => $Value)
+					\{
+						$Values\["Key"\]\[\] = $Key;
+						if (is_null($Value))
+							$Value = "NULL";
+						else if (!is_numeric($Value))
+							$Value = "'" . mysqli_real_escape_string($Value) . "'";
+						$Values\["Value"\]\[\] = $Value;
+					\}
+					$Query =
+						"INSERT INTO `[Specific_Type:Data_Name No_Wrap /]`" . 
+						" " .
+						"(`" .
+						implode($Values\["Key"\], "`, `") .
+						"`)" .
+						" " .
+						"VALUES (" .
+						implode($Values\["Value"\], ", ") .
+						")";
+					return $Query . ";\n\n";
+				[/PHP][/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,28 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Scripting_Module Template "Editing" --}
+		{Template}
+			{Type}Scripting_Module{/Type}
+			{Name}Editing{/Name}
+			{Content}
+				<!-- Script -->
+				[This.Script /]
+				
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<div class="Module_Controls">
+						<!-- Save -->
+						[Link to "/[Current_Item.Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Viewing_Content_Module:Content_Module_ID=[Current_Content_Module.ID no_wrap /]" into "[Current_Content_Module.Namespace no_wrap /]"]
+							Done
+						[/Link]
+						<!-- Change Script -->
+						<!-- TODO Clean up link -->
+						[Link to "/Scripting_Module/[This.ID no_wrap /]/Change_Scripting" into "Window"]Change Scripting[/Link]
+					</div>
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

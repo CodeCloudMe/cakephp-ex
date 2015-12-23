@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Server_Request Property "Requested URL" --}
+		{Property}
+			{Type}Server_Request{/Type}
+			{Name}Requested URL{/Name}
+			{Value_Type}Long_Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

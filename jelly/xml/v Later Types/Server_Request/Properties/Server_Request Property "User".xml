@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Server_Request Property "User" --}
+		{Property}
+			{Type}Server_Request{/Type}
+			{Name}User{/Name}
+			{Value_Type}User{/Value_Type}
+		{/Property}
+	
+{/Jelly}

@@ -1,0 +1,96 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Design "Demo Design" --}
+	
+		{Design}
+			{Name}Demo Design{/Name}
+			{Theme}Demo_Theme{/Theme}
+			{Package}Design{/Package}
+			{Content}
+				<div class="Wrapper">
+					<div class="Header">
+						<div class="Inner">
+							<div class="Header_Top">
+								<div class="Navigation">
+									[Page from Database as Link /]
+									[Admin]
+										[Link to Add Page /]
+									[/Admin]
+								</div>
+							</div>
+			
+							<div class="Header_Bottom">
+								<div class="Relative">
+									<div class="Social">
+										<a href="#" class="Facebook"></a>
+										<a href="#" class="Twitter"></a>
+										[Admin]
+											[Then]
+												[Action "Setup Assistant"]
+													[Link to This into "Window" with Class = "RSS"][/Link]
+												[/Action]
+											[/Then]
+											[Else]
+												<a href="#" class="RSS"></a>
+											[/Else]
+										[/Admin]
+									</div>
+									<div class="Login">
+										[Guest]
+											[Action "Setup User"][Link to Action into "Window"]Sign In[/Link][/Action]
+										[/Guest]
+										[Admin]
+											[Link to Logout]Log Out[/Link]
+										[/Admin]
+									</div>
+									<div class="Title Mark_First_Word">
+										[Site][Site.Name /][/Site]
+									</div>	
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="Content">					
+						[Container/]
+					</div>
+	
+					<div class="Footer_Top">
+						<div class="Inner">
+							[Action "Join Newsletter" with Result_Behavior = "Replace"/]
+						</div>
+					</div>
+	
+					<div class="Footer_Push"></div>
+				</div>
+	
+				<div class="Footer_Bottom">
+					<div class="Inner">
+						<div class="Relative">
+							<div class="Title Mark_First_Word">
+								[Site][Site.Name /][/Site]
+							</div>
+							<div class="Social">
+								<a href="#" class="Facebook"></a>
+								<a href="#" class="Twitter"></a>
+								<a href="#" class="RSS"></a>
+							</div>
+							<div class="Navigation">
+								[Page from Database as Link /]
+							</div>
+						</div>
+					</div>
+				</div>
+
+				[External_Script]	
+					Jelly.jQuery(".Mark_First_Word .Name_Property").each(function()\{
+						 var Mark_First_Word_Element = Jelly.jQuery(this);
+						 Mark_First_Word_Element.html(Mark_First_Word_Element.html().replace(/^(\w+)/, "<span class=\"First-Word\">$1</span>"));
+					\});
+				[/External_Script]
+			{/Content}
+			{Package}Design{/Package}
+		{/Design}
+	
+{/Jelly}

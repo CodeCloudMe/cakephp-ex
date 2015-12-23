@@ -1,0 +1,40 @@
+.Better-Horizontal-Center { margin-left: auto; margin-right:auto;}
+.Better-Block {display:block;}
+.Better-Hidden {display:none;}
+.Better-Clearfix 
+{
+	&::after
+	{
+		content: ' ';
+		display:table;
+		clear:both;
+	}
+}
+
+.Better-Vertical-Center
+{
+	position:relative;
+	top:50%;
+	-moz-transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.Better-Clean
+{
+	border:none;
+	font-size:initial;
+	color:initial;
+	background-color:initial;
+	padding:0px;
+	margin:0px;
+	vertical-align:initial;
+	list-style-type:none;
+	list-style:none;
+	font-style:initial;
+	font-weight:initial;
+	text-align:initial;
+	text-decoration:initial;
+	z-index:initial;
+	line-height:initial;
+}

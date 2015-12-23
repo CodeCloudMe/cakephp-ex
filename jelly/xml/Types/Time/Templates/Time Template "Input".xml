@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Time Template "Input" --}
+		{Template}
+			{Type}Time{/Type}
+			{Name}Input{/Name}
+			{Content}[Input "Time" with Alias Time.Alias, Value Time.Value/]{/Content}
+		{/Template}
+	
+{/Jelly}

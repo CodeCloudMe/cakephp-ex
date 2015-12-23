@@ -1,0 +1,85 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Template "Property Module List Item" --}
+	
+		{Template}
+			{Type}Team{/Type}
+			{Name}Property Module List Item{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_List_Item to This /]
+				[Set Current_Data_Module to This.Variables.Data_Module /]
+				[Set Current_Property_Item to Current_Data_Module.Property_Item /]
+
+				<!-- Simple displays -->
+				<!-- Displays that include cover and details -->
+				<!-- TODO Reverse -->
+
+				<!-- Link to item -->
+				<!-- TODO Show_Links -->
+
+				<!-- Details -->
+				[Link to Current_List_Item by Alias with Class = "Big_List_Item_Details"[If Current_List_Item.Picture], Style="background-image:url(/Picture/[Current_List_Item.Picture.ID no_wrap/]/File);"[/If]]
+					<!-- Cover Image -->
+					<span class="Big_List_Item_Badge">
+						<!-- TODO: Bring over from Item Data_Module_List_Item template -->
+						<span class="Big_List_Item_Name" [If not Current_List_Item.Picture.ID]style="background-color:#efefef; height:100%;"[/If]> 
+							<span class="Name">
+								[Current_List_Item.Name /]
+							</span>
+	
+							<span class="Tagline">
+								[Current_List_Item.Tagline/]
+							</span>
+
+						</span>
+					</span>
+			
+				[/Link]
+
+				<span class="Big_List_Item_Actions">
+					[If Current_List_Item.Variables.Editable]
+						<!-- TODO fix this for various relations (i.e. Reverse, and being able to delete single values) -->
+						[If Current_Property_Item.Relation is "Many-To-One"]
+							[Link to "/Action/Unset_Value_Clean:Item=[Current_Item.ID no_wrap /],Item_Type=[Current_Item.Type.Alias no_wrap /],Property_Alias=[Current_Property_Alias no_wrap /]" into "Window" with Class = "Delete"]
+								<span class="Content">
+									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
+								</span>
+							[/Link]
+						[/If]
+						<!-- Default remove action -->
+						<!-- TODO fix this for various relations (i.e. Reverse, and being able to delete single values) -->
+						[If Current_Property_Item.Relation is "Many-To-Many"]
+							<!-- Hack for custom actions -->
+							[If Current_List_Item.Attachment.Type.Alias is "User_Team" and Current_List_Item.Type.Alias is "Team" and Current_List_Item.Attachment.Member.ID = Current_Session.User.ID]
+								[Then]
+									[Link to "/Action/Leave_Team:Item=[Current_Item.ID no_wrap /],Item_Type=[Current_Item.Type.Alias no_wrap /],Value=[Current_List_Item.Attachment.ID no_wrap /],Value_Type=[Current_List_Item.Attachment.Type.Alias no_wrap /],Property_Alias=[Current_Property_Alias no_wrap /]" into "Window" with Class = "Delete"]
+										<span class="Content">
+											<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
+										</span>
+									[/Link]
+								[/Then]
+								[Else]
+									[Link to "/Action/Remove_Value:Item=[Current_Item.ID no_wrap /],Item_Type=[Current_Item.Type.Alias no_wrap /],Value=[Current_List_Item.Attachment.ID no_wrap /],Value_Type=[Current_List_Item.Attachment.Type.Alias no_wrap /],Property_Alias=[Current_Property_Alias no_wrap /]" into "Window" with Class = "Delete"]
+										<span class="Content">
+											<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
+										</span>
+									[/Link]
+								[/Else]
+							[/If]
+						[/If]
+					[/If]
+				</span>
+
+				[Ignore]
+					<!-- TODO: Fix Maps -->
+					<!-- Locations -->
+					[Current_List_Item.Property "Location"]
+						[Current_List_Item.Location with Map_Alias = "[Current_Property_Module.Namespace no_wrap /]_Map" /]
+					[/Current_List_Item.Property]
+				[/Ignore]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

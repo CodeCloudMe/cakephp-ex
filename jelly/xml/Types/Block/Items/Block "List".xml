@@ -1,0 +1,96 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "List" --}
+		{Block}
+			{Name}List{/Name}
+			{Content}
+				<div>
+					<!-- Disambiguate Block --> 
+					[Set Edit_Item to Current_Property.Variables.Edit_Item/]
+					
+					<!-- Items -->
+					[Edit_Item.Values.[Current_Property.Variables.Target_Alias No_Wrap /]]
+					
+						<!-- Store current list item -->
+						[Set List_Item to This /]
+						
+						<!-- Closed Menu -->
+						<div
+							class="Jelly_Closed_Menu"
+							id="[Namespace No_Wrap /]_Menu"
+							onmousemove="jQuery(this).addClass('Jelly_Closed_Menu_Hover');"
+							onmouseout="jQuery(this).removeClass('Jelly_Closed_Menu_Hover');"
+							onclick="[Format as "Single Line Code"]
+								var Menu_Reference = Jelly.Interface.Create_Menu(
+								\{
+									Alias: 'Edit_Menu',
+									Source_Element_ID: '[List_Item.Namespace No_Wrap /]_Edit_Menu_Items',
+									Attach: 'Element',
+									Attach_Element: this
+								\});
+				
+								return false;
+							[/Format]"
+						>
+							<!-- Badge -->
+							<div class="Jelly_Closed_Menu_Badge">
+								[List_Item as Badge /]
+							</div>
+							
+							<!-- Arrow -->
+							<div class="Jelly_Closed_Menu_Arrow">
+								&#x25BC;
+							</div>
+							
+							<!-- TODO: Should we really do it this way? Super inconsistent, if there's a URL alternative, then caching would handle this the advantage here.--> 
+							<!-- TODO: - I guess this would be an attachment template? -->
+							<!-- Hidden Popup Menu -->
+							<div id="[List_Item.Namespace No_Wrap /]_Edit_Menu_Items" style="display: none;">
+								<table cellpadding="0" cellspacing="0" border="0">
+									<!-- Edit Link -->
+									<tr class="Jelly_Menu_Row">
+										<td class="Jelly_Menu_Item" colspan="2">
+											[Link to Edit List_Item/]
+										</td>
+									</tr>
+									<!-- Edit Attachment and Remove Links -->	
+									[If List_Item.Is_Attachment_Value]
+										[Then]
+											<!-- Edit Attachment Link -->
+											<tr class="Jelly_Menu_Row">
+												<td class="Jelly_Menu_Item" colspan="2">
+													[Link to Edit List_Item as Attachment]Edit Attachment[/Link]
+												</td>
+											</tr>
+						
+											<!-- Remove Attachment Link -->
+											<tr class="Jelly_Menu_Row">
+												<td class="Jelly_Menu_Item" colspan="2">
+													[Link to Remove List_Item as Attachment]Remove Attachment[/Link]
+												</td>
+											</tr>
+										[/Then]
+										[Else]
+											<!-- Remove Link -->
+											<tr class="Jelly_Menu_Row">
+												<td class="Jelly_Menu_Item" colspan="2">
+													[Link to Remove List_Item/]
+												</td>
+											</tr>										
+										[/Else]
+									[/If]
+								</table>
+							</div>
+						</div>
+					[/Edit_Item.Values.[Current_Property.Variables.Target_Alias No_Wrap /]]
+				</div>
+				
+				<!-- Add Value -->
+				<div style="margin-top: 6px;">
+					[Edit_Item.Action Add_Value with Target_Property = Current_Property /]
+				</div>
+			{/Content}
+		{/Block}
+	
+{/Jelly}

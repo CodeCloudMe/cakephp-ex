@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Header" --}
+		{Block}
+			{Name}Header{/Name}
+			{Content}
+				<h1>[Site.Name /]</h1>
+			{/Content}
+		{/Block}
+	
+{/Jelly}

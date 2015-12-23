@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Long_Text Template "Input" --}
+		{Template}
+			{Type}Long_Text{/Type}
+			{Name}Input{/Name}
+			{Content}[Input "Design Editor" with Alias Long_Text.Alias, Value Long_Text.Value, Enable_Editor Long_Text.Enable_Editor /]{/Content}
+		{/Template}
+	
+{/Jelly}

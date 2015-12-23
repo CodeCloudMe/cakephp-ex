@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Javascript_File "Simple Types" --}
+		{Javascript_File}
+			{Name}Stripe{/Name}
+			{URL}https://js.stripe.com/v2/{/URL}
+		{/Javascript_File}
+	
+{/Jelly}

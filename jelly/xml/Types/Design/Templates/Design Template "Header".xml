@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Design Template "Header" --}
+	
+		{Template}
+			{Type}Design{/Type}
+			{Name}Header{/Name}
+			{Content}
+				<!-- Design's Theme Header -->
+				[This.Theme as Header /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

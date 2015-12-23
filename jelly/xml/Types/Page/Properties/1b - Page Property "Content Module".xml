@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Page Property "Content Module" --}
+		{Property}
+			{Type}Page{/Type}
+			{Name}Content Module{/Name}
+			{Plural_Name}Content Modules{/Plural_Name}
+			{Value_Type}Content_Module{/Value_Type}
+			{Relation}Many-To-Many{/Relation}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

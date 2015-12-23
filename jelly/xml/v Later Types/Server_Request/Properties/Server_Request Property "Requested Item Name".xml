@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Server_Request Property "Requested Item Name" --}
+		{Property}
+			{Type}Server_Request{/Type}
+			{Name}Requested Item Name{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

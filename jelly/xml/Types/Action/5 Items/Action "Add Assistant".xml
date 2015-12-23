@@ -1,0 +1,55 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Add Assistant" --}
+		{Action}
+			{Name}Add Assistant{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin only -->					
+					<div class="Window Add_Assistant">
+						<div class="Close_Link">
+							<a href="#" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+						</div>
+						
+						<div class="Create_New">
+							Create new:
+						</div>
+						
+						<div class="Create_Links">
+							[Type "Page"]
+								[Link to "/type/page/create_item" into "Parent"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/file.svg"> Page[/Link]
+							[/Type]
+							[Action "Create List"]
+								[Link to this into "Parent"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/list.svg"> List[/Link]
+							[/Action]
+							<br class="Clear" />
+						</div>
+						
+						<div class="Import_Link">
+							[Action "Import Google Sheet"]
+								[Link to this into "Parent"]Import Data...[/Link]
+							[/Action]
+						</div>
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Added",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Does nothing -->
+			{/Code}
+		{/Action}
+	
+{/Jelly}

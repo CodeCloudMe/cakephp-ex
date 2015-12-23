@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Property "Allow Anyone To See Members" --}
+		{Property}
+			{Type}Team{/Type}
+			{Name}Allow Anyone To See Members{/Name}
+			{Value_Type}Boolean{/Value_Type}
+			{Default_Value}1{/Default_Value}
+			{Viewable_By}Admin{/Viewable_By}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "PARTY" --}
+		{Presentation}
+			{Name}PARTY{/Name}
+			{Website}http://prty.jp/{/Website}
+			{Description}PARTY is a creative lab with offices in Tokyo and New York experimenting with design that utilizes technology and caters to the networked world and maker culture.{/Description}
+			{Picture}PARTY{/Picture}
+		{/Presentation}
+	
+{/Jelly}

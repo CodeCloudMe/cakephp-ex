@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Map Property "Height" --}
+		{Property}
+			{Type}Map{/Type}
+			{Name}Height{/Name}
+			{Value_Type}Number{/Value_Type}
+			{Default_Value}350{/Default_Value}
+		{/Property}
+	
+{/Jelly}

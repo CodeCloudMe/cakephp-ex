@@ -1,0 +1,9 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- Privacy "Public" --}
+		{Privacy}
+			{Name}Public{/Name}
+			{Explanation}Everyone can see this.{/Explanation}			
+		{/Privacy}
+{/Jelly}

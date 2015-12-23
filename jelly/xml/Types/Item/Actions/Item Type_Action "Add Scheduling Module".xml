@@ -1,0 +1,43 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add Scheduling Module" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add Scheduling Module{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<div class="Window Add_Scheduling">
+						<!-- Execute Link -->
+						[Link to "/Type/[Action.Target.Type.Alias no_wrap /]/[Action.Target.ID no_wrap /]/Add_Lunch_Scheduling_Module" into "Parent"]Meeting[/Link]
+						
+						<!-- Execute Link -->
+						[Link to "/Type/[Action.Target.Type.Alias no_wrap /]/[Action.Target.ID no_wrap /]/Add_Lunch_Scheduling_Module" into "Parent"]Event[/Link]
+						
+						<!-- Execute Link -->
+						[Link to "/Type/[Action.Target.Type.Alias no_wrap /]/[Action.Target.ID no_wrap /]/Add_Lunch_Scheduling_Module" into "Parent"]Lunch[/Link]
+					</div>
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Added",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Does nothing -->
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

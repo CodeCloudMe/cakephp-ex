@@ -1,0 +1,13 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Template Property "Content" --}
+	
+		{Property}
+			{Type}Template{/Type}
+			{Value_Type}Long_Text{/Value_Type}
+			{Name}Content{/Name}
+			{Default_Value}[Type.Name /] template default value.{/Default_Value}
+		{/Property}
+	
+{/Jelly}

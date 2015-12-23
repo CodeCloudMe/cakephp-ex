@@ -1,0 +1,45 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Video_Module Template "Default" --}
+		{Template}
+			{Type}Video_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Video_Module to This /]
+				[Set Current_Video to Current_Video_Module.Video /]
+
+				<!-- Video -->
+				<span class="Module_Content" data-module="Video_Module" data-size="[Current_Content_Module.Size no_wrap /]" data-width="[Current_Content_Module.Width no_wrap /]">
+	
+					<span class="Module_Settings" id="[Current_Video_Module.Namespace no_wrap /]_Settings">
+						<span class="Setting_Row">
+							<span class="Setting_Label" style="width:56px;">Move:</span>
+							<span class="Setting_Value">
+								[Current_Video_Module.Action "Move Up"/] [Current_Video_Module.Action "Move Down"/]
+							</span>
+						</span>	
+
+						<span class="Setting_Row">
+							[Link to Remove Current_Video_Module]Remove[/Link]
+						</span>
+					</span>
+
+					[This.Video /]
+				
+					[Admin]
+						<!-- Admin Only... -->
+		
+						<!-- Edit Controls -->
+						<div id="[This.ID no_wrap /]_Edit_Link_Finder">
+							<a href="#" onclick="Jelly.jQuery(this).toggleClass('Selected');Jelly.jQuery('#[Current_Video_Module.Namespace no_wrap /]_Settings').toggleClass('Visible'); return false;" class="Module_Edit_Link">
+								<img class="iconic iconic-sm" data-src="/jelly/libraries/iconic/svg/smart/pencil.svg">
+							</a>
+						</div>
+					[/Admin]
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

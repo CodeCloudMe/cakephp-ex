@@ -1,0 +1,66 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Text Field" --}
+		{Input}
+			{Name}Text Field{/Name}
+			{Content}
+				<input
+					type="text"
+					name="[Input.Variables.Alias No_Wrap /]"
+					id="[Input.Namespace No_Wrap /]_Value"
+					value="[Format as "HTML Attribute"][Input.Variables.Value Process_Once No_Wrap /][/Format]"
+					[If Input.Variables.Placeholder]
+						placeholder="[Format as "HTML Attribute"][Input.Variables.Placeholder Process_Once No_Wrap /][/Format]"
+					[/If]
+					[If Input.Variables.Style exists or Input.Variables.Width exists]
+						style="[If Input.Variables.Style exists][Input.Variables.Style No_Wrap /];[/If][If Input.Variables.Width exists]width: [Input.Variables.Width No_Wrap /]px;[/If]"
+					[/If]
+					class="Jelly_Text_Input[If Input.Variables.Class exists] [Input.Variables.Class No_Wrap /][/If]"
+					[If Input.Variables.Attributes exists][Input.Variables.Attributes No_Wrap /][/If]
+				/>
+				[External_Script]
+					// Register input to the action namespace.
+					Jelly.Actions.Register_Action_Input( \{
+							[If Input.Variables.Sensitive]Sensitive: true,[/If]
+							[If Input.Variables.Clear_On_Execute]Clear_On_Execute: true,[/If]
+							[If Input.Variables.Blur_On_Execute]Blur_On_Execute: true,[/If]
+							Namespace: "[Current_Action.Namespace no_wrap /]",
+							Element: document.getElementById("[Input.Namespace No_Wrap /]_Value")
+						 \});
+					
+					// Set default target on focus, prevent refreshing on focus, release hold on blur.
+					Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").focus(function()
+						 \{	
+							// Set default target
+							Jelly.Handlers.Set_Default_Target(this);
+							Jelly.References.Block_Refresh(\{'Namespace': "[Inspect_Action.Namespace no_wrap /]"\});
+							Jelly.References.Block_Refresh(\{'Namespace': "[Current_Action.Namespace no_wrap /]"\});
+						\});
+						
+					Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").blur(function()
+						 \{	
+							Jelly.References.Release_Refresh(\{'Namespace': "[Inspect_Action.Namespace no_wrap /]"\});
+							Jelly.References.Release_Refresh(\{'Namespace': "[Current_Action.Namespace no_wrap /]"\});
+						\});
+						
+					// Handle execute on change. 
+					[If Input.Variables.Execute_On_Change]					
+						// Restart action execution timer on change
+						Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").keyup(function()
+							 \{			
+								// Restart action timer
+								Jelly.Actions.Restart_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+							 \});
+				
+						// Trigger action execution timer on blur
+						Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").blur(function()
+							 \{	
+								Jelly.Actions.Execute_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+							\});
+					[/If]
+				[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

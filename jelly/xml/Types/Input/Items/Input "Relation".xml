@@ -1,0 +1,40 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Relation" --}
+		{Input}
+			{Name}Relation{/Name}
+			{Content}		
+				<!-- Hidden Relation property --> 
+				[Input "Hidden" with Name = "Edited Relation", Value = Current_Property.Variables.Edit_Item.Relation/]
+
+				<select id="[Current_Action_Namespace No_Wrap /]_Edited_Relation_Select_Complex" onchange="Jelly.Actions.Set_Input_Value(\{'Namespace':'[Current_Action_Namespace No_Wrap /]', 'Alias': 'Edited_Relation', 'Value': this.value\});" style="display:none;">
+					<option [If Current_Property.Variables.Edit_Item.Values.Relation = "Many-To-One"]selected="selected"[/If] value="Many-To-One">Single Value</option>
+					<option [If Current_Property.Variables.Edit_Item.Values.Relation = "Many-To-Many"]selected="selected"[/If] value="Many-To-Many">Multiple Values</option>
+					<option [If Current_Property.Variables.Edit_Item.Values.Relation = "Commutative"]selected="selected"[/If] value="Commutative">(Advanced) Commutative</option>
+					<option [If Current_Property.Variables.Edit_Item.Values.Relation = "One-To-Many"]selected="selected"[/If] value="One-To-Many">(Advanced) One-To-Many</option>
+				</select>
+
+				<select id="[Current_Action_Namespace No_Wrap /]_Edited_Relation_Select_Simple" onchange="Jelly.Actions.Set_Input_Value(\{'Namespace':'[Current_Action_Namespace No_Wrap /]', 'Alias': 'Edited_Relation', 'Value': this.value\});" style="display:none;">
+					<option [If Current_Property.Variables.Edit_Item.Values.Relation = ""]selected="selected"[/If] value="">Simple</option>
+				</select>	
+				
+				[External_Script]
+					// Update local context
+					var Parameters = \{"Namespace": "[Current_Action.Namespace no_wrap /]"\};
+					Jelly.Actions.On_Property_Relation_Load(Parameters);
+
+					// Handle execute on change. 
+					// TODO - untested
+					[If Input.Variables.Execute_On_Change]					
+						// Trigger action execution timer on select
+						Jelly.jQuery("#" + "[Current_Action_Namespace No_Wrap /]_Edited_Relation_Select_Complex").change(function()
+							 \{	
+								Jelly.Actions.Execute_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+							\});
+					[/If]		
+				[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

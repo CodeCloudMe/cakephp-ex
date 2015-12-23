@@ -1,0 +1,48 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Picture_Module Template "Default" --}
+		{Template}
+			{Type}Picture_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Picture_Module to This /]
+				[Set Current_Picture to Current_Picture_Module.Picture /]
+
+				<!-- Picture -->
+				<span class="Module_Content Picture_Module" data-module="Picture_Module" data-size="[Current_Content_Module.Size no_wrap /]" data-width="[Current_Content_Module.Width no_wrap /]">
+	
+					<span class="Module_Settings" id="[Current_Picture_Module.Namespace no_wrap /]_Settings">
+						<span class="Setting_Row">
+							<span class="Setting_Label" style="width:56px;">Move:</span>
+							<span class="Setting_Value">
+								[Current_Picture_Module.Action "Move Up"/] [Current_Picture_Module.Action "Move Down"/]
+							</span>
+						</span>	
+						<span class="Setting_Row">
+							[Link to Remove Current_Picture_Module]Remove[/Link]
+						</span>
+					</span>
+	
+					<span class="Picture" style="background-image: url(/Picture/[Current_Picture.ID no_wrap /]/File); padding-top: calc(100% / [Current_Picture.Aspect_Ratio no_wrap /]);" data-aspect-ratio="[Current_Picture.Aspect_Ratio no_wrap /]">
+						<span style="display: none;">
+							[This.Picture /]
+						</span>
+					</span>
+				
+					[Admin]
+						<!-- Admin Only... -->
+		
+						<!-- Edit Controls -->
+						<div id="[This.ID no_wrap /]_Edit_Link_Finder">
+							<a href="#" onclick="Jelly.jQuery(this).toggleClass('Selected');Jelly.jQuery('#[Current_Picture_Module.Namespace no_wrap /]_Settings').toggleClass('Visible'); return false;" class="Module_Edit_Link">
+								<img class="iconic iconic-sm" data-src="/jelly/libraries/iconic/svg/smart/pencil.svg">
+							</a>
+						</div>
+					[/Admin]
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

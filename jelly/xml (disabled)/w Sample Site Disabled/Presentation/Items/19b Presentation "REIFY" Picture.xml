@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "REIFY" Picture --}
+		{Picture}
+			{Name}REIFY{/Name}
+			{Path}jelly_data/Files/File/Presentation_REIFY.jpg{/Path}
+		{/Picture}
+	
+{/Jelly}

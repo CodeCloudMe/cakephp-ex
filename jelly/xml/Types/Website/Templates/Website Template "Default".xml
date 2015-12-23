@@ -1,0 +1,28 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Website Template "Default" --}
+		{Template}
+			{Type}Website{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Website Template "Default" -->
+				
+				<!-- Refresh Website -->
+				[This.Action "Refresh Website" as Execute /]
+				
+				<!-- Go to website -->
+				<!-- TODO: better to handle this on the link to the Website, instead of the Website Default template? -->
+				[External_Script]
+					document.location = "[This.Path no_wrap /]";
+				[/External_Script]
+				
+				<!-- Redirecting text -->
+				<div>
+					Redirecting to: <a href="[This.Path no_wrap /]">[This.Name /]</a>
+				</div>
+			{/Content}
+			{Package}Website{/Package}
+		{/Template}
+	
+{/Jelly}

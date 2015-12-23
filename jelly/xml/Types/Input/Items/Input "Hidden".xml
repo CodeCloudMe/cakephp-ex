@@ -1,0 +1,79 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- Input "Hidden" --}
+		{Input}
+			{Name}Hidden{/Name}
+			{Content}
+					<!-- Make hidden value field --> 
+					[If Current_Input.Variables.Value.Is_Item]
+						[Then]
+							<input
+								type="hidden"
+								id="[Current_Input_Namespace No_Wrap /]_Value"
+								name="[Current_Input.Variables.Alias No_Wrap /]"
+								value="[Format as "HTML Attribute"][Current_Input.Variables.Value as Key Process_Once No_Wrap /][/Format]"
+							/>
+						[/Then]
+						[Else]
+							<input
+								type="hidden"
+								id="[Current_Input_Namespace No_Wrap /]_Value"
+								name="[Current_Input.Variables.Alias No_Wrap /]"
+								value="[Format as "HTML Attribute"][Current_Input.Variables.Value No_Wrap Process_Once No_Wrap /][/Format]"
+							/>
+						[/Else]
+					[/If]
+					
+					<!-- Make hidden value type field --> 
+					[If Current_Input.Variables.Value_Type Twas Set]						
+						[Then]
+							<!-- Dereference Value Type to Alias --> 
+							[If Current_Input.Variables.Value_Type.Is_Item]
+								[Then][Set Current_Input.Variables.Value_Type_Alias to Current_Input.Variables.Value_Type.Alias/][/Then]
+								[Else][Set Current_Input.Variables.Value_Type_Alias to Current_Input.Variables.Value_Type/][/Else]
+							[/If]
+
+							<input
+								type="hidden"
+								id="[Current_Input_Namespace No_Wrap /]_Value_Type"
+								name="[Current_Input.Variables.Alias No_Wrap /]_Type"
+								value="[Current_Input.Variables.Value_Type_Alias No_Wrap /]"
+							/>
+							[External_Script]
+								// Register value type input to the current namespace.
+								Jelly.Actions.Register_Action_Input(\{Namespace: "[Current_Action.Namespace No_Wrap /]", Element: document.getElementById("[Current_Input_Namespace No_Wrap /]_Value_Type")\});
+							[/External_Script]
+						[/Then]
+						[Else]
+							[If Current_Input.Variables.Value.Is_Item]
+								<input
+									type="hidden"
+									id="[Current_Input_Namespace No_Wrap /]_Value_Type"
+									name="[Current_Input.Variables.Alias No_Wrap /]_Type"
+									value="[Format as "HTML Attribute"][Current_Input.Variables.Value.Type.Alias Process_Once No_Wrap /][/Format]"
+								/>
+								[External_Script]
+									// Register value type input to the current namespace.
+									Jelly.Actions.Register_Action_Input(\{Namespace: "[Current_Action.Namespace No_Wrap /]", Element: document.getElementById("[Current_Input_Namespace No_Wrap /]_Value_Type")\});
+								[/External_Script]
+							[/If]
+						[/Else]
+					[/If]
+					
+					[External_Script]
+						// Register value input to the current namespace.
+						Jelly.Actions.Register_Action_Input(\{Namespace: "[Current_Action.Namespace No_Wrap /]", Element: document.getElementById("[Current_Input_Namespace No_Wrap /]_Value")\});
+						
+						[If Input.Variables.Execute_On_Change]					
+							// Trigger action execution on change
+							Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").change(function()
+								 \{	
+									Jelly.Actions.Execute_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+								\});
+						[/If]
+					[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

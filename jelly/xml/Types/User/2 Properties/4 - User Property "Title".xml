@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property "Title" --}
+		{Property}
+			{Type}User{/Type}
+			{Name}Title{/Name}
+			{Viewable_By}Admin{/Viewable_By}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

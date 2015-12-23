@@ -1,0 +1,18 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Browser_Control "Calendar Input Date" --}
+		{Browser_Control}
+			{Name}Calendar Input Date{/Name}
+			{Content}
+				<div class="Jelly_Calendar_Items_Current_Item">
+					<a
+						href="#"
+						class="Jelly_Calendar_Items_Current_Item_Link Do_Not_Close_Menu_On_Click"
+						onclick="Jelly.Interface.Set_Date('INPUT_NAMESPACE', 'DATE_VALUE'); return false;"
+					>DATE_INDEX</a>
+				</div>
+			{/Content}
+		{/Browser_Control}
+	
+{/Jelly}

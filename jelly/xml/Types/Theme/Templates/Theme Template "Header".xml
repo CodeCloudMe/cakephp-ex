@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Theme Template "Header" --}
+	
+		{Template}
+			{Type}Theme{/Type}
+			{Name}Header{/Name}
+			{Content}
+				<!-- Theme's Web Fonts -->
+				[This.Web_Font as Header /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

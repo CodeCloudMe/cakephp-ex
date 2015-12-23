@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Video_Module Property "Body" --}
+		{Property}
+			{Type}Video_Module{/Type}
+			{Name}Caption{/Name}
+			{Value_Type}Long_Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

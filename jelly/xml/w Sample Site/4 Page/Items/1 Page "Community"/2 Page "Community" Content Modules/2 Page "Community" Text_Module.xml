@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Page "Community" Text_Module --}
+		{Text_Module}
+			{Page}Community{/Page}
+			{Package}Local{/Package}
+			{Body}
+				<p>Special thanks to our committed volunteers.</p>
+			{/Body}
+		{/Text_Module}
+	
+{/Jelly}

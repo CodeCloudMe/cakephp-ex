@@ -1,0 +1,96 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Set Complex Value" --}
+		{Action}
+			{Name}Set Complex Value{/Name}
+			{Content}
+				[Current_Action.Variables.Item]
+					<!-- Disambiguate -->
+					[Set Current_Item to This /]
+					
+					<!-- Check if the item is editable -->
+					[Set Current_Item.Variables.Editable to false /]
+					[Admin]
+						[Set Current_Item.Variables.Editable to true /]
+					[/Admin]
+					[Member]
+						[If Current_Item.Type.Alias is "User"]
+							[If Current_Item.ID is Current_Session.User.ID]
+								[Set Current_Item.Variables.Editable to true /]
+							[/If]
+						[/If]
+					[/Member]
+					
+					<!-- Check if editable -->
+					[If Current_Item.Variables.Editable]
+						<!-- Disambiguate -->
+						[Set Current_Type to Current_Item.Type /]
+						[Set Current_Property_Alias to Current_Action.Variables.Property_Alias /]
+						
+						<!-- Get property -->
+						[Current_Item.Forward_Properties where Alias is "[Current_Property_Alias no_wrap /]"]
+							[Set Current_Action.Variables.Value_Type to This.Values.Value_Type /]
+						[/Current_Item.Forward_Properties]
+						[Current_Item.Reverse_Properties where Reverse_Alias is "[Current_Property_Alias no_wrap /]"]
+							[Set Current_Action.Variables.Value_Type to This.Values.Type /]
+						[/Current_Item.Reverse_Properties]
+						
+						<!-- Pass item to action -->
+						[Input "Hidden" with Name = "Item", Value = Current_Item /]
+						
+						<!-- Pass property alias to action -->
+						[Input "Hidden" with Name = "Property Alias", Value = Path_Variables.Property_Alias /]
+						
+						<!-- Window -->
+						<span class="Add_Value_Clean_Window">
+							<!-- Close Button -->
+							<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+								<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+							</a>
+							
+							<!-- Select input -->
+							[Input "Select Clean" with Name = "Value", Value_Type = Current_Action.Variables.Value_Type, Execute_On_Change = true /]
+						</span>
+					[/If]
+				[/Current_Action.Variables.Item]
+			{/Content}
+			{Code}
+				[Form.Item]
+					<!-- Disambiguate -->
+					[Set Current_Item to This /]
+					
+					<!-- Check if the item is editable -->
+					[Set Current_Item.Variables.Editable to false /]
+					[Admin]
+						[Set Current_Item.Variables.Editable to true /]
+					[/Admin]
+					[Member]
+						[If Current_Item.Type.Alias is "User"]
+							[If Current_Item.ID is Current_Session.User.ID]
+								[Set Current_Item.Variables.Editable to true /]
+							[/If]
+						[/If]
+					[/Member]
+					
+					<!-- Check if editable -->
+					[If Current_Item.Variables.Editable]
+						<!-- Disambiguate -->
+						[Set Current_Property_Alias to Form.Property_Alias /]
+						
+						<!-- Add value to target -->
+						<!-- TODO weird "save" placement because "to" clauses fail with it after (still operators) -->
+						[Set Current_Item.[Current_Property_Alias no_wrap /] save to Form.Value /]
+						
+						<!-- Close the window -->
+						[External_Script]
+							// Close window
+							// TODO hack
+							Jelly.Interface.Close_Top_Window();
+						[/External_Script]
+					[/If]
+				[/Current_Action.Variables.Item]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

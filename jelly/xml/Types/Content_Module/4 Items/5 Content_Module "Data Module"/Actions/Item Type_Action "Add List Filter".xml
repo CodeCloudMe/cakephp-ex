@@ -1,0 +1,39 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add List Filter" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add List Filter{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Add Filter Link -->
+					[Link to Execute]Add Filter[/Link]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only -->
+				
+					<!-- Create new Property List Filter -->
+					[New Property_List_Filter]
+						<!-- Disambiguate -->
+						[Set Current_New_Item to This /]
+						
+						[Set Current_New_Item.Property_Alias to "Name" /]
+						[Set Current_New_Item.Operator to "includes" /]
+						[Set Current_New_Item.Value to "Home" /]
+				
+						[Save Current_New_Item /]
+						
+						[Add Current_New_Item to Current_Action.Target.List_Filter /]
+				
+						[Save Current_Action.Target /]
+					[/Property_List_Filter]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

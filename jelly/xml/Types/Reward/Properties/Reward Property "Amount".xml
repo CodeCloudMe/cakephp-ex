@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Reward Property "Amount" --}
+		{Property}
+			{Type}Reward{/Type}
+			{Name}Amount{/Name}
+			{Value_Type}Number{/Value_Type}
+		{/Property}
+	
+{/Jelly}

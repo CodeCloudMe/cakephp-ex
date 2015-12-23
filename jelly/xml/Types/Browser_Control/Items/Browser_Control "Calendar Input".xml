@@ -1,0 +1,28 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Browser_Control "Calendar Input" --}
+		{Browser_Control}
+			{Name}Calendar Input{/Name}
+			{Content}
+				<div class="Jelly_Calendar">
+					<div class="Jelly_Calendar_Header">
+						<div class="Jelly_Calendar_Header_Previous"><a href="#" class="Do_Not_Click_On_Hover" onclick="Jelly.Interface.Generate_Date_Selector('INPUT_NAMESPACE', \{'Value': new Date(CALENDAR_YEAR, CALENDAR_MONTH, 0,0,0,0)\});Jelly.Interface.Timeout(function()\{document.getElementById('INPUT_NAMESPACE_Date').click();\}, 100);return false;">&lt;</a></div>			
+						<div class="Jelly_Calendar_Header_Next"><a href="#" class="Do_Not_Click_On_Hover" onclick="Jelly.Interface.Generate_Date_Selector('INPUT_NAMESPACE', \{'Value': new Date(CALENDAR_YEAR, CALENDAR_MONTH + 1, 1,0,0,0)\});Jelly.Interface.Timeout(function()\{document.getElementById('INPUT_NAMESPACE_Date').click();\}, 100);return false;">&gt;</a></div>
+						<div class="Jelly_Calendar_Header_Month">CALENDAR_MONTH_NAME</div>
+					</div>
+					<div class="Jelly_Calendar_Days">
+						<div class="Jelly_Calendar_Days_Day">S</div>
+						<div class="Jelly_Calendar_Days_Day">M</div>
+						<div class="Jelly_Calendar_Days_Day">T</div>
+						<div class="Jelly_Calendar_Days_Day">W</div>
+						<div class="Jelly_Calendar_Days_Day">T</div>
+						<div class="Jelly_Calendar_Days_Day">F</div>
+						<div class="Jelly_Calendar_Days_Day">S</div>
+						<br class="Jelly_Clear" />
+					</div>
+				</div>
+		{/Content}
+		{/Browser_Control}
+	
+{/Jelly}

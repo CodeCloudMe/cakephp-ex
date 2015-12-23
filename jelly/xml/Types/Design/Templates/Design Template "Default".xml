@@ -1,0 +1,16 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Design Template "Default" --}
+	
+		{Template}
+			{Type}Design{/Type}
+			{Name}Default{/Name}
+			{Content}
+				[If Design.Content Exists]
+					[Design.Content /]
+				[/If]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

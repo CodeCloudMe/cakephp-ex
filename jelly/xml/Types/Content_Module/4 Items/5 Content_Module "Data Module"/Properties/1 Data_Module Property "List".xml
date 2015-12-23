@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Property "List" --}
+		{Property}
+			{Type}Data_Module{/Type}
+			{Name}List{/Name}
+			{Relation}Many-To-One{/Relation}
+			{Value_Type}Type{/Value_Type}
+		{/Property}
+	
+{/Jelly}

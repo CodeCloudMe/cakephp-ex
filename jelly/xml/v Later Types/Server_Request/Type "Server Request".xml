@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Server Request" --}
+		{Type}
+			{Name}Server Request{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Server Requests{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Logs{/Package}
+		{/Type}
+	
+{/Jelly}

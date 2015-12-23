@@ -1,0 +1,9 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- Privacy "Private" --}
+		{Privacy}
+			{Name}Private{/Name}
+			{Explanation}Only you and [Site.Name/] administrators can see this.{/Explanation}
+		{/Privacy}
+{/Jelly}

@@ -1,0 +1,48 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Set Property Relation Clean" --}
+		{Action}
+			{Name}Set Property Relation Clean{/Name}
+			{Content}
+				<!-- Admin only -->
+				[Admin]
+					<!-- Pass current property to action -->
+					[Input "Hidden" with Name = "Current Property", Value = Current_Property /]
+					
+					<label>
+						[If Current_Property.Relation is "Many-To-One"]
+							[Input "Check Box" with Name = "Allow Multiple Values", Value = false, Execute_On_Change /]
+						[/If]
+						[If Current_Property.Relation is "Many-To-Many"]
+							[Input "Check Box" with Name = "Allow Multiple Values", Value = true, Execute_On_Change /]
+						[/If]
+						[If Current_Property.Relation is "One-To-Many"]
+							[Input "Check Box" with Name = "Allow Multiple Values", Value = true, Execute_On_Change /]
+						[/If]
+						Allow multiple values
+					</label>
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Admin only -->
+				[Admin]
+					<!-- Disambiguate -->
+					[Set Current_Property to Form.Current_Property /]
+					
+					<!-- Check if the user specified multiple values -->
+					[If Form.Allow_Multiple_Values]
+						[Then]
+							[Set Current_Property.Relation to "Many-To-Many" /]
+						[/Then]
+						[Else]
+							[Set Current_Property.Relation to "Many-To-One" /]
+						[/Else]
+					[/If]
+					
+					<!-- Save the property -->
+					[Save Current_Property /]
+				[/Admin]
+			{/Code}
+		{/Action}
+{/Jelly}

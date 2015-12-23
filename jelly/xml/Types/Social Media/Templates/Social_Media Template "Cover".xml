@@ -1,0 +1,77 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Social_Media Template "Cover" --}
+		{Template}
+			{Type}Social_Media{/Type}
+			{Name}Cover{/Name}
+			{Content}
+				<!-- Social_Media Template "Cover" -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Item to this /]
+				
+				<div class="Social_Media_Wrapper">
+					<figure class="[PHP]	
+							$Path = "[Social_Media.Path no_wrap/]";
+		
+							// Determine service
+							$Path_Host = parse_url($Path)\['host'\];
+		
+							// Map hosts
+							switch ($Path_Host)
+							\{	
+								case 'twitter.com':
+								case 'www.twitter.com':
+									return 'Twitter';
+									break;
+								
+								case 'facebook.com':
+								case 'www.facebook.com':
+								case 'fb.me':
+									return 'Facebook';
+									break;
+								
+								case 'linkedin.com':
+								case 'www.linkedin.com':
+								case 'lnkd.in':
+									return 'LinkedIn';
+									break;
+								
+								case 'pinterest.com':
+								case 'www.pinterest.com':
+									return 'Pinterest';
+									break;
+
+								case 'plus.google.com':
+									return 'Google_Plus';
+									break;
+								
+								case 'tumblr.com':
+								case 'www.tumblr.com':
+									return 'Tumblr';
+									break;
+								
+								case 'instagram.com':
+								case 'www.instagram.com':
+								case 'instagr.am':
+									return 'Instagram';
+									break;
+								
+								default:
+									if (strpos($Path_Host, 'tumblr.com') !== false)
+										return 'Tumblr';
+										
+									if (strpos($Path_Host, 'better.space') !== false)
+										return 'Better';
+									else
+										return '';
+									break;
+							\}
+						[/PHP]"></figure>
+				</div>
+			{/Content}
+			{Package}Website{/Package}
+		{/Template}
+	
+{/Jelly}

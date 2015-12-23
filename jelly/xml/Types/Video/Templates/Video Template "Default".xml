@@ -1,0 +1,61 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Video Template "Default" --}
+		{Template}
+			{Type}Video{/Type}
+			{Name}Default{/Name}
+			{Content}
+				[If Video.Path]
+					[Then]
+						<div class="Video_Wrapper">
+							[PHP]	
+								$Path = "[Video.Path no_wrap/]";
+				
+								// Determine service
+								$Path_Host = parse_url($Path)\['host'\];
+				
+								// Map hosts
+								switch ($Path_Host)
+								\{	
+									case 'youtu.be':
+									case 'youtube.com':
+									case 'www.youtube.com':
+										$OEmbed_URL = 'http://www.youtube.com/oembed?format=json&url=' . $Path;
+										break;
+
+									case 'www.vimeo.com':								
+									case 'vimeo.com':
+										$OEmbed_URL = 'https://vimeo.com/api/oembed.json?url=' . $Path;
+										break;
+						
+									case 'vine.co':
+									case 'www.vine.co':
+										$OEmbed_URL = 'https://vine.co/oembed.json?url=' . $Path;
+										break;
+
+									default:
+										return "We don't support this video provider! Currently limited to YouTube, Vine, and Vimeo.";
+										break;
+								\}
+				
+								$OEmbed_Response = Get_Remote_Content($OEmbed_URL);
+								$OEmbed_String = $OEmbed_Response\['Body'\];
+								$OEmbed_JSON = json_decode($OEmbed_String);
+								if($OEmbed_JSON !== null)
+									return $OEmbed_JSON->html;
+								else
+								\{
+									return "We're sorry, we're having trouble loading this video." . $OEmbed_URL;
+								\}
+							[/PHP]
+						</div>
+					[/Then]
+					[Else]
+						Video URL not set.
+					[/Else]
+				[/If]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,37 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "RSS" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}RSS{/Name}
+			{Content}
+				[Header "Content-Disposition" Value "filename=[Format as "Jelly Attribute"][Format as "File Name"][Site:Name /][/Format][/Format].rss" /]<?xml version="1.0"?>
+				<rss version="2.0">
+					<channel>
+						[Site]<title>[Format as "HTML Title"][Site:Name /][/Format]</title>
+						<description>
+							[Site:Summary /]
+						</description>[/Site]
+						<link>http://[HTTP_Host /]</link>
+						<docs>http://[HTTP_Host /]/RSS</docs>
+						<generator>Jelly</generator>
+						[50 Blog_Posts by Publication_Date Descending]
+							<item>
+								<title>[Blog_Post:Name /]</title>
+								<guid>http://[HTTP_Host /]/Blog_Post/[Blog_Post:ID no_wrap /]</guid>
+								<link>http://[HTTP_Host /]/Blog_Post/[Blog_Post:ID no_wrap /]</link>
+								<category>Blog Post</category>
+								<description>
+									[Blog_Post:Summary /]
+								</description>
+								<pubDate>[Blog_Post:Publication_Date][Short_Day_Name /], [Day /] [Short_Month_Name /] [Year /] [Hour_24 /]:[Minute /]:00 EST[/Blog_Post:Publication_Date]</pubDate>
+							</item>
+						[/Blog_Post]
+					</channel>
+				</rss>
+			{/Content}
+			{Content_Type}application/rss+xml{/Content_Type}
+		{/Template}
+	
+{/Jelly}

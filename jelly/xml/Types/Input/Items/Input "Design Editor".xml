@@ -1,0 +1,16 @@
+{?xml version="1.0"?}
+{Jelly}	
+	{!-- Input "Design Editor" --}
+		{Input}
+			{Name}Design Editor{/Name}
+			{Content}
+				<!-- TODO : does this show up, is this used? untouched--> 
+				<div>					
+					<div class="Jelly_Design_Editor_Box" id="[Input.Namespace No_Wrap /]_HTML_Editor">
+						[Input "Text Area" with Name Input.Name, Class Input.Class, Style Input.Style, Attributes Input.Attributes, Value Input.Value, Parent_Input = This /]
+					</div>
+				</div>
+			{/Content}
+		{/Input}
+	
+{/Jelly}

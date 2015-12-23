@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Time Template "Default" --}
+		{Template}
+			{Type}Time{/Type}
+			{Name}Default{/Name}
+			{Content}[Hour /]:[Minute/] [Period/]{/Content}
+		{/Template}
+	
+{/Jelly}

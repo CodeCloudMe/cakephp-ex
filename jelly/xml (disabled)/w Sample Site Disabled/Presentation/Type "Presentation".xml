@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Presentation" --}
+		{Type}
+			{Name}Presentation{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Presentations{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Local{/Package}
+			{Starred}1{/Starred}
+			{Published}1{/Published}
+		{/Type}
+	
+{/Jelly}

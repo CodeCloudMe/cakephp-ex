@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Accurat" --}
+		{Presentation}
+			{Name}Accurat{/Name}
+			{Website}http://www.accurat.it/{/Website}
+			{Description}Accurat is a global data-driven research, design, and innovation firm. Accurat helps global leaders identify core challenges and develops custom data-driven solutions that seamlessly integrate into internal workflows.{/Description}
+			{Picture}Accurat{/Picture}
+		{/Presentation}
+	
+{/Jelly}

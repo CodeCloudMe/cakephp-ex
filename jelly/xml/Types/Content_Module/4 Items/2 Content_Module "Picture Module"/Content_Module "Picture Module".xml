@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Content_Module "Picture Module" --}
+		{Type}
+			{Name}Picture Module{/Name}
+			{Plural_Name}Picture Modules{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Design{/Package}
+			{Parent_Type}Content_Module{/Parent_Type}
+		{/Type}
+	
+{/Jelly}

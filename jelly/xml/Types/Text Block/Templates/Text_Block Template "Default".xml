@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Text_Block Template "Default" --}
+		{Template}
+			{Type}Text_Block{/Type}
+			{Name}Default{/Name}
+			{Content}[This.Content /]{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- RSVP_Module Template "Default" --}
+		{Template}
+			{Type}RSVP_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_RSVP_Module to This /]
+				
+				<!-- RSVP -->
+				[Current_Item.Action "RSVP" no_refresh /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

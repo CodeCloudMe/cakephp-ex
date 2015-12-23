@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "Less Styles" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}Less Styles{/Name}
+			{Content}			
+				/* Reset Style */
+				[CSS_File "Reset CSS" as File /]
+			{/Content}
+			{Content_Type}text/css{/Content_Type}
+		{/Template}
+	
+{/Jelly}

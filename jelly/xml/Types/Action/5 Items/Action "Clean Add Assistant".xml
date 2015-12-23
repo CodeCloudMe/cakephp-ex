@@ -1,0 +1,51 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Clean Add Assistant" --}
+		{Action}
+			{Name}Clean Add Assistant{/Name}
+			{Content}
+				<!-- Action "Clean Add Assistant" Content -->
+
+				<!-- Admin only -->
+				[Admin]
+					<span class="Add_Item_Menu">
+						[Action "Create List" from database]
+							[Link to this into "Window" with Class = "Add_List_Link"]	
+								<span class="Content">
+									<span class="Icon">
+										<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/list.svg">
+									</span>
+									<span class="Label">
+										List
+									</span>
+								</span>
+							[/Link]
+						[/Action]
+		
+						[Link to "/type/page/create_item" into "Window" with Class = "Add_Page_Link"]
+							<span class="Content">
+								<span class="Icon">
+									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/file.svg">
+								</span>
+								<span class="Label">
+									Page
+								</span>
+							</span>
+						[/Link]
+		
+						[Action "Import Google Sheet"]
+							[Link to this into "Window" with Class = "Import_Spreadsheet_Link"]Import Spreadsheet...[/Link]
+						[/Action]
+						[Action "Import Users From Google Sheet"]
+							[Link to this into "Window" with Class = "Import_Spreadsheet_Link"]Import Users...[/Link]
+						[/Action]
+					</span>
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Does nothing -->
+			{/Code}
+		{/Action}
+	
+{/Jelly}

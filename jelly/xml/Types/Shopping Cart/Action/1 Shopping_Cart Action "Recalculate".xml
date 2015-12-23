@@ -1,0 +1,51 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Action "Recalculate" --}
+		{Type_Action}
+			{Type}Shopping_Cart{/Type}
+			{Name}Recalculate{/Name}
+			{Content/}
+			{Code}
+				<!-- Disambiguate -->
+				[Set Current_Shopping_Cart to Current_Action.Target /]
+
+				<!-- Clear subtotal + app fee -->
+				[Set Current_Shopping_Cart.Subtotal to 0 /]
+				[Set Current_Shopping_Cart.Application_Fee to 0 /]
+
+				<!-- Add item subtotals to subtotal -->
+				[Current_Shopping_Cart.Item as_attachment]
+
+					<!-- Recalculate the item -->
+					[Shopping_Cart_Item.Action "Recalculate" as Execute /]
+	
+					<!-- Add item subtotal to cart subtotal -->
+					[Set Current_Shopping_Cart.Subtotal to Current_Shopping_Cart.Subtotal + Shopping_Cart_Item.Subtotal /]
+
+					<!-- Add item application fee to cart application fee total --> 
+					[Set Current_Shopping_Cart.Application_Fee to Current_Shopping_Cart.Application_Fee + Shopping_Cart_Item.Application_Fee/]
+
+				[/Current_Shopping_Cart.Item]
+
+				<!--Add reward amount + app fee --> 
+				[If Current_Shopping_Cart.Reward]
+
+					<!-- Add reward to subtotal --> 
+					[Set Current_Shopping_Cart.Subtotal to Current_Shopping_Cart.Subtotal + Current_Shopping_Cart.Reward.Amount /]
+	
+					<!-- Add application fee to application fee total --> 
+					[Set Current_Shopping_Cart.Application_Fee to Current_Shopping_Cart.Application_Fee + (Current_Shopping_Cart.Reward.Amount * .025)/]
+				[/If]
+
+				<!--Add processing fee --> 
+				[Set Current_Shopping_Cart.Processing_Fee to [Math (Current_Shopping_Cart.Subtotal) * .029 + 0.30/] /]
+
+				<!--Calculate total --> 
+				[Set Current_Shopping_Cart.Total = [Math Current_Shopping_Cart.Subtotal + Current_Shopping_Cart.Application_Fee + Current_Shopping_Cart.Processing_Fee + Current_Shopping_Cart.Discount /] /]
+
+				[Save Current_Shopping_Cart [If Execute_With_No_Refresh]No_Refresh[/If]/]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

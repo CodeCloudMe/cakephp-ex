@@ -1,0 +1,22 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input Template "Result" --}
+		{Template}
+			{Type}Input{/Type}
+			{Name}Result{/Name}
+			{Content}
+				<span class="Jelly_Action_Input_Result" id="[Current_Input_Namespace No_Wrap /]_Result"></span>
+				[External_Script]
+					Jelly.Actions.Register_Action_Input_Result_Element(
+							\{
+								Namespace: "[Current_Action_Namespace No_Wrap /]", 
+								Alias: "[Current_Input.Variables.Alias No_Wrap /]",
+								Element: document.getElementById("[Current_Input_Namespace No_Wrap /]_Result")
+							\}
+						);
+				[/External_Script]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

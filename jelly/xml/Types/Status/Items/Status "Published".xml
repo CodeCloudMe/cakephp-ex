@@ -1,0 +1,8 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Status "Published" --}
+		{Status}
+			{Name}Published{/Name}
+		{/Status}
+{/Jelly}

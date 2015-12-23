@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Font "Inconsolata" --}
+		{Web_Font}
+			{Name}Inconsolata{/Name}
+			{URL}https://fonts.googleapis.com/css?family=Inconsolata:400,700{/URL}
+		{/Web_Font}
+	
+{/Jelly}

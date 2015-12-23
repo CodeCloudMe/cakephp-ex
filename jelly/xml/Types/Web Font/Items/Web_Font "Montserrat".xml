@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Font "Montserrat" --}
+		{Web_Font}
+			{Name}Montserrat{/Name}
+			{URL}https://fonts.googleapis.com/css?family=Montserrat:400,700{/URL}
+		{/Web_Font}
+	
+{/Jelly}

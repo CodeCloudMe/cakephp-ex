@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Property "Completed" --}
+		{Property}
+			{Type}Shopping_Cart{/Type}
+			{Name}Completed{/Name}
+			{Value_Type}Boolean{/Value_Type}
+		{/Property}
+	
+{/Jelly}

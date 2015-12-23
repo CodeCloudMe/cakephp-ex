@@ -1,0 +1,53 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add Text Module" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add Text Module{/Name}
+			{Content}
+				[Admin]
+					[Link to Execute]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/excerpt.svg"> Text[/Link]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin only -->
+					
+					<!-- Create new Text Module -->
+					[New Text_Module]
+						<!-- Disambiguate -->
+						[Set New_Text_Module to This /]
+						
+						<!-- Set Body Default -->
+						[Set New_Text_Module.Body to "Type here..." /]
+						
+						<!-- Save module -->
+						[Save New_Text_Module /]
+						
+						<!-- Add module to target -->
+						[Add New_Text_Module to Current_Action.Target.Content_Module /]
+						
+						<!-- Focus input on refresh -->
+						[External_Script]
+							Jelly.Handlers.Register_Handler(
+							\{
+								"Event": "Refreshed",
+								"Code": function (Parameters)
+								\{
+									console.log("REFR");
+									// Click links inside the link finder
+									// TODO could find it smarter
+									Jelly.jQuery("#[New_Text_Module.ID no_wrap /]_Edit_Link_Finder a").click();
+								\}
+							\});
+						[/External_Script]
+					[/New]
+					
+					<!-- Save target -->
+					[Save Current_Action.Target /]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

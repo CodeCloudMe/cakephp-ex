@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Date_Time Template "Badge" --}
+		{Template}
+			{Type}Date_Time{/Type}
+			{Name}Badge{/Name}
+			{Content}[Month /] [Date /], [Year /], [Hour /]:[Minute/] [Period/]{/Content}
+		{/Template}
+	
+{/Jelly}

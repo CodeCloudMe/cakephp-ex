@@ -1,0 +1,28 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Browser_Control "HTML Uploader" --}
+		{Browser_Control}
+			{Name}HTML Uploader{/Name}
+			{Content}
+				<form action="[Globals.URL_Prefix No_Wrap /]/" method="post" enctype="multipart/form-data" target="NAMESPACE_Target_Frame">
+					<input type="hidden" name="Submit_Action" value="Upload_FILETYPE" />
+					<input type="hidden" name="Submit_Namespace" value="" />
+					<input type="hidden" name="Submit_Method" value="Form" />
+					<input type="hidden" name="File" value="File_Data" />
+					<input type="hidden" name="File_Type" value="FILETYPE" />
+					<input type="hidden" name="File_Upload" value="True" />
+					<input type="hidden" name="Action_Namespace" value="NAMESPACE" />
+					<div>
+						<input type="file" name="File_Data" />
+					</div>
+					<div>
+						<input type="submit" value="Upload" />
+					</div>
+					<iframe name="NAMESPACE_Target_Frame" style="width: 1px; height: 1px; visibility: hidden;">
+					</iframe>
+				</form>
+			{/Content}
+		{/Browser_Control}
+	
+{/Jelly}

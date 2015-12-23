@@ -1,0 +1,17 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "Name" --}
+	
+		{Property}
+			{ID}59123781{/ID}
+			{Type}Item{/Type}
+			{Value_Type}Text{/Value_Type}
+			{Name}Name{/Name}
+			{Alias}Name{/Alias}
+			{Data_Name}Name{/Data_Name}
+			{Core}1{/Core}
+			{Viewable_By}Public{/Viewable_By}
+		{/Property}
+	
+{/Jelly}

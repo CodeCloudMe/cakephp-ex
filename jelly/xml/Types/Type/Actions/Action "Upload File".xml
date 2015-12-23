@@ -1,0 +1,97 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Upload File" --}
+		{Action}
+			{Name}Upload File{/Name}
+			{Content}
+				<span
+					id="[Namespace No_Wrap /]_Uploader_Wrapper"
+					class="Jelly_Uploader_Wrapper"
+				>
+
+					<!-- Pass type to action -->
+					[Input "Hidden" with Name = "Type Alias", Value = Current_Action.Variables.Type_Alias /]
+
+					<span class="Input_Row_A">
+						<span class="Input_Row_A_Image" id="[Current_Action.Namespace no_wrap /]_Badge">
+						</span>
+						[Ignore]
+							<span class="Input_Row_A_Label">
+								Upload:
+							</span>
+						[/Ignore]
+						<span class="Input_Row_A_Link">
+							<span class="File_Input_Wrapper">
+								Upload [If Current_Action.Variables.Type_Name][Then][Current_Action.Variables.Type_Name/][/Then][Else]File[/Else][/If]...
+								<input id="[Namespace No_Wrap /]_Uploader_Button" type="file" class="Jelly_Uploader_Hidden_Button" multiple [If Current_Action.Variables.Type_Alias = "Picture"]accept="image/gif, image/jpeg, image/png"[/If]/>
+							</span>
+						</span>
+					</span>
+
+
+		
+						[ignore]
+					<img src="[Globals.URL_Prefix No_Wrap /]/jelly/images/Loading.gif" align="absmiddle" id="[Namespace No_Wrap /]_Loading" width="16" height="16" class="Jelly_Loading" style="display:none; visibility:visible;"/>
+					[/ignore]
+				</span>
+			
+				[External_Script]
+					// TODO - error handling
+					// TODO - convert to something like Jelly.Actions.Execute_Upload();
+	
+					// Create action reference with calling element.
+					var Action_Reference = Jelly.References.Create_Global_Reference();
+					var Calling_Element = document.getElementById('[Namespace No_Wrap /]_Uploader_Wrapper');
+					var Calling_Reference = Jelly.References.Get_Reference_For_Element(Calling_Element);
+					Action_Reference\["Calling_Reference"\] = Calling_Reference;
+
+					// Create listener for input change / drag
+					// TODO- changed No_Wrap_At_All to No_Wrap....
+					Jelly.jQuery("#[Namespace No_Wrap /]_Uploader_Wrapper").fileupload(
+							\{
+								[If Current_Action.Variables.Type_Alias = "Picture"]acceptFileTypes:/(\.|\/)(gif|jpe?g|png)$/i,[/If]							
+								autoUpload: true,
+								paramName: "File_Data",
+								url: "/?Action/Add/Execute:No_Refresh",
+								formData:
+									\{
+										'No_Wrap': true,
+										'Metadata_Namespace': Action_Reference\['Namespace'\],
+										'Preserve_Namespace': true,
+										'Uploaded_File': 'File_Data',
+										'Uploaded_File_Type': 'File',
+										'Uploaded_File_Upload': 'true',
+										'Edited_Status': 'Published',
+										'Raw': true,
+										'Add_Type': 'File',
+										'Add_Type_Type': 'Type'
+									\},
+								dataType: 'html',
+								start: function (e, data) \{
+									/* TODO - temp, before deeper file uploads  */
+									 if (document.getElementById('[Namespace No_Wrap /]_Loading'))						
+										document.getElementById('[Namespace No_Wrap /]_Loading').style.display = "inline";
+								\},
+								done: function (e, data) \{
+										/* TODO - temp, before deeper file uploads  */
+										if (document.getElementById('[Namespace No_Wrap /]_Loading'))						
+											document.getElementById('[Namespace No_Wrap /]_Loading').style.display = "none";
+										Jelly.Utilities.Execute_Scripts(data.result);
+										Jelly.References.Remove_Reference(Action_Reference);										
+										Jelly.References.Refresh_All();
+									\},
+								progressall: function (e, data) \{
+										Jelly.Debug.Log('progress all');
+										Jelly.Debug.Log(data);
+								\}
+							\}
+						);
+				[/External_Script]
+			{/Content}
+			{Code}
+				<!-- Does nothing -->
+			{/Code}
+		{/Action}
+	
+{/Jelly}

@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Navigation "Root" --}
+		{Navigation}
+			{Name}Root{/Name}
+			{Navigation_Item}Community{/Navigation_Item}
+			{Navigation_Item}Get_Involved{/Navigation_Item}
+			{Package}Local{/Package}
+		{/Navigation}
+	
+{/Jelly}

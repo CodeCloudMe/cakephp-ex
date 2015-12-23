@@ -1,0 +1,51 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Move" --}
+		{Action}
+			{Name}Move{/Name}
+			{Content}
+				<!-- Move Item Input -->
+				[Input "Hidden" with Alias "Move_Item", Value Move_Item nowrap/]
+				
+				<!-- Directional or by Order -->
+				[If Direction]
+					[Then]
+						<!-- Direction Input -->
+						[Input "Hidden" with Alias "Direction", Value Direction nowrap/]
+						
+						<!-- Execute Link -->
+						[Link to Execute]
+							[If Action.Label Exists]
+								[Then]
+									[Action:Label /]
+								[/Then]
+								[Else]
+									Move [Move_Item:Self_Type:Name /] [Action:Direction/]
+								[/Else]
+							[/If]
+						[/Link]
+					[/Then]
+					[Else]
+						<!-- Order Select -->
+						<select id="[Action:Namespace No_Wrap /]_Order_Value" name="Order" onchange="Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': this\});return false;">
+							[[Action:Move_Item:Self_Type:Alias No_Wrap /] from Database by Order nowrap]
+								<option value="[This:Order No_Wrap /]" [If This.Order = Action.Move_Item.Order]selected="selected"[/If]>[This:Order /]</option>
+							[/[Action:Move_Item:Self_Type:Alias No_Wrap /]]
+						</select>
+					[/Else]
+				[/If]
+			{/Content}
+			{Code}
+				<!-- Move Item -->
+				[Move Form.Move_Item [If Form.Direction][Then][Form:Direction No_Wrap/][/Then][Else]To [Form:Order No_Wrap /][/Else][/If] /]
+				
+				<!-- Refresh Page -->
+				[External_Script]
+					Jelly.References.Item_Changed("[Form:Move_Item:Self_Type as Alias No_Wrap /]");
+					Jelly.References.Item_Changed([Form:Move_Item:ID No_Wrap /]);
+				[/External_Script]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Picture Template "Add Link" --}
+		{Template}
+			{Type}Picture{/Type}
+			{Name}Add Link{/Name}
+			{Content}
+				<!-- Upload File -->
+				[Action "Upload File" from database with Type_Alias = This.Type.Alias, Type_Name = This.Type.Name /]
+				
+				<!-- Add from URL -->
+				[Action "Add Item From URL" from Database with Type_Alias = "Picture", Result_Element_ID = "[Current_Action.Namespace no_wrap /]_Badge" /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

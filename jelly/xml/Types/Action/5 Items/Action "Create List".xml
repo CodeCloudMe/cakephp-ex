@@ -1,0 +1,116 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Create List" --}
+		{Action}
+			{Name}Create List{/Name}
+			{Content}
+				<!-- Admin Only -->
+				[Admin]
+					[If Parent_Type_Alias]
+						[Type [Parent_Type_Alias no_wrap/] from Database]
+							[Set Parent_Type to This/]
+							[Input "Hidden" with Name = "Parent Type", Value = Parent_Type/]
+						[/Type]
+					[/If]
+					<div class="Window Create_Other_List">
+						<a href="#" class="Close_Button" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+						
+						<span class="Header">
+							Name your list
+						</span>
+						
+						<span class="Section">
+							<span class="Input">
+								[Input "Text Field" with Name = "List Name" /]
+							</span>
+						</span>
+						
+						<span class="Execute">
+							[Link to Execute]Create[/Link]
+						</span>
+					</div>
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action.Namespace no_wrap /]"),
+							"Event": "Added",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Created";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+								
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Admin only -->
+				[Admin]
+					[If Form.List_Name]
+						[Then]
+							<!-- Create type -->
+							[New Type with Name = Form.List_Name, Starred = True, Package = "Local"]
+								<!-- Disambiguate -->
+								[Set New_Type to Type/]
+								
+								<!-- Star type -->
+								[Set New_Type.Starred to true /]
+								
+								<!-- Save new type -->
+								[Save New_Type/]
+								
+								[External_Script]
+								
+									/* TODO - Doesn't work */
+									Jelly.Handlers.Call_Handler_For_Target(
+										\{
+											"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+											"Event": "Added",
+											"Item": "[New_Type.ID no_wrap /]",
+											"Item_Alias": "[New_Type.Alias no_wrap/]",
+											"Item_Type": "Type"
+										\}
+									);
+																		
+									// Hide inspector
+									Jelly.Interface.Hide_Inspector();
+								[/External_Script]
+								
+								<!-- Add to navigation root -->
+								[Folder "Root" from database]
+									[Set Current_Folder to this /]
+									[Add New_Type to Folder.Child_Item /]
+								[/Folder]
+								
+								[If Form.Parent_Type]
+									[Then]
+										<!-- Create property --> 
+										[New [Form.Parent_Type.Alias no_wrap/]]
+											[Set Form.Item to This/]
+											[Set Form.Value_Type to New_Type.Alias/]
+											[Action "Create Property Clean" as "Execute"/]
+										[/New]
+									[/Then]
+									[Else]
+										<!-- Manage new type -->
+										[If Form.Parent_Type]
+											[Go to New_Type /]
+										[/If]
+									[/Else]
+								[/If]								
+							[/New Type]
+						[/Then]
+						[Else]
+							Enter a name for your list.
+						[/Else]
+					[/If]
+				[/Admin]
+			{/Code}
+		{/Action}
+{/Jelly}

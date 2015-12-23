@@ -1,0 +1,56 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Template "Editing" --}
+		{Template}
+			{Type}Data_Module{/Type}
+			{Name}Editing{/Name}
+			{Content}
+				<!-- Show default template -->
+				[This as Default /]
+				
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<div class="Module_Controls">
+						<!-- Change View -->
+						<!-- TODO Clean up link -->
+						<div class="Group">
+							[Link to "/Data_Module/[This.ID no_wrap /]/Change_Data" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/wrench.svg"> View[/Link]
+						</div>
+						
+						<!-- Change Size -->
+						<div class="Group">
+							[Current_Content_Module.Action "Change Display" /]
+						</div>
+						
+						<!-- Change Size -->
+						<div class="Group">
+							[Current_Content_Module.Action "Change Size" /]
+						</div>
+						
+						<!-- Change Width -->
+						<div class="Group">
+							[Current_Content_Module.Action "Change Width" /]
+						</div>
+						
+						<!-- Change Overlay -->
+						<div class="Group">
+							[Current_Content_Module.Action "Change Overlay" /]
+						</div>
+						
+						<!-- Delete -->
+						<div class="Group">
+							[Link to "/Data_Module/[This.ID no_wrap /]/Delete" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg"> Delete[/Link]
+						</div>
+						
+						<!-- Done -->
+						[Link to "/[Current_Item.Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Viewing_Content_Module:Content_Module_ID=[Current_Content_Module.ID no_wrap /]" into "[Current_Content_Module_Namespace no_wrap /]"]
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/check-thin.svg"> Done
+						[/Link]
+					</div>
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

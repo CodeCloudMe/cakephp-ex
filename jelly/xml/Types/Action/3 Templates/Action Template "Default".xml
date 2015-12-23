@@ -1,0 +1,85 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action Template "Default" --}
+		{Template}
+			{Type}Action{/Type}
+			{Name}Default{/Name}
+			{Less_Style}
+				label \{display: block;\}
+			{/Less_Style}
+			{Content}
+				<!-- Store action and namespace for disambiguation later. -->
+				[Set Current_Action to This /]
+				[Set Current_Action_Namespace to This.Namespace /]
+
+
+				<!-- Show in toolbars --> 
+				[External_Script]
+					if (Jelly.jQuery("#Jelly_Sidebar .Folder_Item.Item_[Current_Action.ID no_wrap /]").length)
+					\{
+						Jelly.jQuery("#Jelly_Sidebar .Folder_Item").removeClass("Selected");
+						Jelly.jQuery("#Jelly_Sidebar .Folder_Item.Item_[Current_Action.ID no_wrap /]").addClass("Selected");
+					\}
+					if (Jelly.jQuery("#Jelly_Toolbar .Navigation_Item.Item_[Current_Action.ID no_wrap /]").length)
+					\{
+						Jelly.jQuery("#Jelly_Toolbar .Navigation_Item").removeClass("Selected");
+						Jelly.jQuery("#Jelly_Toolbar .Navigation_Item.Item_[Current_Action.ID no_wrap /]").addClass("Selected");
+					\}
+					if (Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item.Item_[Current_Action.ID no_wrap /]").length)
+					\{
+						Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item").removeClass("Selected");
+						Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item.Item_[Current_Action.ID no_wrap /]").addClass("Selected");
+					\}
+				[/External_Script]
+
+
+				<!-- Register execute handler -->
+				[External_Script]
+					Jelly.Handlers.Register_Handler(\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Execute",
+							"Code": function() \{
+									Jelly.Actions.Execute_By_Namespace(
+											\{
+												Namespace: "[Current_Action_Namespace No_Wrap /]"
+											\}
+										);
+								\}
+						\});
+				[/External_Script]
+
+				<!-- Set result behavior default to manual. -->
+				[If not Current_Action.Variables.Result_Behavior]
+					[Set Current_Action.Variables.Result_Behavior = "Append"/]
+				[/If]
+
+				<!-- Store action in hidden input. -->
+				<!-- TODO: necessary? Should Javascript handle this implicitly -->
+				[Input "Hidden" with Name = "Action", Value = Current_Action.Alias /]
+
+				<!-- Render content. -->
+				[Current_Action.Content /]
+
+				<!-- Handle result behaviors... --> 
+			
+				[If Current_Action.Variables.Result_Behavior = "Append"]
+					<!-- Handle append result behavior. --> 
+					[Action as "Result"/]
+				[/If]				
+			
+				[If Current_Action.Variables.Result_Behavior = "Replace"]
+					<!-- Handle replace result behavior. --> 
+					[External_Script]
+						Jelly.Actions.Register_Action_Result_Element(
+								\{
+									Namespace: "[Current_Action_Namespace No_Wrap /]", 
+									Result_Element: document.getElementById("[Current_Action_Namespace No_Wrap /]")
+								\}
+							);
+					[/External_Script]
+				[/If]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

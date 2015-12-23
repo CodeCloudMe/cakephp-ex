@@ -1,0 +1,300 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Action "Simple Checkout" --}
+		{Type_Action}
+			{Type}Shopping_Cart{/Type}
+			{Name}Simple Checkout{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Shopping_Cart to Action.Target /]
+
+				<!-- Payment service plugin -->
+				[Payment_Service "Stripe" as "Form_Plugin" /]
+
+				<!-- Join team --> 
+				[If Path_Variables.Team]
+					[Type "Team" from Database]
+						[Set Team_Type to This/]
+						<span id="[Current_Action.Namespace no_wrap /]_Join_Input_Finder">
+							[Input "Hidden" with Name = "Join", Value_Type = Team_Type, Value = Path_Variables.Team /]
+						</span>
+					[/Type]
+				[/If]
+
+				<span class="Purchase_Window">
+					<div class="Cart_Item_Image">
+						[Current_Shopping_Cart.Item]
+							<!-- Picture -->
+							[Item.Specific_Item]
+								[Item.Picture]
+									<div class="Cover_Image" style="background-image: url(/Picture/[This.ID no_wrap /]/File);"></div>
+								[/Item.Picture]
+							[/Item.Specific_Item]
+						[/Current_Shopping_Cart.Item]
+					</div>
+					<div class="Purchase_Details">
+						<!-- Close Button -->
+						<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+						</a>
+
+						<div class="Cart_Item">
+							[Current_Shopping_Cart.Item as_attachment as Simple_Checkout_Row /]
+						</div>
+	
+						<div class="Payment_Information">
+							<div class="Card_Icon">
+								<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/credit-card.svg" style="width: 48px; height: 48px;">
+							</div>
+							<div class="Card_Form">
+								<div class="Card_Name_And_Email">
+									<div class="Name">
+										<label>Name</label>
+										<div>
+											<div class="First_Name">
+												<!-- TODO: Remove values -->
+												[Input "Text Field" with Name = "First Name", Placeholder = "First", Style = "width: 100%;"[Member], Value = Current_Session.User.First_Name[/Member] /]
+											</div>
+											<div class="Last_Name">
+												[Input "Text Field" with Name = "Last Name", Placeholder = "Last", Style = "width: 100%;"[Member], Value = Current_Session.User.Last_Name[/Member] /]
+											</div>
+											<br style="clear: both;" />
+										</div>
+									</div>
+									<div class="Email">
+										<label>Email</label>
+										<div>
+											[Input "Text Field" with Name = "Email", Placeholder = "email@site.com", Style = "width: 100%;"[Member], Value = Current_Session.User.Email_Address[/Member] /]
+										</div>
+									</div>
+								</div>
+								<div class="Card_Information">
+									<div class="Credit_Card_Number">
+										<label>Credit Card</label>
+										<div>[Input "Text Field" with Sensitive = True, Name = "Credit Card Number", Placeholder = "Card Number", Style = "width: 100%;" /]</div>
+									</div>
+									<div class="Credit_Card_Expiration">
+										<label>Expires</label>
+										<div>
+											<div class="Credit_Card_Expiration_Month">
+												[Input "Text Field" with Sensitive = True, Name = "Expiration Month",  Placeholder = "M", Style = "width: 100%;" /]
+											</div>
+											<div class="Credit_Card_Expiration_Separator">
+												/
+											</div>
+											<div class="Credit_Card_Expiration_Year">
+												[Input "Text Field" with Sensitive = True, Name = "Expiration Year", Placeholder = "Y", Style = "width: 100%;" /]
+											</div>
+										</div>
+									</div>
+									<div class="Credit_Card_CVC">
+										<label>CVC</label>
+										<div>[Input "Text Field" with Sensitive = True, Name = "Card Verification Code", Placeholder = "#", Style = "width: 100%;" /]</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="Pay_Button">
+							<!-- Price -->
+							<div class="Price" style="margin-bottom:10px;">
+								[Current_Shopping_Cart.Item As_Attachment]
+									[Set Current_Shopping_Cart_Item_Attachment to This/]
+									[Current_Shopping_Cart_Item_Attachment as "Simple Checkout Price Breakdown"/]
+								[/Current_Shopping_Cart.Item]
+							</div>
+							[Link to Execute with Class = "Button"]Pay $[Current_Shopping_Cart as "Simple Checkout Formatted Total"/][/Link]
+						</div>
+						<div class="Result">
+							[Action as Result /]
+						</div>
+					</div>
+				</div>
+			{/Content}
+			{Code}
+				<!-- Disambiguate -->
+				[Set Current_Shopping_Cart to Current_Action.Target /]
+
+				<!-- Check if each cart item has enough tickets -->
+				[Set Current_Shopping_Cart.Has_Sold_Out_Item to false /]
+				[Current_Shopping_Cart.Item as_attachment]
+					<!-- Disambiguate -->
+					[Set Current_Shopping_Cart_Item to This /]
+	
+					<!-- Get shopping cart item item -->
+					[This.Item]
+						[This.Specific_Item]
+							<!-- Disambiguate -->
+							<!-- TODO: Generalize beyond events -->
+							[Set Current_Event to This /]
+	
+							<!-- Get available ticket count for event -->
+							[Set Current_Event.Remaining_Tickets to Current_Event.Stock /]
+	
+							<!-- Cycle over list of purchased tickets -->
+							[Current_Event.Shopping_Cart as_attachment where Completed]
+								<!-- Subtract purchased tickets from available count -->
+								[Set Current_Event.Remaining_Tickets = Current_Event.Remaining_Tickets - This.Quantity /]
+							[/Current_Event.Shopping_Cart]
+		
+							<!-- Check if tickets are available -->
+							[If Current_Shopping_Cart_Item.Quantity > Current_Event.Remaining_Tickets]
+								[Set Current_Shopping_Cart.Has_Sold_Out_Item to true /]
+								Sorry, only [Current_Event.Remaining_Tickets /] ticket[If Current_Event.Remaining_Tickets > 1]s[/If] left!
+							[/If]
+						[/This.Specific_Item]
+					[/This.Item]
+				[/Current_Shopping_Cart.Item]
+
+				<!-- Name -->
+
+				[If not Form.First_Name or not Form.Last_Name or not Form.Email]
+					[Show Error]Please fill out your full name and email address to purchase a ticket.[/Show]
+				[/If]
+
+				[If not Form.Error]
+					[If Form.Join]
+						[1 User from Database where Name = "[Form.First_Name no_wrap/] [Form.Last_Name no_wrap/]"]
+							[Show Error]Oops! At this stage we can only support one user with a particular name, and this name is taken! Sorry! Can you choose another?[/If]
+						[/1 User]
+		
+						[1 User from Database where Email_Address = Form.Email]
+							[Show Error]We're sorry, we only offer the $1 discount once per community member, and it seems you're already a member.  We removed the discount.  Click pay to continue![/Show]
+		
+							[Set Current_Shopping_Cart.Discount to 0/]
+			
+							[Save Current_Shopping_Cart No_Refresh/]
+		
+							<!-- Recalculate Shopping Cart -->
+							[Current_Shopping_Cart.Action "Recalculate" as Execute with Execute_With_No_Refresh = True /]
+		
+							<!-- Scripts -->
+							[External_Script]
+								// Remove join
+								Jelly.jQuery('#[Form.Calling_Namespace no_wrap /]_Join_Input_Finder \[name=\'Join\'\]').val('');
+				
+								// Refresh
+									[Current_Shopping_Cart.Item As_Attachment]
+										[Set Current_Shopping_Cart_Item to This/]
+										Jelly.References.Trigger_Refresh(\{Kind: 'Element', Element: Jelly.jQuery('\[data-id="[Current_Shopping_Cart_Item.ID no_wrap/]"\]\[data-template="Simple_Checkout_Price_Breakdown"\]').get(0)\});
+										Jelly.References.Trigger_Refresh(\{Kind: 'Element', Element: Jelly.jQuery('\[data-id="[Current_Shopping_Cart.ID no_wrap/]"\]\[data-template="Simple_Checkout_Formatted_Total"\]').get(0)\});
+									[/]
+							[/External_Script]
+						[/1 User]
+					[/If]
+				[/If]
+
+
+				[If not Form.Error]
+					[Set Current_Shopping_Cart.First_Name to Form.First_Name /]
+					[Set Current_Shopping_Cart.Last_Name to Form.Last_Name /]
+					[Set Current_Shopping_Cart.Email to Form.Email /]
+
+					<!-- Check if shopping cart has sold out items -->
+					[If Current_Shopping_Cart.Has_Sold_Out_Item]
+						[Else]
+							<!-- Charge Payment -->
+							[Current_Shopping_Cart.Action "Charge" as Execute with Payment_Service = Form.Payment_Service, Payment_Token = Form.Payment_Token /]
+
+							<!-- Check if payment was successful -->
+							[If Current_Shopping_Cart.Completed]
+			
+								<!-- Create new account if person joined in signup --> 
+								[If Form.Join]
+									[New User]
+										<!-- Set new account details & save --> 
+										[Set New_User to This/]
+										[Set New_User.Name to "[Form.First_Name no_wrap/] [Form.Last_Name no_wrap/]"/]
+										[Set New_User.First_Name to Form.First_Name/]
+										[Set New_User.Last_Name to Form.Last_Name/]
+										[Set New_User.Email_Address to Form.Email/]
+										[Set New_User.Activated to True/]
+										[Save New_User/]
+						
+										<!-- Add new account to team --> 
+										[Add New_User to Form.Join.Member /]
+						
+										<!-- Send welcome message -->
+										[Message "Welcome" no_wrap with Recipient = New_User]
+											[Set Welcome_Message to This/]
+											<!-- TODO - this is pretty dumb, and should be passed in, but I need to sleep. --> 
+											[Set New_Item to New_User/]
+											[New Message with
+													Subject = Welcome_Message.Subject,
+													Body = "[Format as "Jelly Attribute"][Welcome_Message.Body_Top no_wrap/][Welcome_Message.Body_Action no_wrap/][Welcome_Message.Body_Bottom no_wrap/][/Format]",
+													Recipient = New_User
+												]
+													[Set New_Message to This/]
+
+													<!-- Set sender to site owner --> 								
+													[1 Site from Database][Set New_Message.Variables.Sender to Site.Owner/][/1]
+													[New_Message.Action "Send" as Execute/]
+											[/New Message] 
+										[/Message]
+						
+										<!-- Log in user -->
+										[Set Current_Session.User to New_User /]
+										[Set Current_Session.Preview_Mode to False /]
+										[Save Current_Session /]
+						
+										<!-- Go to user -->
+										[Go to User by Alias /]
+									[/New User]
+								[/If]
+								<!-- Go to receipt -->
+								[Go to "/shopping_cart/[Current_Shopping_Cart.ID no_wrap /]/simple_receipt[If Form.Join]:joined_team=true[/If]" into "parent" /]
+				
+								[If Globals.Allow_Tracking]
+									[External_Script]
+										// Don't die on adblock
+	
+										if (mixpanel)
+										\{
+											[Current_Session.User]
+												[Then]
+													[If Current_Session.User.Email_Address]
+														mixpanel.identify("[Current_Session.User.Email_Address no_wrap/]:[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]");
+													[/If]
+												[/Then]
+												[Else]
+													var Mixpanel_Super_Properties = \{\};
+													Mixpanel_Super_Properties\['$first_name'\] = "[Format as "Javascript String"][Current_Shopping_Cart.First_Name no_wrap/][/Format]";
+													Mixpanel_Super_Properties\['$last_name'\] = "[Format as "Javascript String"][Current_Shopping_Cart.Last_Name no_wrap/][/Format]";
+													Mixpanel_Super_Properties\['$email'\] = "[Format as "Javascript String"][Current_Shopping_Cart.Email no_wrap/][/Format]";
+													Mixpanel_Super_Properties\['Email'\] = "[Format as "Javascript String"][Current_Shopping_Cart.Email no_wrap/][/Format]";
+													mixpanel.alias("[Current_Shopping_Cart.Email no_wrap/]:[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]");
+													mixpanel.register(Mixpanel_Super_Properties);									
+												[/Else]
+											[/Current_Session.User]
+
+											mixpanel.track(
+													'Purchase Ticket', 
+													\{
+														'Name': '[Current_Item.Name no_wrap/]',
+
+														'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]',
+
+														'Total': [Current_Shopping_Cart.Total/],
+
+														'Better Fee': [Current_Shopping_Cart.Application_Fee/]
+
+														[If Current_Shopping_Cart.Discount exists and Current_Shopping_Cart.Discount is not "" and Current_Shopping_Cart.Discount is not 0],
+															'Discount': [Current_Shopping_Cart.Discount/]
+														[/If]
+
+														[If Current_Shopping_Cart.Reward],
+															'Donation': [Current_Shopping_Cart.Reward.Amount/]
+														[/If]
+													\}
+												);
+										\}
+									[/External_Script]
+								[/If]
+							[/If]
+						[/Else]
+					[/If]
+				[/If]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

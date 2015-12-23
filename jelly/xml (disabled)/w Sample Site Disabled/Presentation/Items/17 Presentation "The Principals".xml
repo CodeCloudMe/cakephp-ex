@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "The Principals" --}
+		{Presentation}
+			{Name}The Principals{/Name}
+			{Website}http://theprincipals.us/{/Website}
+			{Description}The Principals is an experimental design studio that combines architecture, industrial design,
+and fabrication to create objects and spaces that expand our understanding of the world.{/Description}
+			{Picture}The_Principals{/Picture}
+		{/Presentation}
+	
+{/Jelly}

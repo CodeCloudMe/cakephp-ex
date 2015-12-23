@@ -1,0 +1,30 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Cancel Meeting" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Cancel Meeting{/Name}
+			{Content}
+				[Link to Execute with Class = "Button" /]
+			{/Content}
+			{Code}
+				<!-- Unset meeting person -->
+				[Set Current_Action.Target.Person to null /]
+				
+				<!-- Save meeting -->
+				[Save Current_Action.Target /]
+				
+				<!-- Force refresh of the scheduled item -->
+				<!-- TODO Improve -->
+				[External_Script]
+					// TODO this is hacky
+					Jelly.References.Trigger_Refresh(\{'Kind': 'Iterator', 'Type_Alias': 'Presentation'\});
+					[Block "Toolbar" no_wrap]
+						Jelly.References.Trigger_Refresh(\{'Kind': 'Item', 'Item_ID': '[This.ID no_wrap /]'\});
+					[/Block]
+				[/External_Script]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

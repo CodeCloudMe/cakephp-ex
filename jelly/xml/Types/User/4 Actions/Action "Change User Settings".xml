@@ -1,0 +1,71 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Change User Settings" --}
+		{Action}
+			{Name}Change User Settings{/Name}
+			{Content}
+				<!-- Admin only -->
+				[Admin]
+					<!-- Pass item on to action -->
+					[Input "Hidden" with Name = "Current_Item", Value = Current_Item /]
+					
+					<!-- First name -->
+					<span class="Section">
+						<span class="Description">
+							First Name:
+						</span>
+						<span class="Input">
+							[Input "Text Field" with Name = "First Name", Value = Current_Item.First_Name /]
+						</span>
+					</span>
+					
+					<!-- Last name -->
+					<span class="Section">
+						<span class="Description">
+							Last Name:
+						</span>
+						<span class="Input">
+							[Input "Text Field" with Name = "Last Name", Value = Current_Item.Last_Name /]
+						</span>
+					</span>
+					
+					<!-- Email address -->
+					<span class="Section">
+						<span class="Description">
+							Email Address:
+						</span>
+						<span class="Input">
+							[Input "Text Field" with Name = "Email Address", Value = Current_Item.Email_Address /]
+						</span>
+					</span>
+					
+					<span class="Execute">
+						<!-- Execute link -->
+						[Link to Execute]Done[/Link]
+					</span>
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Admin only -->
+				[Admin]
+					<!-- Disambiguate -->
+					[Set Current_Item to Form.Current_Item /]
+					
+					<!-- Set first name, last name, and email address -->
+					[Set Current_Item.First_Name to Form.First_Name /]
+					[Set Current_Item.Last_Name to Form.Last_Name /]
+					[Set Current_Item.Email_Address to Form.Email_Address /]
+					
+					<!-- Save item -->
+					[Save Current_Item /]
+					
+					[External_Script]
+						// Close window
+						Jelly.Interface.Close_Top_Window();
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

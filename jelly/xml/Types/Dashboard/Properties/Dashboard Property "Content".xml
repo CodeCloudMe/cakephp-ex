@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Dashboard Property "Content" --}
+		{Property}
+			{Type}Dashboard{/Type}
+			{Name}Content{/Name}
+			{Value_Type}Long_Text{/Value_Type}
+			{Default_Value}{/Default_Value}
+		{/Property}
+	
+{/Jelly}

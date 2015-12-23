@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Package "Local" --}
+		{Package}
+			{Name}Local{/Name}
+			{Package}Core{/Package}
+			{Order}0{/Order}
+		{/Package}
+	
+{/Jelly}

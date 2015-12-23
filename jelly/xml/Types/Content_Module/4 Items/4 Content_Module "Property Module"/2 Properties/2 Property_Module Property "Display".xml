@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_Module Property "Display" --}
+	{!-- TODO consider renaming "List Display" --}
+		{Property}
+			{Type}Property_Module{/Type}
+			{Name}Display{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

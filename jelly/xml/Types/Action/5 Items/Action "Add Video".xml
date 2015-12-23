@@ -1,0 +1,46 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Add Video" --}
+		{Action}
+			{Name}Add Video{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin only -->
+					
+					<!-- URL -->
+					URL: [Input "Text Field" with Name = "URL", Blur_On_Execute = 1 /]
+					
+					<!-- Execute -->
+					[Link to Execute /]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Create video -->
+					[New Video with Path = Form.URL]
+						<!-- Disambiguate -->
+						[Set Current_New_Item to This /]
+						
+						<!-- Look up remote ID -->
+						
+						<!-- Save video -->
+						[Save Current_New_Item /]
+					
+						<!-- Trigger Added Event -->
+						[External_Script]
+							Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									"Event": "Added",
+									"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+									"Item": "[Current_New_Item.ID no_wrap /]",
+									"Item_Type": "[Current_New_Item.Type as Alias No_Wrap /]",
+									"Badge": "[Format as "Javascript String"][Current_New_Item as Badge with No_Drag = 1 /][/Format]"
+								\});
+						[/External_Script]
+					[/New]
+				[/Admin]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

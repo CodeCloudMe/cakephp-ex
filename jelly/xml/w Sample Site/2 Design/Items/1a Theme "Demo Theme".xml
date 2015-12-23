@@ -1,0 +1,473 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Theme "Demo Theme" --}
+	
+		{Theme}
+			{Name}Demo Theme{/Name}
+			{Package}Design{/Package}
+			{Less_Style}
+				/* Defaults */
+				
+				*, *::before, *::after
+				\{box-sizing: border-box;\}
+				
+				/* Colors */
+				@black: #222325;
+				@copy: #666d70;
+				@copy-dark: #3b3d40;
+				@copy-regular: #666d70;
+				@copy-light: #cbcbcb;
+				@gray: #3c3d41;
+				@medium-gray: #7e7e7e;
+				@light-gray: #5e5e5e;
+				@very-light-gray: #e6e6e6;
+				@yellow: #f5c16d;
+				@green: #b6c6c6;
+				@orange: #fe6b03;
+				@white: #ffffff;
+				
+				/* Constants */
+				@footer-height: 85px;
+				
+				.Small \{font-size: 11px; font-family: Arial;\}
+				.Bold \{font-weight: bold;\}
+				.Italic \{font-style: italic;\}
+				.Error \{color: red;\}
+				.Result \{color: red;\}
+
+				.Type_Nav \{font-family: "Avenir", "Source Sans Pro"; font-size:12px; color:@white; text-transform:uppercase; font-weight:500; letter-spacing:1px;\}  
+				.Type_Site_Title_Left \{ font-family: "Avenir", "Source Sans Pro"; font-size:40px; color:@white; font-weight:500;\}  
+				.Type_Site_Title_Right \{ font-family: "Avenir", "Source Sans Pro"; font-size:40px; color:@green; font-weight:500;\}  
+				.Type_Site_Title_Left_Small \{ font-family: "Avenir", "Source Sans Pro"; font-size:19px; color:@white; font-weight:500;\}  
+				.Type_Site_Title_Right_Small\{ font-family: "Avenir", "Source Sans Pro"; font-size:19px; color:@green; font-weight:500;\}  
+				.Type_Item_Title \{font-family: "Source Sans Pro"; font-size:52px; color: @white; font-weight:bold;\}
+				.Type_Item_Content_Heading \{ font-family: "Source Sans Pro"; font-size:22px; color: @copy-dark; font-weight:bold; margin-top:22px; margin-bottom:22px; \}
+				//.Type_Item_Content \{ font-family: "Source Sans Pro"; font-size:18px; color: @copy; font-weight:300;margin:auto;margin-bottom:18px; \}
+				.Type_Item_Content \{ font-family: "Source Sans Pro"; font-size:18px; color: @copy; font-weight:300; \}
+				.Call_To_Action_Heading \{ font-family: "Avenir", "Source Sans Pro"; font-size:20px; color:@white; font-weight:800; margin-right:50px;letter-spacing:1px;\}
+				.Call_To_Action_Label \{ font-family: "Avenir", "Source Sans Pro"; font-size: 10px; color: @white; text-transform:uppercase; letter-spacing:2px;\}
+
+				* \{margin:0px;\}
+
+				/* Body */
+				html, body \{margin: 0px; padding: 0px; background-color: @black; height: 100%;\}
+
+				/* Layout */
+	
+				div.Wrapper 
+				\{
+					min-height: 100%;
+					margin: 0 auto @footer-height * -1;
+	
+					div.Header
+					\{
+						.Row;
+
+						background-color:@black;		
+
+						.Header_Top
+						\{
+							padding-top:25px;
+							padding-bottom:25px;
+							.Border_Bottom; 
+							padding-left: 25px;
+							padding-right: 25px;
+						\}
+	
+						.Header_Bottom
+						\{
+							overflow:auto;
+							padding-top:25px;
+							padding-bottom:25px;
+							padding-left: 25px;
+							padding-right: 25px;
+		
+							.Social
+							\{
+								.Absolute_Left;
+								bottom:3px;
+								:first-child
+								\{
+									margin-left:0px;
+								\}
+							\}
+	
+							.Title
+							\{
+								.Centered;
+								.Type_Site_Title_Right;
+
+								text-align:center;
+
+								.First-Word
+								\{
+									.Type_Site_Title_Left;
+								\}
+
+							\}
+	
+							.Login
+							\{			
+								.Absolute_Right;
+								bottom:15px;
+							\}
+						\}
+					\}
+	
+					div.Footer_Top
+					\{
+						.Row;
+						.Centered;
+						text-align:center;
+						background-color:@light-gray;
+						padding-top: 40px; 
+						padding-bottom:40px;
+						color: white;
+		
+						label \{.Call_To_Action_Heading; display:inline;\}
+		
+						input\[type=text\]
+						\{
+							border: none;
+							padding:15px;
+							border-radius: 5px;
+							background-color:@medium-gray;
+							color: @copy-light;
+						\}
+		
+						.Action_Item
+						\{
+							.Call_To_Action_Heading;
+						\}
+		
+						.Action_Content_Property a
+						\{
+							.H4;
+							margin-left:20px;
+							border-radius: 5px;
+							background-color:@black;
+							color:@white;
+							padding-top:17px;
+							padding-bottom:17px;
+							padding-left:40px;
+							padding-right:40px;			
+						\}
+					\}
+	
+					.Footer_Push
+					\{
+						height:@footer-height;
+					\}
+
+				\}
+
+				div.Footer_Bottom
+				\{
+					.Row;
+					height:@footer-height;
+					background-color:@black;
+	
+					.Inner
+					\{
+						.Border_Top;	
+						overflow:auto;
+						padding-top:30px;
+						padding-bottom:30px;
+					\}
+	
+					.Title
+					\{
+						.Type_Site_Title_Right_Small;
+						.Absolute_Left;
+
+						opacity:.4;
+						height:32px;
+						line-height:32px;
+		
+						.First-Word
+						\{
+							.Type_Site_Title_Left_Small;
+						\}
+					\}
+	
+					.Social
+					\{
+						.Absolute_Right;
+						height:32px;
+						line-height:32px;
+					\}
+	
+					.Navigation
+					\{
+						height:32px;
+						line-height:32px;
+					\}
+	
+				\}
+
+				.Navigation
+				\{	
+					.Block;
+					.Centered;
+
+					color:@white;
+
+					text-align: center; 
+
+					.Page_Item 
+					\{
+						display: inline-block; 
+						margin-left: 12px; 
+						margin-right: 12px;
+
+						a
+						\{
+							.H4;
+						\}
+					\}
+				\}
+
+				.Social
+				\{
+					a
+					\{
+						display:inline-block;
+						margin-right:6px;
+						margin-left:6px;
+						width:32px;
+						height:32px;
+					\}
+	
+					a.Facebook \{background-image: url(/jelly/themes/prototype/images/Facebook.png);\}
+					a.Twitter \{background-image: url(/jelly/themes/prototype/images/Twitter.png);\}
+					a.RSS \{background-image: url(/jelly/themes/prototype/images/RSS.png);\}
+				\}
+
+				.Login
+				\{
+					a
+					\{
+						.Call_To_Action_Label;
+	
+						background-image: url(/jelly/images/better.png);
+						background-repeat: no-repeat;
+						background-color: @orange;
+						background-position: 20px center;
+						border-radius:15px;
+						padding-top: 11px;
+						padding-bottom: 10px;
+						padding-right: 20px;
+						padding-left: 50px;
+					\}
+
+					a:hover
+					\{
+						text-decoration:none;
+						color: @white;
+					\}
+				\}
+
+				.Row
+				\{
+					.Inner
+					\{
+						.Centered;
+					\}
+				\}
+
+
+				div.Content 
+				\{
+					.Row;
+					line-height: 150%;
+					background-color:@very-light-gray;
+	
+					label \{margin-bottom: 10px;\}
+	
+					input\[type=text\]
+						\{
+							border: none;
+							padding:15px;
+							border-radius: 5px;
+							background-color:@medium-gray;
+							color: @white;
+						\}
+		
+					textarea
+						\{
+							border: none;
+							padding:15px;
+							border-radius: 5px;
+							background-color:@medium-gray;
+							color: @white;
+						\}
+		
+						.Action_Content_Property a
+						\{
+							.H4;
+							margin-top:20px;
+							display:inline-block;
+							border-radius: 5px;
+							background-color:@black;
+							color:@white;
+							padding-top:5px;
+							padding-bottom:5px;
+							padding-left:20px;
+							padding-right:20px;			
+							margin-left:13px;
+						\}
+				\}
+
+				/* Item */
+
+				#Item_Heading \{.Block; .H1; display: none; text-align: center; background-color: @gray; color: white; padding-top:  70px; padding-bottom: 70px;\}
+
+				/* Tools */
+
+				.Border_Top \{border-top-color: @gray; border-top-style: solid; border-top-width: 1px;\}
+				.Border_Bottom \{border-bottom-color: @gray; border-bottom-style: solid; border-bottom-width: 1px;\}
+
+				.Inline \{display: inline;\}
+				.Block \{display: block;\}
+				.Header \{.Block; font-family: "Karla";\}
+				.Centered \{margin:auto;\}
+				h1, .H1 \{.Type_Item_Title;\}
+				h2, .H2 \{.Type_Site_Title_Right;\}
+				h3, .H3 \{.Type_Item_Content_Heading;\}
+				h4, .H4 \{.Type_Nav;\}
+				h5, .H5 \{.Header; font-size: 20px;\}
+				h6, .H6 \{.Header; font-size: 15px;\}
+				h7, .H7 \{.Header; font-size: 12px;\}
+				p, .P \{.Type_Item_Content; display: block; margin-bottom: 18px;\}
+
+				.Grey \{color: #888888;\}
+
+				.Left \{float: left;\}
+				.Right \{float: right;\}
+				.Absolute_Left \{position:absolute; left:0px;\}
+				.Absolute_Right \{position:absolute; right:0px;\}
+				.Clear \{clear: both;\}
+				.Block \{display: block;\}
+				.Relative \{position:relative;\}
+
+				/* Links */
+				@link: #5555CC;
+				@link-hover: #555599;
+				a \{color: @link; text-decoration: none;\}
+				a:hover \{color: @link-hover; text-decoration: underline;\}
+
+
+				/* Stripes */
+				
+
+					@White: white;
+					@Light-Blue: #00b8ed;
+				.Content \{background-color: white;
+					.Type_Item_Content;
+					
+					section \{.Centered; width: 100%; display: block; padding-left: 15%; padding-right: 15%; left: 50%;
+	-moz-transform: translateX(-50%); -webkit-transform: translateX(-50%); transform: translateX(-50%); padding-top: 15px; padding-bottom: 15px;
+						&:nth-of-type(2n) \{\}
+						&:nth-of-type(2n+1) \{\}
+					\}
+					
+					/* Themes */
+					.Data_Module_List.Grid \{display: block; width: 100%; overflow: hidden;
+						.Data_Module_Item \{display: inline-block; width: calc((100% - (3-1)*4%) / 3); font-size: 1rem; box-sizing: margin-box; margin-right: 4%; float: left; margin-bottom: 4%;
+							&:nth-of-type(3n+1) \{margin-left: 0;\}
+							&:nth-of-type(3n+3) \{margin-right: 0;\}
+							.Cover \{display: block; width: 100%; background-color: #eeeeee; background-size: cover; background-repeat: no-repeat; background-position: 50% 50%; margin-bottom: 10px; overflow: hidden;
+								&:before \{content: ''; padding-top: 80%; float: left;\}
+							\}
+							.Header \{\}
+							.Text \{\}
+						\}
+					\}
+					.Data_Module_List.List \{display: block; width: 100%;
+						.Data_Module_Item \{display: block; margin-bottom: 10px;
+							&:last-of-type \{margin-bottom: 0;\}
+							.Cover \{display: block; width: 100%; height: 300px; background-color: #eeeeee; background-size: cover; background-repeat: no-repeat; background-position: 50% 50%;\}
+							.Header \{\}
+							.Text \{\}
+						\}
+					\}
+					
+					/* Auto Properties */
+					.Name_Item \{
+						label \{display: none;\}
+						> .Name_Property \{.H3;\}
+					\}
+					.Description_Item \{
+						label \{display: none;\}
+						> .Description_Property \{\}
+					\}
+					.Website_Item \{
+						label \{display: block; text-transform: uppercase; font-size: 13px; margin-bottom: 5px;\}
+						> .Website_Property \{\}
+					\}
+					
+					.Button \{
+						background: @Light-Blue;
+						border-radius: 10px;
+	
+						&:hover
+						\{
+							transition: .05s;
+							box-shadow: inset 0px 0px 5px 5px rgba(0,0,0,0.01);
+							background-color: lighten(@Light-Blue, 5%);
+							color:@White;
+							text-decoration:none;
+						\}
+	
+						&:active
+						\{
+							transition:.1s;
+							box-shadow: inset 0px 0px 5px 5px rgba(0,0,0,0.01);			
+							background-color:lighten(@Light-Blue, 12%);
+						\}	
+					
+					
+						font-weight:bold;
+						color:@White;
+						font-size: 13px;
+						line-height:48px;
+						height:48px;
+						display:inline-block;
+						padding-left:60px;
+						padding-right:60px;
+						text-decoration:none;
+						text-transform:uppercase;
+			
+						figure
+						\{
+							display:inline;
+							margin-right:20px;
+							font-size:18px;
+							vertical-align:bottom;
+							transition: .2s;
+						\}
+					\}
+				\}
+				
+				/* Kunal's Hackery's back */
+				.Presentation_Item \{
+					a 
+					\{
+						text-decoration:none;	
+					\}
+				\};
+			{/Less_Style}
+			{Web_Font}Inconsolata{/Web_Font}
+			{Web_Font}Karla{/Web_Font}
+			{Web_Font}Lato{/Web_Font}
+			{Web_Font}Libre_Baskerville{/Web_Font}
+			{Web_Font}Montserrat{/Web_Font}
+			{Web_Font}Open_Sans{/Web_Font}
+			{Web_Font}Playfair_Display{/Web_Font}
+			{Web_Font}Raleway{/Web_Font}
+			{Web_Font}Roboto{/Web_Font}
+			{Web_Font}Source_Sans_Pro{/Web_Font}
+		{/Theme}
+	
+{/Jelly}

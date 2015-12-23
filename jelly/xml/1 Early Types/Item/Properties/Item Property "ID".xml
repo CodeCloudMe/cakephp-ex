@@ -1,0 +1,15 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "ID" --}
+	
+		{Property}
+			{Type}Item{/Type}
+			{Value_Type}Number{/Value_Type}
+			{Name}ID{/Name}
+			{Alias}ID{/Alias}
+			{Data_Name}ID{/Data_Name}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

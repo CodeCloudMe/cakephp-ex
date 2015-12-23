@@ -1,0 +1,25 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Template "Guests" --}
+		{Template}
+			{Type}Event{/Type}
+			{Name}Guests{/Name}
+			{Content}
+				[Set Event.Variables.Total_Count to 0/]
+				[Event.Shopping_Cart As_Attachment item_wrap_element "div" where Completed]
+					[Set Event.Variables.Total_Count to [Math Event.Variables.Total_Count + This.Quantity/]/]
+				[/Event.Shopping_Cart]
+				<h4>[Event.Name/]</h4>
+				<h5>Guest List &ndash; [Event.Variables.Total_Count/] tix</h5>
+
+				[Event.Shopping_Cart As_Attachment item_wrap_element "div" where Completed by Last_Name]
+					[This.Shopping_Cart]
+						[First_Name/] [Last_Name/]
+					[/This.Shopping_Cart]
+					[If This.Quantity > 1]<span style="margin-left:5px;margin-right:5px;">x</span> [This.Quantity/][/If]
+				[/Event.Shopping_Cart]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

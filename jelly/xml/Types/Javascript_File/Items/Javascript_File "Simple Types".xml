@@ -1,0 +1,19 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Javascript_File "Simple Types" --}
+		{Javascript_File}
+			{Name}Simple Types{/Name}
+			{Content}
+				// Loads simple types into javascript
+				var Simple_Types = \[\];
+				[Type from Database No_Wrap]
+					[If Type is Simple Type]
+						Simple_Types.push("[Type.Alias No_Wrap /]");
+					[/If]
+				[/Type]
+			{/Content}
+			{Core}1{/Core}
+		{/Javascript_File}
+	
+{/Jelly}

@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Content_Module "Property Module" --}
+		{Type}
+			{Name}Property Module{/Name}
+			{Plural_Name}Property Modules{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Design{/Package}
+			{Parent_Type}Content_Module{/Parent_Type}
+		{/Type}
+	
+{/Jelly}

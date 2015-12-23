@@ -1,0 +1,18 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Editing Content Module" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Editing Content Module{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				<!-- TODO undo specific item later -->
+				[Set Current_Item to This.Specific_Item /]
+				
+				<!-- Display editing template of module -->
+				[Current_Item.Type.Content_Module where ID is Path_Variables.Content_Module_ID as Editing /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

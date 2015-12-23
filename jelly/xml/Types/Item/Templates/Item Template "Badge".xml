@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Badge" --}
+	
+		{Template}
+			{Type}Item{/Type}
+			{Name}Badge{/Name}
+			{Content}
+				[This.Specific_Item as Data_Module_List_Item /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

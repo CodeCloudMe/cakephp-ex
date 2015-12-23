@@ -1,0 +1,54 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Geocode" --}
+		{Action}
+			{Name}Geocode{/Name}
+			{Content}
+				<span class="Input_Row">
+					<span class="Description">
+						Address:
+					</span>
+					<span class="Input">
+						<!-- Address input -->
+						[Input "Text Field" with Name = "Address", Value = Current_Action.Variables.Address, Blur_On_Execute = 1/]
+					</span>
+					<span class="Link">
+						<!-- Execute -->
+						[Link to Execute]Add[/Link] [Action as Result /]
+					</span>
+				</span>
+			{/Content}
+			{Code}
+				<!-- Create location for the input address -->
+				[New Location with Original_Address = Form.Address]
+					<!-- Disambiguate -->
+					[Set Current_Location to Location /]
+					
+					<!-- Geocode the address -->
+					[Geocode Current_Location]
+						[Then]
+							<!-- Save the successful address -->
+							[Save Current_Location /]
+							
+							<!-- Call added handler -->
+							[External_Script]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										"Event": "Added",
+										"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+										"Item": "[Current_Location.ID no_wrap /]",
+										"Item_Type": "[Current_Location.Type as Alias No_Wrap /]",
+										"Badge": "[Format as "Javascript String"][Current_Location as Badge with No_Drag = 1 /][/Format]"
+									\});
+							[/External_Script]
+						[/Then]
+						[Else]
+							<!-- Error -->
+							We couldn't find this address.
+						[/Else]
+					[/Geocode]
+				[/New Location]
+			{/Code}
+		{/Action}
+{/Jelly}

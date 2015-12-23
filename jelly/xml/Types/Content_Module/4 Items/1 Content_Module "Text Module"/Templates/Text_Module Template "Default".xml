@@ -1,0 +1,49 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Text_Module Template "Default" --}
+		{Template}
+			{Type}Text_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				[Set Current_Text_Module to this /]
+
+				<!-- Body -->
+				<span class="Module_Content Text_Module" data-module="Text_Module" data-size="[This.Size no_wrap /]" data-width="[This.Width no_wrap /]">
+	
+					<span class="Module_Settings" id="[Current_Text_Module.Namespace no_wrap /]_Settings">
+						<span class="Setting_Row">
+							<span class="Setting_Label" style="width:56px;">Move:</span>
+							<span class="Setting_Value">
+								[Current_Text_Module.Action "Move Up"/] [Current_Text_Module.Action "Move Down"/]
+							</span>
+						</span>	
+						<span class="Setting_Row">
+							[Link to Remove Current_Text_Module]Remove[/Link]
+						</span>
+					</span>
+	
+					[Admin]
+						[Then]
+							[This.Action "Clean Edit Inline" with Property_Alias = "Body" /]
+						[/Then]
+						[Else]
+							[This.Body /]
+						[/Else]
+					[/Admin]
+				
+					[Admin]
+						<!-- Admin Only... -->
+		
+						<!-- Edit Controls -->
+						<div id="[This.ID no_wrap /]_Edit_Link_Finder">
+							<a href="#" onclick="Jelly.jQuery(this).toggleClass('Selected');Jelly.jQuery('#[Current_Text_Module.Namespace no_wrap /]_Settings').toggleClass('Visible'); return false;" class="Module_Edit_Link">
+								<img class="iconic iconic-sm" data-src="/jelly/libraries/iconic/svg/smart/pencil.svg">
+							</a>
+						</div>
+					[/Admin]
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

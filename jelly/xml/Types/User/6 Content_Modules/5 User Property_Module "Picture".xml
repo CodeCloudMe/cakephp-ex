@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property_Module "Picture" --}
+		{Property_Module}
+			{Type_Item}User{/Type_Item}
+			{Property_Item}39591837{/Property_Item}
+			{Display}Grid{/Display}
+		{/Property_Module}
+	
+{/Jelly}

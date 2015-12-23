@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Property "Owner" --}
+		{Property}
+			{Type}Site{/Type}
+			{Name}Owner{/Name}
+			{Value_Type}User{/Value_Type}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

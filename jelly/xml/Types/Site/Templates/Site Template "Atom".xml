@@ -1,0 +1,33 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "Atom" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}Atom{/Name}
+			{Content}
+				[Header "Content-Disposition" Value "filename=[Format as "Jelly Attribute"][Format as "File Name"][Site:Name no_wrap /][/Format][/Format].atom" /]<?xml version="1.0"?>
+				<feed xmlns="http://www.w3.org/2005/Atom">
+					[Site]<title>[Format as "HTML Title"][Site:Name /][/Format]</title>
+					<subtitle>
+						[Site:Summary /]
+					</subtitle>[/Site]
+					<link href="http://[HTTP_Host /]/RSS" rel="self" />
+					<link href="http://[HTTP_Host /]" />
+					[50 Blog_Posts by Publication_Date Descending]
+						<entry>
+							<title>[Blog_Post:Name /]</title>
+							<id>http://[HTTP_Host /]/Blog_Post/[Blog_Post:ID no_wrap /]</id>
+							<link href="http://[HTTP_Host /]/Blog_Post/[Blog_Post:ID no_wrap /]" />
+							<summary>
+								[Blog_Post:Summary /]
+							</summary>
+							<updated>[Blog_Post:Publication_Date][Short_Day_Name /], [Day /] [Short_Month_Name /] [Year /] [Hour_24 /]:[Minute /]:00 EST[/Blog_Post:Publication_Date]</updated>
+						</entry>
+					[/Blog_Post]
+				</feed>
+			{/Content}
+			{Content_Type}application/atom+xml{/Content_Type}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Javascript_Block "Jelly" --}
+	{Javascript_Block}
+		{Name}Jelly{/Name}
+		{Content}
+			var Jelly = \{\};
+		{/Content}
+	{/Javascript_Block}
+	
+{/Jelly}

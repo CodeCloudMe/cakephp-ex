@@ -1,0 +1,20 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Join Newsletter" --}
+		{Action}
+			{Name}Join Newsletter{/Name}
+			{Content}
+				<label style="display:inline">Subscribe for News</label> [Input "Text Field" with Name = "Email"/] [Link to Submit/]
+			{/Content}
+			{Code}
+				[New Contact]
+					[Set Contact.Name to Form.Email/]
+					[Set Contact.Email_Address to Form.Email/]
+					[Save Contact/]
+					Thank you for joining our newsletter!
+				[/New Contact]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

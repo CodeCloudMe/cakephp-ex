@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "The Principals" Picture --}
+		{Picture}
+			{Name}The Principals{/Name}
+			{Path}jelly_data/Files/File/Presentation_Principals.jpg{/Path}
+		{/Picture}
+	
+{/Jelly}

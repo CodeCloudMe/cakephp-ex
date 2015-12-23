@@ -1,0 +1,76 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Register User" --}
+		{Action}
+			{Name}Register User{/Name}
+			{Content}
+				<div class="Register_User">
+					<!-- Name -->
+					<span class="Input_Row_B">
+						<label>Name</label>
+						[Input "Text Field" with Name = "Username" /]
+					</span>
+				
+					<!-- Email Address -->
+					<span class="Input_Row_B">
+						<label>Email Address</label>
+						[Input "Text Field" with Name = "Email Address" /]
+					</span>
+				
+					<!-- Password -->
+					<span class="Input_Row_B">
+						<label>Password</label>
+						[Input "Password Field" with Name = "Password" /]
+					</span>
+				
+					<!-- Execute -->
+					<span class="Input_Row_B">
+						[Link to Execute with Class = "Button" /]
+					</span>
+				</div>
+			{/Content}
+			{Code}
+				<!-- Require a username -->
+				[If Form.Username does not exist or Form.Username = ""]
+					[Show Error for "Username"]Please enter a username.[/Show]
+				[/If]
+				<!-- Require a password -->
+				[If Form.Password does not exist or Form.Password = ""]
+					[Show Error for "Password"]Please enter a password.[/Show]
+				[/If]
+				
+				<!-- Check if there was an error -->
+				[If not Form.Error]
+					<!-- Create user -->
+					[New User with Name = Form.Username, Email_Address = Form.Email_Address, Password = Form.Password, Activated = True]
+						<!-- Save user -->
+						[Save This /]
+					
+						<!-- Add user to session -->
+						[Set Current_Session.User to This /]
+						[Save Current_Session /]
+						
+						[External_Script]
+							// Trigger "Dismiss" event
+							var Parameters = \{Event: "Dismiss", 'Target': document.getElementById('[Current_Action.Namespace No_Wrap /]')\};
+							Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							
+							// Trigger "Logged_In" event
+							var Parameters = \{Event: "Logged_In", 'Target': document.getElementById('[Current_Action.Namespace No_Wrap /]')\};
+							Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							
+							// Refresh Toolbar
+							// TODO: Shouldn't manually do this
+							[Block "Toolbar" no_wrap]
+								Jelly.References.Trigger_Refresh(\{'Kind': 'Item', 'Item_ID': '[This.ID no_wrap /]'\});Jelly.References.Refresh_All();
+							[/Block]
+					
+							// Show "Toolbar"
+							Jelly.Interface.Show_Toolbar();
+						[/External_Script]
+					[/User]
+				[/If]
+			{/Code}
+		{/Action}
+{/Jelly}

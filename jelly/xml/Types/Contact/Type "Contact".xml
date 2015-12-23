@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Contact" --}
+		{Type}
+			{Name}Contact{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Contact{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Sales{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

@@ -1,0 +1,48 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Force Scrape" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Force Scrape{/Name}
+			{Content}
+				[Link to Execute/]
+			{/Content}
+			{Code}
+				[Set Current_Item to Current_Action.Target/]
+
+				[PHP]
+					// Facebook
+					$Facebook_Endpoint = 'https://graph.facebook.com';
+					[if Current_Item.Type.Alias = "Site"]
+						[Then]
+							$Facebook_Values = array(
+								'access_token'=>'783700495040097|WHE0_fBpzzNYSPLOUK77JJgIKAM',
+								'id'=>strtolower('https://' . $_SERVER\['HTTP_HOST'\]),
+								'scrape'=>'true'
+							);
+							Get_Remote_Content($Facebook_Endpoint, null, null, $Facebook_Values);		
+						[/Then]
+						[Else]
+							$Facebook_Values = array(
+								'access_token'=>'783700495040097|WHE0_fBpzzNYSPLOUK77JJgIKAM',
+								'id'=>strtolower('https://' . $_SERVER\['HTTP_HOST'\] . '/' . '[Current_Item.Type.Alias No_Wrap/]' . '/' . '[Current_Item.ID No_Wrap/]'),
+								'scrape'=>'true'
+							);
+							Get_Remote_Content($Facebook_Endpoint, null, null, $Facebook_Values);
+	
+							[If Current_Item.Alias]
+								$Facebook_Values = array(
+									'access_token'=>'783700495040097|WHE0_fBpzzNYSPLOUK77JJgIKAM',
+									'id'=>strtolower('https://' . $_SERVER\['HTTP_HOST'\] . '/' . '[Current_Item.Type.Alias No_Wrap/]' . '/' . '[Current_Item.Alias No_Wrap/]'),
+									'scrape'=>'true'
+								);
+								Get_Remote_Content($Facebook_Endpoint, null, null, $Facebook_Values);
+							[/If]
+						[/Else]
+					[/If]	
+				[/PHP]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

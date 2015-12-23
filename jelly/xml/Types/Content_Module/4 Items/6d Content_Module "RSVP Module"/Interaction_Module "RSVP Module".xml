@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Interaction_Module "RSVP Module" --}
+		{Type}
+			{Name}RSVP Module{/Name}
+			{Plural_Name}RSVP Modules{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Design{/Package}
+			{Parent_Type}Interaction_Module{/Parent_Type}
+		{/Type}
+	
+{/Jelly}

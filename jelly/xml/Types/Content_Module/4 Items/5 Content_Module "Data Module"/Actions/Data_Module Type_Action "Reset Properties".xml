@@ -1,0 +1,39 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Type_Action "Reset Properties" --}
+		{Type_Action}
+			{Type}Data_Module{/Type}
+			{Name}Reset Properties{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Execute link -->
+					[Link to Execute /]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Create visible property if not exists -->
+					<!-- TODO this is a hack until we can create this at database reset -->
+					[Property from database where Name = "Visible" and Type = "Data_Module_Child_Property_Item"]
+						[Else]
+							[New Property with Type = "Data_Module_Child_Property_Item", Name = "Visible", Value_Type = "Boolean", Default_Value = "1"]
+								[Save This /]
+							[/Property]
+						[/Else]
+					[/Property]
+					
+					<!-- Remove Properties -->
+					<!-- TODO: Necessary? -->
+					
+					<!-- Add Default Properties -->
+					[Current_Action.Target.Action "Add Unadded Properties" as Execute /]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

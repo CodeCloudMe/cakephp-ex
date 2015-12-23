@@ -1,0 +1,24 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Link" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Link{/Name}
+			{Content}
+				[Set Current_Item to This/]
+				[Link to Current_Item]
+					[If Current_Item.Name]
+						[Then]
+							[Current_Item.Name/]
+						[/Then]
+						[Else]
+							[Current_Item.Type.Name /] [Current_Item.ID /]
+						[/Else]
+					[/If]
+				[/Link]
+			{/Content}
+			{Content_Type}text/plain{/Content_Type}
+		{/Template}
+	
+{/Jelly}

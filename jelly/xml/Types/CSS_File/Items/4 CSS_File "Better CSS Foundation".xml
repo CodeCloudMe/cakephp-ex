@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- CSS_File "Better CSS Foundation" --}
+		{CSS_File}
+			{Name}Better CSS Foundation{/Name}
+			{Content}
+			{/Content}
+		{/CSS_File}
+	
+{/Jelly}

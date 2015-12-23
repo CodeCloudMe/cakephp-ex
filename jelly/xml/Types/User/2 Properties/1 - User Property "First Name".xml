@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property "First Name" --}
+		{Property}
+			{ID}75328927{/ID}
+			{Type}User{/Type}
+			{Name}First Name{/Name}
+			{Value_Type}Text{/Value_Type}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

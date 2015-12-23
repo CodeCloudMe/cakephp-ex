@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Browser_Control "Lightbox" --}
+		{Browser_Control}
+			{Name}Lightbox{/Name}
+			{Content}
+				<div id="Lightbox" class="Jelly_Lightbox">
+				</div>
+			{/Content}
+		{/Browser_Control}
+	
+{/Jelly}

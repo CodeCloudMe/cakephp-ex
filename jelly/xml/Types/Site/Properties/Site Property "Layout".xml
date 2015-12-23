@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Property "Design" --}
+		{Property}
+			{Type}Site{/Type}
+			{Name}Design{/Name}
+			{Value_Type}Design{/Value_Type}
+		{/Property}
+	
+{/Jelly}

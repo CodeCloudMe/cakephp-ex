@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property_Module "Team" --}
+		{Property_Module}
+			{Type_Item}User{/Type_Item}
+			{Property_Item}98735341{/Property_Item}
+			{Display}Grid{/Display}
+			{Where_Clause}[Admin no_wrap][Then]1[/Then][Else][If Current_Session.User.ID = Current_Item.ID][Then]1[/Then][Else]Allow_Anyone_To_See_Members[/Else][/If][/Else][/Admin]{/Where_Clause}
+		{/Property_Module}
+	
+{/Jelly}

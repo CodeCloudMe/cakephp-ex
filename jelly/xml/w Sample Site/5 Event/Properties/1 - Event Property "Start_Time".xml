@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Property "Start Time" --}
+		{Property}
+			{Type}Event{/Type}
+			{Name}Start Time{/Name}
+			{Value_Type}Date_Time{/Value_Type}
+		{/Property}
+	
+{/Jelly}

@@ -1,0 +1,43 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Welcome" --}
+		{Block}
+			{Name}Welcome{/Name}
+			{Content}
+				<span class="Page_Item Clean_Window" style="width:650px;">
+					<!-- Close Button -->
+					<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;" style="float:right;width:30px;height:30px;">
+						<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+					</a>
+
+					<!-- Header -->
+					<span class="Page_Header">
+						<span class="Page_Title">
+							<span class="Left_And_Right">
+								<span class="Page_Name" style="float:none;">
+									Welcome
+								</span>
+							</span>
+					</span>
+	
+					<section style="margin-top:25px;">
+						<!-- Content Modules -->
+						Welcome to the [Site.Name/] community network!
+					</section>
+	
+					<section style="margin-top:25px;">
+						<!-- Content Modules -->
+						This directory is built with Better, a new app that helps transform volunteer communities into powerful participatory networks.
+					</section>
+	
+					<section style="margin-top:25px;">
+						To learn about Better, visit our website:
+						<a target="_blank" href="http://better.space/learn_more" onclick="Jelly.Interface.Close_Top_Window();" class="Button_Orange" style="display:block;width:120px;margin-top:25px;">About Better</a>
+					</section>
+	
+				</span>
+			{/Content}
+		{/Block}
+	
+{/Jelly}

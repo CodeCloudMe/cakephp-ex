@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property "Activated" --}
+		{Property}
+			{Type}User{/Type}
+			{Name}Activated{/Name}
+			{Value_Type}Boolean{/Value_Type}
+			{Advanced}1{/Advanced}
+			{Default_Value}0{/Default_Value}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

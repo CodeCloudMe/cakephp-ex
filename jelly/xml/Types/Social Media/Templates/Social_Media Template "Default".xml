@@ -1,0 +1,23 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Social_Media Template "Default" --}
+		{Template}
+			{Type}Social_Media{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Go to Social Media -->
+				<!-- TODO: better to handle this on the link to the Social_Media, instead of the Social_Media Default template? -->
+				[External_Script]
+					document.location = "[This.Path no_wrap /]";
+				[/External_Script]
+				
+				<!-- Redirecting text -->
+				<div>
+					Redirecting to: <a href="[This.Path no_wrap /]">[This.Name /]</a>
+				</div>
+			{/Content}
+			{Package}Website{/Package}
+		{/Template}
+	
+{/Jelly}

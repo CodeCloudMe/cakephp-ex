@@ -1,0 +1,37 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Setup Assistant" --}
+		{Action}
+			{Name}Setup Assistant{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin only -->
+					
+					<div class="Window Setup_Assistant">
+						<!-- Close Link -->
+						<div class="Close_Link">
+							<a href="#" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+						</div>
+						
+						<h1>
+							Welcome to Better!
+						</h1>
+						<div class="Links">
+							[Action "Create List"]
+								[Link to this into "Parent"]Create List[/Link]	
+							[/Action]
+							[Action "Import Google Sheet"]
+								[Link to this into "Parent"]Import Data[/Link]
+							[/Action]
+							<br class="Clear" />
+						</div>
+					</div>
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Does nothing -->
+			{/Code}
+		{/Action}
+	
+{/Jelly}

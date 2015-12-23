@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Date Template "Default" --}
+		{Template}
+			{Type}Date{/Type}
+			{Name}Default{/Name}
+			{Content}[This.Month /] [This.Date /], [This.Year /]{/Content}
+		{/Template}
+	
+{/Jelly}

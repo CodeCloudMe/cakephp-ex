@@ -1,0 +1,19 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Error Template "Default" --}
+	
+		{Template}
+			{Type}Error{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<span class="Jelly_Error">
+				\{
+					<span class="Jelly_Error_Heading">Error:</span>
+					<span class="Jelly_Error_Description">[Error.Description/]</span>
+				\}
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

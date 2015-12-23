@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Property "Display" --}
+		{Property}
+			{Type}Data_Module{/Type}
+			{Name}Display{/Name}
+			{Value_Type}Text{/Value_Type}
+			{Default_Value}Grid{/Default_Value}
+		{/Property}
+	
+{/Jelly}

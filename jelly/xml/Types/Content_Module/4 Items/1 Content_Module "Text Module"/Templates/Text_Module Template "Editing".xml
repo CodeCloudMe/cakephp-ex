@@ -1,0 +1,47 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Text_Module Template "Editing" --}
+		{Template}
+			{Type}Text_Module{/Type}
+			{Name}Editing{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Disambiguate -->
+					[Set Current_Text_Module to This /]
+					
+					<!-- TODO use better html tags for sizes -->
+					
+					<!-- Default template -->
+					[Set Globals.Editing to True /]
+					[This as Default /]
+					
+					<!-- Controls -->
+					<div class="Module_Controls">
+						<!-- Change Size -->
+						<div class="Group">
+							[Current_Text_Module.Action "Change Size" /]
+						</div>
+						
+						<!-- Change Width -->
+						<div class="Group">
+							[Current_Text_Module.Action "Change Width" /]
+						</div>
+						
+						<!-- Delete -->
+						<div class="Group">
+							[Link to "/Content_Module/[This.ID no_wrap /]/Delete" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg"> Delete[/Link]
+						</div>
+						
+						<!-- Done -->
+						<div class="Group">
+							<a href="#" onclick="Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': Jelly.jQuery('#[Current_Content_Module_Namespace no_wrap /] \[data-kind=Item\]\[data-type=Type_Action\]\[data-alias=Edit_Inline\]').get(0)\});return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/check-thin.svg"> Done</a>
+						</div>
+					</div>
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

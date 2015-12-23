@@ -1,0 +1,24 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Navigation" --}
+		{Block}
+			{Name}Navigation{/Name}
+			{Content}
+				<!-- Site Name -->
+				[Site][This.Name wrap_element "h1" /][/Site]
+				
+				<!-- Pages -->
+				[Page from Database Iterator_Wrap_Element "ul" Item_Wrap_Element "li"]
+					[Link to Page by Alias /]
+				[/Page]
+				[Ignore]
+					<!-- TODO Finish type publishing -->
+					[Type from Database where Published]
+						[Link to Type by Alias /]
+					[/Type]
+				[/Ignore]
+			{/Content}
+		{/Block}
+	
+{/Jelly}

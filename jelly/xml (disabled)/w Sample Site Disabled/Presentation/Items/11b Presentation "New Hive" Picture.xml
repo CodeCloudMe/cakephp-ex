@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "New Hive" Picture --}
+		{Picture}
+			{Name}New Hive{/Name}
+			{Path}jelly_data/Files/File/Presentation_NEWHIVE.gif{/Path}
+		{/Picture}
+	
+{/Jelly}

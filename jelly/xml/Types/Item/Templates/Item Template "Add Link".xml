@@ -1,0 +1,142 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Add Link" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Add Link{/Name}
+			{Content}[Format as "Single Line Code"]
+				[Set New_Item to This /]
+				[Ignore]
+					<!-- TODO - i wonder if save item should do "no_structure" until it's "saved" -->	
+					<!-- TODO - generate unique Type/Property names so adding doesn't cause conflicts -->
+					<!-- TODO - there was an idea of only requiring temp names for published, etc. types & properties -->
+					<!-- TODO - fix adding Properties and Templates from drop downs (currently only work for "Add Page.Property" -->
+					<!-- TODO - make sure menu add links set parent for hiding property purposes -->
+				[/Ignore]
+				<a href="#" id="[Namespace No_Wrap /]_Link" [If New_Item.Variables.Class_Names]class="[New_Item.Variables.Class_Names No_Wrap/]" [/If][If New_Item.Variables.Style]style="[New_Item.Class No_Wrap/]" [/If]onclick="[Format as "Single Line Code"]
+					var This_Item = this;
+					Jelly.Actions.Execute(
+					\{
+						'Calling_Element': This_Item,
+						'Action': 'Add',
+						'Values':
+						\{
+							'Add_Type': '[New_Item.Type.Alias No_Wrap /]',
+							'Add_Type_Type': 'Type',
+							'Edited_Status': 'Unsaved',
+							'Suppress_Validation': true,
+							[If New_Item.Type.Alias is "Property"]
+								[If New_Item.Variables.Parent Exists]
+									[Then]
+										'Edited_Type': '[New_Item.Variables.Parent.Alias No_Wrap /]',
+									[/Then]
+									[Else]
+										'Edited_Type': 'Item',
+									[/Else]
+								[/If]
+								'Edited_Name': 'New Property',
+								'Edited_Type_Type': 'Type',
+								'Edited_Value_Type': 'Text',
+								'Edited_Value_Type_Type': 'Type',
+							[/If]
+							[If New_Item.Type.Alias is "Type"]
+								'Edited_Name': 'New Type',
+							[/If]
+							[If New_Item.Type.Alias is "Template"]
+								[If New_Item.Variables.Parent Exists]
+									[Then]
+										'Edited_Type': '[New_Item.Variables.Parent.Alias No_Wrap /]',
+									[/Then]
+									[Else]
+										'Edited_Type': 'Item',
+									[/Else]
+								[/If]
+								'Edited_Type_Type': 'Type',
+								'Edited_Name': 'New Template',
+							[/If]
+							[If New_Item.Type.Alias is "Type_Action"]
+								[If New_Item.Variables.Parent Exists]
+									[Then]
+										'Edited_Type': '[New_Item.Variables.Parent.Alias No_Wrap /]',
+									[/Then]
+									[Else]
+										'Edited_Type': 'Item',
+									[/Else]
+								[/If]
+								'Edited_Type_Type': 'Type',
+								'Edited_Name': 'New Action',
+							[/If]
+
+						\}
+					\});
+					Jelly.Handlers.Register_Handler(
+						\{
+							'Element': this,
+							'Event': 'Added_Unsaved',
+							'Code': function(Parameters)
+								\{
+									[If New_Item.Variables.Create_Inspector]
+										[Then]
+											Jelly.Interface.Inspect(\{
+													'Event': event, 
+													'Type_Alias': Parameters\['Item_Type'\], 
+													'Item_ID': Parameters\['Item_ID'\]
+												\});
+										[/Then]
+										[Else]
+											Jelly.Handlers.Handle_Link_From_Click(event, 
+												\{
+													'URL': Parameters\['Item_Type'\] + '/' + Parameters\['Item_ID'\] + '/' + 'Edit',
+													'Container': 'Window',
+													[If New_Item.Variables.Parent_Property_Alias exists] 
+														'URL_Variables': \{
+																'Parent_Property_Alias': '[New_Item.Variables.Parent_Property_Alias No_Wrap /]
+															'\}
+													[/If]
+												\});
+										[/Else]
+									[/If]
+								\}
+						\});
+					
+					[If New_Item.Variables.Parent]
+						[If New_Item.Type.Alias is not "Property"]
+							Jelly.Handlers.Register_Handler(
+							\{
+								'Element': This_Item,
+								'Event': 'Added',
+								'Code': function(Parameters)
+								\{
+									Jelly.Actions.Execute(
+									\{
+										'Action': 'Add_Value',
+										'Calling_Element': This_Item,
+										'Action_Type': 'Type_Action',
+										'Target': '[New_Item.Variables.Parent.ID No_Wrap /]',
+										'Target_Type': '[New_Item.Variables.Parent.Type.Alias No_Wrap /]',
+										'Values':
+										\{
+											'Value': Parameters\['Item'\],
+											'Value_Type': Parameters\['Item_Type'\],
+											'Target_Property_Alias': '[New_Item.Variables.Parent_Property_Alias No_Wrap /]'
+										\}
+									\});
+								\}
+							\});
+						[/If]
+					[/If]
+					
+					[If New_Item.Variables.On_Click Exists][New_Item.Variables.On_Click /][/If]
+					
+					return false;
+				[/Format]">
+					[If New_Item.Variables.Label exists]
+						[Then][New_Item.Variables.Label/][/Then]
+						[Else]New [New_Item.Type.Name no_wrap /]...[/Else]
+					[/If]
+				</a>
+			[/Format]{/Content}
+		{/Template}
+	
+{/Jelly}

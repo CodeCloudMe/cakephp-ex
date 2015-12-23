@@ -1,0 +1,27 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action Template "Result" --}
+		{Template}
+			{Type}Action{/Type}
+			{Name}Result{/Name}
+			{Content}
+				<span class="Jelly_Action_Result" id="[Current_Action_Namespace No_Wrap /]_Result"></span>
+				[External_Script]
+					Jelly.Actions.Register_Action_Result_Element(
+							\{
+								Namespace: "[Current_Action_Namespace No_Wrap /]", 
+								Result_Element: document.getElementById("[Current_Action_Namespace No_Wrap /]_Result")
+							\}
+						);
+				[/External_Script]
+			{/Content}
+		{/Template}
+	
+{/Jelly}
+
+
+				
+				
+
+

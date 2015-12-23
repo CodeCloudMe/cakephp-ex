@@ -1,0 +1,30 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Picture Template "Badge" --}
+		{Template}
+			{Type}Picture{/Type}
+			{Name}Badge{/Name}
+			{Content}
+				[This as Data_Module_List_Item with No_Details = true /]
+				
+				[Ignore]
+				<div id="[Namespace No_Wrap /]_Badge" style="display: inline-block; text-decoration: inherit;">
+					[If Picture.Path]
+						[Then]
+							<div class="Cover_Image" style="display: inline-block; width: 136px; background-image: url(/Picture/[Picture.ID no_wrap /]/File:Maximum_Width=1000);">
+								<span style="display: none;">
+									[Picture as Default with Maximum_Width = 1000 /]
+								</span>
+							</div>
+						[/Then]
+						[Else]
+							No image path. Uploading?
+						[/Else]
+					[/If]
+				</div>
+				[/Ignore]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

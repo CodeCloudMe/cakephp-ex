@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Font "Dosis" --}
+		{Web_Font}
+			{Name}Dosis{/Name}
+			{URL}https://fonts.googleapis.com/css?family=Dosis:400,700{/URL}
+		{/Web_Font}
+	
+{/Jelly}

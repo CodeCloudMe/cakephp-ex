@@ -1,0 +1,30 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Heading" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Cover{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Item to This /]
+				
+				<!-- Check if the item already has a cover template -->
+				<!-- TODO: Better way to do this? -->
+				[If This.Type.Alias is "Picture" or This.Type.Alias is "Video" or This.Type.Alias is "Location" or This.Type.Alias is "Website" or This.Type.Alias is "User"]
+					[Then]
+						<!-- Use the type's custom cover template -->
+						[This.Specific_Item as Cover /]
+					[/Then]
+					[Else]
+						<!-- Get the cover property for the item's type -->
+						[Current_Item.Type.Cover_Property_Item]
+							<!-- Render the cover property as a cover -->
+							[Current_Item.Specific_Item.[This.Alias/] as Cover/]
+						[/Current_Item.Type.Cover_Property]
+					[/Else]
+				[/If]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Date Template "Input" --}
+		{Template}
+			{Type}Date{/Type}
+			{Name}Input{/Name}
+			{Content}[Input "Date" with Alias Date.Alias, Value Date.Value/]{/Content}
+		{/Template}
+	
+{/Jelly}

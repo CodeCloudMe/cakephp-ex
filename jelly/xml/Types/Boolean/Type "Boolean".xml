@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Boolean" --}
+		{Type}
+			{Name}Boolean{/Name}
+			{Alias}Boolean{/Alias}
+			{Default_Input}Check_Box{/Default_Input}
+			{Package}Simple{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

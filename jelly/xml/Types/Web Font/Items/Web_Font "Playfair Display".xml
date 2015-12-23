@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Font "Playfair Display" --}
+		{Web_Font}
+			{Name}Playfair Display{/Name}
+			{URL}https://fonts.googleapis.com/css?family=Playfair+Display:400,700,400italic,700italic{/URL}
+		{/Web_Font}
+	
+{/Jelly}

@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Better" Picture --}
+		{Picture}
+			{Name}Monegraph{/Name}
+			{Path}jelly_data/Files/File/Presentation_Monegraph.jpg{/Path}
+		{/Picture}
+	
+{/Jelly}

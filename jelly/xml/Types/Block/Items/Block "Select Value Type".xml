@@ -1,0 +1,144 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "List" --}
+		{Block}
+			{Name}Select Value Type{/Name}
+			{Content}
+				[Admin]
+					<span class="Create_Property_Menu">
+						<a href="#" class="Create_Property_Menu_Item" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Target': this,
+										'Event': 'Selected',
+										'Item': 'Long_Text',
+										'Badge': Jelly.jQuery(this).html()
+									\}
+								);
+								return false;
+							[/Format]">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/text.png);"></figure>
+							<span class="Label">Text</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Target': this,
+										'Event': 'Selected',
+										'Item': 'Number',
+										'Badge': Jelly.jQuery(this).html()
+									\}
+								);
+								return false;
+							[/Format]">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/number.png);"></figure>
+							<span class="Label">Number</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Target': this,
+										'Event': 'Selected',
+										'Item': 'Date_Time',
+										'Badge': Jelly.jQuery(this).html()
+									\}
+								);
+								return false;
+							[/Format]">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/date.png);"></figure>
+							<span class="Label">Date</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Target': this,
+										'Event': 'Selected',
+										'Item': 'Boolean',
+										'Badge': Jelly.jQuery(this).html()
+									\}
+								);
+								return false;
+							[/Format]">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/checkbox.png);"></figure>
+							<span class="Label">Checkbox</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Target': this,
+										'Event': 'Selected',
+										'Item': 'Picture',
+										'Badge': Jelly.jQuery(this).html()
+									\}
+								);
+								return false;
+							[/Format]">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/normalimage.png);"></figure>
+							<span class="Label">Pictures</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Target': this,
+										'Event': 'Selected',
+										'Item': 'Video',
+										'Badge': Jelly.jQuery(this).html()
+									\}
+								);
+								return false;
+							[/Format]">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/normalimage.png);"></figure>
+							<span class="Label">Videos</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Target': this,
+										'Event': 'File',
+										'Item': 'Long_Text',
+										'Badge': Jelly.jQuery(this).html()
+									\}
+								);
+								return false;
+							[/Format]">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/file.png);"></figure>
+							<span class="Label">Files</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Target': this,
+										'Event': 'Selected',
+										'Item': 'Location',
+										'Badge': Jelly.jQuery(this).html()
+									\}
+								);
+								return false;
+							[/Format]">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/location.png);"></figure>
+							<span class="Label">Location</span>
+						</a>
+						[Type from Database where Starred]
+							[Set Current_Type to this /]
+							<a href="#" class="Create_Property_Menu_Item" onclick="[Format as "Single Line Code"]
+									Jelly.Handlers.Call_Handler_For_Target(
+										\{
+											'Target': this,
+											'Event': 'Selected',
+											'Item': '[Current_Type.Alias no_wrap /]',
+											'Badge': Jelly.jQuery(this).html()
+										\}
+									);
+									return false;
+								[/Format]">
+								<figure class="Cover" style="background-image:url(/jelly/images/types/list.png);"></figure>
+								<span class="Label">[If Current_Type.Plural_Name][Then][Current_Type.Plural_Name /][/Then][Else][Current_Type.Name /][/Else][/If]</span>
+							</a>
+						[/Type]
+					</span>
+				[/Admin]
+			{/Content}
+		{/Block}
+	
+{/Jelly}

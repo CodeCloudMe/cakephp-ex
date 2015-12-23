@@ -1,0 +1,76 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- File Type_Action "Refresh" --}
+		{Type_Action}
+			{Type}File{/Type}
+			{Name}Refresh{/Name}
+			{Content}
+				[Link to Execute /]
+			{/Content}
+			{Code}
+				[external_script]alert("refresh");[/external_script]
+				[If Action.Target.Host is "Local"]
+					[Then]
+						<!-- Determine metadata for a local file. -->					
+						<!-- Determine name. -->
+						<!-- TODO: this seems to happen before this point already. -->
+						<!-- disabled since it seems to happen already, and this just overwrites any changes to the name -->
+						[x Set Action.Target.Name = "[PHP]return basename('[Action:Target:Path No_Wrap /]');[/PHP]"/]
+						
+						[If Action.Target.Specific_Type.Alias = "File"]
+						<!-- Determine 'file' metadata. -->
+						[/If]
+
+						[If Action.Target.Specific_Type.Alias = "Picture"]			
+						<!-- Determine 'picture' metadata. -->
+							<!-- Determine width. -->
+							[Set Action.Target.File_Width = "[PHP]
+								list($Width, $Height, $Type, $Attr) = GetImageSize('[Action:Target:Path No_Wrap /]');
+								return $Width;
+							[/PHP]"/]
+							
+							<!-- Determine height. -->
+							[Set Action.Target.File_Height = "[PHP]
+								list($Width, $Height, $Type, $Attr) = GetImageSize('[Action:Target:Path No_Wrap /]');
+								return $Height;
+							[/PHP]"/]
+							
+						[/If]
+						
+						
+						[If Action.Target.Specific_Type.Alias = "Video"]
+						<!-- Determine 'video' metadata. -->
+							
+						[/If]
+						
+						
+
+						[If Action.Target.Specific_Type.Alias = "Sound"]
+						<!-- Detemine 'sound' metadata. -->
+						[/If]
+
+					[/Then]
+					[Else]
+					<!-- Determine metadata for an externally hosted file. -->
+						<!-- Determine name. -->
+						[Set Action.Target.Name = "[PHP]
+							return Get_External_Property('[Action:Target:Host No_Wrap /]', '[Action:Target:Path No_Wrap /]', 'name');
+						[/PHP]"/]
+
+						<!-- Determine width. -->
+						[Set Action.Target.Width = "[PHP]
+							return Get_External_Property('[Action:Target:Host No_Wrap /]', '[Action:Target:Path /]', 'width');
+						[/PHP]"/]
+						
+						<!-- Determine height. -->
+						[Set Action.Target.Height = "[PHP]
+							return Get_External_Property('[Action:Target:Host No_Wrap /]', '[Action:Target:Path No_Wrap /]', 'height');
+						[/PHP]"/]
+					[/Else]
+				[/If]
+				[Save Action.Target/]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

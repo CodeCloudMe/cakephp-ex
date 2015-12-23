@@ -1,0 +1,25 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event "EARLY SHOW: Limp Wrist, Frau, In School, Crazy Spirit, Honeysuck, Didi" --}
+		{Event}
+			{Name}EARLY SHOW: Limp Wrist, Frau, In School, Crazy Spirit, Honeysuck, Didi{/Name}
+			{Start_Time}8/6/2015 7:00PM{/Start_Time}
+			{Details}
+				didi (from OH)<br/>
+				in school (NYC)<br/>
+				frau (UK)<br/>
+				honeysuck (MA)<br/>
+				limp wrist (everywhere)<br/>
+				<br/>
+				Silent Barn is a safer space. <br/>
+				NO RACIST/SEXIST/HOMOPHOBIC/TRANSPHOBIC BULLSHIT, thx.<br/>
+			{/Details}
+			{Location}Silent Barn{/Location}
+			{Price}12{/Price}
+			{Available_Tickets}150{/Available_Tickets}
+			{Picture}Early_Show_Picture{/Picture}
+			{Package}Local{/Package}
+		{/Event}
+	
+{/Jelly}

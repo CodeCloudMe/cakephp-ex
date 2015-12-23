@@ -1,0 +1,13 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Template Property "Less Style" --}
+	
+		{Property}
+			{Type}Template{/Type}
+			{Value_Type}Long_Text{/Value_Type}
+			{Name}Less Style{/Name}
+			{Advanced}0{/Advanced}
+		{/Property}
+	
+{/Jelly}

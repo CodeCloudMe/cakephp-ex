@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Property_Module "Tagline" --}
+		{Property_Module}
+			{Type_Item}Team{/Type_Item}
+			{Property_Item}12355022{/Property_Item}
+		{/Property_Module}
+	
+{/Jelly}

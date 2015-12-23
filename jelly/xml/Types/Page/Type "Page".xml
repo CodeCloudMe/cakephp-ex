@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Page" --}
+		{Type}
+			{Name}Page{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Pages{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Website{/Package}
+			{Starred}0{/Starred}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

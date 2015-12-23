@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Event" --}
+		{Type}
+			{Name}Event{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Events{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Events{/Package}
+			{Starred}1{/Starred}
+			{Viewable_By}Public{/Viewable_By}
+		{/Type}
+	
+{/Jelly}

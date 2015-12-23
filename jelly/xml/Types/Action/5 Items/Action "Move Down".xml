@@ -1,0 +1,27 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Move Down" --}
+		{Action}
+			{Name}Move Down{/Name}
+			{Content}
+				Use \[Link to Move ITEM Up /\]
+			{/Content}
+			{Code}
+				[Set Current_Action to Action /]
+				[Admin]
+					[If Action.Property_Alias exists]
+						[Then]
+							[Current_Action:Parent_Item:[Current_Action:Property_Alias No_Wrap /] where ID = Action.Item.ID]
+								[Move This Down /]
+							[/Action]
+						[/Then]
+						[Else]
+							[Move Action.Item Down /]
+						[/Else]
+					[/If]
+				[/Admin]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

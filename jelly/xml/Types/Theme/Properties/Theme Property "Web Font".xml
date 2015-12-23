@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Theme Property "Web Font" --}
+		{Property}
+			{Type}Theme{/Type}
+			{Name}Web Font{/Name}
+			{Relation}Many-To-Many{/Relation}
+			{Value_Type}Web_Font{/Value_Type}
+		{/Property}
+	
+{/Jelly}

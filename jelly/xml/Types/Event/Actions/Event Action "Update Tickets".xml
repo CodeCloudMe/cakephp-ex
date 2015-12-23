@@ -1,0 +1,101 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Action "Update Tickets" --}
+		{Type_Action}
+			{Type}Event{/Type}
+			{Name}Update Tickets{/Name}
+			{Content}
+				<!-- Admin only -->
+					[Admin]
+						[Current_Action.Target]		
+							<!-- Disambiguate -->
+							[Set Current_Event to This/]
+			
+							<span class="Add_Ticket_Window">
+								<!-- Close Button -->
+								<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+								</a>
+		
+								<span class="Header">
+									[If Current_Event.On_Sale][Then]Update[/Then][Else]Sell[/Else][/If]
+									Tickets for [Current_Event.Name/]
+								</span>
+			
+			
+								<span class="Row">
+									<span class="Section Left Price">
+										<span class="Label">
+											Ticket Price
+										</span>
+										<span class="Input">
+											[Input "Number Field" with Name ="Price", Value = Current_Event.Price, Attributes = "min=\"0\" onkeyup=\"Jelly.Payments.Update_Ticket_Forecast(\{'Namespace': '[Current_Action.Namespace no_wrap/]'\});\""/]
+										</span>
+									</span>			
+			
+									<span class="Section Left Capacity">
+										<span class="Label">
+											Number of Tickets
+										</span>
+										<span class="Input">
+											[Input "Number Field" with Name ="Stock", Value = Current_Event.Stock, Attributes = "min=\"0\" step=\"1\" onkeyup=\"Jelly.Payments.Update_Ticket_Forecast(\{'Namespace': '[Current_Action.Namespace no_wrap/]'\});\""/]
+										</span>
+									</span>
+								</span>
+			
+								<span class="Section Forecast">	
+									<span class="Value"></span>
+									<span class="Hint">Just a guess! Assuming that donations will add 15%, <br/>and that 5% will become volunteers.</span>
+								</span>
+			
+								<span class="Section Row Donations">
+									<span class="Input Left" style="width: 30px;">
+										[Input "Check Box" with Name = "Encourage Donations", Value = Current_Event.Encourage_Donations, Attributes = "onchange=\"Jelly.Payments.Update_Ticket_Forecast(\{'Namespace': '[Current_Action.Namespace no_wrap/]'\});\""/]
+									</span>
+									<span class="Left Description" style="padding-top: 1px;">
+										Encourage ticket buyers to donate
+									</span>
+								</span>
+	
+								<span class="Section Row Volunteers" style="margin-bottom:10px;">
+									<span class="Input Left" style="width: 30px;">
+										[Input "Check Box" with Name = "Encourage Volunteers",  Value = Current_Event.Encourage_Volunteers, Attributes = "onchange=\"Jelly.Payments.Update_Ticket_Forecast(\{'Namespace': '[Current_Action.Namespace no_wrap/]'\});\""/]
+									</span>
+									<span class="Left Description" style="padding-top: 1px;">
+										Encourage ticket buyers to volunteer
+										 <span class="Hint">Better waives a $1 fee when they join</span>
+									</span>
+								</span>
+
+								<span class="Execute">
+									<!-- Execute link -->
+									[Link to Execute][If Current_Event.On_Sale][Then]Update Tickets[/Then][Else]Sell Tickets Now[/Else][/If][/Link]
+								</span>
+							</span>
+			
+							[External_Script]
+								Jelly.Payments.Update_Ticket_Forecast(\{'Namespace': '[Current_Action.Namespace no_wrap/]'\});
+							[/External_Script]
+			
+						[/Current_Action.Target]
+					[/Admin]
+			{/Content}
+			{Code}
+				[Action.Target]
+					[Set Current_Event to This/]
+					[Set Current_Event.Price to Form.Price/]
+					[Set Current_Event.Stock to Form.Stock/]
+					[Set Current_Event.Encourage_Donations to Form.Encourage_Donations/]
+					[Set Current_Event.Encourage_Volunteers to Form.Encourage_Volunteers/]
+					[Set Current_Event.On_Sale to True/]
+					[Save Current_Event/]
+	
+					[External_Script]
+						Jelly.Interface.Close_Top_Window();
+					[/External_Script]
+				[/Action.Target]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}
