@@ -1,3 +1,3 @@
 <?php
-	require_once("Jelly/php/Jelly.php");
+	require_once("jelly/php/Jelly.php");
 ?>
