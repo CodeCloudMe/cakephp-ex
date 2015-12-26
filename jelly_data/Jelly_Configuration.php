@@ -61,7 +61,7 @@ array(
 	"Allow_Reset" => true,
 	
 	// Allow tracking
-	"Allow_Tracking" => false,
+	"Allow_Tracking" => true,
 	
 	// Soft URL
 	"Soft_URL" => true,
