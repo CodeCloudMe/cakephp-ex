@@ -54,7 +54,7 @@ array(
 	"URL_Prefix" => "",
 	
 	// Admin
-	"Admin" => false,
+	"Admin" => true,
 	
 	// Allow Reset
 	// TODO: Remove
