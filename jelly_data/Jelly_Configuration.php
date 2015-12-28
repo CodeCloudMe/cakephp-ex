@@ -10,13 +10,13 @@ array(
 		"Database_Name" => "better",
 				
 		// Database Host Name
-		"Host_Name" => "localhost",
+		"Host_Name" => $_ENV["host"],
 				
 		// Database Username
-		"Username" => "adminIMDu5ae",
+		"Username" => $_ENV["username"],
 				
 		// MySQL Database Password
-		"Password" => "DapJGu5mNdZs",
+		"Password" => $_ENV["password"],
 				
 		// MySQL Table Prefix
 		"Table_Prefix" => ""
@@ -54,14 +54,14 @@ array(
 	"URL_Prefix" => "",
 	
 	// Admin
-	"Admin" => true,
+	"Admin" => $_ENV["admin"],
 	
 	// Allow Reset
 	// TODO: Remove
-	"Allow_Reset" => true,
+	"Allow_Reset" => $_ENV["reset"],
 	
 	// Allow tracking
-	"Allow_Tracking" => true,
+	"Allow_Tracking" => $_ENV["tracking"],
 	
 	// Soft URL
 	"Soft_URL" => true,
