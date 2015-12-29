@@ -16,7 +16,7 @@ array(
 		"Username" => getenv('OPENSHIFT_MYSQL_DB_USERNAME'),
 				
 		// MySQL Database Password
-		"Password" => getenv('password'),
+		"Password" => getenv('OPENSHIFT_MYSQL_DB_PASSWORD'),
 				
 		// MySQL Table Prefix
 		"Table_Prefix" => ""
@@ -54,14 +54,14 @@ array(
 	"URL_Prefix" => "",
 	
 	// Admin
-	"Admin" => true,
+	"Admin" => boolval(getenv('admin')),
 	
 	// Allow Reset
 	// TODO: Remove
-	"Allow_Reset" => true,
+	"Allow_Reset" => boolval(getenv('reset')),
 	
 	// Allow tracking
-	"Allow_Tracking" => true,
+	"Allow_Tracking" => boolval(getenv('tracking')),
 	
 	// Soft URL
 	"Soft_URL" => true,
