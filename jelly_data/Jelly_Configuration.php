@@ -16,7 +16,7 @@ array(
 		"Username" => getenv('OPENSHIFT_MYSQL_DB_USERNAME'),
 				
 		// MySQL Database Password
-		"Password" => $_ENV['password'],
+		"Password" => $_SERVER['password'],
 				
 		// MySQL Table Prefix
 		"Table_Prefix" => ""
