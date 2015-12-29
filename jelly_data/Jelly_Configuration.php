@@ -54,8 +54,8 @@ array(
 	"URL_Prefix" => "",
 	
 	// Admin
-	
-	"Admin" => (boolean)getenv('admin'),
+
+	"Admin" => false,
 	
 	// Allow Reset
 	// TODO: Remove
