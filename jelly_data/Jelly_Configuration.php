@@ -13,7 +13,7 @@ array(
 		"Host_Name" => 'localhost',
 				
 		// Database Username
-		"Username" => 'adminIMDu5ae',
+		"Username" => getenv('username'),
 				
 		// MySQL Database Password
 		"Password" => 'DapJGu5mNdZs',
