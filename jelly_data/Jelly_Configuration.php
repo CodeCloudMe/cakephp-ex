@@ -54,14 +54,14 @@ array(
 	"URL_Prefix" => "",
 	
 	// Admin
-	"Admin" => boolval(getenv('admin')),
+	"Admin" => true,
 	
 	// Allow Reset
 	// TODO: Remove
-	"Allow_Reset" => boolval(getenv('reset')),
+	"Allow_Reset" => true,
 	
 	// Allow tracking
-	"Allow_Tracking" => boolval(getenv('tracking')),
+	"Allow_Tracking" => (boolean)getenv('reset'),
 	
 	// Soft URL
 	"Soft_URL" => true,
