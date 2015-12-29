@@ -54,6 +54,7 @@ array(
 	"URL_Prefix" => "",
 	
 	// Admin
+	
 	"Admin" => (boolean)getenv('admin'),
 	
 	// Allow Reset
