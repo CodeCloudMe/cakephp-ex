@@ -10,13 +10,13 @@ array(
 		"Database_Name" => "better",
 				
 		// Database Host Name
-		"Host_Name" => getenv('host'),
+		"Host_Name" => 'localhost',
 				
 		// Database Username
-		"Username" => getenv('username'),
+		"Username" => 'adminIMDu5ae',
 				
 		// MySQL Database Password
-		"Password" => getenv('password'),
+		"Password" => 'DapJGu5mNdZs',
 				
 		// MySQL Table Prefix
 		"Table_Prefix" => ""
