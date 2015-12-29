@@ -54,14 +54,14 @@ array(
 	"URL_Prefix" => "",
 	
 	// Admin
-	"Admin" => true,
+	"Admin" => (boolean)getenv('admin'),
 	
 	// Allow Reset
 	// TODO: Remove
-	"Allow_Reset" => true,
+	"Allow_Reset" => (boolean)getenv('reset'),
 	
 	// Allow tracking
-	"Allow_Tracking" => (boolean)getenv('reset'),
+	"Allow_Tracking" => (boolean)getenv('tracking'),
 	
 	// Soft URL
 	"Soft_URL" => true,
