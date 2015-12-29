@@ -10,13 +10,13 @@ array(
 		"Database_Name" => "better",
 				
 		// Database Host Name
-		"Host_Name" => $_ENV["host"],
+		"Host_Name" => getenv('host');,
 				
 		// Database Username
-		"Username" => $_ENV["username"],
+		"Username" => getenv('username');,
 				
 		// MySQL Database Password
-		"Password" => $_ENV["password"],
+		"Password" => getenv('password'),
 				
 		// MySQL Table Prefix
 		"Table_Prefix" => ""
