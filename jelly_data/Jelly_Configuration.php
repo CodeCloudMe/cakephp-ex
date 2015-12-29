@@ -13,10 +13,10 @@ array(
 		"Host_Name" => getenv("OPENSHIFT_MYSQL_DB_HOST"),
 				
 		// Database Username
-		"Username" => 'adminIMDu5ae',
+		"Username" => getenv('OPENSHIFT_MYSQL_DB_USERNAME'),
 				
 		// MySQL Database Password
-		"Password" => 'DapJGu5mNdZs',
+		"Password" => getenv('OPENSHIFT_MYSQL_DB_PASSWORD'),
 				
 		// MySQL Table Prefix
 		"Table_Prefix" => ""
