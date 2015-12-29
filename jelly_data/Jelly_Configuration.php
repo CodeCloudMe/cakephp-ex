@@ -10,10 +10,10 @@ array(
 		"Database_Name" => "better",
 				
 		// Database Host Name
-		"Host_Name" => getenv('host');,
+		"Host_Name" => getenv('host'),
 				
 		// Database Username
-		"Username" => getenv('username');,
+		"Username" => getenv('username'),
 				
 		// MySQL Database Password
 		"Password" => getenv('password'),
