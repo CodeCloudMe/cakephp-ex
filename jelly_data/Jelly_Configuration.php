@@ -54,14 +54,14 @@ array(
 	"URL_Prefix" => "",
 	
 	// Admin
-	"Admin" => $_ENV["admin"],
+	"Admin" => true,
 	
 	// Allow Reset
 	// TODO: Remove
-	"Allow_Reset" => $_ENV["reset"],
+	"Allow_Reset" => true,
 	
 	// Allow tracking
-	"Allow_Tracking" => $_ENV["tracking"],
+	"Allow_Tracking" => true,
 	
 	// Soft URL
 	"Soft_URL" => true,
