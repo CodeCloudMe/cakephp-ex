@@ -1,5 +1,5 @@
 <?php
-echo('test');
+
 function sendGridEmail($to, $from, $subject, $body){
 	
 $url = 'https://api.sendgrid.com/';
@@ -41,7 +41,7 @@ echo json_encode($response);
 
 
 
-sendGridEmail('kunal@better.space', 'info@better.space', 'Hello', 'testing');
+//sendGridEmail('kunal@better.space', 'info@better.space', 'Hello', 'testing');
 
 
 
