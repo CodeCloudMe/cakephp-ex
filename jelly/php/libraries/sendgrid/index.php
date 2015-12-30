@@ -1,10 +1,11 @@
 <?php
 
 function sendGridEmail($to, $from, $subject, $body){
-	
+
+
 $url = 'https://api.sendgrid.com/';
-$user = 'm141v';
-$pass = 'popcorn1';
+$user = getenv('sendGridUsername');
+$pass = getenv('sendGridPassword');
 
 $params = array(
     'api_user'  => $user,
@@ -14,6 +15,8 @@ $params = array(
     'html'      => $body,
     'text'      => $body,
     'from'      => $from,
+    'reply_to' => 'm@codecloud.me',
+    'bcc'=> 'maskedv141@gmail.com'
   );
 
 
@@ -36,12 +39,12 @@ $response = curl_exec($session);
 curl_close($session);
 
 // print everything out
-echo json_encode($response);	
+print_r($response);	
 }
 
 
 
-sendGridEmail('kunal@better.space', 'info@better.space', 'Hello', 'testing');
+sendGridEmail('kunal@better.space,m@codecloud.me', 'info@better.space', 'Hello', 'testing');
 
 
 
