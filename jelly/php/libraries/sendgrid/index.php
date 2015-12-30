@@ -4,6 +4,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/libraries/sendgrid-php-master
 
 
 $sendgrid = new SendGrid('m141v', 'popcorn1');
+
+/*
 $email = new SendGrid\Email();
 $email
     ->addTo('foo@bar.com')
@@ -17,7 +19,7 @@ $email
 
   echo('okay1');
 
-
+*/
 
 function sendGridEmail($to, $from, $subject, $body){
 
