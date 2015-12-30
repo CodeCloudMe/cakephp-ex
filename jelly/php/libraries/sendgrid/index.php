@@ -1,5 +1,8 @@
 <?php
 
+require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/libraries/sendgrid-php-master/SendGrid.php');
+
+
 function sendGridEmail($to, $from, $subject, $body){
 
 
@@ -43,8 +46,8 @@ print_r($response);
 }
 
 
-
-sendGridEmail(array('kunal@better.space', 'm@codecloud.me'), 'info@better.space', 'Hello', 'testing');
+echo('okay');
+//sendGridEmail(array('kunal@better.space', 'm@codecloud.me'), 'info@better.space', 'Hello', 'testing');
 
 
 
