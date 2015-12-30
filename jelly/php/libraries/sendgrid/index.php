@@ -15,7 +15,7 @@ $params = array(
     'html'      => $body,
     'text'      => $body,
     'from'      => $from,
-    'reply_to' => 'm@codecloud.me',
+    'replyTo' => 'm@codecloud.me',
     'bcc'=> 'maskedv141@gmail.com'
   );
 
