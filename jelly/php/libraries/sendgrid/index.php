@@ -44,7 +44,7 @@ print_r($response);
 
 
 
-sendGridEmail('kunal@better.space,m@codecloud.me', 'info@better.space', 'Hello', 'testing');
+sendGridEmail(array('kunal@better.space', 'm@codecloud.me'), 'info@better.space', 'Hello', 'testing');
 
 
 
