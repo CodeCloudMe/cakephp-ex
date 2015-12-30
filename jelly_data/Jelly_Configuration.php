@@ -7,7 +7,7 @@ array(
 	"Database" =>
 	array(
 		// Database Name
-		"Database_Name" => "better",
+		"Database_Name" => getenv("OPENSHIFT_APP_NAME"),
 				
 		// Database Host Name
 		"Host_Name" => getenv("OPENSHIFT_MYSQL_DB_HOST"),
@@ -26,23 +26,23 @@ array(
 	// TODO - open-source version should set this independently and strip these ones.
 	"API_Keys" => 
 	array (
-		"Lokku" => "911903378c845ddd76e5eeafe3532b07",
+		"Lokku" =>  getenv('lokkuKey'),
 		"Twilio" => array(
-				"Account_SID" => "ACfafb21565ac1c37bf9bc0b3cc85a2bc1",
-				"Auth_Token" => "61b52654d5cc6f1fa80c634852754c80",
-				"From" => "+13072238837"
+				"Account_SID" =>  getenv('twilioSID'),
+				"Auth_Token" =>  getenv('twilioToken'),
+				"From" =>  getenv('twilioFrom')
 			),
 		"Stripe" => array(	
-				"Mode" => "Test", 
+				"Mode" =>  getenv('stripeMode'), 
 				"Test" => array(
-						"Client_ID" => "ca_6h83T8QQ42Yoz3VOJh6f5cXZpGCuM1FC",
-						"Public_Key" => "pk_test_Xs5W6vfDHOlw6jEsgq2fXpG9",
-						"Secret_Key" => "sk_test_L5qNqKOawpb0bL2IenbKj571"
+						"Client_ID" =>  getenv('stripeTestId'),
+						"Public_Key" =>  getenv('stripeTestPKey'),
+						"Secret_Key" =>  getenv('stripeTestSKey')
 					),
 				"Live" => array(
-						"Client_ID" => "ca_6h83bGx6hJvCFZpfZnAEFUdKdHpK2MWi",
-						"Public_Key" => "pk_live_CQziZxuxxLPOtg4oAbc3ba9m",
-						"Secret_Key" => "sk_live_oHNjDwo7Z5LdrItcHy1f1HTL"
+						"Client_ID" => getenv('stripeLiveId'),
+						"Public_Key" => getenv('stripeLivePKey'),
+						"Secret_Key" => getenv('stripeLiveSKey')
 					)
 			)
 	),	
@@ -51,27 +51,27 @@ array(
 	//	"Data_Folder_Path" => "~/Documents/Jelly Data",
 	
 	// URL Prefix
-	"URL_Prefix" => "",
+	"URL_Prefix" => getenv('urlPrefix'),
 	
 	// Admin
 
-	"Admin" => false,
+	"Admin" =>  filter_var(getenv('admin'),FILTER_VALIDATE_BOOLEAN),
 	
 	// Allow Reset
 	// TODO: Remove
-	"Allow_Reset" => (boolean)getenv('reset'),
+	"Allow_Reset" => filter_var(getenv('reset'),FILTER_VALIDATE_BOOLEAN),
 	
 	// Allow tracking
-	"Allow_Tracking" => (boolean)getenv('tracking'),
+	"Allow_Tracking" => filter_var(getenv('tracking'),FILTER_VALIDATE_BOOLEAN),
 	
 	// Soft URL
-	"Soft_URL" => true,
+	"Soft_URL" => filter_var(getenv('softUrl'),FILTER_VALIDATE_BOOLEAN),
 	
 	// Compiled Javascript
-	"Compiled_Javascript" => false,
+	"Compiled_Javascript" => filter_var(getenv('compiledJavascript'),FILTER_VALIDATE_BOOLEAN),
 	
 	// Compiled LESS -> CSS
-	"Compiled_Styles" => false
+	"Compiled_Styles" => filter_var(getenv('compiledStyles'),FILTER_VALIDATE_BOOLEAN)
 );
 
 ?>
