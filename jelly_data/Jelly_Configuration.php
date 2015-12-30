@@ -7,7 +7,7 @@ array(
 	"Database" =>
 	array(
 		// Database Name
-		"Database_Name" => getenv("OPENSHIFT_APP_NAME"),
+		"Database_Name" => "better",
 				
 		// Database Host Name
 		"Host_Name" => getenv("OPENSHIFT_MYSQL_DB_HOST"),
