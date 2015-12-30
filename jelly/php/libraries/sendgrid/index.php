@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/libraries/sendgrid-php-master/SendGrid.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/libraries/sendgrid-php-master/lib/SendGrid.php');
 
 
 function sendGridEmail($to, $from, $subject, $body){
