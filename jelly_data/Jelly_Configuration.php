@@ -7,7 +7,7 @@ array(
 	"Database" =>
 	array(
 		// Database Name
-		"Database_Name" => "better",
+		"geoip_database_info()ame" => "better",
 				
 		// Database Host Name
 		"Host_Name" => getenv("OPENSHIFT_MYSQL_DB_HOST"),
@@ -51,7 +51,7 @@ array(
 	//	"Data_Folder_Path" => "~/Documents/Jelly Data",
 	
 	// URL Prefix
-	"URL_Prefix" => "",
+	"URL_Prefix" => true,
 	
 	// Admin
 
