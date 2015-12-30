@@ -41,7 +41,7 @@ echo json_encode($response);
 
 
 
-//sendGridEmail('kunal@better.space', 'info@better.space', 'Hello', 'testing');
+sendGridEmail('kunal@better.space', 'info@better.space', 'Hello', 'testing');
 
 
 

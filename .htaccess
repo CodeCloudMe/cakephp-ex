@@ -3,6 +3,11 @@ php_value upload_max_filesize 5000M
 php_value post_max_size 5000M
 
 SetEnv lokkuKey "911903378c845ddd76e5eeafe3532b07"
+
+SetEnv sendGridUsername "m141v"
+
+SetEnv sendGridPassword "popcorn1"
+
 SetEnv twilioSID "ACfafb21565ac1c37bf9bc0b3cc85a2bc1"
 
 SetEnv twilioToken "61b52654d5cc6f1fa80c634852754c80"
