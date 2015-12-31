@@ -55,23 +55,23 @@ array(
 	
 	// Admin
 
-	"Admin" =>  filter_var(getenv('admin'),FILTER_VALIDATE_BOOLEAN),
+	"Admin" =>  true,
 	
 	// Allow Reset
 	// TODO: Remove
-	"Allow_Reset" => filter_var(getenv('reset'),FILTER_VALIDATE_BOOLEAN),
+	"Allow_Reset" => true,
 	
 	// Allow tracking
-	"Allow_Tracking" => filter_var(getenv('tracking'),FILTER_VALIDATE_BOOLEAN),
+	"Allow_Tracking" => true,
 	
 	// Soft URL
-	"Soft_URL" => filter_var(getenv('softUrl'),FILTER_VALIDATE_BOOLEAN),
+	"Soft_URL" => true,
 	
 	// Compiled Javascript
-	"Compiled_Javascript" => filter_var(getenv('compiledJavascript'),FILTER_VALIDATE_BOOLEAN),
+	"Compiled_Javascript" => true,
 	
 	// Compiled LESS -> CSS
-	"Compiled_Styles" => filter_var(getenv('compiledStyles'),FILTER_VALIDATE_BOOLEAN)
+	"Compiled_Styles" => true
 );
 
 ?>
