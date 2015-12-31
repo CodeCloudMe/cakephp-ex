@@ -51,7 +51,7 @@ array(
 	//	"Data_Folder_Path" => "~/Documents/Jelly Data",
 	
 	// URL Prefix
-	"URL_Prefix" => getenv('urlPrefix'),
+	"URL_Prefix" => "",
 	
 	// Admin
 
