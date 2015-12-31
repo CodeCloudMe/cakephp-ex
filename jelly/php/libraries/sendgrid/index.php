@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/libraries/sendgrid-php/sendgr
 
 
 $sendgrid = new SendGrid('m141v', 'popcorn1');
-
+/*
 
 $email = new SendGrid\Email();
 $email
@@ -16,7 +16,7 @@ $email
     ->setHtml('<strong>Hello World!</strong>');
 
   $sendgrid->send($email);
-
+*/
   echo('okay1');
 
 
