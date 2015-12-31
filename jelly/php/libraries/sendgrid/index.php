@@ -4,10 +4,11 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/libraries/sendgrid-php/sendgr
 
 
 $sendgrid = new SendGrid('m141v', 'popcorn1');
-/*
+
 
 $email = new SendGrid\Email();
-$email
+
+/*$email
     ->addTo('foo@bar.com')
     //->addTo('bar@foo.com') //One of the most notable changes is how `addTo()` behaves. We are now using our Web API parameters instead of the X-SMTPAPI header. What this means is that if you call `addTo()` multiple times for an email, **ONE** email will be sent with each email address visible to everyone.
     ->setFrom('me@bar.com')
