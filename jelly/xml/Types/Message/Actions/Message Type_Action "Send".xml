@@ -22,7 +22,7 @@
 							$body = '[Format as "PHP Single Quoted String"][Current_Item.Variables.Body no_wrap/][/Format]';
 					
 							// Add From, BCC 
-							$from = 'services@'.array_shift((explode(".",$_SERVER['HTTP_HOST']))).'.better.space';
+							$from = 'services@'.array_shift((explode(".",$_SERVER\['HTTP_HOST'\]))).'.better.space';
 
 							$fromName = '[Format as "PHP Single Quoted String"][1 Site from Database no_wrap][Name no_wrap/][/1][/Format] (via Better)';
 							$bcc = array('services@better.space');

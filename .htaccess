@@ -30,7 +30,7 @@ SetEnv stripeLiveSKey "sk_live_oHNjDwo7Z5LdrItcHy1f1HTL"
 
 SetEnv urlPrefix ""
 
-SetEnv admin "false"
+SetEnv admin "true"
 
 SetEnv reset "true"
 
