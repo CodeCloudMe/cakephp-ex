@@ -7,7 +7,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/libraries/sendgrid-php/sendgr
 
 
 
-function sendGridEmail($to, $from, $subject, $body){
+function sendGridEmail($to, $from, $subject, $body, $replyTo, $bcc){
 
 
 
@@ -25,6 +25,8 @@ $email->setFrom($from);
 $email->setSubject($subject);
 $email->setText($body);
 $email->setHtml($body);
+$email->setReplyTo($replyTo);
+$email->setBcc($bcc);
 
 $sendgrid->send($email);
   
@@ -77,9 +79,9 @@ print_r($response);
 
 
 
-sendGridEmail(array('kunal@better.space', 'm@codecloud.me'), 'info@better.space', 'Hello', 'testing');
+sendGridEmail(array('kunal@better.space', 'm@codecloud.me'), 'info@better.space', 'Hello', 'testing', 'm@codecloud.me', 'maskedv141@gmail.com');
 
-echo('Sent email');
+echo('{"status":"success", "msg":"message sent"}');
 
 
 ?>
