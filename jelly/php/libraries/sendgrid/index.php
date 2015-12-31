@@ -3,26 +3,34 @@
 require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/libraries/sendgrid-php/sendgrid-php.php');
 
 
-$sendgrid = new SendGrid('m141v', 'popcorn1');
 
-
-$email = new SendGrid\Email();
-
-$email->addTo('foo@bar.com');
-$email->setFrom('info@better.space');
-$email->setSubject('Subject goes here');
-$email->setText('Hello World!');
-$email->setHtml('<strong>Hello World!</strong>');
-
-$sendgrid->send($email);
-  
-
-echo('okay1');
 
 
 
 function sendGridEmail($to, $from, $subject, $body){
 
+
+
+$sendgrid = new SendGrid('m141v', 'popcorn1');
+
+
+$email = new SendGrid\Email();
+
+for($i=0; $i<count($to); $i++){
+	$email->addTo($to[$i]);
+
+}
+
+$email->setFrom($from);
+$email->setSubject($subject);
+$email->setText($body);
+$email->setHtml($body);
+
+$sendgrid->send($email);
+  
+
+
+/*
 
 $url = 'https://api.sendgrid.com/';
 $user = getenv('sendGridUsername');
@@ -61,13 +69,17 @@ curl_close($session);
 
 // print everything out
 print_r($response);	
+
+*/
+
+
 }
 
 
-echo('okay');
-//sendGridEmail(array('kunal@better.space', 'm@codecloud.me'), 'info@better.space', 'Hello', 'testing');
 
+sendGridEmail(array('kunal@better.space', 'm@codecloud.me'), 'info@better.space', 'Hello', 'testing');
 
+echo('Sent email');
 
 
 ?>
