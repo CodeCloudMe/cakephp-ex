@@ -35,8 +35,8 @@
 
 							// Send 
 							$emailResp = sendGridEmail($to, $from, $subject, $body, $replyTo, $fromName);
-							if(emailResp['error'])\{
-								echo 'Message could not be sent. Error: '. $emailResp['error'];
+							if(emailResp\['error'\])\{
+								echo 'Message could not be sent. Error: '. $emailResp\['error'\];
 							\}
 						[/PHP]
 					[/Then]
