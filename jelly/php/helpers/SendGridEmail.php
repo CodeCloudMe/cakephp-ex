@@ -77,7 +77,7 @@ print_r($response);
 
 //sendGridEmail(array('kunal@better.space', 'm@codecloud.me'), 'info@better.space', 'Hello', 'testing', 'm@codecloud.me', 'maskedv141@gmail.com');
 
-echo('{"status":"success", "msg":"message sent"}');
+//echo('{"status":"success", "msg":"message sent"}');
 
 
 ?>
