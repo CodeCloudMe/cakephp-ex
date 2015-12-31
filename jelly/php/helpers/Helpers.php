@@ -14,6 +14,7 @@ require_once("Make_Directories_If_Nonexistent.php");
 require_once("Resize_Image.php");
 require_once("Geocode.php");
 require_once("Map_Log_Value_To_Range.php");
+require_once("SendGridEmail.php");
 require_once("Get_Remote_Content.php");
 
 ?>

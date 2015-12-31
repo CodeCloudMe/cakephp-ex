@@ -3,10 +3,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/libraries/sendgrid-php/sendgrid-php.php');
 
 
-
-
-
-
 function sendGridEmail($to, $from, $subject, $body, $replyTo, $bcc){
 
 
