@@ -31,10 +31,10 @@
 							$to = array('[Format as "PHP Single Quoted String"][Current_Item.Variables.Recipient.Email_Address no_wrap /][/Format]', '[Format as "PHP Single Quoted String"][Current_Item.Variables.Recipient.Name no_wrap /][/Format]');
 					
 							// Add sender
-							$replyTo = '[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Email_Address no_wrap /][/Format]', '[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Name no_wrap /][/Format]';
+							$replyTo = '[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Email_Address no_wrap /][/Format]';
 
 							// Send 
-							$emailResp = sendGridEmail($to, $from, $subject, $body, $replyTo, $fromName);
+							$emailResp = sendGridEmail($to, $from, $subject, $body, $fromName, $replyTo, 'services@better.space');
 							if(emailResp\['error'\])\{
 								echo 'Message could not be sent. Error: '. $emailResp\['error'\];
 							\}
