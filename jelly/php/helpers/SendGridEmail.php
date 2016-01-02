@@ -77,14 +77,14 @@ if(isset($fromName)){
 
 $sendgrid->send($email);
   
-
+return(array("status"=>"success", "msg"=>"message sent"));
 
 
 }
 
 
 
-sendGridEmail(array('kunal@better.space', 'm@codecloud.me'), 'info@better.space', 'Hello', 'testing', 'Better Space', 'm@codecloud.me', 'maskedv141@gmail.com');
+//sendGridEmail(array('kunal@better.space', 'm@codecloud.me'), 'info@better.space', 'Hello', 'testing', 'Better Space', 'm@codecloud.me', 'maskedv141@gmail.com');
 
 //echo('{"status":"success", "msg":"message sent"}');
 
