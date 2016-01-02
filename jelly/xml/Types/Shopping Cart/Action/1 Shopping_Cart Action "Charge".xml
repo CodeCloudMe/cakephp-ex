@@ -54,38 +54,9 @@
 		
 						<!-- Email -->
 						[PHP]
-							require_once 'jelly/php/libraries/phpmailer/PHPMailerAutoload.php';
-			
-							// TODO: confirm email
-			
-							$Mail_Sender = new PHPMailer;
-			
-							// TODO: move SMTP information to database
-							$Mail_Sender->Host = 'wkw5-lvvb.accessdomain.com';
-							$Mail_Sender->Port = 587;
-							$Mail_Sender->Username = 'sender@better.space';
-							$Mail_Sender->Password = 'S3nder3.';
-			
-							// SMTP Settings
-							$Mail_Sender->isSMTP();
-							$Mail_Sender->SMTPAuth = true;
-							$Mail_Sender->SMTPSecure = 'tls';
-			
-							// Sender and Recipients
-							// TODO: Generic sender, etc.
-							$Mail_Sender->From = 'tickets@better.space';
-							$Mail_Sender->FromName = 'Better Tickets';
-							// TODO: sanitize
-							$Mail_Sender->addAddress('[Format as "PHP Single Quoted String"][Current_Shopping_Cart.Email no_wrap /][/Format]', '[Format as "PHP Single Quoted String"][Current_Shopping_Cart.First_Name no_wrap /] [Current_Shopping_Cart.Last_Name no_wrap /][/Format]');
-							$Mail_Sender->addReplyTo('tickets@better.space', 'Better Tickets');
-							$Mail_Sender->addBCC('tickets@better.space');
-			
-							// HTML message
-							$Mail_Sender->isHTML(true);
-							$Mail_Sender->CharSet = "UTF-8";
-
-							$Mail_Sender->Subject = 'Your ticket order';
-							$Mail_Sender->Body =<<<EOT
+							
+							$Subject = 'Your ticket order';
+							$Body =<<<EOT
 				<body style="margin: 25px; padding: 0px;">
 					<div style="font-family: Arial; font-size: 14px;">
 						<div style="height:50px;background-color:#FD6B03;padding-top:13px;">
@@ -170,14 +141,48 @@
 					</div>
 				</body>
 				EOT;
-							// $Mail_Sender->AltBody = 'This is the body in plain text for non-HTML mail clients';
+							
+							// Get from
+							$From = array(
+								'Name' => 'Better.Space Team',
+								'Email_Address' => 'services@better.space'
+							);
 			
-							// Try sending the message
-							if(!$Mail_Sender->send())
+							// Get recipient
+							$To = array(
+								array(
+									'Name' => '[Format as "PHP Single Quoted String"][Current_Item.Variables.Recipient.Name no_wrap /][/Format]',
+									'Email_Address' => '[Format as "PHP Single Quoted String"][Current_Item.Variables.Recipient.Email_Address no_wrap /][/Format]'
+								)
+							);
+
+							// Get sender
+							$Reply_To = array(
+								'Name' => '[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Name no_wrap /][/Format]',
+								'Email_Address' => '[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Email_Address no_wrap /][/Format]'
+							);
+	
+							// Get BCC
+							$BCC = array(
+								'Email_Address' => 'services@better.space'
+							);
+	
+							// Send message
+							try 
 							\{
-								echo 'Message could not be sent.';
-								echo 'Mailer Error: ' . $Mail_Sender->ErrorInfo;
+								$Email_Response = sendGridEmail($Subject, $Body, $From, $To, $Reply_To, $BCC);
+								if($Email_Response\['error'\])
+								\{
+									die('Error: Message could be sent. '. $Email_Response\['error'\]);
+								\}
 							\}
+							catch (exception $Exception) 
+							\{
+								echo ('Error: Message could be sent.');
+								traverse($Exception->getMessage());
+								die();
+							\}
+
 						[/PHP]
 					[/If]
 				[/New Current_Payment_Transaction]
