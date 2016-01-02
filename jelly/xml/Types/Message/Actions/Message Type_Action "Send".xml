@@ -10,33 +10,58 @@
 			{/Content}
 			{Code}
 				<!-- Message Type_Action "Send" -->
-				
+
 				<!-- Disambiguate -->
 				[Set Current_Item to Current_Action.Target /]
-				 
+ 
 				[If Current_Item.Variables.Recipient]				
 					[Then]
 						[PHP]
-							// Add content
-							$subject = '[Format as "PHP Single Quoted String"][Current_Item.Subject no_wrap/][/Format]';
-							$body = '[Format as "PHP Single Quoted String"][Current_Item.Variables.Body no_wrap/][/Format]';
-					
-							// Add From, BCC 
-							$from = 'services@'.array_shift((explode(".",$_SERVER\['HTTP_HOST'\]))).'.better.space';
+							// Get subject
+							$Subject = '[Format as "PHP Single Quoted String"][Current_Item.Subject no_wrap/][/Format]';
+			
+							// Get body
+							$Body = '[Format as "PHP Single Quoted String"][Current_Item.Variables.Body no_wrap/][/Format]';
+	
+							// Get from
+							$From = array(
+								'Name' => '[Format as "PHP Single Quoted String"][1 Site from Database no_wrap][Name no_wrap/][/1][/Format] (via Better)',
+								'Email_Address' => 'services@'.array_shift((explode(".",$_SERVER\['HTTP_HOST'\]))).'.better.space'
+							);
+			
+							// Get recipient
+							$To = array(
+								array(
+									'Name' => '[Format as "PHP Single Quoted String"][Current_Item.Variables.Recipient.Name no_wrap /][/Format]',
+									'Email_Address' => '[Format as "PHP Single Quoted String"][Current_Item.Variables.Recipient.Email_Address no_wrap /][/Format]'
+								)
+							);
 
-							$fromName = '[Format as "PHP Single Quoted String"][1 Site from Database no_wrap][Name no_wrap/][/1][/Format] (via Better)';
-							$bcc = array('services@better.space');
-					
-							// Add recipient
-							$to = array('[Format as "PHP Single Quoted String"][Current_Item.Variables.Recipient.Email_Address no_wrap /][/Format]', '[Format as "PHP Single Quoted String"][Current_Item.Variables.Recipient.Name no_wrap /][/Format]');
-					
-							// Add sender
-							$replyTo = '[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Email_Address no_wrap /][/Format]';
-
-							// Send 
-							$emailResp = sendGridEmail($to, $from, $subject, $body, $fromName, $replyTo, 'services@better.space');
-							if(emailResp\['error'\])\{
-								echo 'Message could not be sent. Error: '. $emailResp\['error'\];
+							// Get sender
+							$Reply_To = array(
+								'Name' => '[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Name no_wrap /][/Format]',
+								'Email_Address' => '[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Email_Address no_wrap /][/Format]'
+							);
+	
+							// Get BCC
+							$BCC = array(
+								'Email_Address' => 'services@better.space'
+							);
+	
+							// Send message
+							try 
+							\{
+								$Email_Response = sendGridEmail($Subject, $Body, $From, $To, $Reply_To, $BCC);
+								if($Email_Response\['error'\])
+								\{
+									die('Error: Message could be sent. '. $Email_Response\['error'\]);
+								\}
+							\}
+							catch (exception $Exception) 
+							\{
+								echo ('Error: Message could be sent.');
+								traverse($Exception->getMessage());
+								die();
 							\}
 						[/PHP]
 					[/Then]
