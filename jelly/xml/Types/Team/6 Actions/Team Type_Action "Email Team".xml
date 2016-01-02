@@ -131,49 +131,67 @@
 
 				[If not Form.Error]
 					[PHP]
-						require_once 'jelly/php/libraries/phpmailer/PHPMailerAutoload.php';
-
-						$Mail_Sender = new PHPMailer;
-
-						// TODO: move SMTP information to database
-						$Mail_Sender->Host = 'wkw5-lvvb.accessdomain.com';
-						$Mail_Sender->Port = 587;
-						$Mail_Sender->Username = 'sender@better.space';
-						$Mail_Sender->Password = 'S3nder3.';
-
-						// SMTP Settings
-						$Mail_Sender->isSMTP();
-						$Mail_Sender->SMTPAuth = true;
-						$Mail_Sender->SMTPSecure = 'tls';		
-
-						// Content type settings
-						$Mail_Sender->CharSet = 'UTF-8';
-						$Mail_Sender->isHTML(true);
-
 						// Add content
-						$Mail_Sender->Subject = '[Format as "PHP Single Quoted String"]\[[Current_Action.Target.Name no_wrap/]\] [Form.Subject no_wrap/][/Format]';
-						$Mail_Sender->Body = '[Format as "PHP Single Quoted String"][Form.Body no_wrap/]<br/>[Form.Signature no_wrap/][/Format]';
+						$Subject = '[Format as "PHP Single Quoted String"]\[[Current_Action.Target.Name no_wrap/]\] [Form.Subject no_wrap/][/Format]';
+						$Body = '[Format as "PHP Single Quoted String"][Form.Body no_wrap/]<br/>[Form.Signature no_wrap/][/Format]';
 
-						// Add From, BCC 
-						$Mail_Sender->From = 'services@better.space';
-						$Mail_Sender->FromName = '[Format as "PHP Single Quoted String"][1 Site from Database no_wrap][Name no_wrap/][/1][/Format] (via Better)';
-						$Mail_Sender->addBCC('services@better.space');
+						// Add From
+						$From = array(
+							'Name' => '[Format as "PHP Single Quoted String"][1 Site from Database no_wrap][Name no_wrap/][/1][/Format] (via Better)',
+							'Email_Address' => 'services@better.space'
+						);
+		
+						// Add BCC 
+						$BCC = array(
+							'Email_Address' => 'services@better.space'
+						);
 
 						// Add sender
-						$Mail_Sender->addReplyTo('[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]', '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]');		
-						$Mail_Sender->addCC('[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]', '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]');
+						$Reply_To = array(
+							'Name' => '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]',
+							'Email_Address' => '[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]'
+						);
 		
+						$To = array();
 						// Add recipient
 						[Current_Action.Target.Member where Activated and Email_Address exists and Email_Address is not "" and Allow_Community_Members_To_Contact_Me and ID is not Current_Session.User.ID no_wrap]
 							[Set Current_Member to This/]
 							[If Form.Recipient_[Current_Member.ID no_wrap/]]
-								$Mail_Sender->addAddress('[Format as "PHP Single Quoted String"][Current_Member.Email_Address no_wrap /][/Format]', '[Format as "PHP Single Quoted String"][Current_Member.Name no_wrap /][/Format]');
+								$To\[\]  = array(
+									'Name' => '[Format as "PHP Single Quoted String"][Current_Member.Name no_wrap /][/Format]',
+									'Email_Address' => '[Format as "PHP Single Quoted String"][Current_Member.Email_Address no_wrap /][/Format]'
+								);
 							[/If]
 						[/]
 
-						// Send 
-						if(!$Mail_Sender->send())
-							echo 'Message could not be sent. Error: ' . $Mail_Sender->ErrorInfo;
+						// Add sender
+						// TODO - add cc
+				//		$CC = array(
+				//			'Name' => '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]',
+				//			'Email_Address' => '[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]'
+				//		);
+
+						$To\[\] = array(
+							'Name' => '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]',
+							'Email_Address' => '[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]'
+						);
+
+						// Send message
+						try 
+						\{
+							// TODO - add cc
+							$Email_Response = sendGridEmail($Subject, $Body, $From, $To, $Reply_To, $BCC);
+							if($Email_Response\['error'\])
+							\{
+								die('Error: Message could be sent. '. $Email_Response\['error'\]);
+							\}
+						\}
+						catch (exception $Exception) 
+						\{
+							echo ('Error: Message could be sent.');
+							traverse($Exception->getMessage());
+							die();
+						\}
 					[/PHP]
 	
 					[External_Script]
