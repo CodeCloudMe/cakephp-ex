@@ -2,10 +2,10 @@ ErrorDocument 404 /index.php
 php_value upload_max_filesize 5000M
 php_value post_max_size 5000M
 
-SetEnv OPENSHIFT_APP_NAME "better3"
-SetEnv OPENSHIFT_MYSQL_DB_HOST "127.0.0.1"
-SetEnv OPENSHIFT_MYSQL_DB_USERNAME "root"
-SetEnv OPENSHIFT_MYSQL_DB_PASSWORD "password"
+#SetEnv OPENSHIFT_APP_NAME "better3"
+#SetEnv OPENSHIFT_MYSQL_DB_HOST "127.0.0.1"
+#SetEnv OPENSHIFT_MYSQL_DB_USERNAME "root"
+#SetEnv OPENSHIFT_MYSQL_DB_PASSWORD "password"
 
 SetEnv lokkuKey "911903378c845ddd76e5eeafe3532b07"
 
