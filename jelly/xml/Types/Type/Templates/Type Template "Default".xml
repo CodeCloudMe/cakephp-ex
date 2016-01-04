@@ -224,43 +224,48 @@
 									iterator_classes "Big_List_Items" 
 									item_classes "Big_List_Item Hover"
 								]
-									[Set Current_Item to This /]
+									[Then]
+										[Set Current_Item to This /]
 	
-									[Link to Current_Item by Alias with Class = "Big_List_Item_Details"]
-										<span class="Big_List_Item_Cover">
-											[Current_Item as Cover /]
-										</span>
-										<span class="Big_List_Item_Name">
-											[Current_Item.Name /] 
-											[If Current_Item.Type.Alias = "User"]
-												[If not User.Activated]
-													<span class="Status">
-														[If not User.Received_Invitation]
-															[Then]New Account[/Then]
-															[Else]Invitation Sent[/Else]
-														[/If]
-													</span>
+										[Link to Current_Item by Alias with Class = "Big_List_Item_Details"]
+											<span class="Big_List_Item_Cover">
+												[Current_Item as Cover /]
+											</span>
+											<span class="Big_List_Item_Name">
+												[Current_Item.Name /] 
+												[If Current_Item.Type.Alias = "User"]
+													[If not User.Activated]
+														<span class="Status">
+															[If not User.Received_Invitation]
+																[Then]New Account[/Then]
+																[Else]Invitation Sent[/Else]
+															[/If]
+														</span>
+													[/If]
 												[/If]
-											[/If]
+											</span>
+
+											<span>
+												[php]return strtolower('[Current_Item.Start_Time /][Current_Item.Start_Time /]');[/php]
+											</span>
+
+
+										[/Link]
+										<span class="Big_List_Item_Actions">
+											[Admin]
+												[If not (Current_Type.Alias is "Team" and Current_Item.Name is "Admin")]
+													[Link to "/Type/[Current_Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Remove" into "Window" with Class = "Delete"]
+														<span class="Content">
+															<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
+														</span>
+													[/Link]
+												[/If]
+											[/Admin]
 										</span>
-
-										<span>
-											[php]return strtolower('[Current_Item.Start_Time /][Current_Item.Start_Time /]');[/php]
-										</span>
-
-
-									[/Link]
-									<span class="Big_List_Item_Actions">
-										[Admin]
-											[If not (Current_Type.Alias is "Team" and Current_Item.Name is "Admin")]
-												[Link to "/Type/[Current_Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Remove" into "Window" with Class = "Delete"]
-													<span class="Content">
-														<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
-													</span>
-												[/Link]
-											[/If]
-										[/Admin]
-									</span>
+									[/Then]
+									[Else]
+										There are no [Current_Item.Plural_Name/].
+									[/Else]
 								[/]
 							[/If]
 							[If Current_Type.Variables.Display is "Map"]
