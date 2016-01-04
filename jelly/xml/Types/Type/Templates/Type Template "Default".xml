@@ -264,7 +264,7 @@
 										</span>
 									[/Then]
 									[Else]
-										There are no [Current_Item.Plural_Name/].
+										There have been 0 events uploaded so far.
 									[/Else]
 								[/]
 							[/If]
