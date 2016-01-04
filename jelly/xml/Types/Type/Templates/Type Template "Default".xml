@@ -243,6 +243,14 @@
 												[/If]
 											[/If]
 										</span>
+
+										<span>
+
+
+											[php]return strtolower('[Current_Item.Start_Time /]');[/php]
+										</span>
+
+
 									[/Link]
 									<span class="Big_List_Item_Actions">
 										[Admin]
