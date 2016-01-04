@@ -247,7 +247,7 @@
 										<span>
 
 
-											Time would go here
+										[php]return strtolower('[Current_Item.Start_Time /]');[/php]
 										</span>
 
 
