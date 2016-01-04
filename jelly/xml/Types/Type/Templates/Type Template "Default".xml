@@ -246,7 +246,7 @@
 											</span>
 
 											<span>
-												[php]return strtolower('[Current_Item.Start_Time /][Current_Item.Start_Time /]');[/php]
+												[php]return '[Current_Item.Start_Time /]');[/php]
 											</span>
 
 
