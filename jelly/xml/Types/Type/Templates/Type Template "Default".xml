@@ -1,368 +1,383 @@
-<!-- Hack to trigger refreshes --> 
-[Current_Session][/Current_Session]
-
-<!-- Disambiguate -->
-[Set Current_Type to This /]
-
-<!-- Determine if item is visible to visitor -->
-[Set Current_Type.Variables.Visible to true /]
-[Admin Ignore_Preview_Mode]
-	[Then]
-		[If Current_Session.Preview_Mode and Current_Type.Viewable_By.Alias = "Admin"]
-			[Set Current_Type.Variables.Visible to false /]
-			<span class="Page_Item">
-				<span class="Page_Header">
-					<span class="Page_Title">
-						<span class="Left_And_Right">
-							<span class="Right">
-								<!-- Preview Mode --> 
-								[Item.Action "Toggle Preview Mode"/]
-							</span>
-						</span>
-					</span>
-				</span>
-			</span>
-		[/If]
-	[/Then]
-	[Else]
-		<!-- TODO - nuanced privacy --> 
-		[If Current_Type.Viewable_By.Alias != "Public"]
-			[Set Current_Type.Variables.Visible to false /]
-		[/If]
-	[/Else]
-[/Admin]
-
-<!-- Check if item is visible to visitor -->
-[If Current_Type.Variables.Visible]
-
-	[External_Script]
-		if (Jelly.jQuery("#Jelly_Sidebar .Folder_Item.Item_[This.ID no_wrap /]").length)
-		{
-			Jelly.jQuery("#Jelly_Sidebar .Folder_Item").removeClass("Selected");
-			Jelly.jQuery("#Jelly_Sidebar .Folder_Item.Item_[This.ID no_wrap /]").addClass("Selected");
-		}
-		if (Jelly.jQuery("#Jelly_Toolbar .Navigation_Item.Item_[This.ID no_wrap /]").length)
-		{
-			Jelly.jQuery("#Jelly_Toolbar .Navigation_Item").removeClass("Selected");
-			Jelly.jQuery("#Jelly_Toolbar .Navigation_Item.Item_[This.ID no_wrap /]").addClass("Selected");
-		}
-		if(Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item.Item_[This.ID no_wrap /]").length)
-		{
-			Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item").removeClass("Selected");
-			Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item.Item_[This.ID no_wrap /]").addClass("Selected");
-		}
-	[/External_Script]
+{?xml version="1.0"?}
+{Jelly}
 	
-	<span class="Page_Item">
+	{!-- Type Template "Default" --}
 	
-		<!-- Name -->
-		<span class="Page_Header">
-			<span class="Page_Title">
-				<span class="Left_And_Right">
-					<span class="Page_Name">
-						[If Current_Type.Plural_Name][Then][Current_Type.Plural_Name /][/Then][Else][Current_Type.Name /][/Else][/If]
-					</span>
-					<span class="Right">
-						[Admin]
-							<span class="Visible">
-								<span class="Visible_Label">
-									Sharing:
-								</span>
-								<span class="Visible_Value">
-									<a class="Item_Sharing_Menu_Link" href="#" onclick="Jelly.Interface.Create_Menu({URL: '/Action/Set_Sharing_Clean:Item=[Current_Type.ID no_wrap /],Item_Type=[Current_Type.Type.Alias no_wrap /]', 'Alias': 'Sharing_Menu', Menu_Namespace: '[Namespace no_wrap /]_Menu', Attach: 'Element', Attach_Element: this, Edge: 'Bottom'});return false;">
-										<!-- TODO nuanced privacy --> 
-										[If Current_Type.Viewable_By.Alias = "Public"]
-											[Then]
-												Public
-											[/Then]
-											[Else]
-												Private
-											[/Else]
-										[/If]
-									</a>
-								</span>
-								<span class="Visible_Chevron">
-									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/chevron.svg" data-direction="bottom">
-								</span>
-							</span>
-						[/Admin]
-						[Admin]
-							<span class="Settings">
-								<a href="#" onclick="Jelly.jQuery('.Page_Settings').toggleClass('Visible');Jelly.jQuery('.Settings_Link').toggleClass('Selected');return false;" class="Settings_Link">
-									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/cog.svg">
-								</a>
-							</span>
-						[/Admin]
-		
-						<!-- Preview Mode --> 
-						[Admin Ignore_Preview_Mode]
-							[Item.Action "Toggle Preview Mode"/]
-						[/Admin]
-					</span>
-				</span>
-				[Admin]
-					<span class="Page_Settings">
-						[Current_Type as Type_Settings /]
-					</span>
-				[/Admin]
-			</span>
-		</span>
-			
-		<!-- Big list with display -->
-		[If Path_Variables.Display]
-			[Then]
-				[Set Current_Type.Variables.Display to Path_Variables.Display /]
-			[/Then]
-			[Else]
-				[If Current_Type.Cover_Property_Item]
+		{Template}
+			{Type}Type{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Hack to trigger refreshes --> 
+				[Current_Session][/Current_Session]
+
+				<!-- Disambiguate -->
+				[Set Current_Type to This /]
+
+				<!-- Determine if item is visible to visitor -->
+				[Set Current_Type.Variables.Visible to true /]
+				[Admin Ignore_Preview_Mode]
 					[Then]
-						[Set Current_Type.Variables.Display to "Grid" /]
+						[If Current_Session.Preview_Mode and Current_Type.Viewable_By.Alias = "Admin"]
+							[Set Current_Type.Variables.Visible to false /]
+							<span class="Page_Item">
+								<span class="Page_Header">
+									<span class="Page_Title">
+										<span class="Left_And_Right">
+											<span class="Right">
+												<!-- Preview Mode --> 
+												[Item.Action "Toggle Preview Mode"/]
+											</span>
+										</span>
+									</span>
+								</span>
+							</span>
+						[/If]
 					[/Then]
 					[Else]
-						[Set Current_Type.Variables.Display to "List" /]
+						<!-- TODO - nuanced privacy --> 
+						[If Current_Type.Viewable_By.Alias != "Public"]
+							[Set Current_Type.Variables.Visible to false /]
+						[/If]
 					[/Else]
-				[/If]
-			[/Else]
-		[/If]
-		<span class="Big_List [Current_Type.Variables.Display no_wrap /]">
-			
-			[External_Script]
-				Jelly.jQuery(".Browse_Type .Display_Item").removeClass("Selected");
-				Jelly.jQuery(".Browse_Type .Display_Item.Display_[Current_Type.Variables.Display no_wrap /]").addClass("Selected");
-			[/External_Script]
-	
-			<span class="Big_List_Display">
-				<span class="Left_Items">
-					[Admin]
-						<span class="Add">
-							[Link to "/Type/[Current_Type.Alias no_wrap /]/Create_Item" into "Window" with Class = "Add_Link"]
-								<span class="Content">
-									<span class="Label">Add to [If Current_Type.Plural_Name][Then][Current_Type.Plural_Name /][/Then][Else][Current_Type.Name /][/Else][/If]</span>
-								</span>
-							[/Link]
-						</span>
-					[/Admin]
-					[Ignore]
-						<!-- TODO Disabled until implemented -->
-						[Admin]
-							<span class="Search">
-								<span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/magnifying-glass.svg"></span>
-								<span class="Input"><input type="text" class="Search_Input" /></span>
-							</span>
-						[/Admin]
-					[/Ignore]
-				</span>
-				<span class="Right_Items">
-					[Ignore]
-						<!-- TODO Disabled until implemented -->
-						[Admin]
-							<span class="Show">
-								<span class="Show_Label">
-									Show
-								</span>
-								<span class="Show_Chevron">
-									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/chevron.svg" data-direction="bottom">
-								</span>
-							</span>
-						[/Admin]
-					[/Ignore]
-					[Ignore]
-						<!-- TODO Disabled until implemented -->
-						[Admin]
-							<span class="Sort">
-								<span class="Sort_Label">
-									Sort:
-								</span>
-								<span class="Sort_Value">
-									Name
-								</span>
-								<span class="Sort_Chevron">
-									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/chevron.svg" data-direction="bottom">
-								</span>
-							</span>
-						[/Admin]
-					[/Ignore]
-					<span class="Display">
-						[New [Current_Type.Alias no_wrap/]]	
-							[Set New_Item to This/]
-							[1 New_Item.Property where Value_Type = "Location"]
-								<a href="#" onclick="Jelly.Handlers.Visit_Link({URL: '/type/[Current_Type.Alias no_wrap /]:Display=Map'}); return false;" class="Display_Item Display_List">
-									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/map-marker.svg">
-								</a>
-							[/1 New_Item.Property]
-						[/New]
-						<a href="#" onclick="Jelly.Handlers.Visit_Link({URL: '/type/[Current_Type.Alias no_wrap /]:Display=Grid'}); return false;" class="Display_Item Display_Grid">
-							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/grid.svg">
-						</a>
-						<a href="#" onclick="Jelly.Handlers.Visit_Link({URL: '/type/[Current_Type.Alias no_wrap /]:Display=List'}); return false;" class="Display_Item Display_List">
-							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/list.svg">
-						</a>
-						[Ignore]
-							<!-- TODO Disabled until implemented -->
-							<a href="#" onclick="Jelly.Handlers.Visit_Link({URL: '/type/[Current_Type.Alias no_wrap /]:Display=Spreadsheet'}); return false;" class="Display_Item Display_Spreadsheet">
-								<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/spreadsheet.svg">
-							</a>
-						[/Ignore]
-					</span>
-				</span>
-			</span>
-			
-			[If Current_Type.Variables.Display is "Grid" or Current_Type.Variables.Display is "List"]
-				[[Current_Type.Alias no_wrap /] 
-					[Admin][Else][If Current_Type.Alias = "User"]where Activated[/If][/Else][/Admin]
-					from database 
-					[If Current_Type.Sort_Property_Alias]by [Current_Type.Sort_Property_Alias no_wrap/][If Current_Type.Sort_Reverse] Descending[/If][/If]
-					iterator_classes "Big_List_Items" 
-					item_classes "Big_List_Item Hover"
-				]
-					[Set Current_Item to This /]
-	
-					[Link to Current_Item by Alias with Class = "Big_List_Item_Details"]
-						<span class="Big_List_Item_Cover">
-							[Current_Item as Cover /]
-						</span>
-						<span class="Big_List_Item_Name">
-							[Current_Item.Name /] 
-							[If Current_Item.Type.Alias = "User"]
-								[If not User.Activated]
-									<span class="Status">
-										[If not User.Received_Invitation]
-											[Then]New Account[/Then]
-											[Else]Invitation Sent[/Else]
-										[/If]
-									</span>
-								[/If]
-							[/If]
-						</span>
+				[/Admin]
 
-						<span>
+				<!-- Check if item is visible to visitor -->
+				[If Current_Type.Variables.Visible]
 
-
-							[php]return strtolower('[Current_Item.Start_Time ][Month_Name][/Current_Item.Start_Time]');[/php]
-						</span>
-					[/Link]
-					<span class="Big_List_Item_Actions">
-						[Admin]
-							[If not (Current_Type.Alias is "Team" and Current_Item.Name is "Admin")]
-								[Link to "/Type/[Current_Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Remove" into "Window" with Class = "Delete"]
-									<span class="Content">
-										<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
-									</span>
-								[/Link]
-							[/If]
-						[/Admin]
-					</span>
-				[/]
-			[/If]
-			[If Current_Type.Variables.Display is "Map"]
-				[Set Current_Map_Namespace to Namespace/]
-				<span class= "Big_List_Items">
-					<span class="List_Map" id="[Current_Map_Namespace no_wrap /]_Map" style="position:absolute; top:0px; left:0px; width:100%; height:100%;">
-					</span>
 					[External_Script]
-						Jelly.Interface.Generate_Map({
-							Alias: "[Current_Map_Namespace no_wrap /]_Map",
-							Locate_User: true
-						});
+						if (Jelly.jQuery("#Jelly_Sidebar .Folder_Item.Item_[This.ID no_wrap /]").length)
+						\{
+							Jelly.jQuery("#Jelly_Sidebar .Folder_Item").removeClass("Selected");
+							Jelly.jQuery("#Jelly_Sidebar .Folder_Item.Item_[This.ID no_wrap /]").addClass("Selected");
+						\}
+						if (Jelly.jQuery("#Jelly_Toolbar .Navigation_Item.Item_[This.ID no_wrap /]").length)
+						\{
+							Jelly.jQuery("#Jelly_Toolbar .Navigation_Item").removeClass("Selected");
+							Jelly.jQuery("#Jelly_Toolbar .Navigation_Item.Item_[This.ID no_wrap /]").addClass("Selected");
+						\}
+						if(Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item.Item_[This.ID no_wrap /]").length)
+						\{
+							Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item").removeClass("Selected");
+							Jelly.jQuery(".Browse_Bar_Type .Browse_Bar_Item.Item_[This.ID no_wrap /]").addClass("Selected");
+						\}
 					[/External_Script]
-
-					[[Current_Type.Alias no_wrap /] from database]
-						[Set Current_Item to This /]
-						[1 Current_Item.Property where Value_Type is "Location"]
-							[Set Current_Location_Property to This/]
-							[Current_Item.[Current_Location_Property.Alias no_wrap/]]
-								[External_Script]
-									// Add marker to map
-									Jelly.Interface.Create_Location(
-											{
-												[If Current_Item.Type.Alias = "User"]"Icon": "heart",[/If]
-												"Map_Alias": "[Current_Map_Namespace no_wrap /]_Map",
-												"Position": \[[This.Latitude no_wrap /], [This.Longitude no_wrap /]\],
-												"Content": "[Format as "Javascript String"]
-													<span class="Big_List Popup">
-														<span class="Big_List_Item">
-															[Link to Current_Item by Alias with Class = "Big_List_Item_Details"]
-																<span class="Big_List_Item_Cover">
-																	[1 Current_Item.Property where Value_Type = "Picture"]
-																		[Set Current_Cover_Property to This/]
-																		[Current_Item.[Current_Cover_Property.Alias no_wrap/] as Cover/]
-																	[/]
-																</span>
-																<span class="Big_List_Item_Name">
-																	[Current_Item.Name /]
-																</span>
-															[/Link]
-															<span class="Big_List_Item_Actions">
-																[Admin]
-																	[If not Current_Item.Core]
-																		[Link to "/Type/[Current_Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Remove" into "Window" with Class = "Delete"]
-																			<span class="Content">
-																				<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
-																			</span>
-																		[/Link]
-																	[/If]
-																[/Admin]
-															</span>
-														</span>
-													</span>
-												[/Format]"
-											}
-										);
-								[/External_Script]
-							[/]
-						[/1 Property]
-					[/]
-					[External_Script]
-						Jelly.Interface.Show_All_Locations({"Map_Alias": "[Current_Map_Namespace no_wrap /]_Map"});
-					[/External_Script]					
-				</span>
-			[/If]
-			[If Current_Type.Variables.Display is "Spreadsheet"]
-				<span class="Type_Items Display_[Current_Type.Variables.Display no_wrap /]">
-					<table>
-						<thead>
-							<tr>
-								[New [Current_Type.Alias no_wrap /]]
-									[This.Property where not Advanced]
-										[Set Current_Property to This /]
-										<td>
-											<span class="Property_Name">
-												[Current_Property.Name /]
-											</span>
-										</td>
-									[/This.Property]
-								[/New]
-								<td>
-									[Link to "/Type/[Current_Type.Alias no_wrap /]/Add_Property" into "Window" with Class = "Add_Property_Link"]Add Property[/Link]
-								</td>
-							</tr>
-						</thead>
-						[[Current_Type.Alias no_wrap /] from database Iterator_Wrap_Element "tbody" Item_Wrap_Element "tr"]
-							[Set Current_Item to This /]
-							<!-- TODO implement item-not-iterator wrapping -->
-							[Current_Item.Property where not Advanced no_wrap]
-								[Set Current_Property to This /]
-								<td>
-									[If Current_Property.Value_Type is simple type]
-										[Current_Item.Action "Edit Text Property" with Property_Alias = Current_Property.Alias /]
-									[/If]
-								</td>
-							[/Current_Item.Property]
-						[/[Current_Type.Alias no_wrap /]]
-					</table>
-				</span>
-			[/If]
-			
-			[Admin]
-				[If Current_Type.Alias is "User"]
-					<div style="text-align: center; margin-top: 25px;">
-						[Action "Send Invitation Emails"]
-							[Link to Action into "Window" with Class = "Button"]Send Invitation Emails...[/]
-						[/Action]
-					</div>
-				[/If]
-			[/Admin]
-		</span>
 	
-	</span>
-[/If]
+					<span class="Page_Item">
+	
+						<!-- Name -->
+						<span class="Page_Header">
+							<span class="Page_Title">
+								<span class="Left_And_Right">
+									<span class="Page_Name">
+										[If Current_Type.Plural_Name][Then][Current_Type.Plural_Name /][/Then][Else][Current_Type.Name /][/Else][/If]
+									</span>
+									<span class="Right">
+										[Admin]
+											<span class="Visible">
+												<span class="Visible_Label">
+													Sharing:
+												</span>
+												<span class="Visible_Value">
+													<a class="Item_Sharing_Menu_Link" href="#" onclick="Jelly.Interface.Create_Menu(\{URL: '/Action/Set_Sharing_Clean:Item=[Current_Type.ID no_wrap /],Item_Type=[Current_Type.Type.Alias no_wrap /]', 'Alias': 'Sharing_Menu', Menu_Namespace: '[Namespace no_wrap /]_Menu', Attach: 'Element', Attach_Element: this, Edge: 'Bottom'\});return false;">
+														<!-- TODO nuanced privacy --> 
+														[If Current_Type.Viewable_By.Alias = "Public"]
+															[Then]
+																Public
+															[/Then]
+															[Else]
+																Private
+															[/Else]
+														[/If]
+													</a>
+												</span>
+												<span class="Visible_Chevron">
+													<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/chevron.svg" data-direction="bottom">
+												</span>
+											</span>
+										[/Admin]
+										[Admin]
+											<span class="Settings">
+												<a href="#" onclick="Jelly.jQuery('.Page_Settings').toggleClass('Visible');Jelly.jQuery('.Settings_Link').toggleClass('Selected');return false;" class="Settings_Link">
+													<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/cog.svg">
+												</a>
+											</span>
+										[/Admin]
+		
+										<!-- Preview Mode --> 
+										[Admin Ignore_Preview_Mode]
+											[Item.Action "Toggle Preview Mode"/]
+										[/Admin]
+									</span>
+								</span>
+								[Admin]
+									<span class="Page_Settings">
+										[Current_Type as Type_Settings /]
+									</span>
+								[/Admin]
+							</span>
+						</span>
+			
+						<!-- Big list with display -->
+						[If Path_Variables.Display]
+							[Then]
+								[Set Current_Type.Variables.Display to Path_Variables.Display /]
+							[/Then]
+							[Else]
+								[If Current_Type.Cover_Property_Item]
+									[Then]
+										[Set Current_Type.Variables.Display to "Grid" /]
+									[/Then]
+									[Else]
+										[Set Current_Type.Variables.Display to "List" /]
+									[/Else]
+								[/If]
+							[/Else]
+						[/If]
+						<span class="Big_List [Current_Type.Variables.Display no_wrap /]">
+			
+							[External_Script]
+								Jelly.jQuery(".Browse_Type .Display_Item").removeClass("Selected");
+								Jelly.jQuery(".Browse_Type .Display_Item.Display_[Current_Type.Variables.Display no_wrap /]").addClass("Selected");
+							[/External_Script]
+	
+							<span class="Big_List_Display">
+								<span class="Left_Items">
+									[Admin]
+										<span class="Add">
+											[Link to "/Type/[Current_Type.Alias no_wrap /]/Create_Item" into "Window" with Class = "Add_Link"]
+												<span class="Content">
+													<span class="Label">Add to [If Current_Type.Plural_Name][Then][Current_Type.Plural_Name /][/Then][Else][Current_Type.Name /][/Else][/If]</span>
+												</span>
+											[/Link]
+										</span>
+									[/Admin]
+									[Ignore]
+										<!-- TODO Disabled until implemented -->
+										[Admin]
+											<span class="Search">
+												<span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/magnifying-glass.svg"></span>
+												<span class="Input"><input type="text" class="Search_Input" /></span>
+											</span>
+										[/Admin]
+									[/Ignore]
+								</span>
+								<span class="Right_Items">
+									[Ignore]
+										<!-- TODO Disabled until implemented -->
+										[Admin]
+											<span class="Show">
+												<span class="Show_Label">
+													Show
+												</span>
+												<span class="Show_Chevron">
+													<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/chevron.svg" data-direction="bottom">
+												</span>
+											</span>
+										[/Admin]
+									[/Ignore]
+									[Ignore]
+										<!-- TODO Disabled until implemented -->
+										[Admin]
+											<span class="Sort">
+												<span class="Sort_Label">
+													Sort:
+												</span>
+												<span class="Sort_Value">
+													Name
+												</span>
+												<span class="Sort_Chevron">
+													<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/chevron.svg" data-direction="bottom">
+												</span>
+											</span>
+										[/Admin]
+									[/Ignore]
+									<span class="Display">
+										[New [Current_Type.Alias no_wrap/]]	
+											[Set New_Item to This/]
+											[1 New_Item.Property where Value_Type = "Location"]
+												<a href="#" onclick="Jelly.Handlers.Visit_Link(\{URL: '/type/[Current_Type.Alias no_wrap /]:Display=Map'\}); return false;" class="Display_Item Display_List">
+													<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/map-marker.svg">
+												</a>
+											[/1 New_Item.Property]
+										[/New]
+										<a href="#" onclick="Jelly.Handlers.Visit_Link(\{URL: '/type/[Current_Type.Alias no_wrap /]:Display=Grid'\}); return false;" class="Display_Item Display_Grid">
+											<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/grid.svg">
+										</a>
+										<a href="#" onclick="Jelly.Handlers.Visit_Link(\{URL: '/type/[Current_Type.Alias no_wrap /]:Display=List'\}); return false;" class="Display_Item Display_List">
+											<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/list.svg">
+										</a>
+										[Ignore]
+											<!-- TODO Disabled until implemented -->
+											<a href="#" onclick="Jelly.Handlers.Visit_Link(\{URL: '/type/[Current_Type.Alias no_wrap /]:Display=Spreadsheet'\}); return false;" class="Display_Item Display_Spreadsheet">
+												<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/spreadsheet.svg">
+											</a>
+										[/Ignore]
+									</span>
+								</span>
+							</span>
+			
+							[If Current_Type.Variables.Display is "Grid" or Current_Type.Variables.Display is "List"]
+								[[Current_Type.Alias no_wrap /] 
+									[Admin][Else][If Current_Type.Alias = "User"]where Activated[/If][/Else][/Admin]
+									from database 
+									[If Current_Type.Sort_Property_Alias]by [Current_Type.Sort_Property_Alias no_wrap/][If Current_Type.Sort_Reverse] Descending[/If][/If]
+									iterator_classes "Big_List_Items" 
+									item_classes "Big_List_Item Hover"
+								]
+									[Set Current_Item to This /]
+	
+									[Link to Current_Item by Alias with Class = "Big_List_Item_Details"]
+										<span class="Big_List_Item_Cover">
+											[Current_Item as Cover /]
+										</span>
+										<span class="Big_List_Item_Name">
+											[Current_Item.Name /] 
+											[If Current_Item.Type.Alias = "User"]
+												[If not User.Activated]
+													<span class="Status">
+														[If not User.Received_Invitation]
+															[Then]New Account[/Then]
+															[Else]Invitation Sent[/Else]
+														[/If]
+													</span>
+												[/If]
+											[/If]
+										</span>
+
+										<span>
+
+
+									hi there
+										</span>
+
+
+									[/Link]
+									<span class="Big_List_Item_Actions">
+										[Admin]
+											[If not (Current_Type.Alias is "Team" and Current_Item.Name is "Admin")]
+												[Link to "/Type/[Current_Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Remove" into "Window" with Class = "Delete"]
+													<span class="Content">
+														<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
+													</span>
+												[/Link]
+											[/If]
+										[/Admin]
+									</span>
+								[/]
+							[/If]
+							[If Current_Type.Variables.Display is "Map"]
+								[Set Current_Map_Namespace to Namespace/]
+								<span class= "Big_List_Items">
+									<span class="List_Map" id="[Current_Map_Namespace no_wrap /]_Map" style="position:absolute; top:0px; left:0px; width:100%; height:100%;">
+									</span>
+									[External_Script]
+										Jelly.Interface.Generate_Map(\{
+											Alias: "[Current_Map_Namespace no_wrap /]_Map",
+											Locate_User: true
+										\});
+									[/External_Script]
+
+									[[Current_Type.Alias no_wrap /] from database]
+										[Set Current_Item to This /]
+										[1 Current_Item.Property where Value_Type is "Location"]
+											[Set Current_Location_Property to This/]
+											[Current_Item.[Current_Location_Property.Alias no_wrap/]]
+												[External_Script]
+													// Add marker to map
+													Jelly.Interface.Create_Location(
+															\{
+																[If Current_Item.Type.Alias = "User"]"Icon": "heart",[/If]
+																"Map_Alias": "[Current_Map_Namespace no_wrap /]_Map",
+																"Position": \[[This.Latitude no_wrap /], [This.Longitude no_wrap /]\],
+																"Content": "[Format as "Javascript String"]
+																	<span class="Big_List Popup">
+																		<span class="Big_List_Item">
+																			[Link to Current_Item by Alias with Class = "Big_List_Item_Details"]
+																				<span class="Big_List_Item_Cover">
+																					[1 Current_Item.Property where Value_Type = "Picture"]
+																						[Set Current_Cover_Property to This/]
+																						[Current_Item.[Current_Cover_Property.Alias no_wrap/] as Cover/]
+																					[/]
+																				</span>
+																				<span class="Big_List_Item_Name">
+																					[Current_Item.Name /]
+																				</span>
+																			[/Link]
+																			<span class="Big_List_Item_Actions">
+																				[Admin]
+																					[If not Current_Item.Core]
+																						[Link to "/Type/[Current_Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Remove" into "Window" with Class = "Delete"]
+																							<span class="Content">
+																								<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
+																							</span>
+																						[/Link]
+																					[/If]
+																				[/Admin]
+																			</span>
+																		</span>
+																	</span>
+																[/Format]"
+															\}
+														);
+												[/External_Script]
+											[/]
+										[/1 Property]
+									[/]
+									[External_Script]
+										Jelly.Interface.Show_All_Locations(\{"Map_Alias": "[Current_Map_Namespace no_wrap /]_Map"\});
+									[/External_Script]					
+								</span>
+							[/If]
+							[If Current_Type.Variables.Display is "Spreadsheet"]
+								<span class="Type_Items Display_[Current_Type.Variables.Display no_wrap /]">
+									<table>
+										<thead>
+											<tr>
+												[New [Current_Type.Alias no_wrap /]]
+													[This.Property where not Advanced]
+														[Set Current_Property to This /]
+														<td>
+															<span class="Property_Name">
+																[Current_Property.Name /]
+															</span>
+														</td>
+													[/This.Property]
+												[/New]
+												<td>
+													[Link to "/Type/[Current_Type.Alias no_wrap /]/Add_Property" into "Window" with Class = "Add_Property_Link"]Add Property[/Link]
+												</td>
+											</tr>
+										</thead>
+										[[Current_Type.Alias no_wrap /] from database Iterator_Wrap_Element "tbody" Item_Wrap_Element "tr"]
+											[Set Current_Item to This /]
+											<!-- TODO implement item-not-iterator wrapping -->
+											[Current_Item.Property where not Advanced no_wrap]
+												[Set Current_Property to This /]
+												<td>
+													[If Current_Property.Value_Type is simple type]
+														[Current_Item.Action "Edit Text Property" with Property_Alias = Current_Property.Alias /]
+													[/If]
+												</td>
+											[/Current_Item.Property]
+										[/[Current_Type.Alias no_wrap /]]
+									</table>
+								</span>
+							[/If]
+			
+							[Admin]
+								[If Current_Type.Alias is "User"]
+									<div style="text-align: center; margin-top: 25px;">
+										[Action "Send Invitation Emails"]
+											[Link to Action into "Window" with Class = "Button"]Send Invitation Emails...[/]
+										[/Action]
+									</div>
+								[/If]
+							[/Admin]
+						</span>
+	
+					</span>
+				[/If]
+			{/Content}
+		{/Template}
+	
+{/Jelly}
