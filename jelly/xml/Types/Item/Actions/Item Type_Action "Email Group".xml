@@ -135,20 +135,15 @@
 				[If not Form.Error]
 					[PHP]
 						
-
 						// Add content
 						$Subject = '[Format as "PHP Single Quoted String"]\[[Current_Action.Target.Name no_wrap/]\] [Form.Subject no_wrap/][/Format]';
 						$Body = '[Format as "PHP Single Quoted String"][Form.Body no_wrap/]<br/>[Form.Signature no_wrap/][/Format]';
 
-
-
-
-
 						// Get from
-							$From = array(
-								'Name' => '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]',
-								'Email_Address' => '[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]'
-							);
+						$From = array(
+							'Name' => '[Format as "PHP Single Quoted String"][1 Site from Database no_wrap][Name no_wrap/][/1][/Format] (via Better)',
+							'Email_Address' => 'services@'.array_shift((explode(".",$_SERVER\['HTTP_HOST'\]))).'.better.space'
+						);
 			
 							// Get recipient
 							
@@ -175,6 +170,11 @@
 
 
 							// Get sender
+							array_push($To, array(
+								'Name' => '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]',
+								'Email_Address' => '[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]',
+								'Type' => 'CC'
+							));
 							$Reply_To = array(
 								'Name' => '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]',
 								'Email_Address' => '[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]'

@@ -36,10 +36,15 @@ function sendGridEmail($subject, $body, $from, $to, $replyTo, $bcc) {
 	// TODO - validate that it was set?
 	for($i=0; $i<count($to); $i++){
 		if (!filter_var($to[$i]['Email_Address'], FILTER_VALIDATE_EMAIL) === false){
-			if ($to[$i]['Name'])
-				$email->addTo($to[$i]['Email_Address'], $to[$i]['Name']);	
-			else
-				$email->addTo($to[$i]['Email_Address']);
+			if (isset($to[$i]['Type']) && strtolower($to[$i]['Type']) == 'cc'){
+				$email->addCc($to[$i]['Email_Address']);
+			}
+			else {
+				if ($to[$i]['Name'])
+					$email->addTo($to[$i]['Email_Address'], $to[$i]['Name']);	
+				else
+					$email->addTo($to[$i]['Email_Address']);
+			}
 		}
 		else {
 		   return array("status"=>"fail", "msg"=>"please send a valid email as param to");

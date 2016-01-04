@@ -144,10 +144,10 @@
 							
 							// Get from
 							$From = array(
-								'Name' => 'Better.Space Team',
-								'Email_Address' => 'services@better.space'
+								'Name' => '[Format as "PHP Single Quoted String"][1 Site from Database no_wrap][Name no_wrap/][/1][/Format] (via Better)',
+								'Email_Address' => 'tickets@'.array_shift((explode(".",$_SERVER\['HTTP_HOST'\]))).'.better.space'
 							);
-			
+							
 							// Get recipient
 							$To = array(
 								array(

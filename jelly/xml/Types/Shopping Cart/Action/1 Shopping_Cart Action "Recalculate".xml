@@ -39,7 +39,7 @@
 				[/If]
 
 				<!--Add processing fee --> 
-				[Set Current_Shopping_Cart.Processing_Fee to [Math (Current_Shopping_Cart.Subtotal) * .029 + 0.30/] /]
+				[Set Current_Shopping_Cart.Processing_Fee to [Math (Current_Shopping_Cart.Subtotal + Current_Shopping_Cart.Application_Fee) * .029 + 0.30/] /]
 
 				<!--Calculate total --> 
 				[Set Current_Shopping_Cart.Total = [Math Current_Shopping_Cart.Subtotal + Current_Shopping_Cart.Application_Fee + Current_Shopping_Cart.Processing_Fee + Current_Shopping_Cart.Discount /] /]

@@ -125,18 +125,15 @@
 						$Subject = '[Format as "PHP Single Quoted String"][Form.Subject no_wrap/][/Format]';
 						$Body = '[Format as "PHP Single Quoted String"][Form.Body no_wrap/]<br/>[Form.Signature no_wrap/][/Format]';
 
-						
-
 						// Get from
-							$From = array(
-								'Name' => '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]',
-								'Email_Address' => '[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]'
-							);
+						$From = array(
+							'Name' => '[Format as "PHP Single Quoted String"][1 Site from Database no_wrap][Name no_wrap/][/1][/Format] (via Better)',
+							'Email_Address' => 'services@'.array_shift((explode(".",$_SERVER\['HTTP_HOST'\]))).'.better.space'
+						);
 			
-							// Get recipient
+						// Get recipient
 							
-
-								// Add recipient
+						// Add recipient
 							
 						$To = array();
 
@@ -154,36 +151,37 @@
 						[/]
 
 
+						// Get sender
+						array_push($To, array(
+							'Name' => '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]',
+							'Email_Address' => '[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]',
+							'Type' => 'CC'
+						));
+						$Reply_To = array(
+							'Name' => '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]',
+							'Email_Address' => '[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]'
+						);
 
+						// Get BCC
+						$BCC = array(
+							'Email_Address' => 'services@better.space'
+						);
 
-							// Get sender
-							$Reply_To = array(
-								'Name' => '[Format as "PHP Single Quoted String"][Form.Sender.Name no_wrap /][/Format]',
-								'Email_Address' => '[Format as "PHP Single Quoted String"][Form.Sender.Email_Address no_wrap /][/Format]'
-							);
-	
-							// Get BCC
-							$BCC = array(
-								'Email_Address' => 'services@better.space'
-							);
-	
-							// Send message
-							try 
+						// Send message
+						try 
+						\{
+							$Email_Response = sendGridEmail($Subject, $Body, $From, $To, $Reply_To, $BCC);
+							if($Email_Response\['error'\])
 							\{
-								$Email_Response = sendGridEmail($Subject, $Body, $From, $To, $Reply_To, $BCC);
-								if($Email_Response\['error'\])
-								\{
-									die('Error: Message could be sent. '. $Email_Response\['error'\]);
-								\}
+								die('Error: Message could be sent. '. $Email_Response\['error'\]);
 							\}
-							catch (exception $Exception) 
-							\{
-								echo ('Error: Message could be sent.');
-								traverse($Exception->getMessage());
-								die();
-							\}
-
-
+						\}
+						catch (exception $Exception) 
+						\{
+							echo ('Error: Message could be sent.');
+							traverse($Exception->getMessage());
+							die();
+						\}
 
 					[/PHP]
 
