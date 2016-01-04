@@ -94,6 +94,25 @@
 						<!-- Add value to target -->
 						[Add Form.Value to Current_Item.[Current_Property_Alias no_wrap /] no_refresh /]
 						
+						<!-- Track business metrics --> 
+						[If Current_Item.Type.Alias = "User" and Current_Property_Alias = "Team"]
+							[If Globals.Allow_Tracking]
+								[External_Script]
+									if (mixpanel)
+									\{
+										mixpanel.track(
+												"Team Joined", 
+												\{	
+													"User Name": "[Format as "Javascript String"][Current_Item.Name no_wrap/][/Format]", 
+													"Team Name": "[Format as "Javascript String"][Form.Value.Name no_wrap/][/Format]", 
+													"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+												\}
+											);
+									\}
+								[/External_Script]
+							[/If]
+						[/If]
+						
 						<!-- Close the window -->
 						[External_Script]
 							// Refresh

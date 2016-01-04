@@ -54,8 +54,8 @@
 														[Set Current_Action.Markets_Traversed to false/]
 														'Markets': 
 															\[
-																[Current_Invitation_User.Mission no_wrap][If Markets_Traversed], 
-																	[/If]'[Name no_wrap/]'[Set Current_Action.Markets_Traversed to true/][/Current_Invitation_User.Mission]
+																[Current_Invitation_User.What_kind_of_communities_do_you_organize_or_work no_wrap][If Markets_Traversed], 
+																	[/If]'[Name no_wrap/]'[Set Current_Action.Markets_Traversed to true/][/Current_Invitation_User.What_kind_of_communities_do_you_organize_or_work]
 															\]
 													[/If]
 												\}
@@ -106,30 +106,41 @@
 												[Set Current_User to this /]
 
 												<!-- Track accept --> 
-												[External_Script]
-													// Don't die on adblock
+												[If Globals.Allow_Tracking]
+													[External_Script]
+														// Don't die on adblock
 										
-													if (mixpanel)
-													\{
+														if (mixpanel)
+														\{
 													
-														// Track state
-														mixpanel.track(
-																'Invite Accepted', 
-																\{	
-																	'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]',
-																	'Email_Address': '[Current_User.Email_Address no_wrap/]',
-																	[If "[PHP]return strtolower($_SERVER\['HTTP_HOST'\]);[/PHP]" = "community.better.space"]
-																		[Set Current_Action.Markets_Traversed to false/]
-																		'Markets': 
-																			\[
-																				[Current_User.Mission no_wrap][If Markets_Traversed], 
-																					[/If]'[Name no_wrap/]'[Set Current_Action.Markets_Traversed to true/][/Current_User.Mission]
-																			\]
-																	[/If]
-																\}
-															);
-													\}
-												[/External_Script]
+															// Track state
+															mixpanel.track(
+																	'Invite Accepted', 
+																	\{	
+																		'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]',
+																		'Email_Address': '[Current_User.Email_Address no_wrap/]',
+																		[If "[PHP]return strtolower($_SERVER\['HTTP_HOST'\]);[/PHP]" = "community.better.space"]
+																			[Set Current_Action.Markets_Traversed to false/]
+																			'Markets': 
+																				\[
+																					[Current_User.What_kind_of_communities_do_you_organize_or_work no_wrap][If Markets_Traversed], 
+																						[/If]'[Name no_wrap/]'[Set Current_Action.Markets_Traversed to true/][/Current_User.What_kind_of_communities_do_you_organize_or_work]
+																				\]
+																		[/If]
+																	\}
+																);
+															
+															mixpanel.track(
+																	"Network Joined", 
+																	\{	
+																		"Via": "Invite",
+																		"User Name": "[Format as "Javascript String"][Current_User.Name no_wrap/][/Format]",
+																		"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+																	\}
+																);
+														\}
+													[/External_Script]
+												[/If]
 																			
 												<!-- Mark reset code as used -->
 												[Set Current_Invitation_Code.Used to true /]

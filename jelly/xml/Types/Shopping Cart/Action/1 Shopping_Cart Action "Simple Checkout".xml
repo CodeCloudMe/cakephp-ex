@@ -266,27 +266,61 @@
 													mixpanel.register(Mixpanel_Super_Properties);									
 												[/Else]
 											[/Current_Session.User]
-
+											
+											[If Form.Join]
+												mixpanel.track(
+														"Team Joined", 
+														\{	
+															"User Name": "[Format as "Javascript String"][New_User.Name no_wrap/][/Format]", 
+															"Team Name": "[Format as "Javascript String"][Form.Join.Name no_wrap/][/Format]", 
+															"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+														\}
+													);
+												
+												mixpanel.track(
+														"Network Joined", 
+														\{	
+															"Via": "Purchase",
+															"User Name": "[Format as "Javascript String"][New_User.Name no_wrap/][/Format]",
+															"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+														\}
+													);
+											[/If]
+											
 											mixpanel.track(
-													'Purchase Ticket', 
-													\{
-														'Name': '[Current_Item.Name no_wrap/]',
-
-														'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]',
-
-														'Total': [Current_Shopping_Cart.Total/],
-
-														'Better Fee': [Current_Shopping_Cart.Application_Fee/]
-
-														[If Current_Shopping_Cart.Discount exists and Current_Shopping_Cart.Discount is not "" and Current_Shopping_Cart.Discount is not 0],
-															'Discount': [Current_Shopping_Cart.Discount/]
+													"Ticket Purchased", 
+													\{	
+														"Email_Address": "[Format as "Javascript String"][Form.Email no_wrap/][/Format]",
+														[Current_Session.User]
+															[Then]"User Name":"[Format as "Javascript String"][Current_Session.User.Name no_wrap/][/Format]",[/Then]
+															[Else]"User Name":"[Format as "Javascript String"][Current_Shopping_Cart.First_Name no_wrap/] [Current_Shopping_Cart.Last_Name no_wrap/][/Format],"[/Else]
+														[/Current_Session.User]
+														"Total Amount": [Current_Shopping_Cart.Total no_wrap/],
+														"Subtotal Amount": [Current_Shopping_Cart.Subtotal no_wrap/],
+														[If Current_Shopping_Cart.Reward]
+															[Then]
+																"Donated": true,
+																"Donated Amount": [Current_Shopping_Cart.Reward.Amount no_wrap/],
+															[/Then]
+															[Else]
+																"Donated": false,
+															[/Else]
 														[/If]
-
-														[If Current_Shopping_Cart.Reward],
-															'Donation': [Current_Shopping_Cart.Reward.Amount/]
+														[If Form.Join]
+															[Then]
+																"Joined":  true,
+																"Joined Discount Amount": [Current_Shopping_Cart.Discount no_wrap/], 
+																"Joined Team Name": "[Format as "Javascript String"][Form.Join.Name no_wrap/][/Format]",
+															[/Then]
+															[Else]
+																'Joined': false,
+															[/Else]
 														[/If]
+														"Stripe Fee": "[Current_Shopping_Cart.Processing_Fee/]",
+														"Better Fee": "[Current_Shopping_Cart.Application_Fee/]",
+														"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
 													\}
-												);
+												);											
 										\}
 									[/External_Script]
 								[/If]

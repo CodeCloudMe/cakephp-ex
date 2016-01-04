@@ -125,8 +125,8 @@
 															[Set Current_Action.Markets_Traversed to false/]
 															'Markets': 
 																\[
-																	[Current_User.Mission no_wrap][If Markets_Traversed], 
-																		[/If]'[Name no_wrap/]'[Set Current_Action.Markets_Traversed to true/][/Current_User.Mission]
+																	[Current_User.What_kind_of_communities_do_you_organize_or_work no_wrap][If Markets_Traversed], 
+																		[/If]'[Name no_wrap/]'[Set Current_Action.Markets_Traversed to true/][/Current_User.What_kind_of_communities_do_you_organize_or_work]
 																\]
 														[/If]
 													\}

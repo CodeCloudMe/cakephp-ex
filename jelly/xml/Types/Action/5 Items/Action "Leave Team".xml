@@ -30,8 +30,23 @@
 				</div>
 			{/Content}
 			{Code}
-				<!-- TODO privs -->	
+				[If Globals.Allow_Tracking]
+					[External_Script]
+						if (mixpanel)
+						\{
+							mixpanel.track(
+									"Team Left", 
+									\{	
+										"User Name": "[Format as "Javascript String"][Form.Value.Member.Name no_wrap/][/Format]",
+										"Team Name": "[Format as "Javascript String"][Form.Value.Team.Name no_wrap/][/Format]",
+										"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+									\}
+								);
+						\}
+					[/External_Script]
+				[/If]
 				
+				<!-- TODO privs -->	
 				[Remove Form.Value /]
 				
 				[External_Script]

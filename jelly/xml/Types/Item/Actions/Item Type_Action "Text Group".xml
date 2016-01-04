@@ -142,10 +142,12 @@
 						$Auth_Token = $Configuration\['API_Keys'\]\['Twilio'\]\['Auth_Token'\];
 						$From = $Configuration\['API_Keys'\]\['Twilio'\]\['From'\];
 						$Client = new Services_Twilio($Account_SID, $Auth_Token); 
-
+		
+						[Set Current_Action.Variables.Recipient_Count = 0 /]
 						[Current_Action.Target.[Form.Property_Alias no_wrap/] where Activated and Phone_Number exists and Phone_Number is not "" and Allow_Community_Members_To_Contact_Me and ID is not Current_Session.User.ID no_wrap]
 							[Set Current_Member to This/]
 							[If Form.Recipient_[Current_Member.ID no_wrap/]]
+								[Set Current_Action.Variables.Recipient_Count = [Math Current_Action.Variables.Recipient_Count + 1 /] /]
 								$Client->account->messages->create(array( 
 									'To' => '[Current_Member.Phone_Number no_wrap/]', 
 									'From' => $From,
@@ -156,6 +158,21 @@
 					[/PHP]	
 
 					[External_Script]
+						[If Globals.Allow_Tracking]
+							if (mixpanel)
+							\{
+								mixpanel.track(
+										"Message Sent", 
+										\{	
+											"Via": "Text",									
+											"Sender": "[Format as "Javascript String"][Form.Sender.Name no_wrap/][/Format]", 
+											"Recipient Group": "[Format as "Javascript String"][Form.Property_Alias/] of [Current_Action.Target.Name no_wrap/][/Format]",
+											"Recipient Count": [Current_Action.Variables.Recipient_Count no_wrap/],
+											"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+										\}
+									);
+							\}
+						[/If]
 						[Block "Text Sent Confirmation"]
 							[Go to This into "[Form.Calling_Namespace no_wrap/]"/]
 						[/Block]

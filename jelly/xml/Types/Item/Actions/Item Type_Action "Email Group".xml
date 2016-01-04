@@ -152,11 +152,11 @@
 							
 						$To = array();
 
-
+						[Set Current_Action.Variables.Recipient_Count = 0 /]
 						[Current_Action.Target.[Form.Property_Alias no_wrap/] where Activated and Email_Address exists and Email_Address is not "" and Allow_Community_Members_To_Contact_Me and ID is not Current_Session.User.ID no_wrap]
 							[Set Current_Member to This/]
 							[If Form.Recipient_[Current_Member.ID no_wrap/]]
-								
+								[Set Current_Action.Variables.Recipient_Count = [Math Current_Action.Variables.Recipient_Count + 1 /] /]
 								array_push($To, array(
 									'Name' => '[Format as "PHP Single Quoted String"][Current_Member.Name no_wrap /][/Format]',
 									'Email_Address' => '[Format as "PHP Single Quoted String"][Current_Member.Email_Address no_wrap /][/Format]'
@@ -208,6 +208,21 @@
 					[/PHP]
 
 					[External_Script]
+						[If Globals.Allow_Tracking]
+							if (mixpanel)
+							\{
+								mixpanel.track(
+										"Message Sent", 
+										\{	
+											"Via": "Email",									
+											"Sender": "[Format as "Javascript String"][Form.Sender.Name no_wrap/][/Format]", 
+											"Recipient Group": "[Format as "Javascript String"][Form.Property_Alias /] of [Current_Action.Target.Name no_wrap/][/Format]",
+											"Recipient Count": [Current_Action.Variables.Recipient_Count no_wrap/],
+											"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+										\}
+									);
+							\}
+						[/If]
 						[Block "Email Sent Confirmation"]
 							[Go to This into "[Form.Calling_Namespace no_wrap/]"/]
 						[/Block]

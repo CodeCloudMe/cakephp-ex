@@ -315,6 +315,28 @@
 												'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]'
 											\}
 										);
+										
+									mixpanel.track(
+											"Network Joined", 
+											\{	
+												"Via": "Form",
+												"User Name": "[Format as "Javascript String"][New_Item.Name no_wrap/][/Format]",
+												"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+											\}
+										);
+						
+									[Team from Database where Allow_Anyone_To_Join]
+										[If Form.Team_[Team.ID no_wrap /] is "1"]
+											mixpanel.track(
+													"Team Joined", 
+													\{	
+														"User Name": "[Format as "Javascript String"][New_Item.Name no_wrap/][/Format]", 
+														"Team Name": "[Format as "Javascript String"][Team.Name no_wrap/][/Format]",
+														"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+													\}
+												);
+										[/If]
+									[/Team]
 								\}
 							[/External_Script]
 						[/If]
