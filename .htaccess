@@ -1,33 +1,3 @@
 ErrorDocument 404 /index.php
 php_value upload_max_filesize 5000M
 php_value post_max_size 5000M
-
-#SetEnv OPENSHIFT_APP_NAME "better3"
-#SetEnv OPENSHIFT_MYSQL_DB_HOST "127.0.0.1"
-#SetEnv OPENSHIFT_MYSQL_DB_USERNAME "root"
-#SetEnv OPENSHIFT_MYSQL_DB_PASSWORD "password"
-
-SetEnv lokkuKey "911903378c845ddd76e5eeafe3532b07"
-
-SetEnv sendGridUsername "m141v"
-SetEnv sendGridPassword "popcorn1"
-
-SetEnv twilioSID "ACfafb21565ac1c37bf9bc0b3cc85a2bc1"
-SetEnv twilioToken "61b52654d5cc6f1fa80c634852754c80"
-SetEnv twilioFrom "61b52654d5cc6f1fa80c634852754c80"
-
-SetEnv stripeMode "Test"
-SetEnv stripeTestId "ca_6h83T8QQ42Yoz3VOJh6f5cXZpGCuM1FC"
-SetEnv stripeTestPKey "pk_test_Xs5W6vfDHOlw6jEsgq2fXpG9"
-SetEnv stripeTestSKey "sk_test_L5qNqKOawpb0bL2IenbKj571"
-
-SetEnv stripeLiveId "ca_6h83bGx6hJvCFZpfZnAEFUdKdHpK2MWi"
-SetEnv stripeLivePKey "pk_live_CQziZxuxxLPOtg4oAbc3ba9m"
-SetEnv stripeLiveSKey "sk_live_oHNjDwo7Z5LdrItcHy1f1HTL"
-
-SetEnv urlPrefix ""
-SetEnv admin "true"
-SetEnv reset "true"
-SetEnv tracking "true"
-SetEnv compiledJavascript "true"
-SetEnv compiledStyles "true"
