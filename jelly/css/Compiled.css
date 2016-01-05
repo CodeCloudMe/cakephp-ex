@@ -3963,6 +3963,11 @@ h1,
   padding-top: 100%;
   float: left;
 }
+.Big_List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Date {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+}
 .Big_List .Big_List_Items .Big_List_Item .Big_List_Item_Actions .Delete .iconic {
   width: 14px;
   height: 14px;
@@ -4296,11 +4301,6 @@ h1,
 .Big_List.Team_List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Content .Big_List_Item_Label {
   display: block;
   margin-bottom: 10px;
-}
-.Big_List.Team_List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Date {
-  display: block;
-  margin-top: 5px;
-  font-size: 13px;
 }
 .Big_List.Team_List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Communications {
   display: block;

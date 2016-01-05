@@ -108,7 +108,7 @@
 					// Set required data.
 					$Payment_Information = Array (
 						'currency' => 'usd',
-						'amount' => round([Current_Payment_Transaction.Total no_wrap /] * 100),
+						'amount' => round([Current_Payment_Transaction.Shopping_Cart.Subtotal no_wrap /] * 100),
 						'source' => '[Current_Token no_wrap /]',
 						'description' => '[Current_Payment_Transaction.Description no_wrap /]',
 						'application_fee' => round([Current_Payment_Transaction.Shopping_Cart.Application_Fee no_wrap/] * 100)
