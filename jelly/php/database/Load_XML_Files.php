@@ -149,7 +149,42 @@ function Load_XML_Files(&$Database, &$XML_File_Paths, $Parameters = array())
 		}
 	}
 
-//	traverse($Loaded_XML_Items_By_Type);
+	//	traverse($Loaded_XML_Items_By_Type);
+
+	// Upgrade tweaks per version?
+	// TODO - set this somehow
+	$Upgrade_Mode = &New_Boolean(false);
+	if (!$Parameters['First_Time'])
+		$Upgrade_Mode = &New_Boolean(true);
+	if ($Upgrade_Mode)
+	{
+		// TODO - check version.
+		
+		// Replace action get involved content & code with new version.
+		foreach ($Loaded_XML_Items_By_Type['action'] as &$XML_Action)
+		{	
+			if ($XML_Action['Alias'][0] == 'Get_Involved')
+			{
+				$Action_Get_Involved_Command_String = &New_String('Action "Get Involved" from Database as Reference');
+				$Processed_Action_Get_Involved_Command = &Process_Command_String($Database, $Action_Get_Involved_Command_String);
+				$Action_Get_Involved_Item = &$Processed_Action_Get_Involved_Command['Chunks'][0]['Item'];				
+				$XML_Action['Content'][0] = $Action_Get_Involved_Item['Data']['Content'];
+				$XML_Action['Code'][0] = $Action_Get_Involved_Item['Data']['Code'];
+				traverse($XML_Action);
+			}
+		}
+		
+		// Replace scripting module content & code with new version.
+		if (count($Loaded_XML_Items_By_Type['scripting_module']) == 1)
+		{
+			$XML_Scripting_Module = $Loaded_XML_Items_By_Type['scripting_module'][0];
+			$Teams_Scripting_Module_Command_String = &New_String('1 Scripting_Module from Database as Reference');
+			$Processed_Teams_Scripting_Module_Command = &Process_Command_String($Database, $Teams_Scripting_Module_Command_String);
+			$Teams_Scripting_Module_Item = &$Processed_Teams_Scripting_Module_Command['Chunks'][0]['Item'];				
+			$XML_Scripting_Module['Script'][0] = $Teams_Scripting_Module_Item['Data']['Script'];
+			traverse($XML_Scripting_Module);
+		}
+	}
 	
 	// Apply filters
 	foreach ($Loaded_XML_Items_By_Type as $XML_Type_Lookup => &$Loaded_XML_Items)

@@ -99,8 +99,7 @@
 						require_once('jelly/php/libraries/twilio/twilio.php'); 
 	
 						// TODO - generalize configuration process for API keys etc
-						$Configuration_File_Path = &New_String('jelly_data/Jelly_Configuration.php');
-						$Configuration = include($Configuration_File_Path);
+						$Configuration = &Get_Environment_Variables();
 	
 						$Account_SID = $Configuration\['API_Keys'\]\['Twilio'\]\['Account_SID'\];
 						$Auth_Token = $Configuration\['API_Keys'\]\['Twilio'\]\['Auth_Token'\];

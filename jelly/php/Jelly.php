@@ -27,17 +27,18 @@ $Start_Time = microtime(true);
 }
 
 // Settings
-{	
+{		
+	// Get install path
 	$GLOBALS['Install_Path'] = &New_String('jelly');
+
+	// Get data directory path	
 	$Data_Directory_Name = &New_String('jelly_data');
 	$Data_Directory_Path = &New_String($Data_Directory_Name);
-	$Configuration_File_Name = &New_String('Jelly_Configuration.php');
-	$Configuration_File_Path = &New_String($Data_Directory_Path . '/' . $Configuration_File_Name);
 	$GLOBALS["Data_Directory_Path"] = &$Data_Directory_Path;
 	
-	// Load configuration
+	// Get environment configuration variables 
 	// Warning: $Configuration not by reference
-	$Configuration = include($Configuration_File_Path);
+	$Configuration = &Get_Environment_Variables();
 	
 	// Load Files Directory Path
 	if (isset($Configuration['Files_Directory_Path']))

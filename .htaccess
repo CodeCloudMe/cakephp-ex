@@ -1,5 +1,9 @@
 ErrorDocument 404 /index.php
 php_value upload_max_filesize 5000M
+<<<<<<< HEAD
 php_value post_max_size 5000M
 SetEnv admin "true"
 SetEnv reset "true"
+=======
+php_value post_max_size 5000M
+>>>>>>> master
