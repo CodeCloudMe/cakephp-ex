@@ -24,7 +24,9 @@ function exp_tables($host,$user,$pass,$name,  $tables=false, $backup_name=false 
 	header('Content-Type: application/octet-stream');	header("Content-Transfer-Encoding: Binary"); header("Content-disposition: attachment; filename=\"".$backup_name."\"");  echo $content; exit;
 }
 
-exp_tables(getenv("OPENSHIFT_MYSQL_DB_HOST"),getenv('OPENSHIFT_MYSQL_DB_USERNAME'),getenv('OPENSHIFT_MYSQL_DB_PASSWORD'),getenv("OPENSHIFT_APP_NAME") );  //or add 5th parameter(array) of specific tables: array("mytable1","mytable2","mytable3")
+
+//TEST
+//exp_tables(getenv("OPENSHIFT_MYSQL_DB_HOST"),getenv('OPENSHIFT_MYSQL_DB_USERNAME'),getenv('OPENSHIFT_MYSQL_DB_PASSWORD'),getenv("OPENSHIFT_APP_NAME") );  //or add 5th parameter(array) of specific tables: array("mytable1","mytable2","mytable3")
 
 
 
