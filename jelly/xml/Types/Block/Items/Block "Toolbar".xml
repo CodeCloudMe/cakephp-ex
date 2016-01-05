@@ -59,9 +59,10 @@
 								[/Navigation.Navigation_Item]
 							[/Navigation]
 							[1 Event from database]
-								<a class="Navigation_Item" href="/Event">Events</a>
+								[Type "Event" from Database]
+									[Link to Type with Class = "Navigation_Item"]Events[/]
+								[/Type]
 							[/]
-
 
 							[Member]<a target="_blank"class="Navigation_Item Feedback" href="http://community.better.space/share_feedback">Feedback</a>[/Member]
 							[Admin]<a target="_blank"class="Navigation_Item Support" href="http://community.better.space/support">Help</a>[/Admin]

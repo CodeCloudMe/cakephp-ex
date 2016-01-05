@@ -4075,12 +4075,12 @@ h1,
 .Big_List.List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Name .Name {
   display: block;
 }
-.Big_List.List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Name .Description {
+.Big_List.List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Name .Tagline {
   display: block;
   margin-top: 5px;
   font-size: 13px;
 }
-.Big_List.List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Name .Tagline {
+.Big_List.List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Name .Description {
   display: block;
   margin-top: 5px;
   font-size: 13px;
@@ -4097,6 +4097,11 @@ h1,
   text-transform: uppercase;
   position: relative;
   top: -2px;
+}
+.Big_List.List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Date {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
 }
 .Big_List.List .Big_List_Items .Big_List_Item .Big_List_Item_Value {
   display: block;
@@ -4291,6 +4296,11 @@ h1,
 .Big_List.Team_List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Content .Big_List_Item_Label {
   display: block;
   margin-bottom: 10px;
+}
+.Big_List.Team_List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Date {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
 }
 .Big_List.Team_List .Big_List_Items .Big_List_Item .Big_List_Item_Details .Communications {
   display: block;
@@ -4516,6 +4526,24 @@ h1,
   white-space: nowrap;
   font-size: 17px;
   width: calc(100% - 14px - 2*10px);
+}
+.Big_List.Grid .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Name .Description {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+}
+.Big_List.Grid .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Name .Status {
+  float: right;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  font-family: Montserrat;
+  font-weight: 700;
+  background-color: #ffffcc;
+  padding: 5px;
+  margin-right: 5px;
+  text-transform: uppercase;
+  position: relative;
+  top: -2px;
 }
 .Big_List.Grid .Big_List_Items .Big_List_Item .Big_List_Item_Details .Big_List_Item_Content {
   display: block;

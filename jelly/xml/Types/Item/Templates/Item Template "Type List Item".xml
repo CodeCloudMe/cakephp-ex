@@ -1,0 +1,55 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Type List Item" --}
+	
+		{Template}
+			{Type}Item{/Type}
+			{Name}Type List Item{/Name}
+			{Content}
+				[Set Current_Item to This /]
+
+				[Link to Current_Item by Alias with Class = "Big_List_Item_Details"]
+					<span class="Big_List_Item_Cover">
+						[Current_Item as Cover /]
+					</span>
+					<span class="Big_List_Item_Name">
+						[Current_Item.Name /] 
+						
+						<!-- Special case for Users --> 
+						[If Current_Item.Type.Alias = "User"]
+							[If not User.Activated]
+								<span class="Status">
+									[If not User.Received_Invitation]
+										[Then]New Account[/Then]
+										[Else]Invitation Sent[/Else]
+									[/If]
+								</span>
+							[/If]
+						[/If]
+					</span>
+
+					<!-- Special case for Events --> 
+					[If Current_Type.Alias = "Event"]
+						<span class="Big_List_Item_Date">
+							[Current_Item.Start_Time/]
+						</span>
+					[/If]
+					
+				[/Link]
+				<span class="Big_List_Item_Actions">
+					[Admin]
+						[If not (Current_Type.Alias is "Team" and Current_Item.Name is "Admin")]
+							[Link to "/Type/[Current_Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Remove" into "Window" with Class = "Delete"]
+								<span class="Content">
+									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
+								</span>
+							[/Link]
+						[/If]
+					[/Admin]
+				</span>
+
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -144,12 +144,9 @@
 									'Name' => '[Format as "PHP Single Quoted String"][Current_Member.Name no_wrap /][/Format]',
 									'Email_Address' => '[Format as "PHP Single Quoted String"][Current_Member.Email_Address no_wrap /][/Format]'
 								));
-
-
 							[/If]
-							[/Else][/Team][/User]
-						[/]
-
+							[/Else][/Team]
+						[/User]
 
 						// Get sender
 						array_push($To, array(

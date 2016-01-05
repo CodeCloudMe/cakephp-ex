@@ -26,7 +26,7 @@ SetEnv stripeLivePKey "pk_live_CQziZxuxxLPOtg4oAbc3ba9m"
 SetEnv stripeLiveSKey "sk_live_oHNjDwo7Z5LdrItcHy1f1HTL"
 
 SetEnv urlPrefix ""
-SetEnv admin "true"
+SetEnv admin "false"
 SetEnv reset "true"
 SetEnv tracking "true"
 SetEnv compiledJavascript "true"

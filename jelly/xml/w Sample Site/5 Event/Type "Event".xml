@@ -10,6 +10,7 @@
 			{Package}Events{/Package}
 			{Starred}1{/Starred}
 			{Viewable_By}Public{/Viewable_By}
+			{Sort_Property_Alias}Start_Time{/Sort_Property_Alias}
 		{/Type}
 	
 {/Jelly}

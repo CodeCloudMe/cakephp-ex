@@ -525,6 +525,7 @@ h1, .H1 {.Block; font-size: 35px; margin-bottom: 25px;}
 					}
 				}
 				.Big_List_Item_Name {}
+				.Big_List_Item_Date {}
 			}
 			.Big_List_Item_Actions {
 				.Delete {.Icon_Size(14px); .Icon_Color(@Dark_Grey); .Action;}
@@ -557,10 +558,11 @@ h1, .H1 {.Block; font-size: 35px; margin-bottom: 25px;}
 				}
 				.Big_List_Item_Name {.Left; width: calc(~'100% - 25% - 10px');
 					.Name { display: block;}
-					.Description {display:block; margin-top:5px; font-size:13px;}
 					.Tagline { display:block; margin-top:5px; font-size:13px;}
+					.Description {display:block; margin-top:5px; font-size:13px;}
 					.Status { float: right; font-size: 11px; letter-spacing: 0.3px; font-family: Montserrat; font-weight: 700; background-color: #ffffcc; padding: 5px; margin-right: 5px; text-transform: uppercase; position: relative; top: -2px;}
 				}
+				.Big_List_Item_Date {display:block; margin-top:5px; font-size:13px;}
 			}
 			.Big_List_Item_Value {.Block; margin-bottom: 10px; font-weight: lighter;}
 			.Big_List_Item_Actions {.Row; position: absolute; top: 0px; right: 0px; height: 100%;
@@ -599,6 +601,7 @@ h1, .H1 {.Block; font-size: 35px; margin-bottom: 25px;}
 				.Big_List_Item_Content {.Block;margin-top: 30px; margin-bottom:30px;text-align:center;
 					.Big_List_Item_Label {.Block; margin-bottom: 10px;}
 				}
+				.Big_List_Item_Date {display:block; margin-top:5px; font-size:13px;}
 				.Communications {display:block; text-align:center; margin-bottom:30px;
 					.Big_List_Item_Mail, .Big_List_Item_Text {.Icon_Size(30px); .Icon_Color(@Blue); margin-right:7px;margin-left:7px; display:inline-block;text-align:center;
 						.iconic {}
@@ -643,7 +646,10 @@ h1, .H1 {.Block; font-size: 35px; margin-bottom: 25px;}
 						&.User_Cover_Content {.Circle; .Percentage_Height(100%);}
 					}
 				}
-				.Big_List_Item_Name {.Block; .Ellipsis; font-size:17px; width: calc(~'100% - 14px - 2*10px');}
+				.Big_List_Item_Name {.Block; .Ellipsis; font-size:17px; width: calc(~'100% - 14px - 2*10px');
+					.Description {display:block; margin-top:5px; font-size:13px;}
+					.Status { float: right; font-size: 11px; letter-spacing: 0.3px; font-family: Montserrat; font-weight: 700; background-color: #ffffcc; padding: 5px; margin-right: 5px; text-transform: uppercase; position: relative; top: -2px;}
+				}
 				.Big_List_Item_Content {.Block;	 margin-top:9px; font-size:14px; width: calc(~'100% - 14px - 2*10px'); letter-spacing: 0.15px;
 					.Big_List_Item_Value {font-weight:lighter;}
 				}
