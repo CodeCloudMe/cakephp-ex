@@ -11,6 +11,9 @@ function rollingUpdate($dbName1, $dbName2){
 	$tablesFrom2 = getAllTables($dbName2);
 
 
+	print_r($tablesFrom1);
+	print_r($tablesFrom2);
+	
 	//for each table
 	for($i = 0; $i<count($tablesFrom1['Tables_in_'.$dbName1]); $i++){
 		$tableToCheck = $tablesFrom1['Tables_in_'.$dbName1][$i];
