@@ -12,10 +12,8 @@
 						[1 Site from Database]	
 							[Set Current_Action.Variables.Stripe_Authorization_Error to false/]
 							[Set Current_Action.Variables.Stripe_Authorization_Error to [PHP]
-										$Stripe_Authorization_URL = "https://connect.stripe.com/oauth/token";
-			
-										$Configuration_File_Path = &New_String('jelly_data/Jelly_Configuration.php');
-										$Configuration = include($Configuration_File_Path);
+										$Stripe_Authorization_URL = "https://connect.stripe.com/oauth/token";			
+										$Configuration = &Get_Environment_Variables();
 										$Stripe_Mode = $Configuration\['API_Keys'\]\['Stripe'\]\['Mode'\];
 										$Stripe_Secret_Key = $Configuration\['API_Keys'\]\['Stripe'\]\[$Stripe_Mode\]\['Secret_Key'\];
 										$Stripe_Authorization_Code = "[Path_Variables.Code/]";
