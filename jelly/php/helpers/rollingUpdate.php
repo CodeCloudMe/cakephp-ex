@@ -21,7 +21,7 @@ function rollingUpdate($dbName1, $dbName2){
 
 		if($exists != NULL){
 			echo('ho!');
-			$isCompatible = checkCompatible($dbName1.".".$exists[0], $dbName2.".".$tableToCheck);
+			$isCompatible = checkCompatible($dbName1.".".$tableToCheck, $dbName2.".".$tableToCheck);
 			if($isCompatible['isCompat']==true){
 				echo('hey');
 				//fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
