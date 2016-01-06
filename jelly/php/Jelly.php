@@ -164,7 +164,8 @@ $Start_Time = microtime(true);
 			break;	
 
 		case 'reset':
-			if (isset($Configuration['Allow_Reset']) && $Configuration['Allow_Reset'])
+			//if (isset($Configuration['Allow_Reset']) && $Configuration['Allow_Reset'])
+			if (1)
 			{
 				// Reset Database.
 				$Database_Settings = &$Configuration['Database'];
