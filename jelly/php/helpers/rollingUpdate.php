@@ -40,9 +40,9 @@ function fromOneToTheOther($db1, $table1, $db2, $table2){
 
 	//db1 and table1 is the from, db2 and table2 is the to
 
-	$firstRecs = $dbMassData("SELECT * FROM $db1.$table1 WHERE Package != 'Local'");
-	$secRecs = $dbMassData("SELECT * FROM $db2.$table2 WHERE Package != 'Local'");
-
+	$firstRecs = $dbMassData("SELECT * FROM ".$db1.".".$table1." WHERE Package != 'Local'");
+	$firstRecs = $dbMassData("SELECT * FROM ".$db2.".".$table2." WHERE Package != 'Local'");
+	
 	
 
 	
@@ -79,7 +79,7 @@ function fromOneToTheOther($db1, $table1, $db2, $table2){
 			
 		}
 
-		$insertString = "INSERT INTO $db2.$table2 ($insertString1) VALUES ($insertString2)";
+		$insertString = "INSERT INTO ".$db2.".".$table2." ($insertString1) VALUES ($insertString2)";
 	
 		echo($insertString);
 
