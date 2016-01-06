@@ -21,7 +21,7 @@ function rollingUpdate($dbName1, $dbName2){
 
 		if($exists != NULL){
 
-			/*
+			
 			echo($dbName1.".".$tableToCheck. " and " .$dbName2.".".$tableToCheck."<br><br>");
 			$isCompatible = checkCompatible($dbName1.".".$tableToCheck, $dbName2.".".$tableToCheck);
 			
@@ -35,7 +35,7 @@ function rollingUpdate($dbName1, $dbName2){
 			fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 			echo('did it<br><hr><br><br><br>');
 			//delete all local files from db2
-			*/
+			
 
 		}
 		else{
