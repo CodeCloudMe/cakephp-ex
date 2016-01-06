@@ -22,13 +22,28 @@ function rollingUpdate($dbName1, $dbName2){
 		if($exists != NULL){
 			echo($dbName1.".".$tableToCheck. " and " .$dbName2.".".$tableToCheck."<br><br>");
 			$isCompatible = checkCompatible($dbName1.".".$tableToCheck, $dbName2.".".$tableToCheck);
+			
+			//TODO: make the compabitlity func work.. skipping for now for testing
 			if($isCompatible['isCompat']==false){
 				//echo('hey');
 				//fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 			}
+
+			deleteAllLocal($dbName2, $tableToCheck);
+			fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
+			echo('did it<br><hr><br><br><br>');
+			//delete all local files from db2
+
 		}
 	}
 
+}
+
+
+function deleteAllLocal($dbName, $tableName){
+
+	dbQuery("DELETE FROM $dbName.$tableName WHERE Package = 'Local'");
+	return(true);
 }
 
 
