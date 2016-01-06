@@ -29,7 +29,7 @@ function rollingUpdate($dbName1, $dbName2){
 				//fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 			}
 
-			deleteAllLocal($dbName2, $tableToCheck);
+			//deleteAllLocal($dbName2, $tableToCheck);
 			fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 			echo('did it<br><hr><br><br><br>');
 			//delete all local files from db2
