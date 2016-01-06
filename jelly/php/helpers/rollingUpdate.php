@@ -7,14 +7,31 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/helpers/DBQueryFuncs.php');
 function rollingUpdate($dbName1, $dbName2){
 
 
+	$tablesFrom1 = getAllTables($dbName1);
+	$tablesFrom2 = getAllTables($dbName2);
+
+
+	//for each table
+	for($i = 0; $i<count($tablesFrom1['Tables_in_'.$dbName1]); $i++){
+		$tableToCheck = $tablesFrom1['Tables_in_'.$dbName1][$i];
+		$exists = dbMassData("SELECT * FROM $dbName2.$tableToCheck");
+
+		if($exists != NULL){
+
+			$isCompatible = checkCompatible($dbName1.".".$exists[0], $dbName2.".".$tableToCheck);
+			if($isCompatible['isCompat']==true){
+				fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
+			}
+		}
+	}
 
 }
 
 
 function getAllTables($dbName){
 
-	$allTables = dbMassData("SHOW tables from better");
-
+	$allTables = dbMassData("SHOW tables from $dbName");
+	return $allTables;
 
 }
 
@@ -73,6 +90,7 @@ function fromOneToTheOther($db1, $table1, $db2, $table2){
 
 
 }
+
 
 
 function getAllRecords($tableName, $dbName){
@@ -136,7 +154,7 @@ function makeCompatible($dbAndTable1, $dbAndTable2, $notCompatArr){
 
 }
 
-
+echo('no errors');
 
 
 
