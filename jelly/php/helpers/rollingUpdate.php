@@ -40,7 +40,10 @@ function rollingUpdate($dbName1, $dbName2){
 		}
 		else{
 
-			echo("what the... $dbName2.$tableToCheck <br><br>");
+			echo("table does not exist creating... $dbName2.$tableToCheck <br><br>");
+			dbQuery("CREATE TABLE $tableToCheck LIKE $dbName1.$tableToCheck ");
+			dbQuery("INSERT $tableToCheck SELECT * FROM $dbName1.$tableToCheck;");
+			echo('created...');
 		}
 	}
 
