@@ -20,7 +20,8 @@ function rollingUpdate($dbName1, $dbName2){
 
 			$isCompatible = checkCompatible($dbName1.".".$exists[0], $dbName2.".".$tableToCheck);
 			if($isCompatible['isCompat']==true){
-				fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
+				echo('hey');
+				//fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 			}
 		}
 	}
@@ -45,7 +46,7 @@ function fromOneToTheOther($db1, $table1, $db2, $table2){
 	
 	
 
-	print_r($firstRecs);
+	//print_r($firstRecs);
 	for($i=0; $i<count($firstRecs); $i++){
 		$insertString = "";
 		$insertString1 = "";
@@ -81,7 +82,7 @@ function fromOneToTheOther($db1, $table1, $db2, $table2){
 
 		$insertString = "INSERT INTO ".$db2.".".$table2." ($insertString1) VALUES ($insertString2)";
 	
-		echo($insertString);
+		//echo($insertString);
 
 		dbQuery($insertString);
 	}
