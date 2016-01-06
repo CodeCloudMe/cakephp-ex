@@ -20,10 +20,10 @@ function rollingUpdate($dbName1, $dbName2){
 		$exists = dbMassData("SELECT * FROM $dbName2.$tableToCheck");
 
 		if($exists != NULL){
-			echo('ho!');
+			echo($dbName1.".".$tableToCheck. " and " $dbName2.".".$tableToCheck);
 			$isCompatible = checkCompatible($dbName1.".".$tableToCheck, $dbName2.".".$tableToCheck);
 			if($isCompatible['isCompat']==false){
-				echo('hey');
+				//echo('hey');
 				//fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 			}
 		}
