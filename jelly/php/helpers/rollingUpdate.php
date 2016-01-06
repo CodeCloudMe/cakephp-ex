@@ -68,12 +68,12 @@ function fromOneToTheOther($db1, $table1, $db2, $table2){
 		for($j=0; $j <count($allKeys); $j++){
 
 			if($j == 0){
-				$insertString1 = $insertString1 .  $allKeys[$j];
-				$insertString2 = $insertString2 .  "'".$allVals[$j]."'";
+				$insertString1 = $insertString1 .  "`".$allKeys[$j]."`";
+				$insertString2 = $insertString2 .  "'".str_replace("'", "\'", $allVals[$j])."'";
 			}
 			else{
-				$insertString1 = $insertString1 . ", ". $allKeys[$j];
-				$insertString2 = $insertString2 . ", '". $allVals[$j]."'";
+				$insertString1 = $insertString1 . ", `". $allKeys[$j]."`";
+				$insertString2 = $insertString2 . ", '". str_replace("'", "\'", $allVals[$j])."'";
 
 			}
 			
