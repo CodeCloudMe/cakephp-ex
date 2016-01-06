@@ -96,8 +96,8 @@ function fromOneToTheOther($db1, $table1, $db2, $table2){
 
 
 
-
-fromOneToTheOther('harlem', 'Action', 'better', 'Action');
+rollingUpdate('harlem', 'better');
+//fromOneToTheOther('harlem', 'Action', 'better', 'Action');
 
 
 
