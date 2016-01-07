@@ -32,6 +32,9 @@ function rollingUpdate($dbName1, $dbName2){
 			}
 
 			deleteAllLocal($dbName2, $tableToCheck);
+
+			makeCompat($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
+
 			fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 			//echo('did it<br><hr><br><br><br>');
 			//delete all local files from db2
@@ -41,12 +44,54 @@ function rollingUpdate($dbName1, $dbName2){
 		else{
 
 			echo("table does not exist creating... $dbName2.$tableToCheck <br><br>");
-			dbQuery("CREATE TABLE $tableToCheck LIKE $dbName1.$tableToCheck ");
-			dbQuery("INSERT $tableToCheck SELECT * FROM $dbName1.$tableToCheck;");
+
+			dbQuery("DROP TABLE $dbName2.$tableToCheck");
+			dbQuery("CREATE TABLE $dbName2.$tableToCheck LIKE $dbName1.$tableToCheck ");
+			dbQuery("INSERT $dbName2.$tableToCheck SELECT * FROM $dbName1.$tableToCheck;");
 			echo('created...');
 		}
 	}
 
+	doExceptions($dbName2);
+
+
+}
+
+
+function makeCompat($db1, $table1, $db2, $table1){
+
+	$t1Results = dbMassData("SELECT * FROM $db1.$table1");
+	$t2Results = dbMassData("SELECT * FROM $db2.$table2");
+
+	if($t1Results == NULL || $t2Results == NULL){
+		return array("status"=>"fail", "msg"=>"one of tables is empty");
+	}
+
+	$keys1 = array();
+	$keys2= array();
+
+	foreach ($t1Results[0] as $key => $value){
+		array_push($keys1, $key);
+
+	}
+
+	foreach ($t2Results[0] as $key => $value){
+		array_push($keys2, $key);
+
+	}
+
+	$diffs = array_diff($keys1, $keys2);
+
+	for($i=0; $i<count($diffs); $i++){
+		$colName = $diffs[$i];
+
+		dbQuery("ALTER TABLE  $db2.$table2 ADD  `$colName` TEXT NOT NULL;");
+		echo("ALTER TABLE  $db2.$table2 ADD  `$colName` TEXT NOT NULL;");
+	
+	}
+	echo('found differences!');
+
+	return $diffs;
 }
 
 
@@ -193,5 +238,16 @@ function makeCompatible($dbAndTable1, $dbAndTable2, $notCompatArr){
 echo('no errors');
 
 
+
+function doExceptions($dbName){
+
+
+	//TODO: figure out why this stuff we ahve to add at the end doesn't happen naturally
+	
+	dbQuery("ALTER TABLE  $dbName.Event ADD  `What_are_you_selling` TEXT NOT NULL;");
+	echo("ALTER TABLE  $dbName.Event ADD  `What_are_you_selling` TEXT NOT NULL;");
+
+	return true;
+}
 
 ?>
