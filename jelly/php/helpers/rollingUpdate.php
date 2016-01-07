@@ -89,10 +89,10 @@ function makeCompat($db1, $table1, $db2, $table2){
 	$diffs = array_diff($keys3, $keys4);
 
 	echo('keys3=');
-	print_r($keys2);
+	print_r($keys3);
 
 	echo('keys4=');
-	print_r($keys1);
+	print_r($keys4);
 
 	echo('diffs=');
 	print_r($diffs);
