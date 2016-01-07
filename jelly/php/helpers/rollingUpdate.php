@@ -108,7 +108,7 @@ function makeCompat($db1, $table1, $db2, $table2){
 	print_r($diffs);
 	echo("<br><br>");
 
-	for($diffs as $key => $value){
+	foreach($diffs as $key => $value){
 		$colName = $value;
 
 		dbQuery("ALTER TABLE  $db2.$table2 ADD  `$colName` TEXT NOT NULL;");
