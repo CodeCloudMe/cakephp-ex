@@ -108,8 +108,8 @@ function makeCompat($db1, $table1, $db2, $table2){
 	print_r($diffs);
 	echo("<br><br>");
 
-	for($i=0; $i<count($diffs); $i++){
-		$colName = $diffs[$i];
+	for($diffs as $aKey => $aValue){
+		$colName = $diffs[$aKey];
 
 		dbQuery("ALTER TABLE  $db2.$table2 ADD  `$colName` TEXT NOT NULL;");
 		echo("ALTER TABLE  $db2.$table2 ADD  `$colName` TEXT NOT NULL;");
