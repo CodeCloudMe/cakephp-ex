@@ -6,7 +6,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/helpers/DBQueryFuncs.php');
 
 function rollingUpdate($dbName1, $dbName2){
 
-
+	echo('running rolling update...');
 	$tablesFrom1 = getAllTables($dbName1);
 	$tablesFrom2 = getAllTables($dbName2);
 
