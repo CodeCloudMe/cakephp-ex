@@ -33,7 +33,7 @@ function rollingUpdate($dbName1, $dbName2){
 
 			//deleteAllLocal($dbName2, $tableToCheck);
 			fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
-			echo('did it<br><hr><br><br><br>');
+			//echo('did it<br><hr><br><br><br>');
 			//delete all local files from db2
 			
 
@@ -52,7 +52,7 @@ function rollingUpdate($dbName1, $dbName2){
 
 function deleteAllLocal($dbName, $tableName){
 
-	dbQuery("DELETE FROM $dbName.$tableName WHERE Package = 'Local'");
+	dbQuery("DELETE FROM $dbName.$tableName WHERE Package = 'Local' OR Package IS NULL");
 	return(true);
 }
 
