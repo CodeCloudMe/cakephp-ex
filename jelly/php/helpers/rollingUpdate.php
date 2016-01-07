@@ -58,7 +58,7 @@ function rollingUpdate($dbName1, $dbName2){
 }
 
 
-function makeCompat($db1, $table1, $db2, $table1){
+function makeCompat($db1, $table1, $db2, $table2){
 
 	$t1Results = dbMassData("SELECT * FROM $db1.$table1");
 	$t2Results = dbMassData("SELECT * FROM $db2.$table2");
