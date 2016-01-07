@@ -31,7 +31,9 @@ function rollingUpdate($dbName1, $dbName2){
 				//fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 			}
 
-			makeCompat($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
+			$compatResp = makeCompat($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
+			echo("<br>Response for compatResp is ");
+			print_r($compatResp);
 
 			deleteAllLocal($dbName2, $tableToCheck);
 
@@ -65,9 +67,11 @@ function makeCompat($db1, $table1, $db2, $table2){
 	$t2Results = dbMassData("SELECT * FROM $db2.$table2");
 
 	if($t1Results == NULL || $t2Results == NULL){
+		
 		return array("status"=>"fail", "msg"=>"one of tables is empty");
 	}
 
+	echo("making compatible... $db1.$table1 and $db2.$table2<br><br>");
 	$keys1 = array();
 	$keys2= array();
 	print_r($t1Results[0]);
