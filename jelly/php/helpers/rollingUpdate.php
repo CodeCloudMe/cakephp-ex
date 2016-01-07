@@ -66,8 +66,11 @@ function makeCompat($db1, $table1, $db2, $table2){
 	$t1Results = dbMassData("SELECT * FROM $db1.$table1");
 	$t2Results = dbMassData("SELECT * FROM $db2.$table2");
 
+	 echo("SELECT * FROM $db1.$table1");
+	 echo("<br><br>Next table...<br>")
+	 echo("SELECT * FROM $db2.$table2");
 	if($t1Results == NULL || $t2Results == NULL){
-		
+
 		return array("status"=>"fail", "msg"=>"one of tables is empty");
 	}
 
@@ -75,8 +78,10 @@ function makeCompat($db1, $table1, $db2, $table2){
 	$keys1 = array();
 	$keys2= array();
 	print_r($t1Results[0]);
+	echo("<br><br>");
 	print_r($t2Results[0]);
 
+	echo("<br><br>");
 	foreach ($t1Results[0] as $key => $value){
 		array_push($keys1, $key);
 
