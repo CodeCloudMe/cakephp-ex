@@ -31,10 +31,11 @@ function rollingUpdate($dbName1, $dbName2){
 				//fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 			}
 
-			deleteAllLocal($dbName2, $tableToCheck);
-
 			makeCompat($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 
+			deleteAllLocal($dbName2, $tableToCheck);
+
+			
 			fromOneToTheOther($dbName1, $tableToCheck,  $dbName2, $tableToCheck);
 			//echo('did it<br><hr><br><br><br>');
 			//delete all local files from db2
@@ -92,7 +93,7 @@ function makeCompat($db1, $table1, $db2, $table2){
 	print_r($keys3);
 
 	echo('keys4=');
-	print_r($keys4);
+	print_r($keys4	);
 
 	echo('diffs=');
 	print_r($diffs);
