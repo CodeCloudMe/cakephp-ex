@@ -67,7 +67,7 @@ function makeCompat($db1, $table1, $db2, $table2){
 	$t2Results = dbMassData("SELECT * FROM $db2.$table2");
 
 	 echo("SELECT * FROM $db1.$table1");
-	 echo("<br><br>Next table...<br>")
+	 echo("<br><br>Next table...<br>");
 	 echo("SELECT * FROM $db2.$table2");
 	if($t1Results == NULL || $t2Results == NULL){
 
