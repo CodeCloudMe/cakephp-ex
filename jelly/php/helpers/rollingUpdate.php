@@ -6,7 +6,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/jelly/php/helpers/DBQueryFuncs.php');
 
 function rollingUpdate($dbName1, $dbName2){
 
-	echo('running rolling update...');
+	echo('running rolling update...');	
 	$tablesFrom1 = getAllTables($dbName1);
 	$tablesFrom2 = getAllTables($dbName2);
 
@@ -108,8 +108,8 @@ function makeCompat($db1, $table1, $db2, $table2){
 	print_r($diffs);
 	echo("<br><br>");
 
-	for($diffs as $aKey => $aValue){
-		$colName = $diffs[$aKey];
+	for($diffs as $key => $value){
+		$colName = $value;
 
 		dbQuery("ALTER TABLE  $db2.$table2 ADD  `$colName` TEXT NOT NULL;");
 		echo("ALTER TABLE  $db2.$table2 ADD  `$colName` TEXT NOT NULL;");
