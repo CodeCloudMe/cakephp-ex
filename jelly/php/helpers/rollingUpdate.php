@@ -69,6 +69,8 @@ function makeCompat($db1, $table1, $db2, $table2){
 
 	$keys1 = array();
 	$keys2= array();
+	print_r($t1Results[0]);
+	print_r($t2Results[0]);
 
 	foreach ($t1Results[0] as $key => $value){
 		array_push($keys1, $key);
@@ -82,6 +84,12 @@ function makeCompat($db1, $table1, $db2, $table2){
 
 	$diffs = array_diff($keys1, $keys2);
 
+	echo('keys1=');
+	print_r($keys1);
+
+	echo('diffs=');
+	print_r($diffs);
+	echo("<br><br>");
 	for($i=0; $i<count($diffs); $i++){
 		$colName = $diffs[$i];
 
