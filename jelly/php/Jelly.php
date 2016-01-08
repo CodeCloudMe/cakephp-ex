@@ -163,9 +163,22 @@ $Start_Time = microtime(true);
 			exit();
 			break;	
 
+		case 'export':
+			if (isset($Configuration['Allow_Export']) && $Configuration['Allow_Export'])
+			{
+				$Database_Settings = &$Configuration['Database'];
+				$Database = &Connect_Database($Database_Settings);
+				Generate_Database_Cache($Database);
+			
+				Export_Local_Data_as_XML($Database);
+			}
+			else
+				die('Exporting not allowed.');
+			exit();
+			break;
+
 		case 'reset':
-			//if (isset($Configuration['Allow_Reset']) && $Configuration['Allow_Reset'])
-			if (1)
+			if (isset($Configuration['Allow_Reset']) && $Configuration['Allow_Reset'])
 			{
 				// Reset Database.
 				$Database_Settings = &$Configuration['Database'];

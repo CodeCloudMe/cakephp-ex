@@ -54,6 +54,7 @@ function Add_Property_To_Cache(&$Database, &$Property)
 			$Cached_Reverse_Property['Cached_Type'] = &$Cached_Property_Value_Type;
 			$Cached_Reverse_Property['Cached_Value_Type'] = &$Cached_Property_Type;
 			$Cached_Reverse_Property['Relation'] = &$Relation_Inverses[strtolower($Property['Relation'])];
+			$Cached_Reverse_Property['Is_Reverse_Property'] = &New_Boolean(true);
 	
 			// Set reverse aliases in Forward and Reverse Properties
 			// TODO @feature-database: dereference Reverse Alias
@@ -139,6 +140,7 @@ function Add_Property_To_Cache(&$Database, &$Property)
 				$Cached_Attachment_Type_Other_Property['Relation'] = MANY_TO_ONE;
 				$Cached_Attachment_Type_Other_Property['Data_Name'] = &$Property['Reverse_Data_Name'];
 				$Cached_Attachment_Type_Other_Property['Key'] = &$Property['Key'];
+				$Cached_Attachment_Type_Other_Property['Is_Reverse_Property'] = &New_Boolean(true);
 				$Cached_Attachment_Type_Other_Property['Attachment'] = true;
 				
 				// Create Cached Attachment Forward Property
@@ -151,6 +153,7 @@ function Add_Property_To_Cache(&$Database, &$Property)
 				$Cached_Attachment_Property['Relation'] = ONE_TO_MANY;
 				$Cached_Attachment_Property['Data_Name'] = &$Property['Reverse_Data_Name'];
 				$Cached_Attachment_Property['Key'] = &$Property['Key'];
+				$Cached_Attachment_Property['Is_Attachment_Property'] = &New_Boolean(true);
 			
 				// Create Cached Attachment Reverse Property
 				$Cached_Attachment_Other_Property = &New_Property();
@@ -162,6 +165,8 @@ function Add_Property_To_Cache(&$Database, &$Property)
 				$Cached_Attachment_Other_Property['Relation'] = ONE_TO_MANY;
 				$Cached_Attachment_Other_Property['Data_Name'] = &$Property['Data_Name'];
 				$Cached_Attachment_Other_Property['Key'] = &$Property['Key'];
+				$Cached_Attachment_Other_Property['Is_Reverse_Property'] = &New_Boolean(true);
+				$Cached_Attachment_Other_Property['Is_Attachment_Property'] = &New_Boolean(true);
 				break;
 			}
 			case MANY_TO_MANY:
@@ -201,6 +206,7 @@ function Add_Property_To_Cache(&$Database, &$Property)
 				$Cached_Attachment_Type_Reverse_Property['Relation'] = MANY_TO_ONE;
 				$Cached_Attachment_Type_Reverse_Property['Data_Name'] = &$Property['Reverse_Data_Name'];
 				$Cached_Attachment_Type_Reverse_Property['Key'] = &$Property['Reverse_Key'];
+				$Cached_Attachment_Type_Reverse_Property['Is_Reverse_Property'] = &New_Boolean(true);
 				$Cached_Attachment_Type_Reverse_Property['Attachment'] = true; // TODO: necessary?
 			
 				// Store Attachment Type Forward and Reverse properties in forward and reverse properties
@@ -223,6 +229,7 @@ function Add_Property_To_Cache(&$Database, &$Property)
 				// TODO - are these correct, below?
 				$Cached_Attachment_Forward_Property['Data_Name'] = &$Property['Reverse_Data_Name'];
 				$Cached_Attachment_Forward_Property['Key'] = &$Property['Reverse_Key'];
+				$Cached_Attachment_Forward_Property['Is_Attachment_Property'] = &New_Boolean(true);
 			
 				// Create Cached Attachment Reverse Property
 				$Cached_Attachment_Reverse_Property = &New_Property();
@@ -238,6 +245,7 @@ function Add_Property_To_Cache(&$Database, &$Property)
 				// TODO - are these correct, below?
 				$Cached_Attachment_Reverse_Property['Data_Name'] = &$Property['Data_Name'];
 				$Cached_Attachment_Reverse_Property['Key'] = &$Property['Key'];
+				$Cached_Attachment_Reverse_Property['Is_Attachment_Property'] = &New_Boolean(true);
 
 				// Store cached attachment forward and reverse properties in cached type and value type
 				// TODO - what?
@@ -276,6 +284,7 @@ function Add_Property_To_Cache(&$Database, &$Property)
 			$Cached_Forward_Property['Default_Value'] = &$Property['Default_Value'];
 	}
 	
+	// Properties by ID	
 	// Cache type properties...
 	// TODO: add by Plural Aliases
 	{

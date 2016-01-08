@@ -17,5 +17,10 @@ require_once("Map_Log_Value_To_Range.php");
 require_once("SendGridEmail.php");
 require_once("Get_Remote_Content.php");
 require_once("Get_Environment_Variables.php");
+require_once("Export_Local_Data_as_XML.php");
 
+// TODO - maybe not needed
+// require_once("ExportDB.php");
+// require_once("rollingUpdate.php");
+// require_once("DBQueryFuncs.php");
 ?>
