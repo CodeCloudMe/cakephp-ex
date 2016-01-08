@@ -90,7 +90,6 @@ function &Get_Environment_Variables()
 */
 
 		$Override_Path = $_SERVER['DOCUMENT_ROOT']. "/jelly_data/Overrides.php";
-		echo $Override_Path;
 		if (file_exists($Override_Path))
 		{
 			@include_once($_SERVER['DOCUMENT_ROOT']. "/jelly_data/Overrides.php");
