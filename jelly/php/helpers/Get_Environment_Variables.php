@@ -2,7 +2,8 @@
 
 function &Get_Environment_Variables()
 {
-	return array(
+	// Load defaults
+	$respVars = array(
 
 			// MySQL Database
 			"Database" =>
@@ -74,5 +75,32 @@ function &Get_Environment_Variables()
 			// Compiled LESS -> CSS
 			"Compiled_Styles" => filter_var(getenv('compiledStyles'),FILTER_VALIDATE_BOOLEAN)
 		);
+		
+		// Override Variables.		
+		// Sample Overrides File
+		// Save as "/jelly_data/Overrides.php"
+		
+/*
+ 		function Overrides()
+ 		{
+ 			return array(
+ 				'Admin' => false
+ 			);
+ 		}
+*/
+
+		$Override_Path = $_SERVER['DOCUMENT_ROOT']. "/jelly_data/Overrides.php";
+		if (file_exists($Override_Path))
+		{
+			@include_once($_SERVER['DOCUMENT_ROOT']. "/jelly_data/Overrides.php");
+			$Override_Variables = Overrides();
+			foreach ($Override_Variables as $Override_Key => $Override_Value)
+			{
+				$respVars[$Override_Key] = $Override_Value;
+			}
+		}
+	
+		
+		return $respVars;		
 }
 ?>
