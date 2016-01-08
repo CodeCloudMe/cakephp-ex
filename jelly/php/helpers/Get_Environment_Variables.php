@@ -74,5 +74,8 @@ function &Get_Environment_Variables()
 			// Compiled LESS -> CSS
 			"Compiled_Styles" => filter_var(getenv('compiledStyles'),FILTER_VALIDATE_BOOLEAN)
 		);
+
+		//override function get overwritten variables/function if it's defined.
+		include_once($_SERVER['DOCUMENT_ROOT']. "jelly_data/Env_Overrides.php");
 }
 ?>
