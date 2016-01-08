@@ -2,7 +2,9 @@
 
 function &Get_Environment_Variables()
 {
-	return array(
+
+
+	$respVars = array(
 
 			// MySQL Database
 			"Database" =>
@@ -75,7 +77,22 @@ function &Get_Environment_Variables()
 			"Compiled_Styles" => filter_var(getenv('compiledStyles'),FILTER_VALIDATE_BOOLEAN)
 		);
 
-		//override function get overwritten variables/function if it's defined.
+
+		//override?
 		include_once($_SERVER['DOCUMENT_ROOT']. "jelly_data/Env_Overrides.php");
+
+		try{
+
+			$overwritten = getNewEnvVariables();
+			return $overwritten;
+		}
+
+		catch(Exception $e){
+
+			return $respVars;
+		}
+
+		
+		
 }
 ?>
