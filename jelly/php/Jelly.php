@@ -159,7 +159,7 @@ $Start_Time = microtime(true);
 			// Compile Javascript.
 			Compile_Javascript();
 			Compile_Styles();
-			echo "Done.";
+			echo "Done compiling.";
 			exit();
 			break;	
 
@@ -168,31 +168,40 @@ $Start_Time = microtime(true);
 			{
 				$Database_Settings = &$Configuration['Database'];
 				$Database = &Connect_Database($Database_Settings);
-				Generate_Database_Cache($Database);
-			
+				Generate_Database_Cache($Database);			
 				Export_Local_Data_as_XML($Database);
 			}
 			else
 				die('Exporting not allowed.');
 			exit();
 			break;
-
+			
 		case 'reset':
 			if (isset($Configuration['Allow_Reset']) && $Configuration['Allow_Reset'])
 			{
-				// Reset Database.
+				// Reset database from compiled SQL.
 				$Database_Settings = &$Configuration['Database'];
 				$Database = &Connect_Database($Database_Settings);
 				Reset_Database($Database);
+//				header('Location: ' . $URL_Prefix . '/');
+				exit();
+			}
+			break;
+
+		case 'restart':
+			if (isset($Configuration['Allow_Reset']) && $Configuration['Allow_Reset'])
+			{
+				// Reset Database & compiles all files. 
+				$Database_Settings = &$Configuration['Database'];
+				$Database = &Connect_Database($Database_Settings);
+				Restart_Database($Database);
 				
-				// Compile Javascript.
+				// Store compiled Javascript, CSS, and SQL 
 				Compile_Javascript();
 				Compile_Styles();
-			
-				// TODO: remove on dev
-// 			exit();
+				Compile_SQL($Database_Settings);
 
-				echo "Done.";
+				echo "Done resetting.";
 				exit();
 				
 				// Redirect page

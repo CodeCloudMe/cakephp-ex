@@ -18,7 +18,7 @@ function Generate_Database_Cache(&$Database)
 		if (isset($GLOBALS['No_Reset']) && $GLOBALS['No_Reset'])
 			exit;
 		
-		Reset_Database($Database);
+		Restart_Database($Database);
 		
 		Load_Defaults();
 	}

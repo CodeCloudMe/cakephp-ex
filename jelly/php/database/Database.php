@@ -7,7 +7,9 @@
 require_once('Connect_Database.php');
 require_once('Load_XML_Files.php');
 require_once('Load_XML_Files_Setup.php');
+require_once('Restart_Database.php');
 require_once('Reset_Database.php');
+require_once('Clear_Database.php');
 require_once('Query.php');
 require_once('Get_Cached_Type.php');
 require_once('Create_Item.php');
