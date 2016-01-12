@@ -1,8 +1,6 @@
 <?php
 
 // Includes...
-
-require_once("Compile_Javascript.php");
 require_once("Compile_Javascript.php");
 require_once("Compile_Styles.php");
 require_once("Compile_SQL.php");

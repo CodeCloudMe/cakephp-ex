@@ -20,7 +20,7 @@ require_once("Get_Environment_Variables.php");
 require_once("Export_Local_Data_as_XML.php");
 
 // TODO - maybe not needed
-require_once("DBQueryFuncs.php");
+//require_once("DBQueryFuncs.php");
 // require_once("rollingUpdate.php");
 
 ?>

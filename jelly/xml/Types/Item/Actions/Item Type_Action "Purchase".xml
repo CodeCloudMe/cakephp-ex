@@ -6,12 +6,11 @@
 			{Type}Item{/Type}
 			{Name}Purchase{/Name}
 			{Content}
-				<!-- Calculate available stock --> 
 				[Current_Action.Target]
-
 					<!-- Disambiguate --> 
 					[Set Current_Item to This/]
 
+					<!-- Calculate available stock --> 
 					<!-- Get total stock --> 
 					[Set Current_Action.Available_Stock to Current_Item.Stock/]
 	
@@ -22,22 +21,45 @@
 						[Set Current_Action.Available_Stock = Current_Action.Available_Stock - This.Quantity /]
 					[/Current_Item.Shopping_Cart]
 
-				[/Current_Action.Target]
 
-
-				<!-- If merchandise is available, set up sale, otherwise cancel -->
-				[If Current_Action.Available_Stock > 0]
-					[Then]
-						[Set Current_Action.Variables.Evangelize = False/]
-						[If Current_Action.Target.Encourage_Donations][Set Current_Action.Variables.Evangelize = True/][/If]
-						[Guest][If Current_Action.Target.Encourage_Volunteers][Set Current_Action.Variables.Evangelize = True/][/If][/Guest]
+					<!-- If merchandise is available, set up sale, otherwise cancel -->
+					[If Current_Action.Available_Stock > 0]
+						[Then]
+							[Set Current_Action.Variables.Evangelize = False/]
+							[If Current_Item.Encourage_Donations][Set Current_Action.Variables.Evangelize = True/][/If]
+							[Guest][If Current_Item.Encourage_Volunteers][Set Current_Action.Variables.Evangelize = True/][/If][/Guest]
 		
-						[If Current_Action.Variables.Evangelize]
-							[Then]
-								[1 Site from Database]
+							[If Current_Action.Variables.Evangelize]
+								[Then]
+									[Current_Item.Benefit_Program]
+										[Then]
+											[Set Current_Action.Benefit_Picture to Benefit_Program.Picture/]
+											[Set Current_Action.Benefit_Title to Benefit_Program.Name/]
+											[Set Current_Action.Benefit_Mission to Benefit_Program.Mission/]
+											[1 Benefit_Program.Rewards]
+												[Then]
+													[Set Current_Action.Benefit_Reward_Command = "[Format as "Jelly Attribute"]Current_Item.Benefit_Program.Rewards Item_Classes "List_Item Hover"[/Format]"/]
+												[/Then]
+												[Else]
+													<!-- Same as from Site below --> 
+													[1 Site from Database]
+														[Set Current_Action.Benefit_Reward_Command to "[Format as "Jelly Attribute"]Reward from Database Item_Classes "List_Item Hover"[/Format]"/]
+													[/1 Site from Database]
+												[/Else]
+											[/1]
+										[/Then]
+										[Else]
+											[1 Site from Database]
+												[Set Current_Action.Benefit_Picture to Site.Picture/]
+												[Set Current_Action.Benefit_Title to "Support [Format as "Jelly Attribute"][Site.Name no_wrap/][/Format]"/]
+												[Set Current_Action.Benefit_Mission to Site.Summary/]
+												[Set Current_Action.Benefit_Reward_Command to "[Format as "Jelly Attribute"]Reward from Database Item_Classes "List_Item Hover"[/Format]"/]
+											[/1 Site]
+										[/Else]
+									[/Current_Item.Benefit_Program]
 									<span class="Purchase_Conversion_Window">
-										[If Site.Picture exists]
-											<figure class="Appeal_Image" style="background-image:url(/Picture/[Site.Picture.ID no_wrap/]/File:Maximum_Height=500);"></figure>
+										[If Current_Action.Benefit_Picture exists]
+											<figure class="Appeal_Image" style="background-image:url(/Picture/[Current_Action.Benefit_Picture.ID no_wrap/]/File:Maximum_Height=500);"></figure>
 										[/If]
 
 										<span class="Window_Content">
@@ -48,11 +70,11 @@
 											</a>
 
 											<span class="Header">
-												Support [Site.Name/]!
+												[Current_Action.Benefit_Title/]
 											</span>
-	
+
 											<span class="Introduction">
-												[Site.Summary/]
+												[Current_Action.Benefit_Mission/]
 											</span>
 
 											<span class="Appeal">
@@ -61,18 +83,18 @@
 
 											<span class="Big_List List Select_Reward">
 												<span class="Big_List_Items">
-	
+
 													<!-- --> 
 													<span id="[Current_Action.Namespace no_wrap /]_Reward_Input_Finder">
 														[Input "Hidden" with Name = "Reward", Value_Type = "Reward", Execute_On_Change = 1/]
 													</span>
-					
+
 													<span id="[Current_Action.Namespace no_wrap /]_Join_Input_Finder">
 														[Input "Hidden" with Name = "Join",  Value = "0", Execute_On_Change = 1/]
 													</span>
 
-													[If Event.Encourage_Donations]
-														[Reward from Database Item_Classes "List_Item Hover"]
+													[If Current_Item.Encourage_Donations]
+														[[Current_Action.Benefit_Reward_Command no_wrap/]]
 															<!-- Disambiguate -->
 															[Set Current_List_Item to this /]
 															<span class="Big_List_Item">
@@ -85,7 +107,7 @@
 																			[/Format]">
 																		[Current_List_Item as Cover /]
 																	</a>
-	
+
 																	<span class="Big_List_Item_Content">
 																		<a class="Button" href="#" onclick="[Format as "Single Line Code"]
 																				Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Reward_Input_Finder \[name=\'Reward\'\]').val('[Current_List_Item.ID no_wrap/]').change(); 
@@ -103,9 +125,9 @@
 															</span>
 														[/Reward]
 													[/If]
-								
-								
-													[If Event.Encourage_Volunteers]
+			
+			
+													[If Current_Item.Encourage_Volunteers]
 														[Admin]
 															<span class="Big_List_Item">
 																<span class="Big_List_Item_Details">
@@ -135,7 +157,7 @@
 															</span>
 														[/Guest]
 													[/If]
-		
+	
 													<span class="Big_List_Item">
 														<span class="Big_List_Item_Details">
 															<a class="Button" href="#" onclick="[Format as "Single Line Code"]
@@ -148,25 +170,26 @@
 															</a>
 														</span>
 													</span>
-		
+	
 												</span>
 											</span>
 										</span>
-	
+
 									</span>
-								[/1 Site]
-							[/Then]
-							[Else]
-								[External_Script]
-									Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': document.getElementById('[Current_Action.Namespace no_wrap/]')\});
-								[/External_Script]
-							[/Else]
-						[/If]
-					[/Then]
-					[Else]
-						[Block "Sold Out" with Purchase_Item = Current_Action.Target/]
-					[/Else]
-				[/If]
+								[/Then]
+								[Else]
+									[External_Script]
+										Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': document.getElementById('[Current_Action.Namespace no_wrap/]')\});
+									[/External_Script]
+								[/Else]
+							[/If]
+						[/Then]
+						[Else]
+							[Block "Sold Out" with Purchase_Item = Current_Item/]
+						[/Else]
+					[/If]
+
+				[/Current_Action.Target]
 			{/Content}
 			{Code}
 				<!-- Create Shopping Cart -->

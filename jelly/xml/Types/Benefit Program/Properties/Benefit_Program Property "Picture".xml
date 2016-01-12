@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Benefit_Program Property "Mission" --}
+		{Property}
+			{Type}Benefit_Program{/Type}
+			{Name}Picture{/Name}
+			{Value_Type}Picture{/Value_Type}
+			{Relation}Many-To-One{/Relation}
+			{Core}1{/Core}
+		{/Property}
+{/Jelly}

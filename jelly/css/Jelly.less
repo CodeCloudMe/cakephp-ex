@@ -562,7 +562,6 @@ h1, .H1 {.Block; font-size: 35px; margin-bottom: 25px;}
 					.Description {display:block; margin-top:5px; font-size:13px;}
 					.Status { float: right; font-size: 11px; letter-spacing: 0.3px; font-family: Montserrat; font-weight: 700; background-color: #ffffcc; padding: 5px; margin-right: 5px; text-transform: uppercase; position: relative; top: -2px;}
 				}
-				.Big_List_Item_Date {display:block; margin-top:5px; font-size:13px;}
 			}
 			.Big_List_Item_Value {.Block; margin-bottom: 10px; font-weight: lighter;}
 			.Big_List_Item_Actions {.Row; position: absolute; top: 0px; right: 0px; height: 100%;
@@ -631,7 +630,7 @@ h1, .H1 {.Block; font-size: 35px; margin-bottom: 25px;}
 .Big_List.Grid {
 	.Big_List_Items {.Border_Top; margin-left: -10px; margin-right: -10px; display: flex; display: -ms-flexbox; display: -webkit-box; display: -webkit-flex; flex-wrap:wrap; -webkit-flex-wrap:wrap; -webkit-box-orient: horizontal;  -moz-box-orient: horizontal;   -webkit-box-direction: normal;   -moz-box-direction: normal;   -webkit-flex-direction: row;  -ms-flex-direction: row;  flex-direction: row;
 	
-		.Big_List_Item { .Border_Bottom; position: relative; .Border_Left; display: flex; display: -ms-flexbox; display: -webkit-box; display: -webkit-flex; 
+		.Big_List_Item { .Border_Bottom; position: relative; .Border_Left; display: flex; display: -ms-flexbox; display: -webkit-box; display: -webkit-flex;
 			&:last-of-type {.Border_Right;}
 			@media (max-width: @Mobile_Width) {width:calc(~'100%/2');
 				&:nth-of-type(2n+2) {.Border_Right;}
@@ -721,6 +720,13 @@ h1, .H1 {.Block; font-size: 35px; margin-bottom: 25px;}
 					.Big_List_Item_Check {margin-left: 9px; line-height: 38px;}
 				}
 			 }
+		}
+	}
+	&.Flex {
+		.Big_List_Item {display: flex; display: -ms-flexbox; display: -webkit-box; display: -webkit-flex; -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex:1;
+			@media (max-width: @Mobile_Width) {min-width:calc(~'100%/2');}
+			@media (min-width: @Desktop_Width) {min-width:calc(~'100%/3');}
+			.Big_List_Item_Inner {display:block; position:relative; width:100%; height:100%;}
 		}
 	}
 }
