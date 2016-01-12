@@ -12,6 +12,9 @@
 	
 					$Configuration_File_Path = &New_String('jelly_data/Jelly_Configuration.php');
 					$Configuration = include($Configuration_File_Path);
+
+					// Uncomment depending on version
+					// $Configuration = &Get_Environment_Variables();
 					$host = $Configuration\['Database'\]\['Host_Name'\];
 					$user = $Configuration\['Database'\]\['Username'\];
 					$pass = $Configuration\['Database'\]\['Password'\];

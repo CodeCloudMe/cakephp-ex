@@ -104,7 +104,6 @@ $Start_Time = microtime(true);
 	// Error reporting environment
 }
 
-
 // Set up path
 {
 	// Warning: $Path not by reference
@@ -201,7 +200,7 @@ $Start_Time = microtime(true);
 				Compile_Styles();
 				Compile_SQL($Database_Settings);
 
-				echo "Done resetting.";
+				echo "Done restarting.";
 				exit();
 				
 				// Redirect page
@@ -397,8 +396,7 @@ $Start_Time = microtime(true);
 	$Path_Item['References'][] = &$Path_Item_Reference;
 	$Memory_Stack_Reference = &$Path_Item_Reference;
 
-	$Render_Flags = array();
-	
+	$Render_Flags = array();	
 // 	traverse($Processed_URL);
 	
 	// If not requesting Raw, render the default site
@@ -565,7 +563,6 @@ $Start_Time = microtime(true);
 	}
 
 	// TODO: Add elapsed time	
-
 	// Print processed path item
 	print $Response_Data;
 // 	print memory_get_usage() . "<br/>\n";

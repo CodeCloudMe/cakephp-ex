@@ -133,7 +133,7 @@
 								[/If]
 							[/Else]
 						[/If]
-						<span class="Big_List [Current_Type.Variables.Display no_wrap /]">
+						<span class="Big_List [Current_Type.Variables.Display no_wrap /][If Current_Type.Variables.Display = "Grid"] Flex[/If]">
 			
 							[External_Script]
 								Jelly.jQuery(".Browse_Type .Display_Item").removeClass("Selected");
@@ -226,25 +226,40 @@
 									item_classes "Big_List_Item Hover"
 								]
 									[Then]
-										[This as "Type List Item"/]
+										<span class="Big_List_Item_Inner">[This as "Type List Item"/]</span>
 									[/Then]
 									[Else]
-										There are no 
-											[Format as "Lowercase"][If Current_Type.Plural_Name exists]
-												[Then][Current_Type.Plural_Name/][/Then]
-												[Else][Current_Type.Name/]s[/Else]
-											[/If][/Format] yet.
+										<span style="padding:20px;">
+											There are no 
+											[If Current_Type.Alias = "Event"]
+												[Then]upcoming events[/Then]
+												[Else]
+													[Format as "Lowercase"][If Current_Type.Plural_Name exists]
+														[Then][Current_Type.Plural_Name/][/Then]
+														[Else][Current_Type.Name/]s[/Else]
+													[/If][/Format]
+												[/Else]
+											[/If]
+											yet.
+										</span>
 									[/Else]
 								[/]
 								[If Current_Type.Alias = "Event"]
-									[Event where Start_Time < Today from Database by Start_Time Ascending
-										iterator_classes "Big_List_Items" 
-										item_classes "Big_List_Item Hover"
-										as "Type List Item"
-									/]
+									[1 Event where Start_Time < Today from Database]
+										[Then]
+											<span style="display:block; margin-top:20px; margin-bottom:20px; font-weight:600">
+												Past Events
+											</span>
+											[Event where Start_Time < Today from Database by Start_Time Ascending
+												iterator_classes "Big_List_Items" 
+												item_classes "Big_List_Item Hover"]
+												<span class="Big_List_Item_Inner">[This as "Type List Item"/]</span>
+											[/Event]
+										[/Then]
+									[/1]
 								[/If]
 							[/If]
-														
+										
 							[If Current_Type.Variables.Display is "Map"]
 								[Set Current_Map_Namespace to Namespace/]
 								<span class= "Big_List_Items">

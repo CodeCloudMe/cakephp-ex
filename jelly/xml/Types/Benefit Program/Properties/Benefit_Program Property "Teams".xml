@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Benefit_Program Property "Mission" --}
+		{Property}
+			{Type}Benefit_Program{/Type}
+			{Label}Promote These Teams{/Label}
+			{Name}Teams{/Name}
+			{Value_Type}Team{/Value_Type}
+			{Relation}Many-To-Many{/Relation}
+			{Core}1{/Core}
+		{/Property}
+{/Jelly}

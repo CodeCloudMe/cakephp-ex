@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Property "Description" --}
+		{Property}
+			{Type}Event{/Type}
+			{Name}Benefit Program{/Name}
+			{Value_Type}Benefit_Program{/Value_Type}
+			{Relation}Many-To-One{/Relation}
+			{Core}1{/Core}
+			{Viewable_By}Admin{/Viewable_By}
+		{/Property}
+	
+{/Jelly}

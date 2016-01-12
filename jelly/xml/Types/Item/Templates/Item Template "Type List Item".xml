@@ -15,7 +15,7 @@
 					</span>
 					<span class="Big_List_Item_Name">
 						[Current_Item.Name /] 
-						
+		
 						<!-- Special case for Users --> 
 						[If Current_Item.Type.Alias = "User"]
 							[If not User.Activated]
@@ -35,7 +35,7 @@
 							[Current_Item.Start_Time/]
 						</span>
 					[/If]
-					
+	
 				[/Link]
 				<span class="Big_List_Item_Actions">
 					[Admin]
@@ -48,7 +48,6 @@
 						[/If]
 					[/Admin]
 				</span>
-
 			{/Content}
 		{/Template}
 	

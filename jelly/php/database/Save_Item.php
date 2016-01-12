@@ -983,8 +983,9 @@ function Save_Item(&$Item, $Parameters = array())
 						else
 							$Original_Property_Reverse_Key = &$New_Property_Values['Reverse_Key'];
 
-						// Localize original property attachment type.							
-						if ($Item['Saved'] && array_key_exists('Attachment_Type', $Original_Property_Values))
+						// Localize original property attachment type.		
+						// TODO - I made it check if attachment_type was blank which might be something to do in general over time.
+						if ($Item['Saved'] && array_key_exists('Attachment_Type', $Original_Property_Values) && $Original_Property_Values['Attachment_Type'])
 						{
 							$Cached_Original_Property_Attachment_Type = &As_Key($Original_Property_Values['Attachment_Type']);
 							$Cached_Original_Property_Attachment_Type = &Get_Cached_Type($Database, $Cached_Original_Property_Attachment_Type);

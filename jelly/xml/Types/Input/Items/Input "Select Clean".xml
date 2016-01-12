@@ -29,7 +29,7 @@
 				[Admin]
 					[Else]
 						[If Current_Input.Variables.Value_Type.Alias is "Team"]
-							[Set Current_Input.Variables.Where_Clause to "Allow_Anyone_To_Join" /]
+							[Set Current_Input.Variables.Where_Clause to "Allow_Anyone_To_Join[If Current_Input.Variables.Where_Clause] and ([Current_Input.Variables.Where_Clause no_wrap/])[/If]" /]
 						[/If]
 					[/Else]
 				[/Admin]
