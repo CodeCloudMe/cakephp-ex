@@ -13,8 +13,7 @@
 					/]
 	
 				[Set Payment_Service.Variables.Secret_Key to "[PHP]
-							$Configuration_File_Path = &New_String('jelly_data/Jelly_Configuration.php');
-							$Configuration = include($Configuration_File_Path);
+							$Configuration = &Get_Environment_Variables();
 							$Stripe_Mode = $Configuration\['API_Keys'\]\['Stripe'\]\['Mode'\];
 							return $Configuration\['API_Keys'\]\['Stripe'\]\[$Stripe_Mode\]\['Secret_Key'\];
 						[/PHP]"
@@ -85,8 +84,7 @@
 			{/Validation_Code}
 			{Charge_Code}
 				[Set Payment_Service.Variables.Secret_Key to "[PHP]
-							$Configuration_File_Path = &New_String('jelly_data/Jelly_Configuration.php');
-							$Configuration = include($Configuration_File_Path);
+							$Configuration = &Get_Environment_Variables();
 							$Stripe_Mode = $Configuration\['API_Keys'\]\['Stripe'\]\['Mode'\];
 							return $Configuration\['API_Keys'\]\['Stripe'\]\[$Stripe_Mode\]\['Secret_Key'\];
 						[/PHP]"
