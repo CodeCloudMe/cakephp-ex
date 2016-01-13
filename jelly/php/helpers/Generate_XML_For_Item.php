@@ -36,31 +36,31 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 			// Check if not many-to-many and (Type is not Type or relation is not one to many)
 			if ($Cached_Property['Relation'] != 'Many-To-Many' && ($Cached_Property['Relation'] != 'One-To-Many' || $Type_Alias != 'Type'))
 			{
-				if ($Cached_Property['Relation'] == "")
+				if (!is_null($Item_Row[$Cached_Property_Data_Name]))
 				{
-					switch ($Cached_Property['Cached_Value_Type']['Alias'])
+					if ($Cached_Property['Relation'] == "")
 					{
-						case 'Date':
-							if ($Item_Row[$Cached_Property_Data_Name])
-								$Resolved_Value = date('Y-m-d', strtotime($Item_Row[$Cached_Property_Data_Name]));
-							break;
-						case 'Date_Time':
-							if ($Item_Row[$Cached_Property_Data_Name])
-								$Resolved_Value = date('Y-m-d g:iA', strtotime($Item_Row[$Cached_Property_Data_Name]));
-							break;
-						case 'Time':
-							if ($Item_Row[$Cached_Property_Data_Name])
-								$Resolved_Value = date('g:iA', strtotime($Item_Row[$Cached_Property_Data_Name]));
-							break;
-						default:
-							// TODO - format as XML Data
-							$Resolved_Value = $Item_Row[$Cached_Property_Data_Name];
-							break;
+						switch ($Cached_Property['Cached_Value_Type']['Alias'])
+						{
+							case 'Date':
+								if ($Item_Row[$Cached_Property_Data_Name])
+									$Resolved_Value = date('Y-m-d', strtotime($Item_Row[$Cached_Property_Data_Name]));
+								break;
+							case 'Date_Time':
+								if ($Item_Row[$Cached_Property_Data_Name])
+									$Resolved_Value = date('Y-m-d g:iA', strtotime($Item_Row[$Cached_Property_Data_Name]));
+								break;
+							case 'Time':
+								if ($Item_Row[$Cached_Property_Data_Name])
+									$Resolved_Value = date('g:iA', strtotime($Item_Row[$Cached_Property_Data_Name]));
+								break;
+							default:
+								// TODO - format as XML Data
+								$Resolved_Value = $Item_Row[$Cached_Property_Data_Name];
+								break;
+						}
 					}
-				}
-				else
-				{
-					if (!is_null($Item_Row[$Cached_Property_Data_Name]))
+					else
 					{
 						// For items of with value types that are parent types of meta-data like types, see if it resolves into a meta-data like type, and if so, change behavior to specific type
 						// TODO - Just using Item, could be more programmatic later.
@@ -76,7 +76,7 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 							{
 								$Search_Query_String_Parts[] = "SELECT `Item`.`ID`, '" . $Search_Query_String_Part_Data_Name . "' AS `Specific_Type` FROM `" . $Search_Query_String_Part_Data_Name . "` AS `Item`";
 							}
-					
+				
 							$Search_Query_String = "SELECT `Item`.`Specific_Type` FROM \n(" . implode("\n UNION \n", $Search_Query_String_Parts) . ")\n AS `Item` WHERE (`Item`.`ID` = ";
 							if ($Search_Key == 'Alias')
 								$Search_Query_String .= "\"" . $Search_Value. "\"";
@@ -108,16 +108,16 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 									$Search_Type_Data_Name = 'Type_Action';
 								else
 									$Search_Type_Data_Name = $Search_Type_Alias;
-							
+						
 								$Search_Query_String = 'SELECT' . ' ' . '*' . ' ' . 'FROM' . ' ' . '`' . $Search_Type_Data_Name . '`' . ' ' . 'WHERE' . ' ' . $Search_Key. ' = ';
 								if ($Search_Key == 'Alias')
 									$Search_Query_String .= "\"" . $Search_Value. "\"";
 								else
 									$Search_Query_String .= $Search_Value;
-							
+						
 								$Search_Query = $Search_Connection->query($Search_Query_String);
 								$Search_Result = $Search_Query->fetch_assoc();
-			
+		
 								if ($Search_Result !== null)
 								{								
 									// Create value array
@@ -129,12 +129,12 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 									if (array_key_exists('Type', $Search_Result))
 										$Resolved_Value['Type'] = $Search_Result['Type'];
 								}
-						
+					
 								// For actions, just export the key
 								// Should mimic the default case behavior below.
 								else if ($Search_Type_Alias == 'Action')
 									$Resolved_Value = $Item_Row[$Cached_Property_Data_Name];
-						
+					
 								// For unresolved values, export the key
 								// TODO - or nothing? 
 								else
@@ -144,17 +144,16 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 								$Search_Query->free();
 								$Search_Connection->close();
 								break;
-					
+				
 							// For other types, just export the key.
 							default:
 								$Resolved_Value = $Item_Row[$Cached_Property_Data_Name];
 								break;
 						}
-
 					}
-					else 
-						continue;
 				}
+				else 
+					continue;
 			}
 		}
 	
