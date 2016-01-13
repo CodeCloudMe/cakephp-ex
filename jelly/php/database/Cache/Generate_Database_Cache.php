@@ -54,6 +54,7 @@ function Generate_Database_Cache(&$Database)
 	// Upgrade tables
 	switch ($Database_Version)
 	{
+		case 2:
 		case 1:
 			break;
 		default:
