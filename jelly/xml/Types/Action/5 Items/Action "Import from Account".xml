@@ -1,0 +1,69 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Import from Account" --}
+		{Action}
+			{Name}Import from Account{/Name}
+			{Content}
+				This will import the data from another account into this one.<br/>
+				<br/>
+				[Admin]
+					[Then]
+						Name:
+						[Input "Text Field" with Name = "Account"/]<br/>
+						<br/>
+
+						Password:
+						[Input "Text Field" with Name = "Password"/]<br/>
+						<br/>
+
+						[Link to Submit with Class="Button"/]
+					[/Then]
+					[Else]
+						4 Adminz Only
+					[/Else]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					[PHP]
+						// Set up export settings
+						$Export_Database_Settings = array(
+							'Host_Name' => '45.79.137.50',
+							'Username' => 'U_[Form.Account no_wrap/]',
+							'Password' => '[Form.Password no_wrap/]',
+							'Database_Name' => 'Better_User_DB_[Form.Account no_wrap/]'
+						);	
+	
+						// Generate cache
+						$Export_Database = &Connect_Database($Export_Database_Settings);
+						Generate_Database_Cache($Export_Database);	
+
+						// Create xml file
+						$Imported_XML = Export_Local_Data_as_XML($Export_Database, $Export_Database_Settings);
+		
+						// Save xml file
+						$XML_Backup_Directory = $GLOBALS\["Data_Directory_Path"\] . '/' . 'Export';
+						Make_Directories_If_Nonexistent($XML_Backup_Directory);
+	
+						$XML_File_Name = "[Format as "File Name"][Form.Account No_Wrap /] ([PHP]return date('Y-m-d H\hi');[/PHP]).xml[/Format]";
+						$XML_Path = $XML_Backup_Directory . "/" . $XML_File_Name;
+						$XML_Handler = fopen($XML_Path, w);
+						fwrite($XML_Handler, $Imported_XML);
+						fclose($XML_Handler);
+	
+						$XML_Link_Path = 'http://' . $_SERVER\['HTTP_HOST'\] . '/' . $XML_Path;
+						echo 'Saved to <a href="'. $XML_Link_Path . '">' . $XML_File_Name . '</a>';
+						flush();ob_flush();
+	
+						// Import XML
+						$XML_Paths = array($XML_Path);
+						$Database\['Ready'\] = &New_Boolean(false);
+						Load_XML_Files($Database, $XML_Paths);
+						$Database\['Ready'\] = &New_Boolean(true);
+					[/PHP]
+					Imported!
+				[/Admin]
+			{/Code}
+		{/Action}
+{/Jelly}

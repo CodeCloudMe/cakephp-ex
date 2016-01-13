@@ -168,7 +168,8 @@ $Start_Time = microtime(true);
 				$Database_Settings = &$Configuration['Database'];
 				$Database = &Connect_Database($Database_Settings);
 				Generate_Database_Cache($Database);			
-				Export_Local_Data_as_XML($Database);
+				// TODO - cleanup...
+				Export_Local_Data_as_XML($Database, $Database_Settings);
 			}
 			else
 				die('Exporting not allowed.');

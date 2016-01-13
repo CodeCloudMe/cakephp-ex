@@ -18,6 +18,7 @@ require_once("SendGridEmail.php");
 require_once("Get_Remote_Content.php");
 require_once("Get_Environment_Variables.php");
 require_once("Export_Local_Data_as_XML.php");
+require_once("Generate_XML_For_Item.php");
 
 // TODO - maybe not needed
 //require_once("DBQueryFuncs.php");
