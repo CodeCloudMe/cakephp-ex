@@ -10,13 +10,21 @@ function Restart_Database(&$Database)
 	
 	// Create data table
 	$Data_Table_Name = &New_String($Table_Prefix . 'Data');
-	$Create_Data_Table_Query = &New_String('CREATE TABLE `' . mysqli_real_escape_string($Database['Link'], $Data_Table_Name) . '` (`Database_Version` INT NOT NULL, `Last_ID` INT NOT NULL, `Last_Default_ID` INT NULL) CHARACTER SET utf8');
+	$Create_Data_Table_Query = &New_String('CREATE TABLE `' . mysqli_real_escape_string($Database['Link'], $Data_Table_Name) . '` (`Database_Version` INT NOT NULL, `Commit_Count` INT NOT NULL, `Last_ID` INT NOT NULL, `Last_Default_ID` INT NULL) CHARACTER SET utf8');
 	Query($Database, $Create_Data_Table_Query);
-	
-	// Store database version and last ID
-	$Database_Version = 1;
+
+	// Get version 
+	$Version_Path = 'jelly/Version.json';
+	$Version_Data = json_decode(file_get_contents($Version_Path), true);
+	$Database_Version = $Version_Data['Root_Version'];
+	exec('git rev-list HEAD --count', $Total_Commit_Count);
+	$Total_Commit_Count = $Total_Commit_Count[0];
+	$Commit_Count_Start = $Version_Data['Start_From_Commit'];
+	$Commit_Count =  $Total_Commit_Count - $Commit_Count_Start;
 	$Last_ID = 0;
-	$Insert_Data_Query = &New_String('INSERT INTO `Data` (`Database_Version`, `Last_ID`) VALUES (\'' . $Database_Version . '\', \'' . $Last_ID . '\')');
+
+	// Store database version and last ID
+	$Insert_Data_Query = &New_String('INSERT INTO `Data` (`Database_Version`, `Commit_Count`, `Last_ID`) VALUES (\'' . $Database_Version . '\', \'' . $Commit_Count . '\', \'' . $Last_ID . '\')');
 	Query($Database, $Insert_Data_Query);
 	
 	// Increase time limit for loading
