@@ -12315,8 +12315,8 @@ h1,
 }
 @media (min-width: 800px) {
   [data-kind="Item"][data-type="Type_Action"][data-alias="Purchase"] .Purchase_Conversion_Window .Window_Content .Big_List.Select_Reward .Big_List_Items .Big_List_Item .Big_List_Item_Details .Button {
-    min-width: 300px;
-    margin-bottom: 0px;
+    width: 350px;
+    margin-bottom: 18px;
   }
 }
 [data-kind="Item"][data-type="Type_Action"][data-alias="Purchase"] .Purchase_Conversion_Window .Window_Content .Big_List.Select_Reward .Big_List_Items .Big_List_Item .Big_List_Item_Details .Button .Label {
