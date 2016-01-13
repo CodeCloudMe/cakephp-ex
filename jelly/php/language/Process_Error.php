@@ -3,8 +3,8 @@
 // Process Tag
 function &Process_Error(&$Database, &$Error, &$Context)
 {
-// 	throw $Error;
-// 	exit();
+//  	throw $Error;
+//  	exit();
 	
 	// Create error item
 	$Cached_Error_Type = &Get_Cached_Type($Database, 'Error');
