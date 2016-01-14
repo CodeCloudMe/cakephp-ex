@@ -158,8 +158,55 @@ function Load_XML_Files(&$Database, &$XML_File_Paths, $Parameters = array())
 		$Upgrade_Mode = &New_Boolean(true);
 	if ($Upgrade_Mode)
 	{
-		// TODO - check version.
+		// TODO - check version
+
+		// Upgrade folder child items...
+
+		// Check the current folder items.
+		// TODO - don't actualy need id... 
+		$Folder_Child_Type_DB_Query = "SELECT Type.ID, Type.Alias FROM Folder_Child_Item, Type where Folder_Child_Item.Child_Item = Type.ID";
+		$Folder_Child_Type_Result = &Query($Database, $Folder_Child_Type_DB_Query);
+		$Folder_Child_Types_To_Make = array();
+		while ($Folder_Child_Type_Row = mysqli_fetch_assoc($Folder_Child_Type_Result))
+		{
+			$Folder_Child_Types_To_Make[$Folder_Child_Type_Row['Alias']] = $Folder_Child_Type_Row['ID'];
+		}
+		mysqli_free_result($Folder_Child_Type_Result);
 		
+		if (count($Folder_Child_Types_To_Make) > 0)
+		{
+			// For each valid folder child item, if it's an array, with an alias, remove it
+			// Happens to delete broken links too
+			foreach ($Loaded_XML_Items_By_Type['folder_child_item'] as $XML_Folder_Child_Item_Index => &$XML_Folder_Child_Item)
+			{	
+				if (
+						array_key_exists('Parent_Folder', $XML_Folder_Child_Item) && $XML_Folder_Child_Item['Parent_Folder'][0] && 
+						array_key_exists('Child_Item', $XML_Folder_Child_Item) && $XML_Folder_Child_Item['Child_Item'][0]
+					)
+				{
+					if (is_array($XML_Folder_Child_Item['Child_Item'][0]) && $XML_Folder_Child_Item['Child_Item'][0]['Meta_Type'] == 'Type')
+						unset($Folder_Child_Types_To_Make[$XML_Folder_Child_Item['Child_Item'][0]['Alias']]);
+				}
+				else
+					unset($Loaded_XML_Items_By_Type['folder_child_item'][$XML_Folder_Child_Item_Index]);
+			}
+		}
+		
+		// Add the rest
+		foreach($Folder_Child_Types_To_Make as $Child_Type_Alias => &$Child_Type_ID)
+		{
+
+			// Get current parent folder id
+			$Folder_ID = &$Loaded_XML_Items_By_Type['folder'][0]['ID'][0];
+			$Folder_Child_Type_Item_XML = &$_;
+			$_ = array(
+				'Parent_Folder' => array(&$Folder_ID),
+				'Child_Item' => array($Child_Type_Alias)
+			);
+			unset($_);
+			$Loaded_XML_Items_By_Type['folder_child_item'][] = &$Folder_Child_Type_Item_XML;
+		}
+
 		// Replace action get involved content & code with new version.
 		foreach ($Loaded_XML_Items_By_Type['action'] as &$XML_Action)
 		{	
@@ -170,7 +217,6 @@ function Load_XML_Files(&$Database, &$XML_File_Paths, $Parameters = array())
 				$Action_Get_Involved_Item = &$Processed_Action_Get_Involved_Command['Chunks'][0]['Item'];				
 				$XML_Action['Content'][0] = $Action_Get_Involved_Item['Data']['Content'];
 				$XML_Action['Code'][0] = $Action_Get_Involved_Item['Data']['Code'];
-				traverse($XML_Action);
 			}
 		}
 		
@@ -182,7 +228,6 @@ function Load_XML_Files(&$Database, &$XML_File_Paths, $Parameters = array())
 			$Processed_Teams_Scripting_Module_Command = &Process_Command_String($Database, $Teams_Scripting_Module_Command_String);
 			$Teams_Scripting_Module_Item = &$Processed_Teams_Scripting_Module_Command['Chunks'][0]['Item'];				
 			$XML_Scripting_Module['Script'][0] = $Teams_Scripting_Module_Item['Data']['Script'];
-			traverse($XML_Scripting_Module);
 		}
 	}
 	
@@ -680,7 +725,7 @@ function Load_XML_Files(&$Database, &$XML_File_Paths, $Parameters = array())
 							
 							// Attempt to retrieve a database item with this query. 
 							$Existing_Item_Command = &Parse_String_Into_Command($Existing_Item_Command_String);
-							$Existing_Item = &Get_Database_Item($Database, $Existing_Item_Command);							
+							$Existing_Item = &Get_Database_Item($Database, $Existing_Item_Command);													
 
 							if (!array_key_exists('End_Of_Results', $Existing_Item) || !$Existing_Item['End_Of_Results'])
 							{
@@ -695,7 +740,7 @@ function Load_XML_Files(&$Database, &$XML_File_Paths, $Parameters = array())
 										// TODO - shouldn't they just be one to many? 
 										switch($Existing_Item['Cached_Specific_Type']['Alias'])
 										{
-											case 'Folder':
+											case 'Folder':	
 												// Delete attachments
 												$Attachment_String = &New_String('Folder_Child_Item where Parent_Folder = ' . $Existing_Item['Data']['ID']);
 												$Attachment_Command = &Parse_String_Into_Command($Attachment_String);
@@ -1116,7 +1161,7 @@ function Load_XML_Files(&$Database, &$XML_File_Paths, $Parameters = array())
 							// Catch multiple values for single value property error
 							if ($Cached_Property_Relation == MANY_TO_ONE && count($Loaded_XML_Item_Property_Values) > 1)
 								throw new Exception ('Mulitple values given for single value property');
-							
+															
 							// Set or add refactored value items to item
 							foreach ($Loaded_XML_Item_Property_Values as &$Loaded_XML_Item_Property_Value)
 							{

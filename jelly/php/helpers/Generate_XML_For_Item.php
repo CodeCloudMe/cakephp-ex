@@ -3,14 +3,13 @@
 // TODO - lots needs to be cleaned up here, but it works.
 
 function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type_Item_ID)
-{
+{	
 	// Setup
 	$host = $Database_Settings['Host_Name'];
 	$user = $Database_Settings['Username'];
 	$pass = $Database_Settings['Password'];
 	$name = $Database_Settings['Database_Name'];	
-	$mysqli = new mysqli($host,$user,$pass,$name); 
-	$mysqli->query("SET NAMES 'utf8'");
+	$mysqli = &$Database['Link'];
 
 	// TODO - update
 	$Type_Alias = $Type_Alias;
@@ -152,7 +151,11 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 						}
 					}
 				}
-				else 
+				
+				// Convert null boolean values to false and include them
+				else if (strtolower($Cached_Property['Cached_Value_Type']['Alias']) == 'boolean') 
+					$Resolved_Value = False;
+				else
 					continue;
 			}
 		}
@@ -279,9 +282,9 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 	}
 	
 	$XML_String = "";
-	$XML_String .=  '<!-- ' . 
-		htmlspecialchars($Type_Name  . ' ' . '"' . $Resolved_Item_Row['Name'] .'"' . ' (ID: ' . $Resolved_Item_Row['ID']. ')' . ' ' , ENT_XML1, 'UTF-8') . 
-		'-->' . "\n";
+	$XML_String .=  
+		htmlspecialchars('<!-- ' . $Type_Name  . ' ' . '"' . $Resolved_Item_Row['Name'] .'"' . ' (ID: ' . $Resolved_Item_Row['ID']. ')' . ' ' . '-->', ENT_XML1, 'UTF-8') .
+		 "\n";
 	
 	$XML_String.= '<' .
 			htmlspecialchars($Type_Alias, ENT_XML1, 'UTF-8') .
@@ -318,7 +321,7 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 			htmlspecialchars($Type_Alias, ENT_XML1, 'UTF-8') .
 			'>';
 	return $XML_String;
-	$mysqli->close();
+//	$mysqli->close();
 }
 
 ?>

@@ -7,6 +7,7 @@
 			{Label}Offer These Rewards{/Label}
 			{Name}Rewards{/Name}
 			{Value_Type}Reward{/Value_Type}
+			{Viewable_By}Admin{/Viewable_By}
 			{Relation}Many-To-Many{/Relation}
 			{Core}1{/Core}
 		{/Property}

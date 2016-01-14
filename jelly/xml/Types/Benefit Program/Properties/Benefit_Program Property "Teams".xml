@@ -7,6 +7,7 @@
 			{Label}Promote These Teams{/Label}
 			{Name}Teams{/Name}
 			{Value_Type}Team{/Value_Type}
+			{Viewable_By}Admin{/Viewable_By}
 			{Relation}Many-To-Many{/Relation}
 			{Core}1{/Core}
 		{/Property}

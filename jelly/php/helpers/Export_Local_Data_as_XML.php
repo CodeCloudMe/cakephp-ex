@@ -72,6 +72,7 @@ function Export_Local_Data_as_XML($Database, $Database_Settings)
 		// TODO search backwards from here...
 		throw new Exception('Last Default Item ID not matched to any record.');
 	}
+
 	$Last_Default_Modified_Time = &$Search_Row['Modified'];
 	
 	// TODO - take out Jelly Language
@@ -83,7 +84,7 @@ function Export_Local_Data_as_XML($Database, $Database_Settings)
 		$Type_Items_Command_String = &New_String($Type_Alias . ' ' . 'from Database where (Item.Package does not exist or Item.Package = "Local" or Item.Modified > "' . $Last_Default_Modified_Time . '") No_Child_Types as Reference by ID');
 		$Types_Items_Processed_Command = &Process_Command_String($Database, $Type_Items_Command_String, $Memory_Stack_Reference);
 		$Type_Items_Item = &$Types_Items_Processed_Command['Chunks'][0][Item];
-	
+		
 		$Type_Item_ID_Array = &New_Array();
 		while(!array_key_exists('End_Of_Results', $Type_Items_Item) || !$Type_Items_Item['End_Of_Results'])
 		{
@@ -101,7 +102,7 @@ function Export_Local_Data_as_XML($Database, $Database_Settings)
 			$Type_Item_ID = $Type_Item_ID_Array[$Type_Item_ID_Index];
 			$XML_String .= Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type_Item_ID);
 			$XML_String .= "\n\n";
-		}	
+		}
 	}
 	$XML_String .= "</Jelly>";
 	return $XML_String;
