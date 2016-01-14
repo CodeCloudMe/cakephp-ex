@@ -13,10 +13,6 @@
 						[Input "Text Field" with Name = "Account"/]<br/>
 						<br/>
 						
-						Explicit User Name if Needed:
-						[Input "Text Field" with Name = "Username"/]<br/>
-						<br/>
-
 						Password:
 						[Input "Text Field" with Name = "Password"/]<br/>
 						<br/>
@@ -34,7 +30,7 @@
 						// Set up export settings
 						$Export_Database_Settings = array(
 							'Host_Name' => '45.79.137.50',
-							'Username' => '[If Form.Username][Then][Form.Username no_wrap/][/Then][Else]U_[Form.Account no_wrap/][/Else][/If]',
+							'Username' => '[PHP]return substr('U_[Form.Account no_wrap/]', 0, 16);[/PHP]',
 							'Password' => '[Form.Password no_wrap/]',
 							'Database_Name' => 'Better_User_DB_[Form.Account no_wrap/]'
 						);	
