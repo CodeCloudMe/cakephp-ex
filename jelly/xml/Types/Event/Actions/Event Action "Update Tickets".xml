@@ -67,6 +67,16 @@
 										 <span class="Hint">Better waives a $1 fee when they join</span>
 									</span>
 								</span>
+				
+								<span class="Section Row Volunteers" style="margin-bottom:10px;">
+									<span class="Input Left" style="width: 30px;">
+										[Input "Check Box" with Name = "Password_Protected",  Value = Current_Event.Password_Protected, Attributes = "onchange=\"Jelly.jQuery('#[Current_Action.Namespace no_wrap/]_Password').toggle();\""/]
+									</span>
+									<span class="Left Description" style="padding-top: 1px;">
+										Password protected sale 
+										 <span id="[Current_Action.Namespace no_wrap/]_Password" class="Hint" style="width:335px;overflow-wrap:break-word;[If not Current_Event.Password_Protected]display:none;[/If]">http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[This.Type.Alias no_wrap /]/[This.Alias no_wrap /]:password=[PHP]return crc32('[This.Alias no_wrap/]');[/PHP]</span>
+									</span>
+								</span>
 
 								<span class="Execute">
 									<!-- Execute link -->
@@ -88,6 +98,7 @@
 					[Set Current_Event.Stock to Form.Stock/]
 					[Set Current_Event.Encourage_Donations to Form.Encourage_Donations/]
 					[Set Current_Event.Encourage_Volunteers to Form.Encourage_Volunteers/]
+					[Set Current_Event.Password_Protected to Form.Password_Protected/]
 					[Set Current_Event.On_Sale to True/]
 					[Save Current_Event/]
 	

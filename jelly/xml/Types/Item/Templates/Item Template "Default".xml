@@ -233,7 +233,7 @@
 						[/If]
 		
 						[If Current_Type.Alias is "Event"]
-							[If Current_Item.On_Sale]
+							[If Current_Item.On_Sale and (not Current_Item.Password_Protected or Path_Variables.Password = "[PHP]return crc32('[Current_Item.Alias no_wrap/]');[/PHP]")]
 								<span class="Page_Purchases">
 									[Link to "/[Current_Type.Alias/]/[Current_Item.ID/]/Purchase" into "Window" with Class="Purchase_Tickets_Button"]
 										<span class="Content">
