@@ -42,16 +42,22 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 						switch ($Cached_Property['Cached_Value_Type']['Alias'])
 						{
 							case 'Date':
-								if ($Item_Row[$Cached_Property_Data_Name])
+								if (substr($Item_Row[$Cached_Property_Data_Name],0, 10) != '0000-00-00')
 									$Resolved_Value = date('Y-m-d', strtotime($Item_Row[$Cached_Property_Data_Name]));
+								else
+									continue 2;
 								break;
 							case 'Date_Time':
-								if ($Item_Row[$Cached_Property_Data_Name])
+								if (substr($Item_Row[$Cached_Property_Data_Name],0, 10) != '0000-00-00')
 									$Resolved_Value = date('Y-m-d g:iA', strtotime($Item_Row[$Cached_Property_Data_Name]));
+								else
+									continue 2;
 								break;
 							case 'Time':
-								if ($Item_Row[$Cached_Property_Data_Name])
+								if (substr($Item_Row[$Cached_Property_Data_Name],0, 8) != '00:00:00')
 									$Resolved_Value = date('g:iA', strtotime($Item_Row[$Cached_Property_Data_Name]));
+								else
+									continue 2;
 								break;
 							default:
 								// TODO - format as XML Data
