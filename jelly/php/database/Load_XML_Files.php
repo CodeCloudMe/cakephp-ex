@@ -215,19 +215,19 @@ function Load_XML_Files(&$Database, &$XML_File_Paths, $Parameters = array())
 				$Action_Get_Involved_Command_String = &New_String('Action "Get Involved" from Database as Reference');
 				$Processed_Action_Get_Involved_Command = &Process_Command_String($Database, $Action_Get_Involved_Command_String);
 				$Action_Get_Involved_Item = &$Processed_Action_Get_Involved_Command['Chunks'][0]['Item'];				
-				$XML_Action['Content'][0] = $Action_Get_Involved_Item['Data']['Content'];
-				$XML_Action['Code'][0] = $Action_Get_Involved_Item['Data']['Code'];
+				$XML_Action['Content'][0] = &$Action_Get_Involved_Item['Data']['Content'];
+				$XML_Action['Code'][0] = &$Action_Get_Involved_Item['Data']['Code'];
 			}
 		}
 		
 		// Replace scripting module content & code with new version.
 		if (count($Loaded_XML_Items_By_Type['scripting_module']) == 1)
 		{
-			$XML_Scripting_Module = $Loaded_XML_Items_By_Type['scripting_module'][0];
+			$XML_Scripting_Module = &$Loaded_XML_Items_By_Type['scripting_module'][0];
 			$Teams_Scripting_Module_Command_String = &New_String('1 Scripting_Module from Database as Reference');
 			$Processed_Teams_Scripting_Module_Command = &Process_Command_String($Database, $Teams_Scripting_Module_Command_String);
-			$Teams_Scripting_Module_Item = &$Processed_Teams_Scripting_Module_Command['Chunks'][0]['Item'];				
-			$XML_Scripting_Module['Script'][0] = $Teams_Scripting_Module_Item['Data']['Script'];
+			$Teams_Scripting_Module_Item = &$Processed_Teams_Scripting_Module_Command['Chunks'][0]['Item'];
+			$XML_Scripting_Module['Script'][0] = &$Teams_Scripting_Module_Item['Data']['Script'];
 		}
 	}
 	

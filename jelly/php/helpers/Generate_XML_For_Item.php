@@ -72,8 +72,9 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 						$Search_Type_Alias = $Cached_Property['Cached_Value_Type']['Alias'];
 						if ($Search_Type_Alias== 'Item')
 						{
-							$Search_Connection = new mysqli($host,$user,$pass,$name); 
-							$Search_Connection->query("SET NAMES 'utf8'");					
+							$Search_Connection = &$Database['Link'];
+//							$Search_Connection = new mysqli($host,$user,$pass,$name); 
+							$Search_Connection->query("SET NAMES 'utf8'");	
 							$Search_Key = $Cached_Property['Key'];
 							$Search_Value = $Item_Row[$Cached_Property_Data_Name];
 							$Search_Query_String_Parts = array();
@@ -94,6 +95,7 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 							$Search_Result = $Search_Query->fetch_row();
 							if ($Search_Result !== null)
 								$Search_Type_Alias = $Search_Result[0];
+							mysqli_free_result($Search_Query);
 						}
 						switch ($Search_Type_Alias)
 						{	
@@ -103,8 +105,9 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 							case 'Template':
 							case 'Type':
 							case 'Type_Action':
-							case 'Property':						
-								$Search_Connection = new mysqli($host,$user,$pass,$name); 
+							case 'Property':					
+								$Search_Connection = &$Database['Link'];
+	//							$Search_Connection = new mysqli($host,$user,$pass,$name); 						
 								$Search_Connection->query("SET NAMES 'utf8'");
 								$Search_Key = $Cached_Property['Key'];
 								$Search_Value = $Item_Row[$Cached_Property_Data_Name];
@@ -131,6 +134,7 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 										'Alias' => $Search_Result['Alias'],
 										'Meta_Type' => $Search_Type_Data_Name,
 									);
+
 									if (array_key_exists('Type', $Search_Result))
 										$Resolved_Value['Type'] = $Search_Result['Type'];
 								}
@@ -146,14 +150,17 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 									$Resolved_Value = $Item_Row[$Cached_Property_Data_Name];						
 
 								// Free resources			
-								$Search_Query->free();
-								$Search_Connection->close();
+//								$Search_Query->free();
+//								$Search_Connection->close();
+								mysqli_free_result($Search_Query);
 								break;
 				
 							// For other types, just export the key.
 							default:
 								$Resolved_Value = $Item_Row[$Cached_Property_Data_Name];
 								break;
+								
+
 						}
 					}
 				}
@@ -192,7 +199,8 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 				$Search_Type_Alias = $Cached_Property['Cached_Value_Type']['Alias'];
 				if ($Search_Type_Alias== 'Item')
 				{
-					$Search_Connection = new mysqli($host,$user,$pass,$name); 
+					$Search_Connection = &$Database['Link'];
+//					$Search_Connection = new mysqli($host,$user,$pass,$name); 
 					$Search_Connection->query("SET NAMES 'utf8'");					
 					$Search_Key = $Cached_Property['Key'];
 					$Search_Value = $Item_Row[$Cached_Property_Data_Name];
@@ -214,6 +222,7 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 					$Search_Result = $Search_Query->fetch_row();
 					if ($Search_Result !== null)
 						$Search_Type_Alias = $Search_Result[0];
+					mysqli_free_result($Search_Query);
 				}
 												
 				switch ($Search_Type_Alias)
@@ -225,7 +234,8 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 					case 'Type':
 					case 'Type_Action':
 					case 'Property':						
-						$Search_Connection = new mysqli($host,$user,$pass,$name); 
+						$Search_Connection = &$Database['Link'];
+//						$Search_Connection = new mysqli($host,$user,$pass,$name); 
 						$Search_Connection->query("SET NAMES 'utf8'");
 						$Search_Key = $Cached_Property['Key'];
 						$Search_Value = $Item_Row[$Cached_Property_Data_Name];
@@ -252,6 +262,7 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 								'Alias' => $Search_Result['Alias'],
 								'Meta_Type' => $Search_Type_Data_Name,
 							);
+
 							if (array_key_exists('Type', $Search_Result))
 								$Resolved_Value['Type'] = $Search_Result['Type'];
 						}
@@ -267,8 +278,9 @@ function Generate_XML_For_Item($Database, $Database_Settings, $Type_Alias, $Type
 							$Resolved_Value = $Item_Row[$Cached_Property_Data_Name];						
 
 						// Free resources			
-						$Search_Query->free();
-						$Search_Connection->close();
+// 						$Search_Query->free();
+// 						$Search_Connection->close();
+						mysqli_free_result($Search_Query);
 						break;
 					
 					// For other types, just export the key.
