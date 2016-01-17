@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Property "Show Link to Better" --}
+		{Property}
+			{Type}Site{/Type}
+			{Name}Show Link to Better{/Name}
+			{Value_Type}Boolean{/Value_Type}
+			{Default_Value}1{/Default_Value}
+		{/Property}
+	
+{/Jelly}

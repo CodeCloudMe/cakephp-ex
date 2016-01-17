@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Property "Cover Image" --}
+		{Property}
+			{Type}Site{/Type}
+			{Name}Cover Image{/Name}
+			{Value_Type}Picture{/Value_Type}
+		{/Property}
+	
+{/Jelly}

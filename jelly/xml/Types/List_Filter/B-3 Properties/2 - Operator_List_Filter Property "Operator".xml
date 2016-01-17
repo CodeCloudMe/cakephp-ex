@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Operator_List_Filter Property "Operator" --}
+		{Property}
+			{Type}Operator_List_Filter{/Type}
+			{Name}Operator{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

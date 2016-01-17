@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}	
+	{!-- Type "Reward" --}
+		{Type}
+			{Name}Reward{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Rewards{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Events{/Package}
+			{Starred}1{/Starred}
+		{/Type}
+{/Jelly}

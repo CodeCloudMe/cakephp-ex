@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Javascript_File Template "Default" --}
+		{Template}
+			{Type}Javascript_File{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<script src="[If Javascript_File.URL][Then][Javascript_File.URL No_Wrap /][/Then][Else][Globals.URL_Prefix No_Wrap /]/Javascript_File/[Javascript_File.Alias No_Wrap /]/File[/Else][/If]" type="text/javascript"></script>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

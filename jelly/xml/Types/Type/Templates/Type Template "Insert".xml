@@ -1,0 +1,58 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "Insert" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}Insert{/Name}
+			{Content}
+				<!-- Disambiguate current type -->
+				[Set Insert_Type to This /]
+				
+				<!-- Admins Only -->
+				[Admin]
+					[Then]
+						<table cellpadding="0" cellspacing="0" border="0">
+							<!-- Instantiate an item of the browse type -->
+							[New [Insert_Type.Alias No_Wrap /]]
+							
+								<!-- Loop over item's properties -->
+								[[Insert_Type.Alias No_Wrap /].Property]
+									
+									<!-- Disambiguate current browse property -->
+									[Set Browse_Property to This /]
+								
+									[Ignore]
+										<!-- TODO -->
+										[If Insert_Type.Variables.Hide_Property_Alias] and Alias is not Hide_Property_Alias[/If]
+									[/Ignore]
+									
+									<tr class="Jelly_Menu_Row" id="[Browse_Property.Namespace No_Wrap /]_[Browse_Property.Alias No_Wrap /]_Row">
+										<td class="Jelly_Menu_Item" colspan="2" id="[Browse_Property.Namespace No_Wrap /]_[Browse_Property.ID No_Wrap /]">
+											<a href="#" id="[Browse_Property.Namespace No_Wrap /]_Link" onclick="[Format as "Single Line Code"]
+												Jelly.Handlers.Call_Handler_For_Target(
+													\{
+														'Event': 'Selected',
+														'Target': this,
+														'Display_Target': this.parentNode,
+														'Item': '[Browse_Property.ID No_Wrap /]',
+														'Item_Alias': '[Browse_Property.Alias No_Wrap /]',
+														'Item_Type': '[Browse_Property.Type.Alias No_Wrap /]'
+													\});
+												return false;
+											[/Format]">[Browse_Property.Name /]</a>
+										</td>
+									</tr>
+								[/Insert_Type.Property]
+							[/New]
+						</table>
+					[/Then]
+					[Else]
+						Must be logged in.
+					[/Else]
+				[/Admin]
+			{/Content}
+		{/Template}
+		
+{/Jelly}

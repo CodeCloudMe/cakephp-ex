@@ -1,0 +1,20 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web Font Template "Default" --}
+	
+		{Template}
+			{Type}Web_Font{/Type}
+			{Name}Header{/Name}
+			{Content}
+				[If Web_Font.CSS]
+					[Then]
+						[Web_Font.CSS /]
+					[/Then]
+					[Else]
+						<link href='[Web_Font.URL/]' rel='stylesheet' type='text/css'/>
+					[/Else]
+				[/If]
+			{/Content}
+		{/Template}
+{/Jelly}

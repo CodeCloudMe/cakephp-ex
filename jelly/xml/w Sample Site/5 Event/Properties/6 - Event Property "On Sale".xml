@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Property "On Sale" --}
+		{Property}
+			{Type}Event{/Type}
+			{Name}On Sale{/Name}
+			{Advanced}1{/Advanced}
+			{Value_Type}Boolean{/Value_Type}
+		{/Property}
+	
+{/Jelly}

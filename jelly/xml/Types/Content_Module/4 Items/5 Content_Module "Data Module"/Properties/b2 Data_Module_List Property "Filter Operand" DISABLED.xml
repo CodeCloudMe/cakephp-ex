@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module_List Property "Filter Operand" --}
+	{!--
+		{Property}
+			{Type}Data_Module_List{/Type}
+			{Name}Filter Operand{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	--}
+{/Jelly}

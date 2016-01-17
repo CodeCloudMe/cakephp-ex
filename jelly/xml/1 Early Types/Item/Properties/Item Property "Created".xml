@@ -1,0 +1,15 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "Created" --}
+	
+		{Property}
+			{Type}Item{/Type}
+			{Value_Type}Date_Time{/Value_Type}
+			{Name}Created{/Name}
+			{Alias}Created{/Alias}
+			{Data_Name}Created{/Data_Name}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

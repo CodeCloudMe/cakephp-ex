@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Property "Picture" --}
+		{Property}
+			{Type}Event{/Type}
+			{Name}Picture{/Name}
+			{Value_Type}Picture{/Value_Type}
+		{/Property}
+	
+{/Jelly}

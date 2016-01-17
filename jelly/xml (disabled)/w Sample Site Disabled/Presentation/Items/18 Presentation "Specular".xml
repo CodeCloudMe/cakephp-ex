@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Specular" --}
+		{Presentation}
+			{Name}Specular{/Name}
+			{Website}http://www.specular.cc/{/Website}
+			{Description}Specular is a creative studio that applies design to emerging imaging technology.{/Description}
+			{Picture}Specular{/Picture}
+		{/Presentation}
+	
+{/Jelly}

@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Inline Title" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Inline Title{/Name}
+			{Content}
+				[This.Name /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

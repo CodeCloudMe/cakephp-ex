@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Package "Website" --}
+		{Package}
+			{Name}News{/Name}
+			{Package}News{/Package}
+			{Order}6{/Order}
+		{/Package}
+	
+{/Jelly}

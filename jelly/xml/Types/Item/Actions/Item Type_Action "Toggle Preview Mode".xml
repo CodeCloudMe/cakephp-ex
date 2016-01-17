@@ -1,0 +1,48 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Show Preview Mode" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Toggle Preview Mode{/Name}
+			{Content}
+				<a 
+						href="#" 
+						class="Edit_Settings[If not Current_Session.Preview_Mode] Selected[/If]" 
+						onclick="[Format as "Single Line Code"]
+								Jelly.jQuery(this).toggleClass('Selected');
+								[Admin Ignore_Preview_Mode]
+									if (Jelly.jQuery(this).hasClass('Selected'))
+									\{
+										Jelly.Interface.Show_Sidebar();
+									\}
+									else
+									\{
+										Jelly.Interface.Hide_Sidebar();
+									\}
+								[/Admin]
+								Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': this\});
+								return false;
+							[/Format]"
+					>
+					<img class="iconic" data-src="/jelly/images/flaticon/edit/edit45.svg"/>
+				</a>
+				<span style="display:none;">
+					[Action as Loading/]
+				</span>
+			{/Content}
+			{Code}
+				[Set Current_Action.Preview_Mode to True/]
+				[Current_Session]
+					[If Session.Preview_Mode]
+						[Then][Set Current_Action.Preview_Mode to False/][/Then]
+						[Else][Set Current_Action.Preview_Mode to True/][/Else]
+					[/If]
+				[/Current_Session]
+
+				[Set Current_Session.Preview_Mode to Current_Action.Preview_Mode/]
+				[Save Current_Session/]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

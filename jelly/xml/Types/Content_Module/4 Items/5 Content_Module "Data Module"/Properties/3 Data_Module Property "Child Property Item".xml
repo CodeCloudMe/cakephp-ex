@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Property "Child Property Item" --}
+		{Property}
+			{Type}Data_Module{/Type}
+			{Name}Child Property Item{/Name}
+			{Plural_Name}Child Property Items{/Plural_Name}
+			{Value_Type}Property{/Value_Type}
+			{Relation}Many-To-Many{/Relation}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

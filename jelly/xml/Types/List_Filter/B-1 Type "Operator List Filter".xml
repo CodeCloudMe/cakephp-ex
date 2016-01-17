@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Operator List Filter" --}
+		{Type}
+			{Name}Operator List Filter{/Name}
+			{Plural_Name}Operator List Filters{/Plural_Name}
+			{Parent_Type}List_Filter{/Parent_Type}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Design{/Package}
+		{/Type}
+	
+{/Jelly}

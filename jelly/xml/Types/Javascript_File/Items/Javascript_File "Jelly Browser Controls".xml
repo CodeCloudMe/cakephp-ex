@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Javascript_File "Jelly Browser Controls" --}
+		{Javascript_File}
+			{Name}Jelly Browser Controls{/Name}
+			{Content}
+				//TODO : Include as separate javascript object in javascript type.
+				var Browser_Controls = new Object();
+				[Browser_Control No_Wrap]
+					Browser_Controls.[Alias No_Wrap /] = "[Format as "Javascript String"][Browser_Control.Content No_Wrap /][/Format]";
+				[/Browser_Control]
+			{/Content}
+			{Core}1{/Core}
+		{/Javascript_File}
+	
+{/Jelly}

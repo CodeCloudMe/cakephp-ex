@@ -1,0 +1,44 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input Template "Default" --}
+		{Template}
+			{Type}Input{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Input to Input /]
+				[Set Current_Input_Namespace to Current_Input.Namespace /]	
+				
+				<!-- Generate Alias if needed  -->
+				[If Current_Input.Variables.Alias Twas Not Set]
+					[Set Current_Input.Variables.Alias to "[Format as Alias][Input.Variables.Name No_Wrap /][/Format]"/]
+				[/If]
+				
+				<!-- TODO - what's the difference between input and property namespaces? should we only ever use one? --> 
+				
+				<!-- Load Local Values -->
+				<!-- Check if Form already specified an _Original value -->
+				[If Current_Input.Variables.Do_Not_Persist_Value is not "True"]
+					[If Form.Local_[Current_Input_Namespace No_Wrap /]_Value_Original Exists]
+						[Then]
+							[Set Input.Variables.Value to Form.Local_[Current_Input_Namespace No_Wrap /]_Value_Original /]
+						[/Then]
+						[Else]
+							[If Form.Local_[Current_Input_Namespace No_Wrap /]_Value Exists]
+								[Set Input.Variables.Value to Form.Local_[Current_Input_Namespace No_Wrap /]_Value /]
+							[/If]
+						[/Else]
+					[/If]
+				[/If]
+				
+				<!-- Render Input's Content -->
+				[Current_Input.Content No_Wrap /]
+				
+				<!-- Render Input's Result --> 
+				<!-- TODO - We can offer manual/other kinds of placement later, possibly. --> 
+				[Current_Input as "Result" Preserve_Variables/]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

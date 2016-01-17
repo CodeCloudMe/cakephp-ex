@@ -1,0 +1,14 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type Property "Sort Reverse" --}
+	
+		{Property}
+			{Type}Type{/Type}
+			{Name}Sort Reverse{/Name}
+			{Value_Type}Boolean{/Value_Type}
+			{Advanced}1{/Advanced}
+			{Default_Value}0{/Default_Value}
+		{/Property}
+	
+{/Jelly}

@@ -1,0 +1,101 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Date Input Element" --}
+		{Block}
+			{Name}Date Input Element{/Name}
+			{Content}
+				<!-- Interface date input -->
+				<input
+					type="text"
+					name="[Input.Variables.Alias No_Wrap /]_Date_Input"
+					id="[Input.Namespace No_Wrap /]_Date_Input"
+					value="[Input.Variables.Value no_wrap][Month_Number no_wrap/]/[Date_Number no_wrap /]/[Year no_wrap /][/Input.Variables.Value]"
+					class="Jelly_Text_Input Jelly_Date_Input[If Input.Variables.Class exists] [Input.Variables.Class no_wrap /][/If]"
+				/>
+
+				[External_Script]
+					// Set default target on focus, prevent refreshing on focus, release hold on blur.
+					Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Date_Input").focus(function()
+						 \{	
+							// Set default target
+							Jelly.Handlers.Set_Default_Target(this);
+							
+							// Block refresh
+							Jelly.References.Block_Refresh(\{'Namespace': "[Current_Action.Namespace no_wrap /]"\});
+							
+							// TODO - Dont know what this does, or why it's here.
+							if (Jelly.Interface.Bubble_Event_Protection('Click'))
+							\{
+								this.click();
+							\}
+						\});
+						
+					Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Date_Input").blur(function()
+						 \{	
+							// Release refresh
+							Jelly.References.Release_Refresh(\{'Namespace': "[Current_Action.Namespace no_wrap /]"\});
+							
+							// Clean date input
+							Jelly.Interface.Clean_Date_Input("[Input.Namespace No_Wrap /]");
+						\});
+						
+					// Handle execute on change. 
+					[If Input.Variables.Execute_On_Change]					
+						// Restart action execution timer on change
+						Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Date_Input").keyup(function()
+							 \{			
+								// Restart action timer
+								// TODO - might have some clean date input conversion errors
+								Jelly.Actions.Restart_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+							 \});
+
+						// Trigger action execution timer on blur
+						Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Date_Input").blur(function()
+							 \{	
+								Jelly.Actions.Execute_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+							\});
+					[/If]
+				[/External_Script]
+				
+				
+				[Ignore]
+					<!-- TODO - Old click handler--> 
+					onclick="[Format as "Single Line Code"]
+						if (Jelly.Interface.Check_Event_Protection('Click'))
+						\{
+								this.Menu_Reference = Jelly.Interface.Create_Menu(
+										\{
+											Alias: 'Date_Menu',
+											Source_Element_ID: '[Input.Namespace No_Wrap /]_Date_Menu',
+											Attach: 'Element',
+											Attach_Element: this,
+											Edge: 'Bottom',
+											Do_Not_Focus_First_Item: true,
+											Do_Not_Focus_On_Hover: true,
+											Click_On_Hover: true
+										\}
+									);
+								Jelly.Interface.Setup_Date_Selector(\{'Element': this.Menu_Reference\['Element'\]\});
+						\}
+						[/Format]"
+						
+					<!-- TODO - Old blur handler --> 
+					Jelly.Handlers.Call_Handler_For_Target(
+							\{
+								'Event': 'Dismiss', 
+								'Target': this.Menu_Reference\['Wrapper_Element'\]
+							\}
+						); 
+				
+					<!-- TODO: this needs to finished-->				
+					<div id="[Current_Action.Namespace No_Wrap /]_[Input.Variables.Alias No_Wrap /]_Date_Menu" class="Jelly_Date_Menu" style="display: none;">
+					</div>
+					[External_Script]
+						Jelly.Interface.Generate_Date_Selector('[Current_Action.Namespace No_Wrap /]_[Input.Alias No_Wrap /]');
+					[/External_Script]
+				[/Ignore]
+			{/Content}
+		{/Block}
+	
+{/Jelly}

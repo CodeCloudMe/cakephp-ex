@@ -1,0 +1,70 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Template "Simple Receipt" --}
+		{Template}
+			{Type}Shopping_Cart{/Type}
+			{Name}Simple Receipt{/Name}
+			{Content}
+				<!-- Resize window hack --> 
+				[Ignore]
+					[External_Script]
+						document.querySelector('style').textContent += "@media screen and (min-width:992px) \{ .Jelly_Modal > * > \[data-kind='Item'\]\[data-alias='Purchase_with_Reward'\] \{max-width:308px;\}\}";
+					[/External_Script]
+				[/Ignore]
+
+				<!-- Disambiguate -->
+				[Set Current_Shopping_Cart to This /]
+
+				<div class="Purchase_Receipt_Window">
+					<!-- Close Button -->
+					<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;" style="float:right;width:30px;height:30px;">
+						<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+					</a>
+	
+					<!-- Header -->
+					<span class="Page_Header">
+						<span class="Page_Title">
+							<span class="Left_And_Right">
+								<span class="Page_Name" style="float:none;">
+									Thanks!
+								</span>
+							</span>
+					</span>
+	
+					<section style="margin-top:25px;">
+						<div class="Description">
+							[If Current_Shopping_Cart.Reward]
+								Thank you your donation to [Site.Name/]!<br/>
+								<br/>
+								You can pick up your reward at the event.<br/>
+								<br/>
+							[/If]
+			
+							[If Path_Variables.Joined_Team]
+								Thank you for joining the [Site.Name/] Better network!<br/>
+								<br/>
+								Set up your profile to help [Site.Name/] members get to know you and reach out to you best.<br/>
+								<br/>
+							[/If]
+			
+							Your card has been charged <span class="Number">$[Format decimals 2][Current_Shopping_Cart.Total /][/Format]</span>.<br/>
+							<br/>
+							A receipt was sent to:<br/>
+							<br/>
+							<span class="Email">[Current_Shopping_Cart.Email/]</span><br/>
+							<br/>
+							If there are problems with your purchase, contact:<br/>
+							<br/>
+							[Link to "mailto:tickets@better.space" with Class = "Support"]tickets@better.space[/Link]
+						</div>
+					</section>
+
+					<section style="margin-top:25px;">
+						<a href="#" onclick="Jelly.Interface.Close_Top_Window();return false;" class="Button" style="display:block;width:120px;margin-top:25px;">Ok</a>
+					</section>
+				</div>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

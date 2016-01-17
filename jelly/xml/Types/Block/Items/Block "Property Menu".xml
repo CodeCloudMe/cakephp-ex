@@ -1,0 +1,218 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Property Menu" --}
+		{Block}
+			{Name}Property Menu{/Name}
+			{Content}
+				<menu class="Better_Inspector_Property_Menu [If not Block.Variables.Property_ID]New_Property[/If]">
+					[If not Block.Variables.Property_ID]
+						<menuitem>
+								<figure style="background-image:url(/jelly/images/types/text.png);"></figure>
+								<a href="#" onclick="[Format as "Single Line Code"]
+									Jelly.Handlers.Call_Handler_For_Target(
+										\{
+											'Event': 'Selected',
+											'Target': this,
+											'Value_Type': 'Text',
+											'Relation': 'Simple'
+										\});		
+										return false;
+									[/Format]">Text</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/richtext.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'Long_Text',
+										'Relation': 'Simple'
+									\});		
+									return false;
+								[/Format]">Rich Text</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/password.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'Password',
+										'Relation': 'Simple'
+									\});		
+									return false;
+								[/Format]">Password</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/number.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'Number',
+										'Relation': 'Simple'
+									\});		
+									return false;
+								[/Format]">Number</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/currency.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'Number',
+										'Relation': 'Simple'
+									\});		
+									return false;
+								[/Format]">Currency</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/date.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'Date_Time',
+										'Relation': 'Simple'
+									\});		
+									return false;
+								[/Format]">Date</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/checkbox.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'Boolean',
+										'Relation': 'Simple'
+									\});		
+									return false;
+								[/Format]">Checkbox</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/coverimage.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'Picture',
+										'Relation': 'Single'
+									\});		
+									return false;
+								[/Format]">Cover Image</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/normalimage.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'Picture',
+										'Relation': 'Multiple'
+									\});		
+									return false;
+								[/Format]">Image</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/normalimage.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'Video',
+										'Relation': 'Multiple'
+									\});		
+									return false;
+								[/Format]">Video</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/file.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'File',
+										'Relation': 'Multiple'
+									\});		
+									return false;
+								[/Format]">File</a>
+						</menuitem>
+						<menuitem>
+							<figure style="background-image:url(/jelly/images/types/location.png);"></figure>
+							<a href="#" onclick="[Format as "Single Line Code"]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										'Event': 'Selected',
+										'Target': this,
+										'Value_Type': 'Location',
+										'Relation': 'Single'
+									\});		
+									return false;
+								[/Format]">Location</a>
+						</menuitem>
+						[Type from Database where Package = "Local"]
+							<menuitem>
+								<figure style="background-image:url(/jelly/images/types/list.png);"></figure>
+								<a href="#" onclick="[Format as "Single Line Code"]
+									Jelly.Handlers.Call_Handler_For_Target(
+										\{
+											'Event': 'Selected',
+											'Target': this,
+											'Value_Type': '[Type.Alias No_Wrap/]',
+											'Relation': 'Multiple'
+										\});		
+										return false;
+									[/Format]">[Type.Name/]</a>
+							</menuitem>
+						[/Type]
+						[Ignore]
+							<!-- TODO: More -->
+							<menuitem>
+								<figure style="background-image:url(/jelly/images/types/multipleitem.png);"></figure>
+								<a href="#">More...</a>
+							</menuitem>
+						[/Ignore]
+					[/If]
+					[If Block.Variables.Property_ID]
+						[Property from Database where Property.ID = Block.Variables.Property_ID]
+						<menuitem>
+							<a href="#" onclick="[Format as "Single Line Code"]
+							Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									'Event': 'Selected',
+									'Target': this,
+									'Command': 'Rename',
+								\});		
+								return false;
+							[/Format]">Rename Property</a>
+						</menuitem>
+						<menuitem>
+							<a href="#" onclick="[Format as "Single Line Code"]
+							Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									'Event': 'Selected',
+									'Target': this,
+									'Command': 'Remove',
+								\});		
+								return false;
+							[/Format]">Remove Property</a>
+						</menuitem>							
+						[/Property]
+					[/If]
+				</menu>
+			{/Content}
+		{/Block}
+{/Jelly}

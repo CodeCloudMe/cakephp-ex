@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Number" --}
+		{Type}
+			{Name}Number{/Name}
+			{Alias}Number{/Alias}
+			{Default_Input}Number_Field{/Default_Input}
+			{Package}Simple{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

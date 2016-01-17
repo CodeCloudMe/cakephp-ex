@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Title" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Path{/Name}
+			{Content}
+				[This.Type.Alias/]/[If This.Alias is not ""][Then][This.Alias/][/Then][Else][This.ID/][/Else][/If]
+			{/Content}
+			{Content_Type}text/plain{/Content_Type}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Satellite Lab" Picture --}
+		{Picture}
+			{Name}Satellite Lab{/Name}
+			{Path}jelly_data/Files/File/Presentation_Satellite_Lab.jpg{/Path}
+		{/Picture}
+	
+{/Jelly}

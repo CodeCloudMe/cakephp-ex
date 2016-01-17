@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Better" --}
+		{Presentation}
+			{Name}Better{/Name}
+			{Website}http://better.space{/Website}
+			{Description}Better helps you create pop-up collaboration spaces on the internet. Quickly make a beautiful website to organize, coordinate, discuss, promote, and grow any kind of community activity.{/Description}
+			{Picture}Better{/Picture}
+		{/Presentation}
+	
+{/Jelly}

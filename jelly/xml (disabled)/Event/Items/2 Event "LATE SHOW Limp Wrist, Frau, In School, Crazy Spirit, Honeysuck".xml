@@ -1,0 +1,23 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event "LATE SHOW: Limp Wrist, Frau,Crazy Spirit" --}
+		{Event}
+			{Name}LATE SHOW: Limp Wrist, Frau, Crazy Spirit{/Name}
+			{Start_Time}8/6/2015 11:45PM{/Start_Time}
+			{Details}
+				crazy spirit (NYC)<br/>
+				frau<br/>
+				limp wrist<br/>
+				<br/>
+				Silent Barn is a safer space. <br/>
+				NO RACIST/SEXIST/HOMOPHOBIC/TRANSPHOBIC BULLSHIT, thx.<br/>
+			{/Details}
+			{Location}Silent Barn{/Location}
+			{Picture}Late_Show_Picture{/Picture}
+			{Price}12{/Price}
+			{Available_Tickets}150{/Available_Tickets}
+			{Package}Local{/Package}
+		{/Event}
+	
+{/Jelly}

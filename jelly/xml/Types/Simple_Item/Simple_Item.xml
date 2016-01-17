@@ -1,0 +1,18 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type "Simple Item" --}
+	
+	{Type}
+		{Name}Simple Item{/Name}
+		{Alias}Simple_Item{/Alias}
+		{Plural_Name}Simple Items{/Plural_Name}
+		{Plural_Alias}Simple_Items{/Plural_Alias}
+		{Data_Name}Simple_Item{/Data_Name}
+		{Parent_Type /}
+		{Default_Key}ID{/Default_Key}
+		{Default_Input}Menu{/Default_Input}
+		{Core}1{/Core}
+	{/Type}
+	
+{/Jelly}

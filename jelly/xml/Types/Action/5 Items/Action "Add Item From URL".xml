@@ -1,0 +1,99 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Add Item From URL" --}
+		{Action}
+			{Name}Add Item From URL{/Name}
+			{Content}
+				<!-- TODO: Admin only? -->
+
+				<!-- Requires: Type_Alias -->
+				<!-- Optional: Execute_On_Change, Result_Element_ID -->
+
+				<!-- Pass type to action -->
+				[Input "Hidden" with Name = "Type Alias", Value = Current_Action.Variables.Type_Alias /]
+
+				<!-- URL -->
+				<span class="Input_Row_A">
+					<span class="Input_Row_A_Label">
+						URL:
+					</span>
+					<span class="Input_Row_A_Input" id="[Current_Action.Namespace no_wrap /]_URL_Input_Finder">
+						[Input "Text Field" with Name = "URL", Placeholder = "http://example.com", Blur_On_Execute = 1[If Current_Action.Variables.Execute_On_Change][/If] /]
+					</span>
+					[If not Current_Action.Variables.Execute_On_Change]
+						<span class="Input_Row_A_Link">
+							<!-- Execute -->
+							[Link to Execute]Add[/Link] [Action as Loading/] [Action as Result /]
+						</span>
+					[/If]
+					<span class="Input_Row_A_Disclaimer">
+						[If Current_Action.Variables.Type_Alias = "Video"]Currently Limited to YouTube, Vimeo, and Vine[/If]
+						[If Current_Action.Variables.Type_Alias = "Sound"]Currently Limited to Soundcloud[/If]
+						[If Current_Action.Variables.Type_Alias = "Social_Media"]Better, Twitter, Facebook, LinkedIn, Pinterest, Google+, Tumblr, Instagram[/If]
+					</span>
+				</span>
+
+				<!-- TODO Clear input -->
+			{/Content}
+			{Code}
+				<!-- TODO: Admin only? -->
+				
+				<!-- Inputs: Type_Alias, URL -->
+				
+				[Set Form.URL to "[PHP]
+					$URL = &New_String('[Format as "PHP Single Quoted String"][Form.URL no_wrap /][/Format]');
+					
+					// Revalidate the link and don't set if not a link
+					if (strpos($URL, 'http') === 0 || (filter_var(('http://' . $URL), FILTER_VALIDATE_URL) !== false && strpos($URL, '.') !== false))
+					\{
+						// For websites, prepend http prefix if needed
+						if (strpos($URL, 'http') === 0)
+						\{
+						\}
+						else if (filter_var(('http://' . $URL), FILTER_VALIDATE_URL) !== false && strpos($URL, '.') !== false)
+						\{
+							// If adding the http prefix creates a valid URL, add the prefix to the value
+							$URL = &New_String('http://' . $URL);
+						\}
+					\}
+					else
+						$URL = &New_String('');
+					
+					return $URL;
+					[/PHP]" /]
+				[If Form.URL]
+					[Then]
+						<!-- Create item -->
+						[New [Form.Type_Alias no_wrap /] with Path = Form.URL]
+							<!-- Disambiguate -->
+							[Set Current_New_Item to This /]
+							
+							<!-- Look up remote ID -->
+							
+							<!-- Save item -->
+							[Save Current_New_Item no_refresh /]
+						
+							<!-- Trigger Added Event -->
+							[External_Script]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										"Event": "Added",
+										"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+										"Item": "[Current_New_Item.ID no_wrap /]",
+										"Item_Type": "[Current_New_Item.Type as Alias No_Wrap /]",
+										"Badge": "[Format as "Javascript String"][Current_New_Item as Badge with No_Drag = 1 /][/Format]"
+									\});
+									
+								Jelly.Interface.Close_Top_Window();
+							[/External_Script]
+						[/New]
+					[/Then]
+					[Else]
+						Enter a valid URL.
+					[/Else]
+				[/If]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

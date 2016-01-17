@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Operator_List_Filter Property "Right Operand" --}
+		{Property}
+			{Type}Operator_List_Filter{/Type}
+			{Name}Right Operand{/Name}
+			{Value_Type}List_Filter{/Value_Type}
+		{/Property}
+	
+{/Jelly}

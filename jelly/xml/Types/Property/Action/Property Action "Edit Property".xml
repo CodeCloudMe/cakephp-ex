@@ -1,0 +1,73 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property Action "Charge" --}
+		{Type_Action}
+			{Type}Property{/Type}
+			{Name}Edit Property{/Name}
+			{Content}
+				[If Inspect_Action.Target.Type.Name is Current_Property.Values.Type.Name]
+					<button class="Better_Menu" id="[Current_Property_Namespace no_wrap /]_Menu_Trigger" tabindex="-1"></button>
+
+					[External_Script]
+						// Selected Handler
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Property_Namespace no_wrap /]_Menu_Trigger"),
+							"Event": \["Selected"\],
+							"Code": function (Parameters)
+							\{
+								if (Parameters\["Command"\])
+								\{
+									Selected_Command = Parameters\["Command"\];
+									switch(Selected_Command)
+									\{
+										case 'Rename': 
+											var Property_Name_Input = Jelly.Actions.Get_Input_From_Action_By_Alias(\{'Namespace': '[Current_Action.Namespace No_Wrap/]', 'Alias': 'Name'\});
+											Jelly.jQuery(Property_Name_Input).addClass("Enabled");
+											Jelly.jQuery(Property_Name_Input).prop("disabled", false);
+											Property_Name_Input.focus();
+											break;
+										case 'Remove':
+											Jelly.Handlers.Handle_Link_From_Click(event, \{"Namespace":"[Current_Property_Namespace no_wrap /]_Menu_Trigger","URL":"\/property\/[Current_Property.ID/]\/remove","Container":"Window"\});
+											break;								
+									\}
+								\}
+							\}
+						\});
+				
+						// Create Menu
+						document.getElementById('[Current_Property_Namespace no_wrap /]_Menu_Trigger').onmousedown = function (Mouse_Event) \{
+								// Blur other inputs
+								this.focus();			
+				
+								// Create menu
+								Jelly.Interface.Create_Menu(\{
+										'URL': 'Block/Property_Menu:Property_ID=[Current_Property.ID No_Wrap/]',
+										'Alias': 'New_Property_Menu',
+										'Menu_Namespace': '[Current_Property_Namespace no_wrap /]_Menu',
+										'Attach': 'Element',
+										'Attach_Element': document.getElementById('[Current_Property_Namespace no_wrap /]_Menu_Trigger'),
+										'Edge': 'Bottom',
+										'Block_Refresh': '[Inspect_Action.Namespace No_Wrap/]'
+									\});
+
+								// Prevent menu from closing 
+								Mouse_Event.stopPropagation();
+							\};
+					[/External_Script]
+				[/If]
+				[Input "Property Name Field" from Database with Name = "Name", Class = "Edit_Property_Name_Inline", Value = Action.Target.Name, Execute_On_Change = 1/]
+				<span style="display:none;">
+					[This as Loading/]
+				</span>
+			{/Content}
+			{Code}
+				[Action.Target]
+					[Set Property.Name to Form.Name/]
+					[Save Property/]
+				[/Action.Target]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

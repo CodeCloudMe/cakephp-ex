@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Website Template "Add Link" --}
+		{Template}
+			{Type}Website{/Type}
+			{Name}Add Link{/Name}
+			{Content}
+				<!-- Add action -->
+				[Action "Add Item From URL" with Type_Alias = "Website" /]
+			{/Content}
+			{Package}Website{/Package}
+		{/Template}
+	
+{/Jelly}

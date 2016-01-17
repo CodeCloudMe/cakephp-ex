@@ -1,0 +1,62 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Sound" --}
+		{Input}
+			{Name}Sound{/Name}
+			{Content}
+				[Set Current_Input to this /]
+				
+				<!-- Existing Value -->
+				[Input "Hidden" Preserve_Namespace with 
+						Alias = Input.Variables.Alias,
+						Value_Type = "Sound"
+						[If Input.Variables.Value Exists], Value = Input.Variables.Value[/If]
+					/]
+				
+				<span class="Row">
+					<span class="Left" style="width: calc(100% - 75% - 10px); margin-right: 10px;">
+						<span class="Big_List_Item_Top_Image" id="[Namespace no_wrap /]_Badge">
+						</span>
+					</span>
+					
+					<span class="Left" style="width: 75%;">
+						<!-- Add value -->
+						[New Sound as Add_Link /]
+					</span>
+				</span>
+				
+				<!-- TODO: move to "Add Value"? -->
+				[External_Script]
+					// Selected Handler
+					Jelly.Handlers.Register_Handler(
+					\{
+						"Element": document.getElementById("[Input.Namespace No_Wrap /]"),
+						"Event": \["Selected", "Added"\],
+						"Code": function (Parameters)
+						\{
+							// Badge
+							Jelly.jQuery('#[Current_Input.Namespace no_wrap /]_Badge').html(Parameters\["Badge"\]);
+							
+							// TODO: set input value based on selected/add item
+							document.getElementById("[Input.Namespace No_Wrap /]_Value").value = Parameters\["Item"\];
+							
+							[If Input.Variables.Display_Value is "True"]
+								document.getElementById("[Input.Namespace No_Wrap /]_Menu_Trigger").innerHTML = Parameters\["Badge"\];
+							[/If]
+							
+							[If Input.Variables.On_Selected]
+								[Input.Variables.On_Selected No_Wrap No_Wrap /]
+							[/If]
+							
+							[If Input.Variables.Execute_On_Change]
+								Jelly.Handlers.Call_Handler_For_Target(\{"Event": "Execute", "Target": document.getElementById("[Input.Namespace No_Wrap /]")\});
+							[/If]
+						\}
+					\});
+				[/External_Script]
+
+			{/Content}
+		{/Input}
+	
+{/Jelly}

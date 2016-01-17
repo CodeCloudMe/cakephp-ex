@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Video Property "Original Width" --}
+		{Property}
+			{Type}Video{/Type}
+			{Name}Original Width{/Name}
+			{Value_Type}Number{/Value_Type}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

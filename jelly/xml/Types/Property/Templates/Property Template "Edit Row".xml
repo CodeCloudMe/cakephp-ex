@@ -1,0 +1,156 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property Template "Edit Row" --}
+	
+		{Template}
+			{Type}Property{/Type}
+			{Name}Edit Row{/Name}
+			{Content}
+				<!-- Disambiguate property --> 
+				<!-- TODO: until our dear friend Henceforth returns--> 
+				[Set Current_Property to Property/]
+				[Set Current_Property_Namespace to Current_Property.Namespace /]
+	
+				<!-- Determine whether to show forward version, reverse version, or both. -->
+				[Set Current_Action.Variables.Show_Forward_Version to False/]
+				[Set Current_Action.Variables.Show_Reverse_Version to False/]
+
+				<!-- Show advanced properties only if specified--> 
+				[If Current_Action.Variables.Show_Advanced_Properties or (Not Current_Action.Variables.Show_Advanced_Properties and not Current_Property.Values.Advanced)]
+
+				<!-- If editing single value, then make sure this property is the single property alias  -->
+				[If Current_Action.Variables.Editing_Single_Value Is Not "True" or (Current_Property.Values.Alias is Current_Action.Variables.Property_Alias)]
+
+						<!-- If this property's type is this item's type, consider the forward direction -->
+						[If Current_Property.Values.Type is Parent Type of Current_Action.Target.Type]
+							<!-- If this isn't the specified parent property or there is no specified parent property, then show the forward direction --> 
+							[If Current_Action.Variables.Parent_Property_Alias Twas Not Set or Current_Property.Reverse_Alias is not Current_Action.Variables.Parent_Property_Alias]
+								[Set Current_Action.Variables.Show_Forward_Version to True/]
+							[/If]
+						[/If]
+
+						[If Current_Property.Relation != "Commutative"]
+							<!-- If this property's value type is this item's type, consider the reverse direction -->
+							[If Current_Property.Value_Type is Parent Type of Current_Action.Target.Type]
+								<!-- If this isn't the specified parent property or there is no specified parent property, then show the reverse direction --> 
+								[If Current_Action.Variables.Parent_Property_Alias Twas Not Set or Current_Property.Alias is not Current_Action.Variables.Parent_Property_Alias]
+									[Set Current_Action.Variables.Show_Reverse_Version to True/]
+								[/If]
+							[/If]
+						[/If]
+		
+						<!-- If this property's attachment type is this item's type, consider both the forward and reverse directions -->
+						[If Current_Property.Values.Attachment_Type exists]
+							[If Current_Property.Values.Attachment_Type is Parent Type of Current_Action.Target.Type]
+								[Set Current_Action.Variables.Show_Forward_Version to True/]
+								[Set Current_Action.Variables.Show_Reverse_Version to True/]
+							[/If]
+						[/If]
+					[/If]	 
+				[/If]
+
+				[If Current_Action.Variables.Show_Forward_Version]
+					<!-- Forward -->	
+					<div class="Jelly_Edit_Window_Properties_Row">
+						<div class="Jelly_Edit_Window_Properties_Row_Heading [If Current_Property.Value_Type.Alias is "Boolean"]Jelly_Edit_Window_Properties_Row_Heading_Checkbox[/If] [If not (Current_Property.Value_Type is Simple Type)]Jelly_Edit_Window_Properties_Row_Heading_Complex[/If]">
+							<div class="Jelly_Edit_Window_Properties_Row_Heading_Fill">
+								<div class="Jelly_Edit_Window_Properties_Row_Heading_Fill_Name">
+									[Current_Property.Values.Name /]
+								</div>
+								<div class="Jelly_Edit_Window_Properties_Row_Heading_Fill_Controls">
+									<!-- Closed Menu -->
+									<div
+										class="Jelly_Closed_Menu"
+										id="[Namespace No_Wrap /]_Menu"
+										onmousemove="jQuery(this).addClass('Jelly_Closed_Menu_Hover');"
+										onmouseout="jQuery(this).removeClass('Jelly_Closed_Menu_Hover');"
+										onclick="[Format as "Single Line Code"]
+											var Menu_Reference = Jelly.Interface.Create_Menu(
+												\{
+													Alias: 'Edit_Menu',
+													Source_Element_ID: '[Current_Property.Namespace No_Wrap /]_Property_Menu_Items',
+													Attach: 'Element',
+													Attach_Element: this
+												\});
+											return false;
+										[/Format]"
+									>
+										<img src="/jelly/libraries/open-iconic/svg/chevron-bottom.svg" width="10">
+									</div>
+									
+									<!-- Property Menu Items -->
+									<div id="[Current_Property.Namespace No_Wrap /]_Property_Menu_Items" style="display: none;">
+										<table cellpadding="0" cellspacing="0" border="0">
+									
+											<!-- Toolbar edit locally --> 						
+											<!-- TODO - Is it necessary to make sure it's unsaved? --> 
+											[If Current_Property.Value_Type.Alias = "Long_Text" and Current_Action.Alias = "Edit" and Current_Action.Target Exists and Current_Action.Target.Status.Alias != "Unsaved"]
+												<tr class="Jelly_Menu_Row">
+													<td class="Jelly_Menu_Item" colspan="2">
+														<!-- Edit Locally Link -->
+														<!-- TODO: Upgrade -->
+														<a href="[Format as "Single Line Code"]
+															bettereditor://
+															Server=[HTTP_Host No_Wrap /],
+															Site_Name=[Format as "URL"][Current_Site.Name No_Wrap /][/Format],
+															Site_Alias=[Current_Site.Alias No_Wrap /],
+															Value_Type=Long_Text,
+															[If Current_Action.Target.Type.Alias = "Template" or Current_Action.Target.Type.Alias = "Type_Action"]
+																Item_Parent_Name=[Format as "URL"][Current_Action.Target.Values.Type.Name No_Wrap /][/Format],
+															[/If]
+															Item_Type=[Current_Action.Target.Type.Alias No_Wrap /],
+															Item_Type_ID=[Current_Action.Target.Type.ID No_Wrap /],
+															Item_Key=[Current_Action.Target as Key No_Wrap /],
+															Item_ID=[Current_Action.Target.ID No_Wrap /],
+															Item_Alias=[Current_Action.Target.Alias No_Wrap /],
+															Item_Name=[Format as "URL"][Current_Action.Target.Name No_Wrap /][/Format],
+															Property_Alias=[Current_Property.Alias No_Wrap /],
+															Property_Name=[Format as "URL"][Current_Property.Name No_Wrap /][/Format]
+														[/Format]" onclick="Jelly.Interface.Close_Top_Window();">Edit Locally...</a>
+													</td>
+												</tr>
+											[/If]
+											<tr class="Jelly_Menu_Row">
+												<td class="Jelly_Menu_Item" colspan="2">
+													[Link to edit Current_Property /]
+												</td>
+											</tr>
+											<tr class="Jelly_Menu_Row">
+												<td class="Jelly_Menu_Item" colspan="2">
+													[Link to remove Current_Property /]
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<br class="Clear" />
+							</div>
+						</div>
+						<div class="Jelly_Edit_Window_Properties_Row_Value [If Current_Property.Value_Type.Alias is "Boolean"]Jelly_Edit_Window_Properties_Row_Value_Checkbox[/If] [If not (Current_Property.Value_Type is Simple Type) or Current_Property.Alias is "Relation"]Jelly_Edit_Window_Properties_Row_Value_Complex[/If]">
+							<!-- TODO: generally, i think that preserve_variables and with should overlap, and with is just a way of setting some -->
+							<!-- TODO - but right now, removed preserve_variables from all of these current property calls to allow for with variables --> 
+							[Current_Property as Edit_Row_Content with Edit_Item = Current_Action.Target, Direction = "Forward", Execute_On_Change = Current_Property.Variables.Execute_On_Change /]
+						</div>
+					</div>
+				[/If]
+
+				[If Current_Action.Variables.Show_Reverse_Version]
+					<!-- Reverse -->	
+					<div class="Jelly_Edit_Window_Properties_Row">
+						<div class="Jelly_Edit_Window_Properties_Row_Heading Jelly_Edit_Window_Properties_Row_Heading_Complex">
+							<div class="Jelly_Edit_Window_Properties_Row_Heading_Fill">
+								<div class="Jelly_Edit_Window_Properties_Row_Heading_Fill_Name">
+									[Current_Property.Values.Reverse_Name /]
+								</div>
+							</div>
+						</div>
+						<div class="Jelly_Edit_Window_Properties_Row_Value Jelly_Edit_Window_Properties_Row_Value_Complex">
+							[Current_Property as Edit_Row_Content with Edit_Item = Current_Action.Target, Direction = "Reverse", Execute_On_Change = Current_Property.Variables.Execute_On_Change/]
+						</div>
+					</div>
+				[/If]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

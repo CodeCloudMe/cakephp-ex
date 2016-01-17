@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Kevin Siwoff" --}
+		{Presentation}
+			{Name}Kevin Siwoff{/Name}
+			{Website}http://cargocollective.com/Kevinsiwoff{/Website}
+			{Description}Kevin Siwoff is an artist and technologist who uses light as a medium to transform conventional notions of space and the boundaries of interactivity.{/Description}
+			{Picture}Kevin_Siwoff{/Picture}
+		{/Presentation}
+	
+{/Jelly}

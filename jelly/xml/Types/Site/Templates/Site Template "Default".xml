@@ -1,0 +1,290 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "Default" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!DOCTYPE html>
+				<html>
+					[No_Wrap]
+						[No_Scripts]
+							<head>
+								<!-- Generate meta tag values --> 
+								[If Globals.Path_Item.ID is Site.Default_Item.ID]
+									[Then]
+										[Set Site.Variables.Meta_Title to Site.Name/]
+										[Set Site.Variables.Meta_Title_With_Context to Meta_Title/]
+										[Set Site.Variables.Meta_URL = "[Format as "Lowercase"]https://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP][/Format]"/]
+										[Set Site.Variables.Meta_Description to Site.Summary/]
+										[If Site.Picture][Set Site.Variables.Meta_Image to "https://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/picture/[Site.Picture.ID no_wrap/]/file:Maximum_Width=800,Maximum_Height=800"/][/If]
+									[/Then]
+									[Else]
+										[Set Site.Variables.Meta_Title to Globals.Path_Item.Name/]
+										[Set Site.Variables.Meta_Title_With_Context to "[Format as "Jelly Attribute"][Site.Name no_wrap/] - [Globals.Path_Item.Name no_wrap/][/Format]"/]
+										[If Globals.Path_Item.Description]
+											[Then]
+												[Set Site.Variables.Meta_Description to Globals.Path_Item.Description/]
+											[/Then]
+											[Else]
+												[Set Site.Variables.Meta_Description to Site.Summary/]
+											[/Else]
+										[/If]
+										[If Site.Picture][Set Site.Variables.Meta_Image to "https://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/picture/[Site.Picture.ID no_wrap/]/file:Maximum_Width=800,Maximum_Height=800"/][/If]
+										[Globals.Path_Item.Type.Cover_Property_Item no_wrap]
+											[If This.Value_Type.Alias = "Picture"]	
+												[Set Current_Property_Alias to This.Alias/]
+												[If Globals.Path_Item.[Current_Property_Alias no_wrap /]]
+													[Set Site.Variables.Meta_Image to "https://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/picture/[Globals.Path_Item.[Current_Property_Alias no_wrap/]][ID no_wrap/][/]/file:Maximum_Width=800,Maximum_Height=800"/]
+												[/if]
+											[/If]
+										[/Globals.Path_Item]
+										[If Globals.Path_Item.Alias]
+											[Then]
+												[Set Site.Variables.Meta_URL = "[Format as "Lowercase"]https://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[Globals.Path_Item.Type.Alias no_wrap/]/[Globals.Path_Item.Alias no_wrap/][/Format]"/]
+											[/Then]
+											[Else]
+												[Set Site.Variables.Meta_URL = "[Format as "Lowercase"]https://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[Globals.Path_Item.Type.Alias no_wrap/]/[Globals.Path_Item.ID no_wrap/][/Format]"/]
+											[/Else]
+										[/If]
+									[/Else]
+								[/If]
+
+								<!-- General --> 
+								<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+								<meta name="keywords" content="" />
+								<meta name="author" content="" />
+								<meta name="copyright" content="" />
+								<meta name="robots" content="index, follow" />
+								<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+								[If Site.Variables.Meta_Description]<meta name="description" content="[Format as "HTML Attribute"][Site.Variables.Meta_Description No_Wrap /][/Format]" />[/If]
+			
+								<!-- Open Graph --> 
+								<meta property="og:title" content="[Format as "HTML Attribute"][Site.Variables.Meta_Title_With_Context No_Wrap /][/Format]"/>
+								<meta property="og:description" content="[Format as "HTML Attribute"][Site.Variables.Meta_Description No_Wrap /][/Format]"/>
+								[If Site.Variables.Meta_URL]<meta property="og:url" content="[Format as "HTML Attribute"][Site.Variables.Meta_URL No_Wrap /][/Format]"/>[/If]
+								[If Site.Variables.Meta_Image]<meta property="og:image" content="[Format as "HTML Attribute"][Site.Variables.Meta_Image No_Wrap /][/Format]"/>[/If]
+
+								<!-- Twitter Card --> 
+								<meta name="twitter:card" content="summary"/>
+								<meta name="twitter:site" content="@betternetwork_" />
+								<meta name="twitter:title" content="[Format as "HTML Attribute"][Site.Variables.Meta_Title_With_Context No_Wrap /][/Format]"/>
+								<meta name="twitter:description" content="[Format as "HTML Attribute"][Site.Variables.Meta_Description No_Wrap /][/Format]"/>
+								[If Site.Variables.Meta_Image]<meta name="twitter:image" content="[Format as "HTML Attribute"][Site.Variables.Meta_Image No_Wrap /][/Format]"/>[/If]
+
+								<!-- Icon -->
+								<link id="Jelly_Site_Icon" rel="icon" href="/Site/[Site.ID No_Wrap /]/Favorite_Icon:Timestamp=[New Date_Time No_Wrap][Simple_Value /][/New]" type="image/x-icon" />
+
+								<!-- TODO: change back (Site.Default_Item.ID) when it works -->
+								<title>[Format as "HTML Title"][If Globals.Path_Item.ID is Site.ID][Then][Site.Name No_Wrap /][/Then][Else][Site.Name No_Wrap /] - [Path_Item.Name No_Wrap /][/Else][/If][/Format]</title>
+		
+								<!-- RSS/Atom -->
+								<link rel="alternate" href="/RSS" type="application/rss+xml" title="[Format as "HTML Attribute"][Site.Name No_Wrap /][/Format] RSS Feed" />
+								<link rel="alternate" href="/Atom" type="application/atom+xml" title="[Format as "HTML Attribute"][Site.Name No_Wrap /][/Format] Atom Feed">
+
+								<!-- Design -->
+								[Site.Design as Header /]
+
+								<!-- Styles --> 
+								[If Globals.Compiled_Styles]
+									[Then]
+										<!-- Compiled CSS Style --> 
+										<link id="CSS_Styles_Link" href="/jelly/css/Compiled.css" rel="stylesheet" type="text/css" />
+									[/Then]
+									[Else]
+										<!-- Site Less Styles -->									
+										<link id="Less_Styles_Link" href="/Less_Styles" rel="stylesheet/less" type="text/css" />
+		
+										<!-- Jelly Less Styles -->
+										<link href="[Globals.URL_Prefix No_Wrap /]/jelly/css/Jelly.less" rel="stylesheet/less" type="text/css" />
+
+										<!-- Less.js compiler -->
+										<script>
+											less = \{\}; 
+											less.env = 'development';
+										</script>
+										<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/less/less.min.js" type="text/javascript"></script>
+									[/Else]
+								[/If]
+			
+								<!-- Required Libraries -->
+									<!-- jQuery -->
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+	
+									<!-- Async --> 
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/async/async.js" type="text/javascript"></script>
+			
+									<!-- jQuery UI (requires jQuery above) -->
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/jquery-ui/jquery-ui-1.10.4.custom.min.js" type="text/javascript"></script>
+		
+									[Ignore]
+										<!-- SWF Object -->
+										<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/swfobject/swfobject.js" type="text/javascript"></script>
+									[/Ignore]
+	
+									<!-- AMCharts (Compiled: amcharts, serial, pie, light) -->
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/amcharts/amcharts (Compiled amcharts, serial, pie, light).js" type="text/javascript"></script>
+	
+									<!-- Leaflet --> 
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/leaflet/leaflet.js" type="text/javascript"></script>
+									<link rel="stylesheet" href="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/leaflet/leaflet.css" />
+	
+									<!-- Font Awesome -->
+									<link rel="stylesheet" href="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/font-awesome/css/font-awesome.min.css"/>
+
+									<!-- Leaflet Awesome -->
+									<link rel="stylesheet" href="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/awesome-markers/leaflet.awesome-markers.css"/>
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/awesome-markers/leaflet.awesome-markers.js"></script>									
+	
+									<!-- Stacktrace --> 
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/stacktrace/stacktrace.js" type="text/javascript"></script>
+			
+									<!-- Media Element -->
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/mediaelement/mediaelement-and-player.min.js"></script>
+									<link rel="stylesheet" href="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/mediaelement/mediaelementplayer.css" />
+	
+									<!-- jquery-filedrop (requires jQuery above) -->
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/jquery-filedrop/jquery.filedrop.js" type="text/javascript"></script>
+	
+									<!-- jquery-file-upload (requires jQuery above) -->
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/jquery-file-upload/jquery.fileupload.js" type="text/javascript"></script>
+	
+									<!-- jquery-autosize (requires jQuery above) -->
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/jquery-autosize/autosize.min.js" type="text/javascript"></script>
+	
+									<!-- masonry (requires jQuery above) -->
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/masonry/masonry.pkgd.min.js" type="text/javascript"></script>
+	
+									<!-- Iconic -->
+									<script src="/jelly/libraries/iconic/js/iconic.min.js" type="text/javascript">></script>
+
+									<!-- Nanobar -->
+									<script src="/jelly/libraries/nanobar/nanobar.js" type="text/javascript"></script>																							
+		
+									<!-- HeadJS -->
+									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/head/head.js" type="text/javascript"></script>
+								<!-- --> 
+
+								<!-- TODO  choose this or the aboeve--> 
+								<!-- Core Javascript Libraries -->
+								[Javascript_File from Database where Core/]
+
+								<!-- Integration Libraries -->
+								[Payment_Service from Database]
+									[Payment_Service.Javascript_File/]
+								[/Payment_Service]
+
+								<!-- TODO - move API token  --> 
+								[If Globals.Allow_Tracking]
+									<!-- start Mixpanel --><script type="text/javascript">(function(e,b)\{if(!b.__SV)\{var a,f,i,g;window.mixpanel=b;b._i=\[\];b.init=function(a,e,d)\{function f(b,h)\{var a=h.split(".");2==a.length&&(b=b\[a\[0\]\],h=a\[1\]);b\[h\]=function()\{b.push(\[h\].concat(Array.prototype.slice.call(arguments,0)))\}\}var c=b;"undefined"!==typeof d?c=b\[d\]=\[\]:d="mixpanel";c.people=c.people||\[\];c.toString=function(b)\{var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a\};c.people.toString=function()\{return c.toString(1)+".people (stub)"\};i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+									for(g=0;g<i.length;g++)f(c,i\[g\]);b._i.push(\[a,e,d\])\};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";f=e.getElementsByTagName("script")\[0\];f.parentNode.insertBefore(a,f)\}\})(document,window.mixpanel||\[\]);
+									mixpanel.init("f6022a83306569b5dd7149fae2885769");</script><!-- end Mixpanel -->
+								[/If]
+							</head>
+						[/No_Scripts]
+					[/No_Wrap]
+	
+					<body id="Body">
+						[If Globals.Upgrading and not Path_Variables.Force]
+							[Then]
+								[Block "Upgrading"/]
+							[/Then]
+							[Else]
+								<!-- Start -->
+								<script>
+									[If Globals.Compiled_Javascript]
+										[Then]
+											head.load("[Globals.URL_Prefix No_Wrap /]/jelly/javascript/Jelly (Compiled).js");
+										[/Then]
+										[Else]
+											head.load("[Globals.URL_Prefix No_Wrap /]/jelly/javascript/development/Jelly.js");
+										[/Else]
+									[/If]
+									head.ready(function() \{
+										Jelly.Start(\{
+													[If Globals.Superuser]'Show_Context_Menu': true,[/If]
+													[Authenticate "Superuser"]'Show_Context_Menu': true,[/If]
+													'URL_Prefix': '[Globals.URL_Prefix No_Wrap /]'
+												\}
+											);
+										\});
+								</script>
+								<!-- Promo -->
+								[Ignore] 
+									[External_Script]
+										[Set Site.Variables.Show_Promotion to True/]
+
+										[Globals.Current_Session no_wrap]
+											[If not This.First_Visit]
+												[Set Site.Variables.Show_Promotion to False/]
+											[/If]
+										[/Globals.Current_Session]
+			
+										[If Site.Variables.Show_Promotion]
+											[Block "Welcome" no_wrap]
+												[Go to "/Block/[Block.ID no_wrap /]" into "Window"/]
+											[/Block]
+											[Set Current_Session.First_Visit to False no_refresh/]
+											[Save Globals.Current_Session no_refresh/]
+										[/If]
+									[/External_Script]
+								[/Ignore]
+		
+								<!-- Disabled Setup Assistant -->
+								[Ignore]
+									[External_Script]
+										[Admin]
+											<!-- Check if this is the first visit to the site -->
+											[If Site.First_Visit]
+												<!-- Show Setup Assistant -->
+												[Action "Setup Assistant"]
+													[Go to this into "Window" /]
+												[/Action]
+	
+												<!-- Don't show next time -->
+												[Set Site.First_Visit to false /]
+												[Save Site no_refresh /]
+											[/If]
+										[/Admin]
+									[/External_Script]
+								[/Ignore]						
+
+								<!-- Layout -->
+								<div id="Jelly_Wrapper" [Admin]class="Admin_Mode"[/Admin]>
+									<header id="Jelly_Toolbar">
+										[Block "Toolbar" no_preloader /]
+									</header>
+									<main id="Jelly_Main_Wrapper">
+										<div id="Jelly_Sidebar" [Admin]class="Visible"[/Admin]>[Block "Navigator" no_preloader /]</div>
+										<div id="Jelly_Browse_Bar"></div>
+										<!-- TODO - remove Backend when moved on to better containers --> 
+										<main id="Jelly_Content" class="Jelly_Content[If "[Format as Lowercase][Globals.Path_Template_Alias No_Wrap/][/Format]" = "manage"] Backend[/If][Admin] Sidebar_Visible[/Admin]">
+											[Site.Design /]
+										</main>
+									</main>
+								</div>
+		
+								[Member]
+									[External_Script]
+										Jelly.Interface.Show_Toolbar();
+										// Jelly.Interface.Show_Sidebar();
+									[/External_Script]
+								[/Member]
+								[Guest]
+									<!-- TODO Hack -->
+									[Admin]
+										[External_Script]
+											Jelly.Interface.Show_Toolbar();
+											// Jelly.Interface.Show_Sidebar();
+										[/External_Script]
+									[/Admin]
+								[/Guest]
+							[/Else]
+						[/If]
+					</body>
+				</html>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

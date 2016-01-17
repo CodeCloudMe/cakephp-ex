@@ -1,0 +1,15 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Property Property "Reverse Label" --}
+	
+		{Property}
+			{Type}Property{/Type}
+			{Name}Reverse Label{/Name}
+			{Alias}Reverse_Label{/Alias}
+			{Data_Name}Reverse_Label{/Data_Name}
+			{Value_Type}Text{/Value_Type}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

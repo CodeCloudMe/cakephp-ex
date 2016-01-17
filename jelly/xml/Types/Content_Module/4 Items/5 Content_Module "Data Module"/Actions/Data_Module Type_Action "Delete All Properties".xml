@@ -1,0 +1,29 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Type_Action "Delete All Properties" --}
+		{Type_Action}
+			{Type}Data_Module{/Type}
+			{Name}Delete All Properties{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Link to execute -->
+					[Link to Execute /]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Remove properties -->
+					[Current_Action.Target.Child_Property_Item]
+						<!-- Remove property -->
+						[Remove This.Attachment /]
+					[/Current_Action.Target.Child_Property_Item]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

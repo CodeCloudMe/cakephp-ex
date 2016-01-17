@@ -1,0 +1,34 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Type_Action "Change List" --}
+		{Type_Action}
+			{Type}Data_Module{/Type}
+			{Name}Change List{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- List Menu -->
+					[Type "Type" from Database]
+						[Input "Menu" with Name = "List", Value_Type = This, Value = Current_Action.Target.List, Execute_On_Change = "True" /]
+					[/Type]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Set Picture -->
+					[Set Current_Action.Target.List to Form.List /]
+					
+					<!-- Remove Properties -->
+					[Current_Action.Target.Action "Reset Properties" as Execute /]
+					
+					<!-- Save Item -->
+					[Save Current_Action.Target /]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

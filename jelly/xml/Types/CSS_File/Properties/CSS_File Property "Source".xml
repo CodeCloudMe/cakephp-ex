@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- CSS_File Property "URL" --}
+		{Property}
+			{Type}CSS_File{/Type}
+			{Name}Source{/Name}
+			{Value_Type}File{/Value_Type}
+		{/Property}
+	
+{/Jelly}

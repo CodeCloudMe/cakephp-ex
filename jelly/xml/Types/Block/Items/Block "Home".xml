@@ -1,0 +1,65 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Home Page Block" --}
+		{Block}
+			{Name}Home{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Block to This /]
+				
+				<!-- Initialize found variable -->
+				[Set Current_Block.Variables.Found_Item to false /]
+				
+				<!-- Find first visible item in root navigation -->
+				[Navigation "Root" from Database]
+					<!-- Cycle over navigation items -->
+					[Navigation.Navigation_Item]
+						<!-- Check if a visible item was already found -->
+						[If not Current_Block.Variables.Found_Item]
+							<!-- Load specific item -->
+							[This.Specific_Item]
+								<!-- Disambiguate -->
+								[Set Current_Item to This /]
+								
+								<!-- Determine if item is visible to visitor -->
+								[Set Current_Item.Variables.Visible to true /]
+								[Admin]
+									<!-- Non-admins -->
+									[Else]
+										<!-- Check if the item is a type/page/action -->
+										[If Current_Item.Type.Alias is "Type" or Current_Item.Type.Alias is "Page" or Current_Item.Type.Alias is "Action"]
+											[Then]
+												<!-- Check if type/page is public -->
+												<!-- TODO - nuanced privacy --> 
+												[If Current_Item.Viewable_By.Alias != "Public"]
+													[Set Current_Item.Variables.Visible to false /]
+												[/If]
+											[/Then]
+											[Else]
+												<!-- Check if regular item's type is public -->
+												<!-- TODO - nuanced privacy --> 
+												[If Current_Item.Type.Viewable_By.Alias != "Public"]
+													[Set Current_Item.Variables.Visible to false /]
+												[/If]
+											[/Else]
+										[/If]
+									[/Else]
+								[/Admin]
+								
+								<!-- Check if item is visible to visitor -->
+								[If Current_Item.Variables.Visible]
+									<!-- Display the item -->
+									[Current_Item /]
+									
+									<!-- Note that a visible item was found -->
+									[Set Current_Block.Variables.Found_Item to true /]
+								[/If]
+							[/This.Specific_Item]
+						[/If]
+					[/Navigation.Navigation_Item]
+				[/Navigation]
+			{/Content}
+		{/Block}
+	
+{/Jelly}

@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Javascript_File Property "URL" --}
+		{Property}
+			{Type}Javascript_File{/Type}
+			{Name}URL{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

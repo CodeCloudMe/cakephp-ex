@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Invitation Code" --}
+		{Type}
+			{Name}Invitation Code{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Invitation Codes{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Accounts{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

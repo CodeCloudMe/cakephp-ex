@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "New Hive" --}
+		{Presentation}
+			{Name}New Hive{/Name}
+			{Website}https://newhive.com/{/Website}
+			{Description}NewHive is a multimedia publishing platform that provides a blank space and custom tools to simplify the process of creating rich experiences on the web.{/Description}
+			{Picture}New_Hive{/Picture}
+		{/Presentation}
+	
+{/Jelly}

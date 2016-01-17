@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- File Template "Default" --}
+		{Template}
+			{Type}File{/Type}
+			{Name}Default{/Name}
+			{Content}
+				[Link to File as File /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

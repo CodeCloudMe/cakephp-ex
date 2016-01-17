@@ -1,0 +1,16 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Folder Property "Child Item" --}
+		{Property}
+			{Type}Folder{/Type}
+			{Name}Child Item{/Name}
+			{Plural_Name}Child Items{/Plural_Name}
+			{Value_Type}Item{/Value_Type}
+			{Reverse_Name}Parent Folder{/Reverse_Name}
+			{Reverse_Plural_Name}Parent Folders{/Reverse_Plural_Name}
+			{Relation}Many-To-Many{/Relation}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

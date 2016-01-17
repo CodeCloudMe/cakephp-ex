@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Property "Encourage Donations" --}
+		{Property}
+			{Type}Event{/Type}
+			{Name}Encourage Donations{/Name}
+			{Advanced}1{/Advanced}
+			{Value_Type}Boolean{/Value_Type}
+			{Default_Value}1{/Default_Value}
+		{/Property}
+	
+{/Jelly}

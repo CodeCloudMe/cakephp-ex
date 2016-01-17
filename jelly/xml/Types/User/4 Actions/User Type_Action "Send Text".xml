@@ -1,0 +1,140 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type_Action "Send Text" --}
+		{Type_Action}
+			{Type}User{/Type}
+			{Name}Send Text{/Name}
+			{Content}
+				[Set Current_Action.Variables.VIsible = False/]
+				[If Current_Action.Target.Allow_Community_Members_To_Contact_Me]
+					[Then][Member][Set Current_Action.Variables.VIsible = True/][/Member][/Then]
+					[Else][Admin][Set Current_Action.Variables.VIsible = True/][/Admin][/Else]
+				[/If]
+
+				[If Current_Action.Variables.Visible]
+					<span class="Send_Text_Window">	
+						<!-- Close Button -->
+						<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+						</a>
+
+						<span class="Header">
+							Send Text
+						</span>	
+	
+						[Action as Result/]	
+						<span class="Recipients">
+							<label>To:</label>
+
+							<div class="Input_Wrapper Big_List Grid Tiny">
+								<span class="Big_List_Items">
+									<span class="Big_List_Item Hover">
+										[Current_Action.Target]
+											[Set Current_Member to this /]
+		
+											[Input "Hidden" with Name = "Recipient", Value = Current_Action.Target/]
+		
+											<!-- Details -->
+											<a class="Big_List_Item_Details Selected" href="#" onclick="return false;" style="overflow:hidden;">
+												<!-- Cover Image -->
+												<span class="Big_List_Item_Cover">
+													[Current_Member as Cover /]
+												</span>
+			
+												<span class="Big_List_Item_Name">
+													[Current_Member.Name /]
+												</span>
+						
+												<span class="Big_List_Item_Check">√</span>
+											</a>
+										[/]	
+									</span>
+								</span>
+							</div>		
+						</span>
+
+						<span class="Author">
+							<!-- Set sender to current user, or site owner as fallback --> 
+							[If Current_Session.User]
+								[Then][Set Current_Action.Variables.Sender = Current_Session.User/][/Then]
+								[Else][1 Site from Database][Set Current_Action.Variables.Sender to Site.Owner/][/1][/Else]
+							[/If]		
+							[Input "Hidden" with Name = "Sender", Value = Current_Action.Variables.Sender/]
+						</span>
+
+						<span class="Message">
+							<label>Message:</label>
+							[Input "Text Area" with Name = "Body"/]
+
+							[Set Current_Action.Variables.Signature to "&#x1f4e8; Sent from [Site.Name/]! Respond to [Current_Action.Variables.Sender.First_Name/] @ [Current_Action.Variables.Sender.Phone_Number/]. (Don't reply)"/] 
+							[Input "Hidden" with Name = "Signature", Value = Current_Action.Variables.Signature/]
+							<div class="Signature">[Current_Action.Variables.Signature/]</div>
+						</span>
+
+						<span class="Execute">
+							<!-- Execute link -->
+							[Link to Execute]Send[/Link]
+						</span>
+					</span>
+				[/If]
+			{/Content}
+			{Code}
+				[If not Form.Body]
+					[Show Error for "Body"]Please enter a message[/Show]
+				[/If]
+
+				[If not Form.Sender.First_Name or Form.Sender.Phone_Number does not exist or Form.Sender.Phone_Number = ""]
+					[Show Error]Complete your profile with your name and phone number to send team texts.[/Show]
+				[/If]
+
+				[If not Form.Recipient]
+					[Show Error]Something went wrong. This message was not sent.[/Show]
+				[/If]
+
+				[If not Form.Error]
+					<!-- Send message --> 
+					[PHP]	
+						// this line loads the library 
+						require_once('jelly/php/libraries/twilio/twilio.php'); 
+	
+						// TODO - generalize configuration process for API keys etc
+						$Configuration = &Get_Environment_Variables();
+	
+						$Account_SID = $Configuration\['API_Keys'\]\['Twilio'\]\['Account_SID'\];
+						$Auth_Token = $Configuration\['API_Keys'\]\['Twilio'\]\['Auth_Token'\];
+						$From = $Configuration\['API_Keys'\]\['Twilio'\]\['From'\];
+						$Client = new Services_Twilio($Account_SID, $Auth_Token); 
+	
+						$Client->account->messages->create(array( 
+							'To' => '[Form.Recipient.Phone_Number no_wrap/]', 
+							'From' => $From,
+							'Body' => html_entity_decode("[Form.Body no_wrap/]" . " " . "[Form.Signature no_wrap/]")
+						));
+					[/PHP]	
+
+					[External_Script]
+						[If Globals.Allow_Tracking]					
+							if (mixpanel)
+							\{
+								mixpanel.track(
+										"Message Sent", 
+										\{	
+											"Via": "Text",									
+											"Sender": "[Format as "Javascript String"][Form.Sender.Name no_wrap/][/Format]", 
+											"Recipient": "[Format as "Javascript String"][Form.Recipient.Name no_wrap/][/Format]", 
+											"Recipient Count": 1,
+											"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+										\}
+									);
+							\}
+						[/If]
+						[Block "Text Sent Confirmation"]
+							[Go to This into "[Form.Calling_Namespace no_wrap/]"/]
+						[/Block]
+					[/External_Script]
+				[/If]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

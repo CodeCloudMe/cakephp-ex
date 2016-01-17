@@ -1,0 +1,16 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "Status" --}
+	
+		{Property}
+			{Type}Item{/Type}
+			{Value_Type}Status{/Value_Type}
+			{Name}Status{/Name}
+			{Alias}Status{/Alias}
+			{Relation}Many-To-One{/Relation}
+			{Key}Alias{/Key}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

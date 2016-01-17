@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Session Property "User" --}
+		{Property}
+			{Type}Session{/Type}
+			{Name}User{/Name}
+			{Value_Type}User{/Value_Type}
+		{/Property}
+	
+{/Jelly}

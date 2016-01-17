@@ -1,0 +1,175 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Import Google Sheet" --}
+		{Action}
+			{Name}Import Google Sheet{/Name}
+			{Content}
+				<!-- Admin Only -->
+				[Admin]
+					<div class="Window Import_Google_Sheet">
+						<a href="#" class="Close_Button" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+						
+						<span class="Header">
+							Import a spreadsheet from the web
+						</span>
+						
+						<span class="Section">
+							<span class="Description">
+								Paste the URL to a spreadsheet below. The spreadsheet must be published, and the first row must be the column names.
+							</span>
+							<span class="Input">
+								[Input "Text Field" with Name = "URL" /]
+							</span>
+						</span>
+						
+						<span class="Execute">
+							[Link to Execute]Import[/Link]
+						</span>
+					</div>
+				[/Admin]
+			{/Content}
+			{Code}
+				[If Form.URL]
+					[Then]
+						
+						<!-- Try to import data -->
+						[PHP]
+							// Fetch URL from form
+							$URL = &New_String('[Format as "PHP Single Quoted String"][Form.URL no_wrap /][/Format]');
+							
+							// Check if the file is coming from Google Docs
+							if (strpos($URL, 'docs.google.com/spreadsheets') !== false)
+							\{
+								// Generate new URL by finding the document ID, in case they didn't pass in the correct published CSV URL
+								$Request_Document_ID = substr($URL, strpos($URL, '/d/') + strlen('/d/'));
+								$Request_Document_ID = substr($Request_Document_ID, 0, strpos($Request_Document_ID, '/'));
+								$CSV_Request_URL = &New_String('https://docs.google.com/spreadsheets/d/' . $Request_Document_ID . '/pub?output=csv');
+							\}
+							else
+								$CSV_Request_URL = &$URL;
+							
+							// Require http at beginning of URL
+							if (strpos($URL, 'http') !== 0)
+								return 'Must be a valid URL.';
+							
+							// Fetch URL in order to get file name
+							$CSV_Request_Response_Text = @file_get_contents($CSV_Request_URL.'&'.mt_rand());
+							
+							// TODO: Check if data looks like CSV
+							
+							// Copy the response headers
+							$CSV_Request_Response_Headers = $http_response_header;
+							
+							// Check if no headers were returned
+							if (count($CSV_Request_Response_Headers) == 0)
+								return 'Could not fetch the document. No headers returned.';
+							
+							// Get response code and file name from headers
+							foreach ($CSV_Request_Response_Headers as $CSV_Request_Response_Header)
+							\{
+								// Check if this is a response-code header
+								if( preg_match("#HTTP/\[0-9\.\]+\s+(\[0-9\]+)#", $CSV_Request_Response_Header, $Matched_Values))
+									$Response_Code = intval($Matched_Values\[1\]);
+								
+								// Check if this is a content-disposition header
+								if (strtolower(substr($CSV_Request_Response_Header, 0, strlen("Content-Disposition:"))) == strtolower("Content-Disposition:"))
+								\{
+									// Contain to quoted string
+									// TODO if filename*= doesn't exist, use filename=
+									// TODO seems as though the UTF-8 version is unterminated
+									$CSV_Response_File_Name = substr($CSV_Request_Response_Header, strpos($CSV_Request_Response_Header, 'filename*=UTF-8\'\'') + strlen('filename*=UTF-8\'\''));
+									
+									// Decode the file name
+									// TODO doesn't seem as though it's actually UTF-8 encoded, just URL-encoded
+									$CSV_Response_File_Name = urldecode($CSV_Response_File_Name);
+								\}
+							\}
+							
+							// Check response code
+							if ($Response_Code != 200)
+								return 'Could not fetch the document. Returned error: ' . $Response_Code;
+							
+							// If Google Docs, check if document has been published
+							if (strpos($URL, 'docs.google.com/spreadsheets') !== false)
+							\{
+								// TODO: this check might change; better way to validate data?
+								if (strpos($CSV_Request_Response_Text, 'Sign in to continue to Sheets') !== false)
+									return 'Could not fetch the document. Please make sure it is published.';
+							\}
+							
+							// Generate type name from file name
+							\{
+								// Use file name as type name
+								$Type_Base_Name = &$CSV_Response_File_Name;
+								
+								// If no name is available for the list, generate a name
+								if (!$Type_Base_Name)
+									$Type_Base_Name = &New_String('Imported List');
+								
+								// Remove .csv extension
+								if (strrpos($Type_Base_Name, '.csv') !== false)
+									$Type_Base_Name = &New_String(substr($Type_Base_Name, 0, strrpos($Type_Base_Name, '.csv')));
+									
+								// Remove "- Sheet N" suffix
+								// TODO check for valid number value
+								if (strrpos($Type_Base_Name, ' - ') !== false)
+									$Type_Base_Name = substr($Type_Base_Name, 0, strrpos($Type_Base_Name, ' - '));
+							\}
+							
+							// Generate a unique type name
+							\{
+								$Type_Name = &$Type_Base_Name;
+								$Type_Index = 1;
+								while (true)
+								\{
+									$Check_Type_Command_String = &New_String('1 Type from Database where Name is "' . Jelly_Format($Type_Name, 'jelly attribute') . '" as reference');
+									$Check_Type_Result = Process_Command_String($Database, $Check_Type_Command_String, $Memory_Stack_Reference);
+									$Check_Type_Item = $Check_Type_Result\['Chunks'\]\[0\]\['Item'\];
+									
+									// Break if there are no matching types
+									if ($Check_Type_Item\['End_Of_Results'\])
+										break;
+									
+									// If a matching type was found, generate a new type name
+									$Type_Index++;
+									$Type_Name = &New_String($Type_Base_Name . ' ' . $Type_Index);
+								\}
+							\}
+							
+							// Create Type
+							$Type_Item = &Create_Memory_Item($Database, Get_Cached_Type($Database, 'Type'));
+							Set_Value($Type_Item, 'Name', Jelly_Format($Type_Name, 'jelly text block'));
+							Set_Simple($Type_Item, 'Starred', true);
+							Set_Simple($Type_Item, 'Package', 'Local');
+							Set_Value($Type_Item, 'Remote_URL', Jelly_Format($URL, 'jelly text block'));
+							Save_Item($Type_Item);
+							
+							
+							// Return the new type alias
+							$Type_Alias = $Type_Item\['Data'\]\['Alias'\];
+							
+							// Pass the type alias back to the script
+							$Check_Type_Command_String = &New_String('Set Current_Action.Variables.New_Type_Alias to "' . $Type_Alias . '"');
+							$Check_Type_Result = Process_Command_String($Database, $Check_Type_Command_String, $Memory_Stack_Reference);
+						[/PHP]
+						
+						<!-- Check if a type was created -->
+						[If Current_Action.Variables.New_Type_Alias]
+							<!-- Get the type from the database -->
+							[Type [Current_Action.Variables.New_Type_Alias no_wrap /] from database]
+								<!-- Disambiguate -->
+								[Set Current_Type to This /]
+								
+								<!-- Go to refresh action for the new type -->
+								[Go to "/Type/[Current_Type.Alias no_wrap /]/Refresh_Google_Sheet" into "Parent" /]
+							[/Type]
+						[/If]
+					[/Then]
+					[Else]
+						Enter a URL for your list.
+					[/Else]
+				[/If]
+			{/Code}
+		{/Action}
+{/Jelly}

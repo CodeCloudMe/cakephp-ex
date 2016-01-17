@@ -1,0 +1,83 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Set Sharing Clean" --}
+		{Action}
+			{Name}Set Sharing Clean{/Name}
+			{Content}
+				<!-- Admin only -->
+				[Admin]
+					<!-- Disambiguate -->
+					[Set Current_Item to This.Variables.Item /]
+					
+					<!-- Pass item on to action -->
+					[Input "Hidden" with Name = "Item", Value = This.Variables.Item /]
+					
+					<!-- Public input -->
+					<span class="[Current_Action.Namespace no_wrap /]_Public_Input_Finder">
+						[Input "Hidden" with Name = "Public", Value = false, Execute_On_Change = true /]
+					</span>
+					
+					<span class="Clean_Menu">
+						<a href="#" class="Clean_Menu_Item [If This.Variables.Item.Viewable_By.Alias != "Public"]Selected[/If]" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Public_Input_Finder input\[name=Public\]').val(0).change(); return false;">
+							<span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/eye.svg" data-state="closed"></span>
+							<span class="Label">Private (only you can see it)</span>
+						</a>
+						<a href="#" class="Clean_Menu_Item [If This.Variables.Item.Viewable_By.Alias = "Public"]Selected[/If]" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Public_Input_Finder input\[name=Public\]').val(1).change(); return false;">
+							<span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/eye.svg"></span>
+							<span class="Label">Public (anyone can see it)</span>
+						</a>
+					</span>
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Admin only -->
+				[Admin]
+					<!-- Disambiguate -->
+					[Form.Values.Item]
+						[Set Current_Item to This /]
+						
+						<!-- Set public -->
+						[If Form.Public]
+							[Then]
+								[Set Current_Item.Viewable_By to "Public"/]
+							[/Then]
+							[Else]
+								[Set Current_Item.Viewable_By to "Admin"/]
+							[/Else]
+						[/If]
+											
+						<!-- Get the root navigation -->
+						[Navigation "Root" from database]
+							<!-- Disambiguate -->
+							[Set Current_Navigation to This /]
+							
+							<!-- Check if the item is already in the navigation -->
+							[If Form.Public]
+								[Then]
+									[Current_Navigation.Navigation_Item where ID is Current_Item.ID as_attachment]
+										[Else]
+											<!-- Add the item to the navigation -->
+											[Add Current_Item to Current_Navigation.Navigation_Item no_refresh /]
+											[Save Current_Item no_refresh /]
+										[/Else]
+									[/This.Navigation_Item]
+								[/Then]
+								[Else]
+									[Current_Navigation.Navigation_Item where ID is Current_Item.ID as_attachment]
+										[Then]
+											<!-- Remove the item from the navigation -->
+											[Remove this no_refresh /]
+										[/Then]
+									[/This.Navigation_Item]
+								[/Else]
+							[/If]
+						[/Navigation]
+						
+						<!-- Save item -->
+						[Save Current_Item /]
+					[/Form]
+				[/Admin]
+			{/Code}
+		{/Action}
+{/Jelly}

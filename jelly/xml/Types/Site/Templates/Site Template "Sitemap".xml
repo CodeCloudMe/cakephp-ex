@@ -1,0 +1,41 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "Sitemap" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}Sitemap{/Name}
+			{Content}
+				<?xml version="1.0" encoding="UTF-8"?>
+				<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+					[Page Where Visible]
+						<url>
+							<loc>http://[HTTP_Host no_wrap /][Directory no_wrap /]/Page/[Page as Key no_wrap /]</loc>
+							<lastmod>[Page:Modified no_wrap][Year no_wrap /]-[Month no_wrap /]-[Day no_wrap /][/Page:Modified]</lastmod>
+							<priority>0.8</priority>
+						</url>
+					[/Page]
+					[Blog_Post]
+						<url>
+							<loc>http://[HTTP_Host /][Directory /]/Blog_Post/[Blog_Post as Key /]</loc>
+							<lastmod>[Blog_Post:Modified][Year /]-[Month /]-[Day /][/Blog_Post:Modified]</lastmod>
+							<priority>0.6</priority>
+							<news:news>
+								<news:publication_date>[Blog_Post:Publication_Date][Year /]-[Month /]-[Day /]T[Hour_24 /]:[Minute /]:00Z[/Blog_Post:Publication_Date]</news:publication_date>
+								<news:keywords></news:keywords>
+							</news:news>
+						</url>
+					[/Blog_Post]
+					[Event]
+						<url>
+							<loc>http://[HTTP_Host /][Directory /]/Event/[Event as Key /]</loc>
+							<lastmod>[Event:Modified][Year /]-[Month /]-[Day /][/Event:Modified]</lastmod>
+							<priority>0.4</priority>
+						</url>
+					[/Event]
+				</urlset>
+			{/Content}
+			{Content_Type}text/xml{/Content_Type}
+		{/Template}
+	
+{/Jelly}

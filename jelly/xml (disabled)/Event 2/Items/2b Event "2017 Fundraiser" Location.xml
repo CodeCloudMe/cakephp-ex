@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event "2017 Fundraiser" Location --}
+		{Map_Marker}
+			{Name}NEW INC{/Name}
+			{Original_Address}NEW INC, 231 Bowery Ave, New York, NY, 10002{/Original_Address}
+			{Latitude}40.7221320{/Latitude}
+			{Longitude}-73.9927700{/Longitude}
+		{/Map_Marker}
+	
+{/Jelly}

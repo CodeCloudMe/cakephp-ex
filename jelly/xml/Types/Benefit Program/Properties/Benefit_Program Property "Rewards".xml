@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Benefit_Program Property "Mission" --}
+		{Property}
+			{Type}Benefit_Program{/Type}
+			{Label}Offer These Rewards{/Label}
+			{Name}Rewards{/Name}
+			{Value_Type}Reward{/Value_Type}
+			{Viewable_By}Admin{/Viewable_By}
+			{Relation}Many-To-Many{/Relation}
+			{Core}1{/Core}
+		{/Property}
+{/Jelly}

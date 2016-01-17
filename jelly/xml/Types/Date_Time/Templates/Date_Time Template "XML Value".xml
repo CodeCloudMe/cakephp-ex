@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Date_Time Template "Default" --}
+		{Template}
+			{Type}Date_Time{/Type}
+			{Name}XML Value{/Name}
+			{Content}[Year_Number /]-[Month_Number/]-[Date_Number/] [Hour_Number /]:[Minute_Number/][Period/]{/Content}
+		{/Template}
+	
+{/Jelly}

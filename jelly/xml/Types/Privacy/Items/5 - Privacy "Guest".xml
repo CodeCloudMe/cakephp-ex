@@ -1,0 +1,9 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- Privacy "Guest" --}
+		{Privacy}
+			{Name}Guest{/Name}
+			{Explanation}EXPERIMENTAL.{/Explanation}
+		{/Privacy}
+{/Jelly}

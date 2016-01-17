@@ -1,0 +1,169 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Type_Action "Update Detail Properties" --}
+		{Type_Action}
+			{Type}Type{/Type}
+			{Name}Update Detail Properties{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Execute link for manual implementations -->
+					[Link to Execute /]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Disambiguate -->
+				[Set Current_Type to Current_Action.Target /]
+				
+				<!-- Disabled Properties -->
+
+				<!-- Special case top property module --> 
+
+				<!-- Special case: Teams--> 
+				[If Current_Type.Alias = "User"]
+					[1 Property from Database where Type = "User" and Name = "Team"]
+						[Set Current_Property to This /]
+						[Current_Type.Content_Module restrict_type Property_Module where Property_Item is Current_Property]
+							[Else]
+								[New Property_Module]
+									[Set New_Property_Module to This /]
+									[Set New_Property_Module.Property_Item to Current_Property /]
+									[Save New_Property_Module No_Refresh/]
+									[Add New_Property_Module to Current_Type.Content_Module /]
+								[/New]
+							[/Else]
+						[/Current_Type.Content_Module]
+					[/1 Property]
+				[/If]
+				
+				<!-- Special case: Members --> 
+				[If Current_Type.Alias = "Team"]
+					[1 Property from Database where Type = "User" and Name = "Team"]
+						[Set Current_Property to This /]
+						[Current_Type.Content_Module restrict_type Property_Module where Property_Item is Current_Property]
+							[Else]
+								[New Property_Module]
+									[Set New_Property_Module to This /]
+									[Set New_Property_Module.Property_Item to Current_Property /]
+									[Set New_Property_Module.Reverse to true /]
+									[Save New_Property_Module No_Refresh/]
+									[Add New_Property_Module to Current_Type.Content_Module /]
+								[/New]
+							[/Else]
+						[/Current_Type.Content_Module]
+					[/1 Property]
+				[/If]
+				
+				<!-- Cycle over non-advanced properties -->
+				[Current_Type.Item_Properties where not Advanced]
+					<!-- Disambiguate -->
+					[Set Current_Property to This /]
+					
+					<!-- Check Forward Direction -->
+					[If Current_Property.Values.Type is parent type of Current_Type]
+						<!-- Check if property module does not exist for property -->
+						[Current_Type.Content_Module restrict_type Property_Module where Property_Item is Current_Property]
+							[Else]
+								<!-- Create New Property Module for property -->
+								[New Property_Module]
+									<!-- Disambiguate -->
+									[Set New_Property_Module to this /]
+									
+									<!-- Set property -->
+									[Set New_Property_Module.Property_Item to Current_Property /]
+									
+									<!-- Set size for certain value types --> 
+									[If Current_Property.Value_Type.Alias = "Video" or Current_Property.Value_Type.Alias = "Picture"]
+										[Set New_Property_Module.Size to "Large"/]
+									[/If]
+									[If Current_Property.Value_Type.Alias = "Social_Media"]
+										[Set New_Property_Module.Size to "Small"/]
+									[/If]
+									
+									<!-- Set display type for certain value types --> 
+									[If Current_Property.Value_Type.Alias = "Video" or Current_Property.Value_Type.Alias = "Social_Media" or Current_Property.Value_Type.Alias = "Picture"]
+										[Set New_Property_Module.Display to "Grid"/]
+									[/If]
+	
+									<!-- Hide specific properties by default -->
+									[If Current_Type.Values.Alias is "User" and Current_Property.Values.Name is "Name"]
+										[Set New_Property_Module.Visible to false /]
+									[/If]
+																											
+									<!-- Save Property Module -->
+									[Save New_Property_Module No_Refresh/]
+								
+									<!-- Add new module to type -->
+									[Add New_Property_Module to Current_Type.Content_Module /]
+								[/New]
+							[/Else]
+						[/Current_Type.Content_Module]
+					[/If]
+					
+					<!-- Check Reverse Direction -->
+					[If Current_Property.Values.Value_Type is Parent Type of Current_Type]
+						<!-- Check if property module does not exist for reverse property -->
+						[Current_Type.Content_Module restrict_type Property_Module where Property_Item is Current_Property and Reverse]
+							[Else]
+								<!-- Create New Property Module for property -->
+								[New Property_Module]
+									<!-- Disambiguate -->
+									[Set New_Property_Module to this /]
+									
+									<!-- Set property -->
+									[Set New_Property_Module.Property_Item to Current_Property /]
+									
+									<!-- Set reverse -->
+									[Set New_Property_Module.Reverse to true /]
+									
+									<!-- Set display type for specific properties --> 
+									[If Current_Property.Type.Alias = "Video" or Current_Property.Type.Alias = "Social_Media"]
+										[Set New_Property_Module.Display to "Grid"/]
+									[/If]
+									
+									<!-- Set size for specific properties --> 
+									[If Current_Property.Value_Type.Alias = "Video" or Current_Property.Value_Type.Alias = "Picture"]
+										[Set New_Property_Module.Size to "Large"/]
+									[/If]
+									
+									<!-- Save Property Module -->
+									[Save New_Property_Module No_Refresh/]
+									
+									<!-- Add new module to type -->
+									[Add New_Property_Module to Current_Type.Content_Module /]
+								[/New]
+							[/Else]
+						[/Current_Type.Content_Module]
+					[/If]
+				[/Current_Type.Item_Properties]
+				
+				
+				<!-- Remove property modules of properties that have been deleted -->
+				[Current_Action.Target.Content_Module as_attachment]
+					<!-- Disambiguate -->
+					[Set Current_Attachment to This /]
+					
+					<!-- Get the attached property module, if there is one -->
+					[Current_Attachment.Content_Module restrict_type Property_Module]
+						<!-- Disambiguate -->
+						[Set Current_Property_Module to This /]
+						
+						<!-- Check if property still exists -->
+						[Current_Property_Module.Property_Item]
+							<!-- TODO: Does Not Exist should check if the key resolves to an actual item -->
+							[Else]
+								<!-- Delete the Property Module -->
+								[Remove Current_Property_Module /]
+								
+								<!-- Detach the module -->
+								[Remove Current_Attachment /]
+							[/Else]
+						[/Current_Property_Module.Property_Item]
+					[/This.Content_Module]
+				[/Current_Action.Target.Content_Module]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

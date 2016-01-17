@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Property "Default Item" --}
+		{Property}
+			{Type}Site{/Type}
+			{Name}Default Item{/Name}
+			{Value_Type}Item{/Value_Type}
+		{/Property}
+	
+{/Jelly}

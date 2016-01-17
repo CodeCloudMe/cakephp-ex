@@ -1,0 +1,38 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Copy Email Addresses For Other" --}
+		{Action}
+			{Name}Copy Email Addresses For Other{/Name}
+			{Content}
+				[Admin]
+					<div class="Window Send_Email_Window">
+						<a href="#" class="Close_Button" onclick="Jelly.Interface.Close_Top_Window(); return false;" style="float:right;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+
+						<span class="Header">
+							Copy Email Addresses for General Contributors
+						</span>
+	
+						<span class="Section" style="padding:20px;">
+							<span class="Label" style="display:block; margin-bottom:15px;">
+								Press ⌘-C or Control-C and copy these into your email client.
+							</span>
+							<span class="Label" style="display:block; margin-bottom:15px;font-weight:normal;">
+								(Only admins have access to do this)
+							</span>
+							<span class="Input">
+								[Set Current_Action.Traversed to False/]
+								<textarea id="Quick_Email_List" readonly style="width:100%; font-size:14px; padding:14px; background-color:#f9f9f9; border-radius:2px; color:#333333;min-height:175px;resize:vertical;">[User from Database where Activated and Email_Address exists and Email_Address is not "" and ID is not Current_Session.User.ID no_wrap][Set Current_Member to this /][1 Team no_wrap][Else][If Current_Action.Traversed], [/If][Current_Member.First_Name no_wrap/] [Current_Member.Last_Name no_wrap/] &lt;[Current_Member.Email_Address no_wrap/]&gt;[Set Current_Action.Traversed to True/][/Else][/1 Team][/Current_Action.Target.Members]</textarea>
+							</span>
+						</span>
+		
+						<span class="Execute">
+							<a href="Done" onclick="Jelly.Interface.Close_Top_Window(); return false;">Done</a>
+						</span>
+					</div>
+				[/Admin]
+			{/Content}
+			{Code}
+			{/Code}
+		{/Action}
+{/Jelly}

@@ -1,0 +1,18 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User "Coordinator" --}
+		{User}
+			{ID}190342304{/ID}
+			{Name}Coordinator{/Name}
+			{First_Name}Coordinator{/First_Name}
+			{Last_Name}{/Last_Name}
+			{Email_Address}support@better.space{/Email_Address}
+			{Password}password{/Password}
+			{Team}Admin{/Team}
+			{Package}Local{/Package}
+			{Allow_Community_Members_to_Contact_Me}True{/Allow_Community_Members_to_Contact_Me}
+			{Activated}1{/Activated}
+		{/User}
+	
+{/Jelly}

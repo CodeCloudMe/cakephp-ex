@@ -1,0 +1,416 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Edit" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Edit{/Name}
+			{Content}
+				<!-- TODO: Below lines are declaring variables because of our error mode, for testing's sake right now. --> 
+				[If Current_Action.Variables.Property_Alias]
+					[Set Current_Action.Variables.Editing_Single_Value to "True" /]
+				[/If]
+				[If Current_Action.Variables.Editing_Single_Value does not exist]
+					[Set Current_Action.Variables.Editing_Single_Value to ""/]
+				[/If]
+				[If Current_Action.Variables.Show_Advanced_Properties does not exist]
+					[Set Current_Action.Variables.Show_Advanced_Properties to ""/]
+				[/If]
+			
+				<!-- Require admin for direct editing -->
+				[Admin]
+					[Then]
+							<div class="Jelly_Edit_Window" id="[Current_Action_Namespace No_Wrap /]_Edit_Window">
+								<!-- Header -->
+								<div class="Jelly_Edit_Window_Header">
+									<!-- Title -->
+									<div class="Jelly_Edit_Window_Header_Title">
+										<!-- Type Name -->
+										[Current_Action.Target.Type.Name /]
+										
+										<!-- Target Name -->
+										[If Current_Action.Target.Name exists]
+											&ldquo;[Current_Action.Target.Name /]&rdquo;
+										[/If]
+	
+										<!-- Template Type Name -->
+										[If Current_Action.Target.Type.Name is "Template"]
+											for [Current_Action.Target.Values.Type.Name /]
+										[/If]
+									</div>
+									<div class="Jelly_Edit_Window_Header_Right">
+										<!-- Closed Menu -->
+										<div
+											class="Jelly_Closed_Menu"
+											id="[Namespace No_Wrap /]_Menu"
+											style="padding-top: 3px;"
+											onmousemove="jQuery(this).addClass('Jelly_Closed_Menu_Hover');"
+											onmouseout="jQuery(this).removeClass('Jelly_Closed_Menu_Hover');"
+											onclick="[Format as "Single Line Code"]
+												var Menu_Reference = Jelly.Interface.Create_Menu(
+													\{
+														Alias: 'Edit_Menu',
+														Source_Element_ID: '[Current_Action_Namespace No_Wrap /]_Item_Menu_Items',
+														Attach: 'Element',
+														Attach_Element: this
+													\});
+												return false;
+											[/Format]"
+										>
+											<img src="/jelly/libraries/open-iconic/svg/cog.svg" width="14" />
+										</div>
+						
+									</div>
+									
+									<!-- Item Menu Items -->
+									<div id="[Current_Action_Namespace No_Wrap /]_Item_Menu_Items" style="display: none;">
+										<table cellpadding="0" cellspacing="0" border="0">
+											
+											[If Current_Action.Variables.Editing_Single_Value is not "True"]
+												<!-- Edit Type Link -->
+												<tr class="Jelly_Menu_Row">
+													<td class="Jelly_Menu_Item" colspan="2">
+														[Current_Action.Target.Type]
+															[If This.Alias = "Type"]
+																[Then]
+																	[Link to Edit This.Parent_Type]Edit Parent Type...[/Link]
+																[/Then]
+																[Else]
+																	[Link to Edit This]Edit Type...[/Link]
+																[/Else]
+															[/If]
+														[/Current_Action.Target.Type]
+													</td>
+												</tr>
+											[/If]
+											
+											<!-- TODO: Disabled Until "Parent" can be linked properly from in the menu -->
+											[Ignore]
+												<!-- Advanced Properties Toggle-->		
+												<tr class="Jelly_Menu_Row">
+													<td class="Jelly_Menu_Item" colspan="2">
+														[If Current_Action.Variables.Show_Advanced_Properties]
+															[Then]
+																<!-- Link to Hide Advanced Properties -->
+																[Link to Edit Current_Action.Target into "Parent"]Hide Advanced Properties[/Link]
+															[/Then]
+															[Else]
+																<!-- Link to Show Advanced Properties -->
+																[Link to Edit Current_Action.Target into "Parent" with Show_Advanced_Properties = True]Show Advanced Properties[/Link]
+															[/Else]
+														[/If]
+													</td>
+												</tr>
+											[/Ignore]
+										</table>
+									</div>
+									
+									<br class="Clear" />
+								</div>
+
+								<!-- Properties Table-->
+								<div class="Jelly_Edit_Window_Properties">
+									<!-- TODO - when Where is implemented, implement Editing_Single_Value, or Parent_Property_Alias, or Advanced checks here --> 
+									[Current_Action.Target.Properties as Edit_Row /]
+								</div>
+
+								<!-- Extra Editing Features for Items -->
+								[If Editing_Single_Value is not "True"]
+
+									<!-- Extra Edit Features for the Type (such as replacing a File) -->
+									[Current_Action.Target as "Edit_Features" No_Wrap /]
+
+									<!-- Handle express property handling --> 
+									[If not Current_Action.Variables.Show_Advanced_Properties and Current_Action.Target.Status.Alias = "Unsaved"]
+										[Input "Hidden" with Name = "Edited Status", Value = "Published"/]
+									[/If]
+
+									<!-- Add Property Link For Regular Items -->
+									[If Current_Action.Target.Type.Alias is not "Type" and Current_Action.Target.Type.Alias is not "Property"]
+										<div class="Jelly_Edit_Window_Add_Property_Row">
+											[Current_Action.Target.Type No_Wrap]
+												[Link to Add This.Property /]
+											[/Current_Action.Target.Type]
+										</div>
+									[/If]
+								[/If]
+
+								<!-- Save/Cancel -->
+								<div class="Jelly_Edit_Window_Footer">
+									<!-- Edit Type/Parent Type Link -->
+									<div class="Jelly_Edit_Window_Footer_Left">
+									</div>
+					
+									<div class="Jelly_Edit_Window_Footer_Right">
+										[Action as Loading /]
+										<div class="Jelly_Edit_Window_Footer_Right_Cancel">
+											<script>
+												Jelly.Handlers.Register_Handler(
+												\{
+													'Element': document.getElementById('[Current_Action.Namespace no_wrap /]'),
+													// TODO: wrong calling element
+													'Event': 'Cancel',
+													'Code': function(Parameters)
+													\{
+														Jelly.Actions.Execute(\{
+															'Action': 'Cancel',
+															'Namespace': '[Current_Action.Namespace No_Wrap /]',
+															'Calling_Element': document.getElementById('[Current_Action.Namespace No_Wrap /]'),
+															'Values':
+																\{
+																	'Item_Type': '[Current_Action.Target.Type.Alias No_Wrap /]',
+																	'Item': [Current_Action.Target.ID No_Wrap /],
+																	'Namespace': '[Current_Action_Namespace No_Wrap /]'
+																\}
+															\});
+														Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Dismiss', 'Target': document.getElementById('[Current_Action.Namespace no_wrap /]')\});
+													\}
+												\});
+											</script>
+											[Link to Cancel /]
+										</div>
+										<div class="Jelly_Edit_Window_Footer_Right_Save">
+											[Link to Execute]Save[/Link]
+										</div>
+									</div>
+									<br class="Clear" />
+								</div>
+				
+								<!-- Result -->
+								<div class="Jelly_Action_Result">
+									[Action as "Result"/]
+								</div>
+				
+								[External_Script]
+									<!-- On Edited: Close window -->
+									Jelly.Handlers.Register_Handler(
+									\{
+										"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+										"Event": "Edited",
+										"Code": function (Parameters)
+										\{
+											Parameters\["Event"\] = "Dismiss";
+											Jelly.Handlers.Call_Handler_For_Target(Parameters);
+										\}
+									\});
+								[/External_Script]
+							</div>
+					[/Then]
+					[Else]
+						Must be logged in to do this. <a href="#" onclick="Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Dismiss', 'Target': document.getElementById('[Current_Action_Namespace No_Wrap /]')\}); return false;">Cancel</a>
+					[/Else]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Edit Action Code -->
+				<!-- Editing "[Current_Action.Target.Name no_wrap /]" -->
+				
+				<!-- If changing item from Unsaved to Published, flag calling the Added handler -->
+				[If Current_Action.Target.Status.Alias is "Unsaved" and Form.Edited_Status is "Published"]
+					[Set Current_Action.Variables.Call_Published_Handler to 1/]
+				[/If]
+				
+				<!-- TODO: unignore -->
+				<!-- TODO - upgrade to unsaved --> 
+				[Ignore](If Admin or Current_Action.Target.Status.Alias is "Unsaved")[/Ignore]
+					
+					<!-- TODO - hack.  fix in it Jelly Editor --> 
+					[If Form.Edited_Alias Twas Not Set and Form.Edited_Name Twas Not Set]
+						[Set Form.Suppress_Validation to "True"/]
+					[/If]
+				
+					<!-- If a name or alias was set by a form, validate it. -->	
+					[If not Form.Suppress_Validation]
+						<!-- Get alias. --> 
+						[If Form.Edited_Alias Twas Not Set]
+							[Set Form.Edited_Alias to "[Format as "Alias"][Form.Edited_Name no_wrap /][/Format]"/]
+						[/If]
+				
+						<!-- Validate alias. -->
+						<!-- TODO - correct property depending on what was set.--> 
+						[Validate Form.Edited_Alias for Current_Action.Target.Alias]
+							[Else]	
+								[If Form.Edited_Alias = ""]
+									[Then]
+										[Show Error for "Edited_Name"]Please enter a name.[/Show]
+									[/Then]
+									[Else]
+										[Show Error for "Edited_Name"]Please enter another name.[/Show]
+									[/Else]
+								[/If]
+							[/Else]
+						[/Validate]
+					[/If]
+				
+					<!-- TODO Validate these outside of this condition too. -- > 			
+					[If not Form.Error]	
+						<!-- Cycle through properties (but ignore Property and Temporary) -->
+						<!-- TODO: better way to ignore certain properties? (where Alias is not "Property" and Alias is not "Temporary") -->
+						[Current_Action.Target.All_Properties]
+							<!-- TODO: Check if user input is well-formed (i.e. tag language?) -->
+							<!-- Checking: "Form.Edited_[Property.Alias No_Wrap /]" -->
+							[Set Current_Action.Variables.Current_Property to This /]
+						
+							<!-- If matched by property type --> 
+							[If Current_Property.Values.Type is Parent Type of Current_Action.Target.Type]
+				
+								<!-- If this is a simple or many-to-one property, set via the forward facing alias -->
+								[If Current_Property.Values.Relation = "" or Current_Property.Values.Relation = "Many-To-One"]
+									<!-- Marker: Forward -->
+									[Set Current_Property.Variables.Target_Alias to Current_Property.Values.Alias /]
+									[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] Twas Set]
+										<!-- Marker: Twas Set -->
+										[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original Twas Set]
+											[Then]
+												[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original /]
+											[/Then]
+											[Else]
+												[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] /]
+											[/Else]
+										[/If]
+									[/If]
+								[/If]
+							
+								<!-- If this is a one-to-many property, set via the reverse alias. --> 
+								[If Current_Property.Values.Relation = "One-To-Many"]
+									<!-- Marker: Reverse --> 
+									[Set Current_Property.Variables.Target_Alias to Current_Property.Values.Reverse_Alias /]								
+									[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] Twas Set]
+										<!-- Marker: Twas Set -->
+										[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original Twas Set]
+											[Then]
+												[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original /]
+											[/Then]
+											[Else]
+												[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] /]
+											[/Else]
+										[/If]
+									[/If]
+								[/If]
+							[/If]
+						
+							<!-- If matched by value type --> 
+							[If Current_Property.Values.Value_Type exists]
+								[If Current_Property.Values.Value_Type is Parent Type of Current_Action.Target.Type]
+									<!-- If this is a one-to-many property, set via the reverse alias. --> 
+									[If Current_Property.Values.Relation = "One-To-Many"]
+										<!-- Marker: Reverse --> 
+										[Set Current_Property.Variables.Target_Alias to Current_Property.Values.Reverse_Alias /]								
+										[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] Twas Set]
+											<!-- Marker: Twas Set -->
+											[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original Twas Set]
+												[Then]
+													[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original /]
+												[/Then]
+												[Else]
+													[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] /]
+												[/Else]
+											[/If]
+										[/If]
+									[/If]
+								[/If]
+							[/If]
+						
+							<!-- If matched by attachment type --> 
+							[If Current_Property.Values.Attachment_Type exists]
+								[If Current_Property.Values.Attachment_Type is Parent Type of Current_Action.Target.Type]
+									<!-- Assume Many-to-Many, set by forward alias and reverse alias --> 
+									<!-- Marker: Forward --> 
+									[Set Current_Property.Variables.Target_Alias to Current_Property.Values.Alias /]
+									[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] Twas Set]
+										<!-- Marker: Twas Set -->
+										[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original Twas Set]
+											[Then]
+												[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original /]
+											[/Then]
+											[Else]
+												[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] /]
+											[/Else]
+										[/If]
+									[/If]
+				
+									[If Current_Property.Values.Relation ="Many-To-Many"]
+										<!-- Marker: Reverse --> 
+										[Set Current_Property.Variables.Target_Alias to Current_Property.Values.Reverse_Alias /]								
+										[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] Twas Set]
+											<!-- Marker: Twas Set -->
+											[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original Twas Set]
+												[Then]
+													[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original /]
+												[/Then]
+												[Else]
+													[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] /]
+												[/Else]
+											[/If]
+										[/If]								
+									[/If]
+								
+									[If Current_Property.Values.Relation ="Commutative"]
+										<!-- Marker: Other --> 
+										[Set Current_Property.Variables.Target_Alias to "Other_[Current_Property.Values.Alias No_Wrap /]"/]
+				
+										[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] Twas Set]
+											<!-- Marker: Twas Set -->
+											[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original Twas Set]
+												[Then]
+													[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /]_Original /]
+												[/Then]
+												[Else]
+													[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] /]
+												[/Else]
+											[/If]
+										[/If]
+									
+									[/If]
+								[/If]
+							[/If]
+						[/Current_Action.Target.All_Properties]
+				
+						<!-- Save Item -->
+						[Save Current_Action.Target [If Current_Action.Variables.No_Refresh]No_Refresh[/If] /]
+					
+						<!-- "Refresh" Item -->
+						<!-- TODO - not sure if we ever really used this, it was about smart properties, and if it's real, it should be called on Save Item or something? not sure. -->
+						<!-- TODO - when I uncomment the below, it doesn't cause problems.  Suggests strict type l00ph0le --> 
+						[Ignore][Form.Current_Action.Target.Action "Refresh".Execute /][/Ignore]
+									
+						[If Current_Action.Variables.Call_Published_Handler]	
+							[External_Script]					
+								// Call "Added" event for unsaved items that were then published 
+								// TODO - specific type? type? 
+								// TODO - cleanup Item_ID, Item
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										"Event": "Added",
+										"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+										"Item": "[Current_Action.Target as Key No_Wrap /]",
+										"Item_ID": "[Current_Action.Target.ID No_Wrap /]",
+										"Item_Type": "[Current_Action.Target.Type as Alias No_Wrap /]",
+										"Badge": "[Format as "Javascript String"][Current_Action.Target as Badge with No_Drag = 1/][/Format]"
+									\});
+							[/External_Script]
+						[/If]
+						
+						[If not Current_Action.Variables.Suppress_Edited_Handler]
+							[External_Script]
+								// Call "Edited" handler
+								// TODO - specific type? type?
+								// TODO - not sure if this is a hack (if it is necessary), but the Add action suppresses this specific handler.
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										"Event": "Edited",
+										"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+										"Item": "[Current_Action.Target as Key No_Wrap /]",
+										"Item_Type": "[Current_Action.Target.Type as Alias No_Wrap /]",
+										"Badge": "[Format as "Javascript String"][Current_Action.Target as Badge with No_Drag = 1/][/Format]"
+									\});
+							[/External_Script]
+						[/If]					
+					[/If]
+					
+				<!-- TODO: unignore -->
+				[Ignore](/If)[/Ignore]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

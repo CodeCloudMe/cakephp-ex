@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Font "Sorts Mill Goudy" --}
+		{Web_Font}
+			{Name}Sorts Mill Goudy{/Name}
+			{URL}https://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400,400italic{/URL}
+		{/Web_Font}
+	
+{/Jelly}

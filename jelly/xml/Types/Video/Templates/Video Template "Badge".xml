@@ -1,0 +1,42 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Video Template "Badge" --}
+		{Template}
+			{Type}Video{/Type}
+			{Name}Badge{/Name}
+			{Content}
+				[This as Data_Module_List_Item with No_Details = true /]
+				
+				[ignore]
+				[If Video.Path]
+					[Then]
+						[Set Video.Variables.YouTube_ID to "[PHP]
+							$Path = "[Video.Path no_wrap /]";
+							// TODO Error checking
+							$ID = substr($Path, strpos($Path, "v=") + strlen("v="));
+							if (strpos($ID, "&") !== false)
+								$ID = substr($ID, 0, strpos($ID, "&"));
+							return $ID;
+						[/PHP]" /]
+						
+						<div style="display: inline-block; width: 136px;">
+							[Ignore]
+								<!-- Thumbnail -->
+								<img src="https://img.youtube.com/vi/[Video.Variables.YouTube_ID no_wrap /]/0.jpg" style="width: 100%;" >
+							[/Ignore]
+							[Video as Default with Maximum_Width = 136, Maximum_Height = 200 /]
+							<div>
+								Video
+							</div>
+						</div>
+					[/Then]
+					[Else]
+						Uploading???
+					[/Else]
+				[/If]
+				[/ignore]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

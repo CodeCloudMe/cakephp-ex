@@ -1,0 +1,56 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Picture_Module Template "Editing" --}
+		{Template}
+			{Type}Picture_Module{/Type}
+			{Name}Editing{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Picture_Module to This /]
+				[Set Current_Picture to Current_Picture_Module.Picture /]
+				
+				<!-- Picture -->
+				<span class="Module_Content" data-module="Picture_Module" data-size="[Current_Content_Module.Size no_wrap /]" data-width="[Current_Content_Module.Width no_wrap /]">
+					<span class="Picture" style="background-image: url(/Picture/[Current_Picture.ID no_wrap /]/File); padding-top: calc(100% / [Current_Picture.Aspect_Ratio no_wrap /]);" data-aspect-ratio="[Current_Picture.Aspect_Ratio no_wrap /]">
+						<span style="display: none;">
+							[This.Picture /]
+						</span>
+					</span>
+				</span>
+				
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Editing Controls -->
+					<div class="Module_Controls">
+						
+						<!-- Change Width -->
+						<div class="Group">
+							[Current_Content_Module.Action "Change Width" /]
+						</div>
+						
+						<!-- Change Size -->
+						<div class="Group">
+							[Current_Content_Module.Action "Change Size" /]
+						</div>
+						
+						<!-- Change Picture -->
+						<!-- TODO Clean up link -->
+						[Link to "/Picture_Module/[This.ID no_wrap /]/Change_Picture" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/image.svg" data-orientation="landscape" > Change Picture[/Link]
+						
+						<!-- Delete -->
+						<div class="Group">
+							[Link to "/Content_Module/[This.ID no_wrap /]/Delete" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg"> Delete[/Link]
+						</div>
+						
+						<!-- Done -->
+						[Link to "/[Current_Item.Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Viewing_Content_Module:Content_Module_ID=[Current_Content_Module.ID no_wrap /]" into "[Current_Content_Module_Namespace no_wrap /]"]
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/check-thin.svg"> Done
+						[/Link]
+					</div>
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

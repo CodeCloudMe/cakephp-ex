@@ -1,0 +1,20 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Picture Template "Context Menu Extras" --}
+		{Template}
+			{Type}Picture{/Type}
+			{Name}Context Menu Extras{/Name}
+			{Content}
+				<!-- Download Link -->
+				<tr class="Jelly_Menu_Row">
+					<td class="Jelly_Menu_Item" colspan="2">
+						<a href="[Directory No_Wrap /]/Picture/[This:ID No_Wrap /]/File">Download Original Image</a>
+					</td>
+				</tr>
+				
+				<tr><td colspan="2"><hr class="Jelly_Menu_Separator" /></td></tr>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

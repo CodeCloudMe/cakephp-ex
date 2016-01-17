@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Blog Subscriptions" --}
+		{Block}
+			{Name}Blog Subscriptions{/Name}
+			{Content}
+				<div class="Jelly_Menu_Item">
+					<a href="[Directory No_Wrap /]/RSS">Subscribe to RSS Feed</a>
+				</div>
+				<div class="Jelly_Menu_Item">
+					<a href="[Directory No_Wrap /]/Atom">Subscribe to Atom Feed</a>
+				</div>
+			{/Content}
+		{/Block}
+	
+{/Jelly}

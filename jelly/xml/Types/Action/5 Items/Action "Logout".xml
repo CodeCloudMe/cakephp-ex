@@ -1,0 +1,33 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Logout" --}
+		{Action}
+			{Name}Logout{/Name}
+			{Content}
+				[Member]
+					[Link to execute with Class = "Button" /]
+				[/Member]
+				[Guest]
+					You are logged out.
+				[/Guest]
+				<div>[Action as "Result" /]</div>
+			{/Content}
+			{Code}
+				<!-- Unset current user -->
+				[Set Current_Session.User to null /]
+				[Save Current_Session /]
+
+				<!-- Go to home page -->
+				[Go to "/" /] 
+
+				You are now logged out.
+
+				[External_Script]
+					// Hide Sidebar
+					Jelly.Interface.HIde_Sidebar();
+				[/External_Script]			
+			{/Code}
+		{/Action}
+	
+{/Jelly}

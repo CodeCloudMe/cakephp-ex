@@ -1,0 +1,127 @@
+/* COLORS */
+
+@Black: #000000;
+@Near-Black: #333333;
+@Dark-Gray: #616161;
+@Medium-Gray: #cccccc;
+@Light-Gray: #ececec;
+@Blue: #41bde1;
+@Light-Blue: #00b8ed;
+
+@Text-Light: #929292;
+@Text-Dark-Gray: #4a4a4a;
+@Text-Black: #000000;
+
+@Near-White: #efefef;
+@White: #ffffff;
+
+@Orange: #e2642a;
+
+/* FONTS */
+@Standard: "Montserrat";
+@Thin:  "Source Sans Pro";
+
+
+/* TYPES */
+
+.Better-Content-Heading 
+{
+	text-align:left;
+	font-family:@Standard;
+	font-weight:600;
+	font-size:14px;
+	text-transform:none;
+	color:@Black;
+} 
+
+.Better-Label
+{
+	text-align:left;
+	font-family:@Thin;
+	font-weight:100;
+	font-size:12px;
+	color:@Text-Light;
+}
+
+
+
+/* STYLES */
+
+.Better-Soft-Border
+{
+	-webkit-box-shadow: inset 0px 0px 1px 1px rgba(0,0,0,0.08);
+	-moz-box-shadow: inset 0px 0px 1px 1px rgba(0,0,0,0.08);
+	box-shadow: inset 0px 0px 1px 1px rgba(0,0,0,0.08);
+}
+
+.Better-Orange-Toolbar-Button
+{
+	background:@Orange;
+	border:0px;
+	border-left: solid 1px @White;
+	border-right: solid 1px @White;
+	
+	&:hover
+	{
+		transition: .05s;
+		box-shadow: inset 0px 0px 5px 5px rgba(0,0,0,0.01);
+		background-color: darken(@Orange, 4%);
+		color:@White;
+		text-decoration:none;
+	}
+	
+	&:active
+	{
+		transition:.1s;
+		box-shadow: inset 0px 0px 5px 5px rgba(0,0,0,0.01);			
+		background-color:darken(@Orange, 8%);
+	}
+}
+
+.Better-Blue-Curved-Button
+{
+	background: @Light-Blue;
+	border-radius: 40px;
+	
+	&:hover
+	{
+		transition: .05s;
+		box-shadow: inset 0px 0px 5px 5px rgba(0,0,0,0.01);
+		background-color: lighten(@Light-Blue, 5%);
+		color:@White;
+		text-decoration:none;
+	}
+	
+	&:active
+	{
+		transition:.1s;
+		box-shadow: inset 0px 0px 5px 5px rgba(0,0,0,0.01);			
+		background-color:lighten(@Light-Blue, 12%);
+	}
+}
+
+.Better-Black-Button
+{
+	background: @Black;
+	border-radius:0px;
+	
+	&:hover
+	{
+		transition: .05s;
+		box-shadow: inset 0px 0px 5px 5px rgba(255,255,255,0.01);
+		background-color: lighten(@Black, 20%);
+		color:@White;
+		text-decoration:none;
+	}
+	
+	&:active
+	{
+		transition:.1s;
+		box-shadow: inset 0px 0px 5px 5px rgba(255,255,255,0.01);
+		background-color: lighten(@Black, 27%);
+	}	
+
+}
+
+
+

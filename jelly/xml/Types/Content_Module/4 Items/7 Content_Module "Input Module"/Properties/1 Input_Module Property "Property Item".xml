@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input_Module Property "Property Item" --}
+		{Property}
+			{Type}Input_Module{/Type}
+			{Name}Property Item{/Name}
+			{Value_Type}Property{/Value_Type}
+		{/Property}
+	
+{/Jelly}

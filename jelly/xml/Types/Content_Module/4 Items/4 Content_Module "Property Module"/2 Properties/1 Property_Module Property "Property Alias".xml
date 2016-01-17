@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_Module Property "Property Alias" --}
+		{Property}
+			{Type}Property_Module{/Type}
+			{Name}Property Alias{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

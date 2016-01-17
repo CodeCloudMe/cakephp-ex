@@ -1,0 +1,16 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Purchase_Module Template "Default" --}
+		{Template}
+			{Type}Purchase_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Purchase -->
+				<!-- TODO implement label and which property to use for price -->
+				<!-- TODO no_wrap prevents the type_action from refreshing, but type_actions should never refresh without their parents -->
+				[Current_Item.Action "Purchase" no_refresh /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

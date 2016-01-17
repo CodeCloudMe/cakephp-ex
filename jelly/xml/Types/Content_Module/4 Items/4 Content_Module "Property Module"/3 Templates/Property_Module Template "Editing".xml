@@ -1,0 +1,79 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_Module Template "Editing" --}
+		{Template}
+			{Type}Property_Module{/Type}
+			{Name}Editing{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Show default template -->
+					[Set Globals.Editing to True /]
+					[This as Default /]
+				
+					<!-- Disambiguate -->
+					[Set Current_Property_Module to This /]
+					[Set Current_Property_Module_Property_Item to Current_Property_Module.Property_Item /]
+					
+					<!-- Controls -->
+					<div class="Module_Controls">
+						<!-- Change Size -->
+						<div class="Group">
+							[Current_Content_Module.Action "Change Size" /]
+						</div>
+						
+						<!-- Change Width -->
+						<div class="Group">
+							[Current_Content_Module.Action "Change Width" /]
+						</div>
+						
+						<!-- Show/Hide Label -->
+						<div class="Group">
+							[Current_Property_Module.Action "Change Label" /]
+						</div>
+						
+						<!-- Change Overlay (for complex values) -->
+						[If Current_Property_Module_Property_Item.Value_Type is complex type]
+							<div class="Group">
+								[Current_Content_Module.Action "Change Overlay" /]
+							</div>
+						[/If]
+						
+						<!-- Display (for complex values) -->
+						[If Current_Property_Module_Property_Item.Value_Type is complex type]
+							<div class="Group">
+								[Current_Property_Module.Action "Change Display" /]
+							</div>
+						[/If]
+						
+						<!-- Add link (for complex values) -->
+						[If Current_Property_Module_Property_Item.Value_Type is complex type]
+							<div class="Group">
+								[Current_Property_Module.Action "Add Item" /]
+							</div>
+						[/If]
+						
+						<!-- Delete -->
+						[Link to "/Property_Module/[This.ID no_wrap /]/Hide" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg"> Hide[/Link]
+						
+						<!-- Done -->
+						[If Current_Property_Module_Property_Item.Value_Type is simple type]
+							[Then]
+								<!-- Save Edit Inline Action -->
+								<a href="#" onclick="Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': Jelly.jQuery('#[Current_Content_Module_Namespace no_wrap /] \[data-kind=Item\]\[data-type=Type_Action\]\[data-alias=Edit_Inline\]').get(0)\});return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/check-thin.svg"> Done</a>
+							[/Then]
+							[Else]
+								<!-- Switch to viewing -->
+								[Link to "/[Current_Item.Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Viewing_Content_Module:Content_Module_ID=[Current_Content_Module.ID no_wrap /]" into "[Current_Content_Module_Namespace no_wrap /]"]
+									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/check-thin.svg"> Done
+								[/Link]
+							[/Else]
+						[/If]
+					</div>
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

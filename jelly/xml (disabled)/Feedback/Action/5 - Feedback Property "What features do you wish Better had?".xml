@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Feedback" Input_Module "What features do you wish Better had?" --}
+		{Input_Module}
+			{Action_Item}Share_Feedback{/Action_Item}
+			{Property_Item}18968692380{/Property_Item}
+			{Package}Local{/Package}
+		{/Input_Module}
+	
+{/Jelly}

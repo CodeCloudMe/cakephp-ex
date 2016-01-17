@@ -1,0 +1,46 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Check Box" --}
+		{Input}
+			{Name}Check Box{/Name}
+			{Content}
+				<span class="Input_Checkbox_Wrapper">
+					<input
+						name="[Input.Variables.Alias No_Wrap /]"
+						id="[Input.Namespace No_Wrap /]_Value"
+						class="Jelly_Check_Box_Input [Input.Variables.Class No_Wrap /]"
+						style="[Input.Variables.Style No_Wrap /]"
+						type="checkbox" [If Input.Variables.Value]checked="checked"[/If]
+						[If Input.Variables.Attributes exists][Input.Variables.Attributes No_Wrap /][/If]
+					/>
+					<label for="[Input.Namespace No_Wrap /]_Value">
+						<span class="check"></span>
+						<span class="box"></span>
+					</label>
+				</span>
+				[External_Script]					
+					// Register input to the action namespace.
+					Jelly.Actions.Register_Action_Input( \{
+							Namespace: "[Current_Action.Namespace no_wrap /]",
+							Element: document.getElementById("[Input.Namespace No_Wrap /]_Value")
+						 \});
+					
+					Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").focus(function()
+						 \{	
+							// Set default target
+							Jelly.Handlers.Set_Default_Target(this);
+						\});
+					
+					[If Input.Variables.Execute_On_Change]					
+						// Trigger action execution on change
+						Jelly.jQuery("#" + "[Input.Namespace No_Wrap /]_Value").change(function()
+							 \{	
+								Jelly.Actions.Execute_Action_Timer( \{'Namespace': "[Current_Action.Namespace no_wrap /]" \});
+							\});
+					[/If]
+				[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

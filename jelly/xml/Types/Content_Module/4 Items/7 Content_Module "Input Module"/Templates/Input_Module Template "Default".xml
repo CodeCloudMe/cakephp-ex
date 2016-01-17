@@ -1,0 +1,96 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input_Module Template "Default" --}
+		{Template}
+			{Type}Input_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- TODO support for non-property input modules -->
+
+				[Set Current_Input_Module to This /]
+				[Set Current_Property to This.Property_Item /]
+				[Set Current_Property_Value_Type to Current_Property.Value_Type /]
+				[Set Current_Property_Type to Current_Property.Values.Type /]
+
+				[If Current_Property.Label]
+					[Then][Set Current_Property.Display_Name to Current_Property.Label/][/Then]
+					[Else][Set Current_Property.Display_Name to Current_Property.Name/][/Else]
+				[/If]
+
+				<!-- Body -->
+				<span class="Module_Content Input_Module" data-module="Input_Module">
+					<span class="Module_Settings" id="[Current_Input_Module.Namespace no_wrap /]_Settings">
+						<span class="Setting_Row">
+							<span class="Setting_Label" style="width:56px;">Move:</span>
+							<span class="Setting_Value">
+								[Current_Input_Module.Action "Move Up"/] [Current_Input_Module.Action "Move Down"/]
+							</span>
+						</span>
+
+						[If Current_Property.Name is not "Name" and Current_Property.Name is not "Email Address"]
+							<span class="Setting_Row">
+								<span class="Setting_Value">
+									[Link to Remove Current_Input_Module]Hide "[Current_Property.Display_Name /]"[/Link]
+								</span>
+							</span>
+						[/If]
+					</span>
+
+					<span class="Label">
+						[Current_Property.Display_Name /]
+					</span>
+					<span class="Value">
+						[If Current_Property_Value_Type is complex type]
+							[Then]
+								[If Current_Property_Value_Type.Alias is "Picture" or Current_Property_Value_Type.Alias is "Video" or Current_Property_Value_Type.Alias is "Sound" or Current_Property_Value_Type.Alias is "Website" or Current_Property_Value_Type.Alias = "Social_Media" or Current_Property_Value_Type.Alias = "Location"]
+									[Then]
+										<span class="Block" style="padding: 10px; border-style: solid; border-width: 1px; border-color: #e7e7e7;">
+											[If Current_Property_Value_Type.Alias is "Picture"]
+												[Input "Picture" with Name = Current_Property.Name /]
+											[/If]
+											[If Current_Property_Value_Type.Alias is "Video"]
+												[Input "Video" with Name = Current_Property.Name /]
+											[/If]
+											[If Current_Property_Value_Type.Alias is "Sound"]
+												[Input "Sound" with Name = Current_Property.Name /]
+											[/If]
+											[If Current_Property_Value_Type.Alias is "Website"]
+												[Input "Website" with Name = Current_Property.Name /]
+											[/If]
+											[If Current_Property_Value_Type.Alias is "Social_Media"]
+												[Input "Social Media" with Name = Current_Property.Name /]
+											[/If]
+											[If Current_Property_Value_Type.Alias is "Location"]
+												[Input "Location" with Name = Current_Property.Name /]
+											[/If]
+										</span>
+									[/Then]
+									[Else]
+										[Input "Select Clean" with Name = Current_Property.Name, Value_Type = Current_Property_Value_Type[If Current_Property.Relation = "Many-To-Many" or Current_Property.Relation = "One-To-Many"], Allow_Multiple_Values = True[/If]/]
+									[/Else]
+								[/If]
+							[/Then]
+							[Else]
+								[Current_Property_Value_Type.Default_Input with Name = Current_Property.Name, Value_Type = Current_Property_Value_Type /]
+							[/Else]
+						[/If]
+					</span>
+
+					[Admin]
+						<!-- Admin Only... -->
+
+						<!-- Edit Controls -->
+						<div id="[This.ID no_wrap /]_Edit_Link_Finder">
+							<a href="#" onclick="Jelly.jQuery(this).toggleClass('Selected');Jelly.jQuery('#[Current_Input_Module.Namespace no_wrap /]_Settings').toggleClass('Visible'); return false;" class="Module_Edit_Link">
+								<img class="iconic iconic-sm" data-src="/jelly/libraries/iconic/svg/smart/pencil.svg">
+							</a>
+						</div>
+					[/Admin]
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}
+
+

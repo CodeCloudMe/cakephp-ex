@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	<!-- TODO - until we have more flexible containers, this is just about menu placement.  --> 
+		
+	{!-- Browser_Control "Container Hack" --}
+		{Browser_Control}
+			{Name}Container Hack{/Name}
+			{Content}
+			{/Content}
+		{/Browser_Control}
+	
+{/Jelly}

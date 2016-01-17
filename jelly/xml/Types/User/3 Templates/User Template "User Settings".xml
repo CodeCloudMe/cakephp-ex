@@ -1,0 +1,40 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Template "User Settings" --}
+		{Template}
+			{Type}User{/Type}
+			{Name}User Settings{/Name}
+			{Content}
+				<!-- Admin only -->
+				[Admin]
+					<!-- TODO: restrict editing to authorized users -->
+					
+					<!-- Disambiguate -->
+					[Set Current_Item to This /]
+					
+					<span class="User_Settings_Window">
+						<!-- Close Button -->
+						<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+						</a>
+						
+						<!-- Picture -->
+						[Link to "/Action/Set_Complex_Value:Item=[Current_Item.ID no_wrap /],Item_Type=[Current_Item.Type.Alias no_wrap /],Property_Alias=Picture" into "Window" with Class = "User_Picture"]
+							[Current_Item.Picture as Cover /]
+						[/Link]
+						
+						<!-- Change settings -->
+						[Action "Change User Settings" with Current_Item = Current_Item /]
+						
+						<!-- Change Password -->
+						<!-- TODO -->
+						[Ignore]
+							[Link to "/Action/Change_Password:Item=[Current_Item.ID no_wrap /],Item_Type=[Current_Item.Type.Alias no_wrap /]" into "Window" with Class = "Property_Module_Set_Link"]Change Password[/Link]
+						[/Ignore]
+					</span>
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

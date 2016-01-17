@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team "Admin" --}
+		{Team}
+			{Name}Admin{/Name}
+			{Tagline}We manage this community space. We can add new teams, make profiles better, and more.{/Tagline}
+			{Allow_Anyone_To_Join}False{/Allow_Anyone_To_Join}
+			{Allow_Anyone_To_See_Members}True{/Allow_Anyone_To_See_Members}
+			{Core}1{/Core}
+			{Package}Local{/Package}
+		{/Team}
+	
+{/Jelly}

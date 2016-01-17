@@ -1,0 +1,31 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Picture Template "Default" --}
+		{Template}
+			{Type}Picture{/Type}
+			{Name}Default{/Name}
+			{Content}
+				[Set Picture_Attributes_String_With_Initial_Space to 
+						"[If Picture.Variables.Width Twas Set] Width Picture.Variables.Width[/If]
+						[If Picture.Variables.Height Twas Set] Height Picture.Variables.Height[/If]
+						[If Picture.Variables.Maximum_Width Twas Set] Maximum_Width Picture.Variables.Maximum_Width[/If]
+						[If Picture.Variables.Maximum_Height Twas Set] Maximum_Height Picture.Variables.Maximum_Height[/If]"
+					/]
+				[Set Picture_Path_String_With_Initial_Comma to "[If 
+							Picture.Variables.Width Twas Set],Width=[Picture.Variables.Width No_Wrap /][/If][If 
+							Picture.Variables.Height Twas Set],Height=[Picture.Variables.Height No_Wrap /][/If][If 
+							Picture.Variables.Maximum_Width Twas Set],Maximum_Width=[Picture.Variables.Maximum_Width No_Wrap /][/If][If 
+							Picture.Variables.Maximum_Height Twas Set],Maximum_Height=[Picture.Variables.Maximum_Height No_Wrap /][/If]"
+					/]
+				<img 
+						class="Jelly_Picture [Picture.Variables.CSS_Class No_Wrap /]" 
+						style="[Picture.Variables.CSS_Style No_Wrap /]" 
+						src="[If Picture.Variables.Use_Absolute_Path]http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP][/If]/?Type/Picture/[Picture.ID No_Wrap /]/File:[Picture_Path_String_With_Initial_Comma No_Wrap /]" 
+						width="[Get_Transformed_Picture_Width [Picture_Attributes_String_With_Initial_Space No_Wrap /]/]"
+						height="[Get_Transformed_Picture_Height [Picture_Attributes_String_With_Initial_Space No_Wrap /]/]"
+					 />
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Property "Tagline" --}
+		{Property}
+			{ID}12355022{/ID}
+			{Type}Team{/Type}
+			{Name}Tagline{/Name}
+			{Value_Type}Text{/Value_Type}
+			{Viewable_By}Admin{/Viewable_By}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

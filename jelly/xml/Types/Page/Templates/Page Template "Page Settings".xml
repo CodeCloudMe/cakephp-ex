@@ -1,0 +1,50 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Page Template "Page Settings" --}
+		{Template}
+			{Type}Page{/Type}
+			{Name}Page Settings{/Name}
+			{Content}
+				[Set Current_Item to This /]
+				<span class="Page_Settings_Content">
+					<span class="Single_Name_Input Setting_Row">
+						<span class="Setting_Label">
+							Name:
+						</span>
+						<span class="Setting_Value">
+							[Current_Item.Action "Edit Text Property" with Property_Alias = "Name" /]
+						</span>
+					</span>
+					<span class="URL_Detail Setting_Row">
+						<span class="Setting_Label">
+							Permanent Link:
+						</span>
+						<span class="Setting_Value">
+							<input type="text" readonly="readonly" value="http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[This.Alias no_wrap /]" />
+						</span>
+					</span>
+					<span class="Show_In_Toolbar_Setting Setting_Row">
+						<span class="Setting_Label">
+							Pin to Navigation:
+						</span>
+						<span class="Setting_Value">
+							[Current_Item.Action "Toggle in Toolbar" /]
+						</span>
+					</span>
+					<span class="Delete_Type_Setting Setting_Row">
+						<span class="Setting_Label">
+							Delete Page:
+						</span>
+						<span class="Setting_Value">
+							[Link to "/Type/[Current_Item.Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Remove" into "Window" with Class="Small_Button"]Delete[/Link]
+						</span>
+					</span>
+				</span>
+			{/Content}
+			{Less_Style}
+			{/Less_Style}
+			{Package}Website{/Package}
+		{/Template}
+	
+{/Jelly}

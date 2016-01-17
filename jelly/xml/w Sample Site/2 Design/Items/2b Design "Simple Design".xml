@@ -1,0 +1,20 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- Design "Simple Design" --}
+		{Design}
+			{Name}Simple Design{/Name}
+			{Package}Design{/Package}
+			{Theme}Signas{/Theme}
+			{Content}
+				<!-- Navigation -->
+				<!-- TODO - remove frontend_only when we switch containers -->
+				[Block "Navigation" item_wrap_element "nav" item_classes "Frontend_Only"/]
+				
+				<!-- Container -->
+				[Container /]
+			{/Content}
+			{Package}Website{/Package}
+		{/Design}
+	
+{/Jelly}

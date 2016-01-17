@@ -1,0 +1,48 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Time" --}
+		{Input}
+			{Name}Time{/Name}
+			{Content}
+				<!-- Instantiate default input value -->
+				[If Input.Variables.Value Twas Not Set]
+					[Set Input.Variables.Value to Now /]
+				[/If]
+				
+				<!-- Set value type to correct type--> 
+				<!-- TODO - should happen in "Set" --> 
+				[If not Input.Variables.Value.Is_Item]
+					[New Time]
+						[Set Time.Simple_Value to Input.Variables.Value/]
+						[Set Input.Variables.Value to Time/]
+					[/New Time]
+				[/If]
+
+				<!-- Hidden form input value --> 
+				<input
+					type="hidden"
+					name="[Input.Variables.Alias No_Wrap /]"
+					id="[Input.Namespace No_Wrap /]_Value"
+					value="[Input.Variables.Value no_wrap][SQL_Value no_wrap /][/Input.Variables.Value]"
+				/>
+
+				<!-- Hidden form input value type --> 
+				<input
+					type="hidden"
+					name="[Input.Variables.Alias No_Wrap /]_Type"
+					id="[Input.Namespace No_Wrap /]_Value_Type"
+					value="Time"
+				/>
+				
+				[Block "Time Input Element" with Execute_On_Change = Input.Variables.Execute_On_Change/]
+				
+				[External_Script]
+					// Register input to the current namespace.
+					Jelly.Actions.Register_Action_Input(\{Namespace: "[Current_Action.Namespace No_Wrap /]", Element: document.getElementById("[Input.Namespace No_Wrap /]_Value")\});
+					Jelly.Actions.Register_Action_Input(\{Namespace: "[Current_Action.Namespace No_Wrap /]", Element: document.getElementById("[Input.Namespace No_Wrap /]_Value_Type")\});
+				[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

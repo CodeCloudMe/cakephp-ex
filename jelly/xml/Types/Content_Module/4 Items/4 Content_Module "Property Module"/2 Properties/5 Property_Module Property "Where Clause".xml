@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_Module Property "Where Clause" --}
+		{Property}
+			{Type}Property_Module{/Type}
+			{Name}Where Clause{/Name}
+			{Value_Type}Text{/Value_Type}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

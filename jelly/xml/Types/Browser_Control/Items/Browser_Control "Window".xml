@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Browser_Control "Window" --}
+		{Browser_Control}
+			{Name}Window{/Name}
+			{Content}
+				<div id="NAMESPACE" class="Jelly_Modal"></div>
+			{/Content}
+		{/Browser_Control}
+	
+{/Jelly}

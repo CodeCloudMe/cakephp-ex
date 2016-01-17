@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Payment Service Template "Form Plugin" --}
+		{Template}
+			{Type}Payment_Service{/Type}
+			{Name}Form Plugin{/Name}
+			{Content}
+				[This.Validation_Code/]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

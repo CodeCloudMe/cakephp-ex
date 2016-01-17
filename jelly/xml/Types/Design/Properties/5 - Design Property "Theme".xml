@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Design Property "Theme" --}
+		{Property}
+			{Type}Design{/Type}
+			{Name}Theme{/Name}
+			{Value_Type}Theme{/Value_Type}
+			{Reverse_Name}Design{/Reverse_Name}
+		{/Property}
+	
+{/Jelly}

@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Property "Requirements" --}
+		{Property}
+			{ID}564876123{/ID}
+			{Type}Team{/Type}
+			{Name}Requirements{/Name}
+			{Value_Type}Long_Text{/Value_Type}
+			{Core}1{/Core}
+		{/Property}
+	
+{/Jelly}

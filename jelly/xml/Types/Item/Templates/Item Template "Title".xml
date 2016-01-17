@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Title" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Title{/Name}
+			{Content}
+				[1 Site from Database][Name/][/Site] - [Item.Name/]
+			{/Content}
+			{Content_Type}text/plain{/Content_Type}
+		{/Template}
+	
+{/Jelly}

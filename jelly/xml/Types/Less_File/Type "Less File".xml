@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Less File" --}
+		{Type}
+			{Name}Less File{/Name}
+			{Parent_Type}CSS_File{/Parent_Type}
+			{Plural_Name}Less Files{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Files{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

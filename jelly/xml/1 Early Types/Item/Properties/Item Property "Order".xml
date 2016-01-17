@@ -1,0 +1,15 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "Order" --}
+	
+		{Property}
+			{Type}Item{/Type}
+			{Value_Type}Number{/Value_Type}
+			{Name}Order{/Name}
+			{Alias}Order{/Alias}
+			{Data_Name}Order{/Data_Name}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

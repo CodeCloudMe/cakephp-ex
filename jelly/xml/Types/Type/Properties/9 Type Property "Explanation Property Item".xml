@@ -1,0 +1,13 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type Property "Explanation Property Item" --}
+	
+		{Property}
+			{Type}Type{/Type}
+			{Name}Explanation Property Item{/Name}
+			{Value_Type}Property{/Value_Type}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

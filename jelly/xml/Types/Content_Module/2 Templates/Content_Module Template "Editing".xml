@@ -1,0 +1,37 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Content_Module Template "Editing" --}
+		{Template}
+			{Type}Content_Module{/Type}
+			{Name}Editing{/Name}
+			{Content}
+				<!-- Display specific item -->
+				<!-- TODO Shouldn't need no_refresh when system is aware of properties from outside current item -->
+				[This.Specific_Item no_refresh]
+					<!-- Disambiguate -->
+					[Set Current_Content_Module to This /]
+					[Set Current_Content_Module_Namespace to This.Namespace /]
+					
+					<!-- Editing template -->
+					[This as Editing no_refresh /]
+				
+					[Admin]
+						<!-- Admin Only... -->
+	
+						<!-- Edit Controls -->
+						[Ignore]
+						<span class="Jelly">
+							<div id="[Current_Content_Module.ID no_wrap /]_Edit_Link_Finder">
+								[Link to "/[Current_Item.Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Viewing_Content_Module:Content_Module_ID=[Current_Content_Module.ID no_wrap /]" into "[Current_Content_Module.Namespace no_wrap /]" with Class = "Module_Edit_Link Active Icon" [If Current_Content_Module.Type.Alias is "Text_Module" or Current_Content_Module.Type.Alias is "Property_Module"], On_Click = "Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': Jelly.jQuery('#[Current_Content_Module.Namespace no_wrap /] \[data-kind=Item\]\[data-type=Type_Action\]\[data-alias=Edit_Inline\]').get(0)\});return false;"[/If]]
+									<img class="iconic iconic-sm" data-src="/jelly/libraries/iconic/svg/smart/pencil.svg" >
+								[/Link]
+							</div>
+						</span>
+						[/Ignore]
+					[/Admin]
+				[/This.Specific_Item]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,16 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Folder "Root" --}
+		{Folder}
+			{Name}Root{/Name}
+			{Child_Item}Community{/Child_Item}
+			{Child_Item}43219753{/Child_Item}
+			{Child_Item}7198673{/Child_Item}
+			{Child_Item}Event{/Child_Item}
+			{Child_Item}Reward{/Child_Item}
+			{Child_Item}Benefit_Program{/Child_Item}
+			{Package}Local{/Package}
+		{/Folder}
+	
+{/Jelly}

@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Contact Property "First Name" --}
+		{Property}
+			{Type}Contact{/Type}
+			{Name}First Name{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

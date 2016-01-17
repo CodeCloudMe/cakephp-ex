@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Session Property "Code" --}
+	{!-- TODO better name for Code? Is it just a Password the same as a User? Or more like a unique unlock code that needs to be authenticated against --}
+		{Property}
+			{Type}Session{/Type}
+			{Name}Code{/Name}
+			{Value_Type}Number{/Value_Type}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

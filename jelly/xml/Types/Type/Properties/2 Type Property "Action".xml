@@ -1,0 +1,16 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type Property "Action" --}
+	
+		{Property}
+			{Type}Type{/Type}
+			{Value_Type}Type_Action{/Value_Type}
+			{Name}Action{/Name}
+			{Plural_Name}Actions{/Plural_Name}
+			{Reverse_Name}Type{/Reverse_Name}
+			{Relation}One-To-Many{/Relation}
+			{Key}Alias{/Key}
+		{/Property}
+	
+{/Jelly}

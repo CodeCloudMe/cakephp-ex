@@ -1,0 +1,111 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add RSVP Module" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add RSVP Module{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<div>
+						Category: [Input "Text Field" with Name = "RSVP Name", Value = "Guest" /]
+					</div>
+					<div>
+						Default Capacity: [Input "Text Field" with Name = "RSVP Capacity", Value = "10" /]
+					</div>
+					
+					[Link to Execute]Add[/Link]
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Added",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only -->
+					
+					[New RSVP_Module]
+						<!-- Disambiguate -->
+						[Set Current_New_Item to This /]
+						
+						<!-- Defaults -->
+						
+						<!-- Set RSVP Name -->
+						[Set Current_New_Item.Name to Form.RSVP_Name /]
+						
+						<!-- Save -->
+						[Save Current_New_Item /]
+						
+						<!-- Check if types and properties already exist -->
+						[Current_Action.Target.Property where Alias is Current_New_Item.Alias]
+							[Then]
+								[Show Error for "RSVP_Name"]Name already in use for another property.[/Show]
+							[/Then]
+						[/Type]
+						[Current_Action.Target.Property where Alias is "[Current_New_Item.Alias no_wrap /]_Capacity"]
+							[Then]
+								[Show Error for "RSVP_Name"]Capacity name already in use for another property.[/Show]
+							[/Then]
+						[/Type]
+						
+						<!-- Check if there was an error -->
+						[If not Form.Error]	
+							<!-- Create Property for RSVPs -->
+								<!-- Create User Property -->
+								[New Property with Name = Form.RSVP_Name, Type = Current_Action.Target.Type.Alias, Value_Type = "User", Relation = "Many-To-Many", Reverse_Name = "RSVPd Events As [Form.RSVP_Name no_wrap /]", Admin = 1]
+									[Save This /]
+								[/New Type]
+								<!-- Create Capacity Property -->
+								[Set Current_Action.Capacity_Property_Name to "[Form.RSVP_Name no_wrap /] Capacity" /]
+								[New Property with Name = Current_Action.Capacity_Property_Name, Type = Current_Action.Target.Type.Alias, Value_Type = "Number", Default_Value = Form.RSVP_Capacity, Admin = 1]
+									[Save This /]
+									[Set Current_Action.Capacity_Property_Alias to This.Alias /]
+								[/New Type]
+						
+							<!-- Save module -->
+							[Save Current_New_Item /]
+							
+							<!-- Add RSVP Slots -->
+							<!-- TODO hacky to get new property -->
+							[Current_Action.Target.Specific_Item]
+								[Set This.[Current_Action.Capacity_Property_Alias no_wrap /] to Form.RSVP_Capacity /]
+								[Save This /]
+							[/Current_Action.Target.Specific_Item]
+						
+							<!-- Add module to target type -->
+							[Add Current_New_Item to Current_Action.Target.Type.Content_Module /]
+						
+							<!-- Trigger Edited Event -->
+							[External_Script]
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										"Event": "Added",
+										"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+										"Item": "[Current_New_Item.ID no_wrap /]",
+										"Item_Type": "[Current_New_Item.Type as Alias No_Wrap /]",
+										"Badge": "[Format as "Javascript String"][Current_New_Item as Badge with No_Drag = 1 /][/Format]"
+									\});
+							[/External_Script]
+							
+							<!-- Save target type -->
+							[Save Current_Action.Target.Type /]
+						[/If]
+					[/New]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

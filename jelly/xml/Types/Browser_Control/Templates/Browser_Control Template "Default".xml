@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Browser_Control Template "Default" --}
+		{Template}
+			{Type}Browser_Control{/Type}
+			{Name}Default{/Name}
+			{Content}
+				[Content /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

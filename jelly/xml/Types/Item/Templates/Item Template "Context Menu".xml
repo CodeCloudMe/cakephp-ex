@@ -1,0 +1,314 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Context Menu" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Context Menu{/Name}
+			{Content}
+				[Set Menu_Item to This /]
+				
+				[Set Menu_Item.Variables.Visible to False/]
+				[If Globals.Superuser]
+					[Set Menu_Item.Variables.Visible to True/]
+				[/If Globals.Superuser]
+				[Authenticate "Superuser"]
+					[Set Menu_Item.Variables.Visible to True/]
+				[/Authenticate]
+
+
+				<table cellpadding="0" cellspacing="0" border="0">
+					[If Menu_Item.Variables.Visible]
+						[Admin]
+		
+							<!-- Edit Property Link -->
+							[Ignore]
+								[If Path_Variables.Property_Alias Exists]
+									[Menu_Item.Property where Alias = "[Path_Variables.Property_Alias No_Wrap /]"]
+										[Set Current_Property = This /]
+										<tr class="Jelly_Menu_Row" onmousemove="Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');">
+											<td class="Jelly_Menu_Item" colspan="2">
+												[Link to Edit Menu_Item.[Current_Property.Alias No_Wrap /] with On_Focus = "Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');"]
+													Edit [Menu_Item.Type.Name /] [Current_Property.Name /]
+												[/Link]
+											</td>
+										</tr>
+									[/Menu_Item.Property]
+								[/If]
+							[/Ignore]
+		
+							<!-- Separator -->
+							<tr><td colspan="2"><hr class="Jelly_Menu_Separator" /></td></tr>
+		
+							<!-- TODO - test on_focus --> 
+							<!-- Top Item -->
+							<!-- Header -->
+							<tr class="Jelly_Menu_Row" onmousemove="Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');">
+								<td class="Jelly_Menu_Header" colspan="2">
+									[Menu_Item.Type.Name /] "[Menu_Item.Name /]"
+								</td>
+							</tr>
+
+							<!-- Edit/Remove Links -->
+							<tr class="Jelly_Menu_Row" onmousemove="Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');">
+								<td class="Jelly_Menu_Item" colspan="2">
+									[Link to Edit Menu_Item with On_Focus = "Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');"]
+										Edit
+									[/Link]
+								</td>
+							</tr>
+							<tr class="Jelly_Menu_Row" onmousemove="Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');">
+								<td class="Jelly_Menu_Item" colspan="2">
+									[Link to Remove Menu_Item with On_Focus = "Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');"]
+										Remove
+									[/Link]
+								</td>
+							</tr>
+	
+			
+							[Ignore]
+								<!-- TODO - ignored because the below is not implemented yet. -->
+								<!-- Duplicate Links -->
+								<tr class="Jelly_Menu_Row">
+									<td class="Jelly_Menu_Item" colspan="2">
+										[Menu_Item.Action "Duplicate" with On_Focus =  "Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');" /]
+									</td>
+								</tr>
+		
+								<!-- Move Up/Down Links -->
+								[If Path_Variables.Order is "Order"]
+									<tr class="Jelly_Menu_Row">
+										<td class="Jelly_Menu_Item" colspan="2">
+											[Link to Move Menu_Item Up with On_Focus =  "Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');" /]
+										</td>
+									</tr>
+									<tr class="Jelly_Menu_Row">
+										<td class="Jelly_Menu_Item" colspan="2">
+											[Link to Move Menu_Item Down with On_Focus =  "Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');" /]
+										</td>
+									</tr>
+								[/If]
+							[/Ignore]
+		
+							<!-- Template Links -->
+							[If Path_Variables.Template_ID Exists]
+								[Template from Database where ID = Path_Variables.Template_ID]
+									[Set Current_Template = This/]
+
+									[If Menu_Item.Type.Alias = Current_Template.Values.Type.Alias]
+										[Then]
+											<!-- Edit Template Link --> 
+											<tr class="Jelly_Menu_Row" onmousemove="Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');">
+												<td class="Jelly_Menu_Item" colspan="2">
+													[Menu_Item.Template [Current_Template.Alias No_Wrap /]]
+														[Link to Edit Template with On_Focus = "Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');"]
+															Edit Template "[Template.Name /]"
+														[/Link]
+													[/Menu_Item.Template]
+												</td>
+											</tr>
+										[/Then]
+										[Else]
+											<!-- Create Template Link --> 
+											<tr class="Jelly_Menu_Row" onmousemove="Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');">
+												<td class="Jelly_Menu_Item" colspan="2">
+													<!-- TODO - can't set variables type, it is impossible to retrieve --> 
+													[Action "Add Template" with Template_Type = Menu_Item.Type, Alias = Current_Template.Alias, Name = Current_Template.Name, Content = Current_Template.Content /]
+												</td>
+											</tr>
+										[/Else]
+									[/If]
+								[/Template]
+							[/If]
+		
+							<!-- Separator -->
+							<tr><td colspan="2"><hr class="Jelly_Menu_Separator" /></td></tr>
+		
+						[/Admin]
+	
+						<!-- Extras -->
+						<!-- TODO - ignored because the below is not implemented yet. -->
+						[Ignore]\{This as Context_Menu_Extras /\}[/Ignore]
+
+						<!-- End Top Item -->	
+
+
+						<!-- TODO What's this? -->
+						[If Menu_Item.Variables.Show_Root_Extras Does Not Exist]
+							[Set Menu_Item.Variables.Show_Root_Extras to "False" /]
+						[/If]
+						[If Menu_Item.Variables.Show_Root_Extras is "True"]
+
+							[Admin]						
+								<!-- Context Parents -->
+								<tr class="Jelly_Menu_Row" onmousemove="Jelly.Interface.Highlight_Namespace('[Form.Target_Namespace No_Wrap /]');">
+									<td class="Jelly_Menu_Header" colspan="2">
+										Layers
+									</td>
+								</tr>
+								[For Parent_Index from 0 to Form.Context_Parent_Count - 1]
+									[Form.Context_Parent_[Parent_Index No_Wrap /]_Item]
+										[Set This.Menu_Inner_Item to This/]
+										<tr class="Jelly_Menu_Row" id="[Namespace No_Wrap /]_Context_Item_Row" 		onmousemove="Jelly.Interface.Highlight_Namespace('[Form.Context_Parent_[Parent_Index No_Wrap /]_Namespace No_Wrap /]');"
+											>
+											<td class="Jelly_Menu_Item" id="[Namespace No_Wrap /]_Context_Item">
+												<!-- TODO  Added mouseover for testing, maybe bad, maybe good, but fun so I kept it. --> 
+												<a
+													href="#"
+													id="[Namespace No_Wrap /]_Context_Item_Link"
+													class="Do_Not_Close_Menu_On_Click"
+													onfocus="Jelly.Interface.Highlight_Namespace('[Form.Context_Parent_[Parent_Index No_Wrap /]_Namespace No_Wrap /]');"
+													onclick="[Format as "Single Line Code"]
+														var This_Item = this;
+														var Menu_Reference = Jelly.Interface.Create_Menu(
+														\{
+															Alias: 'Context_Sub_Menu',
+															Attach: 'Element',
+															Attach_Element: document.getElementById('[Namespace No_Wrap /]_Context_Item_Row'),
+															Edge: 'Right',
+															URL: '/[Menu_Inner_Item.Type as Alias No_Wrap /]/[Menu_Inner_Item.ID No_Wrap /]/Context_Menu/Raw',
+															Post_Values: \{
+																	Target_Namespace: '[Form.Context_Parent_[Parent_Index No_Wrap /]_Namespace No_Wrap /]'
+																\},														
+														\});
+													return false;
+													[/Format]">
+													<div	class="Jelly_Menu_Badge">
+														[Menu_Inner_Item.Type.Name /] "[Menu_Inner_Item.Name /]"
+													</div>
+												</a>
+											</td>
+											<td class="Jelly_Menu_Arrow">
+												&#x25BA;
+											</td>
+										</tr>
+									[/Form]
+								[/For]
+
+								<!-- Separator -->
+								<tr><td colspan="2"><hr class="Jelly_Menu_Separator" /></td></tr>
+			
+								<tr class="Jelly_Menu_Row">
+									<td class="Jelly_Menu_Header" colspan="2">
+										Data
+									</td>
+								</tr>
+			
+								<tr class="Jelly_Menu_Row" id="[Namespace No_Wrap /]_Tools_Row">
+									<td class="Jelly_Menu_Item" id="[Namespace No_Wrap /]_Tools">
+										<a href="#" id="[Namespace No_Wrap /]_Tools_Link" class="Do_Not_Close_Menu_On_Click" onclick="[Format as "Single Line Code"]
+											var This_Item = this;
+											var Menu_Reference = Jelly.Interface.Create_Menu(
+											\{
+												Alias: 'Tools_Menu',
+												Attach: 'Element',
+												Attach_Element: document.getElementById('[Namespace No_Wrap /]_Tools_Row'),
+												Edge: 'Right',
+												URL: '/Block/Import_Export_Menu/Raw'
+											\});
+											return false;
+										[/Format]">
+											<div class="Jelly_Menu_Badge">
+												Import/Export
+											</div>
+										</a>
+									</td>
+									<td class="Jelly_Menu_Arrow">
+										&#x25BA;
+									</td>
+								</tr>
+			
+			
+								<tr class="Jelly_Menu_Row">
+									<td class="Jelly_Menu_Item" colspan="2">
+										[Link to "/Type"]Browse...[/Link]
+									</td>
+								</tr>
+	
+			
+								<!-- Separator -->
+								<tr><td colspan="2"><hr class="Jelly_Menu_Separator" /></td></tr>
+
+								<!-- TODO: implement "Show_Packages" and remove the top level of menus since you can just browse Types directly with Show_Packages -->										
+								<!--
+								<tr class="Jelly_Menu_Row" id="[Namespace No_Wrap /]_Packages_Row">
+									<td 
+										class="Jelly_Menu_Item" id="[Namespace No_Wrap /]_Packages_Cell" 
+										colspan="2"
+									>
+										<a
+											href="#"
+											id="[Namespace No_Wrap /]_Types_Link"
+											class="Do_Not_Close_Menu_On_Click"
+											onclick="[Format as "Single Line Code"]
+												var This_Item = this;
+														
+												var Menu_Reference = Jelly.Interface.Create_Menu(
+												\{
+													Alias: 'Packages_Menu',
+													Attach: 'Element',
+													Attach_Element: document.getElementById('[Namespace No_Wrap /]_Packages_Row'),
+													Edge: 'Right',
+													URL: '/Type/Browse/Raw:Show_Items=True,Show_New_Link=True,Show_Submenu=True,',
+													Do_Not_Focus_First_Item: true
+												\});
+			
+												Jelly.Handlers.Register_Handler(
+												\{
+													'Element': Menu_Reference\['Element'\],
+													'Event': 'Selected',
+													'Code': function(Parameters)
+													\{
+														Jelly.Handlers.Visit_Link(\{'URL': '/' + Parameters\['Item_Type'\] + '/' + Parameters\['Item'\]\});
+														Parameters\['Event'\] = 'Dismiss';
+														Jelly.Handlers.Call_Handler_For_Target(Parameters);
+													\}
+												\});
+		
+												Jelly.Handlers.Register_Handler(
+												\{
+													'Element': Menu_Reference\['Element'\],
+													'Event': 'Added',
+													'Code': function (Parameters)
+													\{
+														Jelly.Handlers.Visit_Link(\{'URL': '/' + Parameters\['Item_Type'\] + '/' + Parameters\['Item'\]\});
+													\}
+												\});
+												return false;
+											[/Format]"
+										>
+											Browse Database
+										</a>
+									</td>
+								</tr>
+								-->
+							[/Admin]
+						[/If]
+					[/If]
+	
+					[Guest]
+						[Then]
+							<!-- Login Link -->
+							<tr class="Jelly_Menu_Row">
+								<td class="Jelly_Menu_Item" colspan="2">
+									[Action "Setup User"]
+										[Link to This by Alias into "Window" /]
+									[/Action]
+								</td>
+							</tr>
+						[/Then]
+						[Else]
+							<!-- Logout Link -->
+							<tr class="Jelly_Menu_Row">
+								<td class="Jelly_Menu_Item" colspan="2">
+									[Link to Logout with Style="width:100%;display:inline-block;"/]
+								</td>
+							</tr>
+						[/Else]
+					[/Guest]
+				</table>
+			{/Content}
+		{/Template}
+	
+{/Jelly}
+

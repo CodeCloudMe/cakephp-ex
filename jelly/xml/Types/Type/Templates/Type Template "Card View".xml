@@ -1,0 +1,57 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "Card View" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}Card View{/Name}
+			{Content}
+				[If Type.Alias != "Type"]
+				
+					[Then]
+						<!-- TODO: Consider making a generic card view template.--> 
+						Card view is only for Type "Type".
+					[/Then]
+					
+					[Else]
+						<!-- Display all non-simple types. --> 
+						<!-- TODO: Add No_Child_Types Support -->
+						<!-- TODO: Is there a better simple type declaration?  --> 
+						
+						<div class="Better_Manage_Close">
+							<button class="Better_Remove" onclick="
+									Jelly.Interface.Close_Manage(\{\});
+								"></button>
+						</div>
+						
+						<header class="Better_Manage_Filter">
+							<label>Filters: Starred</label>
+							<input type="Text" class="Better_Input" value="Lists"/>
+						</header>
+						
+						[Type from Database where Package != "Simple" and Alias != "Simple_Item" and Starred Iterator_Wrap_Element "ul" Iterator_Classes "Better_Manage_Card_List" Item_Wrap_Element "li" by Order]
+								<!-- Localize variables. --> 
+								[Set Current_Type to This /]
+								[Set Current_Type_Alias to Current_Type.Alias/]
+								[Set Current_Type_Item_Count to [[Current_Type_Alias No_Wrap/] from Database as Count/]/]
+				
+								<!-- Display type card.--> 	
+								<div style="height:[PHP]return Map_Log_Value_To_Range([Current_Type_Item_Count/], 100, 138, 450);[/PHP]px">					
+									<h1>[Current_Type.Name/]</h1>
+									<h3>[Current_Type_Item_Count/] Items</h3>
+									[Type [Current_Type_Alias no_wrap /]]
+										[Link to Type as Manage]View All[/Link]
+									[/Type]
+								</div>
+						[/[Current_Type.Alias No_Wrap /]]
+					[/Else]
+				[/If]
+				
+				[External_Script]
+					Jelly.Interface.Position_Cards();
+				[/External_Script]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

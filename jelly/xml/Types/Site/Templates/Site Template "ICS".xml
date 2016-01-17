@@ -1,0 +1,33 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "ICS" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}ICS{/Name}
+			{Content}
+				[Header "Content-Disposition" Value "filename=[Format as "Jelly Attribute"][Format as "File Name"][Site:Name /][/Format][/Format].ics" /]BEGIN:VCALENDAR
+				CALSCALE:GREGORIAN
+				METHOD:PUBLISH
+				PRODID:-//Apple Computer\, Inc//iCal 1.0//EN
+				[Site]X-WR-CALNAME;VALUE=TEXT:[Format as "iCal String"][Site:Name /][/Format]
+				X-WR-CALDESC:[Format as "iCal String"][Site:Summary /][/Format][/Site]
+				VERSION:2.0
+				[Event where Start_Time is after Today by Start_Time]BEGIN:VEVENT
+				SEQUENCE:2
+				DTSTAMP:[Start_Time][Year /][Month /][Day /]T[Hour_24 /][Minute /]00[/Start_Time]
+				SUMMARY:[Format as "iCal String"][Event:Name /][/Format]
+				DESCRIPTION:[Format as "iCal String"][Event:Content /][/Format]
+				URL:http://[HTTP_Host /]/Event/[Event:Alias /]
+				LOCATION:[Format as "iCal String"][Event:Location /][/Format]
+				UID:http://[HTTP_Host /]/Event/[Event:Alias /]
+				DTSTART:[Start_Time][Year /][Month /][Day /]T[Hour_24 /][Minute /]00[/Start_Time]
+				DURATION:PT2H
+				END:VEVENT
+				[/Event]
+				END:VCALENDAR
+			{/Content}
+			{Content_Type}text/calendar{/Content_Type}
+		{/Template}
+	
+{/Jelly}

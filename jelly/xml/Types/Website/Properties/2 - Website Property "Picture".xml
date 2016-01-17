@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Website Property "Picture" --}
+		{Property}
+			{Type}Website{/Type}
+			{Name}Picture{/Name}
+			{Value_Type}Picture{/Value_Type}
+			{Relation}Many-To-Many{/Relation}
+		{/Property}
+	
+{/Jelly}

@@ -1,0 +1,182 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Edit" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}New Property{/Name}
+			{Content}
+				<li class="Better_Inspector_New_Property_Action">
+					<h2>
+						New Property
+					</h2>
+					<div>
+						[Input "Hidden" with Name = "Relation", Value = "Simple"/]
+						[Input "Hidden" with Name = "Value Type", Value = "Text"/]
+				
+						<button id="[Current_Action.Namespace no_wrap /]_Menu_Trigger" class="Better_Add_Property" tabindex="-1"></button>
+						
+						[Input "Text Field" With Name = "Name", Value = "", Clear_On_Execute = 1, Blur_On_Execute = 1/]
+						
+					</div>
+					<span style="display:hidden;">
+						[This as Loading/]
+					</span>
+				</li>
+				[External_Script]
+				
+					// Selected Handler
+					Jelly.Handlers.Register_Handler(
+					\{
+						"Element": document.getElementById("[Current_Action.Namespace no_wrap /]_Menu_Trigger"),
+						"Event": \["Selected"\],
+						"Code": function (Parameters)
+						\{
+							// Set values
+							Jelly.jQuery('.Better_Inspector_New_Property_Action input\[name=Value_Type\]')\[0\].value = Parameters\["Value_Type"\];
+							Jelly.jQuery('.Better_Inspector_New_Property_Action input\[name=Relation\]')\[0\].value = Parameters\["Relation"\];
+							
+							// Execute action
+							Jelly.Handlers.Call_Handler_For_Target(\{
+									'Event': 'Execute', 
+									'Target': document.getElementById('[Current_Action_Namespace no_wrap /]')
+								\});
+						\}
+					\});
+					
+					// Create Menu
+					document.getElementById('[Current_Action.Namespace no_wrap /]_Menu_Trigger').onmousedown = function (Mouse_Event) \{
+							// Blur other inputs
+							this.focus();			
+							
+							// Create menu
+							Jelly.Interface.Create_Menu(\{
+									'URL': 'Block/Property_Menu',
+									'Alias': 'New_Property_Menu',
+									'Menu_Namespace': '[Current_Action.Namespace no_wrap /]_Menu',
+									'Attach': 'Element',
+									'Attach_Element': document.getElementById('[Current_Action.Namespace no_wrap /]_Menu_Trigger'),
+									'Edge': 'Bottom',
+									'Block_Refresh': '[Inspect_Action.Namespace No_Wrap/]'
+								\});
+							
+							// Prevent menu from closing 
+							Mouse_Event.stopPropagation();
+						\};
+				[/External_Script]
+			{/Content}
+			{Code}
+				[If Form.Value_Type]
+					[New Property]
+						<!-- Disambugiate new property --> 
+						[Set Current_Action.Variables.Current_Property to This/]
+						
+						<!-- Get is simple type --> 
+						[Set Current_Property.Variables.Simple_Value_Type to [PHP]	
+									$Value_Type_Alias = "[Form.Value_Type No_Wrap/]";
+									$Cached_Value_Type = &Get_Cached_Type($Database, strtolower($Value_Type_Alias));
+									if (Is_Simple_Type($Cached_Value_Type))
+										return 1;
+									else
+										return 0;
+								[/PHP]
+							/]
+						
+						<!-- Set type, value type --> 
+						[Set Current_Property.Value_Type to Form.Value_Type/]
+						[Set Current_Property.Type to Current_Action.Target.Type/]
+						
+						<!-- Set relation --> 							
+						[If not Current_Property.Variables.Simple_Value_Type]
+							[If Form.Relation = "Multiple"]
+								[Then]
+									[Set Current_Property.Relation to "Many-To-Many"/]
+								[/Then]
+								[Else]
+									[Set Current_Property.Relation to "Many-To-One"/]
+								[/Else]
+							[/If]						
+						[/If]
+							
+						<!-- Set name --> 
+						[If Form.Name]	
+				
+							[Then]
+								<!-- Set name from input --> 
+								[Set Current_Property.Name to Form.Name/]
+							[/Then]
+							
+							[Else]
+								<!-- Set base name --> 
+								[If Current_Property.Variables.Simple_Value_Type]
+									[Then]
+										[Set Current_Property.Name to "New Property"/]
+									[/Then]
+									[Else]
+										[Set Current_Property.Name to Form.Value_Type/]
+									[/Else]								
+								[/If]
+								
+								<!-- Set "intelligent" property name --> 
+								[If Form.Value_Type = "Long_Text"]
+									[Current_Action.Target.Property where Name = "Description"][Else][Set Current_Property.Name to "Description"/][/Else]
+										[Then]
+											[Current_Action.Target.Property where Name = "Details"][Else][Set Current_Property.Name to "Details"/][/Else]
+											[/Current_Action.Target.Property]
+										[/Then]
+									[/Current_Action.Target.Property]
+								[/If]
+						
+								[If Form.Value_Type = "Password"]
+									[Current_Action.Target.Property where Name = "Password"][Else][Set Current_Property.Name to "Password"/][/Else]
+									[/Current_Action.Target.Property]
+								[/If]
+						
+								[If Form.Value_Type = "Number"]
+									[Set Current_Property.Name to "Amount"/]
+								[/If]
+						
+								[If Form.Value_Type = "Date_Time"]
+									[Current_Action.Target.Property where Name = "Start Time"][Else][Set Current_Property.Name to "Start Time"/][/Else]
+										[Then]
+											[Current_Action.Target.Property where Name = "End Time"][Else][Set Current_Property.Name to "End Time"/][/Else]
+											[/Current_Action.Target.Property]
+										[/Then]
+									[/Current_Action.Target.Property]
+								[/If]
+						
+								[If Form.Value_Type = "Boolean"]
+									[Current_Action.Target.Property where Name = "Visible"][Else][Set Current_Property.Name to "Visible"/][/Else]
+									[/Current_Action.Target.Property]
+								[/If]
+						
+								[If Form.Value_Type = "File"]
+									[Current_Action.Target.Property where Name = "Document"][Else][Set Current_Property.Name to "Document"/][/Else]
+									[/Current_Action.Target.Property]
+								[/If]
+						
+								[If Form.Value_Type = "Location"]
+									[Current_Action.Target.Property where Name = "Location"][Else][Set Current_Property.Name to "Location"/][/Else]
+									[/Current_Action.Target.Property]
+								[/If]
+						
+								[If Form.Value_Type = "Picture" and Form.Relation = "Single"]
+									[Current_Action.Target.Property where Name = "Cover Image"][Else][Set Current_Property.Name to "Cover Image"/][/Else]
+									[/Current_Action.Target.Property]
+								[/If]
+						
+								[If Form.Value_Type = "Picture" and Form.Relation = "Multiple"]
+									[Current_Action.Target.Property where Name = "Gallery Image"][Else][Set Current_Property.Name to "Gallery Image"/][/Else]
+									[/Current_Action.Target.Property]
+								[/If]
+							[/Else]
+						[/If]
+				
+						<!-- Save property --> 
+						[Save Current_Property/]
+					[/New Property]
+				[/If]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

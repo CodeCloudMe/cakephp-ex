@@ -1,0 +1,26 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block Template "Default" --}
+		{Template}
+			{Type}Map{/Type}
+			{Name}Default{/Name}
+			{Content}
+				[If not Map.Alias]
+					[Set Map.Alias = "Map"/]
+				[/If not Map.Alias]
+
+				<div id="[Map.Alias No_Wrap /]" style="width:[Map.Width No_Wrap /]px;height:[Map.Height No_Wrap /]px;margin-top:15px; margin-bottom:15px;">
+				</div>
+				[External_Script]
+					Jelly.Interface.Generate_Map(
+							\{
+								Alias: "[Map.Alias No_Wrap/]"
+							\}
+						);
+				[/External_Script]
+
+				[Map.Location with Map_Alias = Map.Alias/]
+			{/Content}
+		{/Template}
+{/Jelly}

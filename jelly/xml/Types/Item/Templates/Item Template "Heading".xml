@@ -1,0 +1,20 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Heading" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Heading{/Name}
+			{Content}
+				[Set Current_Item to This /]
+				[If Path_Item.ID = Current_Item.ID]
+					[If not Current_Item.Name]
+						[Set Current_Item.Name to "[Current_Item.Type.Name No_Wrap /] [Current_Item.ID No_Wrap /]"/]
+					[/If]
+	
+					[Current_Item.Name/]
+				[/If]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

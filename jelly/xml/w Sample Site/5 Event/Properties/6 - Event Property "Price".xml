@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Property "Price" --}
+		{Property}
+			{Type}Event{/Type}
+			{Name}Price{/Name}
+			{Advanced}1{/Advanced}
+			{Value_Type}Number{/Value_Type}
+			{Default_Value}0{/Default_Value}
+		{/Property}
+	
+{/Jelly}

@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_Module Property "Property Item" --}
+	{!-- TODO: maybe store as Alias for overriding purposes --}
+		{Property}
+			{Type}Property_Module{/Type}
+			{Name}Property Item{/Name}
+			{Value_Type}Property{/Value_Type}
+		{/Property}
+	
+{/Jelly}

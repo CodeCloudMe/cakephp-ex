@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Font "Open Sans" --}
+		{Web_Font}
+			{Name}Open Sans{/Name}
+			{URL}https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400{/URL}
+		{/Web_Font}
+	
+{/Jelly}

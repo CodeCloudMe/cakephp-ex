@@ -1,0 +1,38 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart_Item Action "Change Quantity" --}
+		{Type_Action}
+			{Type}Shopping_Cart_Item{/Type}
+			{Name}Change Quantity{/Name}
+			{Content}
+				<div>
+					<label>Quantity</label> <select onchange="Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Quantity_Finder input').val(Jelly.jQuery(this).val()).change();">
+						<option [If Shopping_Cart_Item.Quantity = 1]selected="selected"[/If]>1</option>
+						<option [If Shopping_Cart_Item.Quantity = 2]selected="selected"[/If]>2</option>
+						<option [If Shopping_Cart_Item.Quantity = 3]selected="selected"[/If]>3</option>
+						<option [If Shopping_Cart_Item.Quantity = 4]selected="selected"[/If]>4</option>
+					</select>
+					<span id="[Current_Action.Namespace no_wrap /]_Quantity_Finder">[Input "Hidden" with Name = "Quantity", Value = 1, Execute_On_Change = 1 /]</span>
+				</div>
+			{/Content}
+			{Code}
+				<!-- Set subtotal to quantity x price -->
+				[Set Current_Action.Target.Quantity to Form.Quantity /]
+
+				<!-- Save shopping cart item -->
+				[Save Current_Action.Target No_Refresh/]
+
+				<!-- Recalculate Shopping Cart -->
+				[Current_Action.Target.Shopping_Cart.Action "Recalculate" as Execute with Execute_With_No_Refresh = True /]
+
+				<!-- Scripts -->
+				[External_Script]
+					// Refresh
+						Jelly.References.Trigger_Refresh(\{Kind: 'Element', Element: Jelly.jQuery('\[data-id="[Current_Action.Target.ID no_wrap/]"\]\[data-template="Simple_Checkout_Price_Breakdown"\]').get(0)\});
+						Jelly.References.Trigger_Refresh(\{Kind: 'Element', Element: Jelly.jQuery('\[data-id="[Current_Action.Target.Shopping_Cart.ID no_wrap/]"\]\[data-template="Simple_Checkout_Formatted_Total"\]').get(0)\});
+				[/External_Script]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

@@ -1,0 +1,22 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Calendar Subscriptions" --}
+		{Block}
+			{Name}Calendar Subscriptions{/Name}
+			{Content}
+				<div class="Jelly_Menu_Item">
+					<a href="webcal://[HTTP_Host No_Wrap /]/ICS">Subscribe using iCal</a>
+				</div>
+				<!--
+				<div>
+					<a href="another">Subscribe using Google Calendar</a>
+				</div>
+				-->
+				<div class="Jelly_Menu_Item">
+					<a href="[Directory No_Wrap /]/ICS">Download iCal calendar</a>
+				</div>
+			{/Content}
+		{/Block}
+	
+{/Jelly}

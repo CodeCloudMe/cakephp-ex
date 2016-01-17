@@ -1,0 +1,173 @@
+{?xml version="1.0"?}
+{Jelly}	
+	{!-- Payment Service "Stripe" --}
+		{Payment_Service}
+			{Name}Stripe{/Name}
+			{Javascript_File}Stripe{/Javascript_File}
+			{Validation_Code}
+				[Set Payment_Service.Variables.Public_Key to "[PHP]
+							$Configuration = &Get_Environment_Variables();
+							$Stripe_Mode = $Configuration\['API_Keys'\]\['Stripe'\]\['Mode'\];
+							return $Configuration\['API_Keys'\]\['Stripe'\]\[$Stripe_Mode\]\['Public_Key'\];
+						[/PHP]"
+					/]
+	
+				[Set Payment_Service.Variables.Secret_Key to "[PHP]
+							$Configuration = &Get_Environment_Variables();
+							$Stripe_Mode = $Configuration\['API_Keys'\]\['Stripe'\]\['Mode'\];
+							return $Configuration\['API_Keys'\]\['Stripe'\]\[$Stripe_Mode\]\['Secret_Key'\];
+						[/PHP]"
+					/]
+
+
+
+				[If Payment_Service.Variables.Public_Key and Payment_Service.Variables.Secret_Key] 
+					[Then]
+						[Input "Hidden" with Name = "Payment Service", Value = Payment_Service/]
+						[Input "Hidden" with Name = "Payment Token"/]
+
+						[External_Script]
+							Stripe.setPublishableKey("[Payment_Service.Variables.Public_Key No_Wrap/]");
+							Jelly.Actions.Register_Action_Validation(\{
+									"Namespace": "[Current_Action.Namespace no_wrap /]",
+									"Function": function(Values, Return)
+									\{
+										// Generate required token parameters
+										var Token_Parameters = \{
+											"number": Values.Credit_Card_Number,
+											"exp_month": Values.Expiration_Month,
+											"exp_year": Values.Expiration_Year,
+											"cvc": Values.Card_Verification_Code,
+										\};
+						
+										// TODO - get additional token parameters.
+
+										// Set up single-use token and pass validation, or show errors and fail validation... 
+										var Stripe_Validation = Stripe.card.createToken(Token_Parameters, function (Status, Response) \{
+
+												// Show error if response error...
+												var Validation_Error = null;
+												if (Response.error)
+												\{	
+													// Show error
+													Jelly.Actions.Show_Result(\{
+															"Namespace": "[Current_Action.Namespace no_wrap /]",
+															"Content": Response.error.message
+														\});
+
+													// Fail validation
+													Validation_Error = true;
+												\}
+		
+												// Otherwise set token information and pass validation.
+												else
+												\{
+													// Set form token input to response token value 
+													var Token_Input_Element = Jelly.Actions.Get_Input_From_Action_By_Alias(\{
+															"Namespace": "[Current_Action.Namespace no_wrap /]",
+															"Alias": "Payment_Token",
+														\});
+													Token_Input_Element.value = Response.id;
+												\}
+		
+												// Return with Validation Error value or null if passed.
+												Return(Validation_Error);
+											\});
+									\}
+								\})
+						[/External_Script]
+					[/Then]
+					[Else]	
+						[New Error with Description = "Stripe payments have not been set up for this workspace"/]<br/>
+					[/Else]
+				[/If]
+			{/Validation_Code}
+			{Charge_Code}
+				[Set Payment_Service.Variables.Secret_Key to "[PHP]
+							$Configuration = &Get_Environment_Variables();
+							$Stripe_Mode = $Configuration\['API_Keys'\]\['Stripe'\]\['Mode'\];
+							return $Configuration\['API_Keys'\]\['Stripe'\]\[$Stripe_Mode\]\['Secret_Key'\];
+						[/PHP]"
+					/]
+	
+				<!-- Try to execute transaction and save resulting status message -->
+				[Set Current_Payment_Transaction.Status_Message to "[PHP]
+					// Initialize Handler
+					$CURL_Handler = curl_init();
+
+					// Set URL
+					curl_setopt($CURL_Handler, CURLOPT_URL, 'https://api.stripe.com/v1/charges');
+	
+					// Set user
+					// TODO - get key
+					curl_setopt($CURL_Handler, CURLOPT_USERPWD, '[Payment_Service.Variables.Secret_Key no_wrap /]' . ':');
+	
+					// Set required data.
+					$Payment_Information = Array (
+						'currency' => 'usd',
+						'amount' => round([Current_Payment_Transaction.Shopping_Cart.Subtotal no_wrap /] * 100),
+						'source' => '[Current_Token no_wrap /]',
+						'description' => '[Current_Payment_Transaction.Description no_wrap /]',
+						'application_fee' => round([Current_Payment_Transaction.Shopping_Cart.Application_Fee no_wrap/] * 100)
+					);
+	
+					// Account information
+					curl_setopt($CURL_Handler, CURLOPT_HTTPHEADER, array(
+						'Stripe-Account: [1 Site from Database no_wrap][Site.Stripe_User_ID no_wrap/][/1 Site]'
+					));
+	
+					$Payment_Information_String = http_build_query($Payment_Information);
+					curl_setopt($CURL_Handler, CURLOPT_POST, 1);
+					curl_setopt($CURL_Handler, CURLOPT_POSTFIELDS, $Payment_Information_String);
+	
+					// Make request and get response
+					curl_setopt($CURL_Handler, CURLOPT_RETURNTRANSFER, true);
+					$Response = curl_exec($CURL_Handler);
+	
+					// Check errors
+					$CURL_HTTP_Code  = curl_getinfo($CURL_Handler, CURLINFO_HTTP_CODE);
+	
+					// Close connection		
+					curl_close($CURL_Handler);
+	
+					// Determine status 
+					$Status_Message = "";
+					if ($CURL_HTTP_Code == 200)
+					\{
+						$Response_Array  = json_decode($Response, true);
+
+						if ($Response_Array\["object"\] == "charge")
+						\{
+							if ($Response_Array\["status"\] == "succeeded")
+							\{	
+								$Status_Message = "Success";
+							\}
+							else
+							\{
+								$Status_Message = "Error: Payment Failed.";	
+							\}
+						\}
+						else
+							$Status_Message = 'Error: API Error';
+					\}
+	
+					else
+					\{
+						$Status_Message = 'Error: Request Error' . ' ' .  '(' . $CURL_HTTP_Code . ')';
+						traverse($Response);
+					\}
+	
+					// Return status 
+					return $Status_Message;						
+				[/PHP]"/]
+
+				<!-- Check if transaction was successful -->
+				[If Current_Payment_Transaction.Status_Message is "Success"]
+					[Set Current_Payment_Transaction.Completed to true /]
+				[/If]
+
+				<!-- Save transaction -->
+				[Save Current_Payment_Transaction /]
+			{/Charge_Code}
+		{/Payment_Service}
+{/Jelly}

@@ -1,0 +1,278 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Website Type_Action "Refresh Website" --}
+		{Type_Action}
+			{Type}Website{/Type}
+			{Name}Refresh Website{/Name}
+			{Content}
+				[If Current_Item.To_Refresh]
+					[Action as "Loading"/]
+					
+					<!-- Auto-execute the action -->
+					[External_Script]
+						Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': document.getElementById('[This.Namespace no_wrap /]')\});
+					[/External_Script]
+				[/If]
+			{/Content}
+			{Code}
+				<!-- Website Type_Action "Refresh Website" -->
+
+				<!-- Dismabiguate -->
+				[Set Current_Item to Current_Action.Target /]
+
+				<!-- Check if website is marked to be refreshed -->
+				[If Current_Item.To_Refresh]
+					[PHP]
+						// Load website info
+						$Website_ID = &New_String('[Format as "PHP Single Quoted String"][Current_Item.ID no_wrap /][/Format]');
+						$URL = &New_String('[Format as "PHP Single Quoted String"][Current_Item.Path no_wrap /][/Format]');
+	
+						// Get website item
+						$Website_Item_Command_String = &New_String('Current_Item as reference');
+						$Website_Item_Result = Process_Command_String($Database, $Website_Item_Command_String, $Memory_Stack_Reference);
+						$Website_Item = $Website_Item_Result\['Chunks'\]\[0\]\['Item'\];
+		
+						// Request website HTML content
+						$Response = Get_Remote_Content($URL);
+						$Response_Body = $Response\['Body'\];
+						$Response_Headers = $Response\['Headers'\];
+						$Response_Code = $Response\['Response_Code'\];
+		
+						// Get file type and name from headers
+						if ($Response_Headers\['Content-Type'\])
+						\{
+							// Get the content-type
+							$Response_Content_Type = $Response_Headers\['Content-Type'\];
+							
+							// If more than one part is specified, use the first
+							list($Response_Content_Type) = explode(';', $Response_Content_Type);
+						\}
+			
+						if ($Response_Headers\['Content-Disposition'\])
+						\{
+							// Contain to quoted string
+							// TODO if filename*= doesn't exist, use filename=
+							// TODO seems as though the UTF-8 version is unterminated
+							$Current_Response_Header = $Response_Headers\['Content-Disposition'\];
+							$Response_File_Name = substr($Current_Response_Header, strpos($Current_Response_Header, 'filename*=UTF-8\'\'') + strlen('filename*=UTF-8\'\''));
+			
+							// Decode the file name
+							// TODO doesn't seem as though it's actually UTF-8 encoded, just URL-encoded
+							$Response_File_Name = urldecode($Response_File_Name);
+						\}
+		
+						// Check response code
+						switch ($Response_Code)
+						\{
+							// Response Code 200 (OK)
+							case 200:
+							\{
+								// Get content type parent and sub type
+								// TODO not used
+								list($Content_Type, $Content_Sub_Type) = explode('/', $Response_Content_Type);
+				
+								switch (strtolower($Response_Content_Type))
+								\{
+									case 'image/gif':
+									case 'image/jpeg':
+									case 'image/png':
+									\{
+										// Check if a file name was specified in the headers
+										if ($Response_File_Name)
+										\{
+											// Set the file name from the header
+											Set_Value($Website_Item, 'Name', $Response_File_Name);
+										\}
+										else
+										\{
+											// Get file name from URL
+											$URL_File_Name = substr($URL, strrpos($URL, '/') + 1);
+											if (!$URL_File_Name)
+												$URL_File_Name = &New_String($URL);
+											Set_Value($Website_Item, 'Name', $URL_File_Name);
+										\}
+										Save_Item($Website_Item);
+						
+										// Create new picture
+										$Picture_Item = &Create_Memory_Item($Database, Get_Cached_Type($Database, 'Picture'));
+										Set_Value($Picture_Item, 'Path', $URL);
+										Save_Item($Picture_Item);
+						
+										// Add the picture to the website
+										Add_Value($Website_Item, 'Picture', $Picture_Item);
+						
+										break;
+									\}
+									case 'text/html':
+									\{
+										// Parse HTML document
+										$HTML_Document = new DOMDocument();
+										if ($Response_Body)
+										\{
+											libxml_use_internal_errors(true);
+											$HTML_Document->loadHTML($Response_Body);
+											libxml_clear_errors();
+										\}
+						
+										// Get open graph information
+										$Meta_Tags = $HTML_Document->getElementsByTagName('meta');
+										$Found_Title = false;
+										$Found_Image = false;
+										foreach ($Meta_Tags as $Meta_Tag)
+										\{
+											if ($Meta_Tag->getAttribute('property') == 'og:title')
+											\{
+												$Found_Title = true;
+												$Title = $Meta_Tag->getAttribute('content');
+											\}
+											if ($Meta_Tag->getAttribute('property') == 'og:image')
+											\{
+												$Found_Image = true;
+												$Image = $Meta_Tag->getAttribute('content');
+											\}
+										\}
+						
+										echo "maybe found";
+							
+										if (!$Found_Title)
+										\{
+											echo "not found";
+											$Title = '';
+											$Title_Tags = $HTML_Document->getElementsByTagName('title');
+											foreach ($Title_Tags as $Title_Tag)
+											\{
+												$Found_Title = true;
+												$Title = $Title_Tag->nodeValue;
+											\}
+										\}
+						
+										echo "maybe found";
+
+										// Set title to entire URL if not found otherwise
+										if (!$Found_Title)
+										\{
+											echo "not found again";
+											$Title = $URL;
+										\}
+
+										// Set website name to title										
+										Set_Value($Website_Item, 'Name', $Title);
+							
+										// TODO - I wonder why save item is here. 
+										Save_Item($Website_Item);
+						
+										if ($Found_Image)
+										\{
+											// Create new picture
+											$Picture_Item = &Create_Memory_Item($Database, Get_Cached_Type($Database, 'Picture'));
+											Set_Value($Picture_Item, 'Path', $Image);
+											Save_Item($Picture_Item);
+						
+											// Add the picture to the website
+											Add_Value($Website_Item, 'Picture', $Picture_Item);
+										\}
+										else
+										\{
+											// Get base link from document
+											$Base_HREF = $URL;
+											$Base_Tags = $HTML_Document->getElementsByTagName('base');
+											foreach ($Base_Tags as $Base_Tag)
+												$Base_HREF = $Base_Tag->getAttribute('href');
+											if (strpos($Base_HREF, '/', strlen('https://')) !== false)
+												$Base_HREF_Root = substr($Base_HREF, 0, strpos($Base_HREF, '/', strlen('https://')));
+											else
+												$Base_HREF_Root = $URL;
+											if (strrpos($Base_HREF, '/') + 1 > strlen('https://'))
+												$Base_HREF_Directory = substr($Base_HREF, 0, strrpos($Base_HREF, '/') + 1);
+											else
+												$Base_HREF_Directory = $Base_HREF_Root . '/';
+
+						
+											// Get images from document
+											// TODO also get CSS images from document and related CSS files
+											$Image_Tags = $HTML_Document->getElementsByTagName('img');
+											$Image_Tag_Index = 0;
+											foreach ($Image_Tags as $Image_Tag)
+											\{
+												// Stop after 5 images
+												if ($Image_Tag_Index == 3)
+													break;
+							
+												// Check if image src was set
+												$Image_SRC = $Image_Tag->getAttribute('src');
+												if ($Image_SRC)
+												\{
+													// Generate absolute URL for image src
+													if (substr($Image_SRC, 0, strlen('http')) == 'http')
+														$Image_URL = &New_String($Image_SRC);
+													else if (substr($Image_SRC, 0, strlen('/')) == '/')
+														$Image_URL = &New_String($Base_HREF_Root . $Image_SRC);
+													else
+														$Image_URL = &New_String($Base_HREF_Directory . $Image_SRC);
+						
+													// Create new picture
+													$Picture_Item = &Create_Memory_Item($Database, Get_Cached_Type($Database, 'Picture'));
+													Set_Value($Picture_Item, 'Path', $Image_URL);
+													Save_Item($Picture_Item);
+								
+													// Add the picture to the website
+													Add_Value($Website_Item, 'Picture', $Picture_Item);
+												\}
+							
+												$Image_Tag_Index++;
+											\}
+										\}
+						
+										// TODO: pick best picture?
+						
+										break;
+									\}
+								\}
+								break;
+							\}
+			
+							// Other response codes
+							default:
+							\{
+								// TODO Better name?
+								Set_Simple($Website_Item, 'Name', 'Broken Link' . ' ' . '(' . $Response_Code . ')');
+								Save_Item($Website_Item);
+								break;
+							\}
+						\}
+					[/PHP]
+	
+					<!-- Render all pictures to get sizes -->
+					[Current_Item.Picture /]
+	
+					<!-- Delete all but largest image -->
+					<!-- TODO use "by" to start at second result? -->
+					[Set Current_Action.Variables.First_Image to true /]
+					[Current_Item.Picture by Width descending]
+						<!-- Delete all but the first result -->
+						[If not Current_Action.Variables.First_Image]
+							[This.Attachment]
+								[Remove this no_refresh /]
+							[/This.Attachment]
+							[Remove this no_refresh /]
+						[/If]
+		
+						<!-- Set that we have visited the first image -->
+						[Set Current_Action.Variables.First_Image to false /]
+					[/Current_Item.Picture]
+	
+					<!-- Turn off refreshing -->
+					[Set Current_Item.To_Refresh to false /]
+	
+					<!-- Save the website but do not trigger page refreshes -->
+					[Save Current_Item no_refresh /]
+	
+					<!-- Refresh website cover -->
+					<!-- TODO not done -->
+					[Go to "/Website/[Current_Item.ID no_wrap /]/Badge" into "[Form.Calling_Namespace no_wrap /]" /]
+				[/If]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

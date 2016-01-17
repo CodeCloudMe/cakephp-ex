@@ -1,0 +1,230 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add Lunch Scheduling Module" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add Lunch Scheduling Module{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<div class="Window Add_Lunch_Scheduling">
+						<!-- Execute Link -->
+						<div id="[Action.Namespace no_wrap /]_Step_1">
+							<h1>
+								Pick Days
+							</h1>
+							<section class="Date_Toggles">
+								<label>S</label>
+								<label>M</label>
+								<label>T</label>
+								<label>W</label>
+								<label>R</label>
+								<label>F</label>
+								<label>S</label>
+								<br class="Clear" />
+								<a href="#" id="Date_Toggle_2015_07_12" class="Date_Toggle">12</a>
+								<a href="#" id="Date_Toggle_2015_07_13" class="Date_Toggle">13</a>
+								<a href="#" id="Date_Toggle_2015_07_14" class="Date_Toggle">14</a>
+								<a href="#" id="Date_Toggle_2015_07_15" class="Date_Toggle Enabled">15</a>
+								<a href="#" id="Date_Toggle_2015_07_16" class="Date_Toggle Enabled">16</a>
+								<a href="#" id="Date_Toggle_2015_07_17" class="Date_Toggle Enabled">17</a>
+								<a href="#" id="Date_Toggle_2015_07_18" class="Date_Toggle Enabled">18</a>
+								<br class="Clear" />
+								<a href="#" id="Date_Toggle_2015_07_19" class="Date_Toggle Enabled">19</a>
+								<a href="#" id="Date_Toggle_2015_07_20" class="Date_Toggle Enabled">20</a>
+								<a href="#" id="Date_Toggle_2015_07_21" class="Date_Toggle Enabled">21</a>
+								<a href="#" id="Date_Toggle_2015_07_22" class="Date_Toggle Enabled">22</a>
+								<a href="#" id="Date_Toggle_2015_07_23" class="Date_Toggle Enabled">23</a>
+								<a href="#" id="Date_Toggle_2015_07_24" class="Date_Toggle Enabled">24</a>
+								<a href="#" id="Date_Toggle_2015_07_25" class="Date_Toggle Enabled">25</a>
+								<br class="Clear" />
+								[External_Script]
+									Jelly.jQuery(".Date_Toggles a").click(function () \{Jelly.jQuery(this).toggleClass("Enabled"); return false;\});
+								[/External_Script]
+							</section>
+							<section class="Links Bottom_Links">
+								<a href="#" onclick="Jelly.jQuery('#[Action.Namespace no_wrap /]_Step_1').hide();Jelly.jQuery('#[Action.Namespace no_wrap /]_Step_2').show();return false;">Next</a>
+							</section>
+						</div>
+					
+						<div id="[Action.Namespace no_wrap /]_Step_2" style="display:none;">
+							<h1>
+								Questions
+							</h1>
+							<section id="Better_First_Question" class="Questions">
+								<div class="Question_Remove">
+									<button class="Better_Remove"></button>
+								</div>
+								<div class="Question_Content">
+									<label>Question</label>
+									<div style="margin-bottom: 5px;">
+										<textarea style="width: 300px; height: 75px;">Note</textarea>
+									</div>
+									<div style="margin-bottom: 5px;">
+										<select>
+											<option selected="selected">Text</option>
+											<option>Multiple Choice</option>
+										</select>
+									</div>
+								</div>
+								<br class="Clear" />
+							</section>
+
+							<section id="Better_Next_Question" style="display:none;" class="Questions">
+								<div class="Question_Remove">
+									<button class="Better_Remove"></button>
+								</div>
+								<div class="Question_Content">
+									<label>Question</label>
+									<div style="margin-bottom: 5px;">
+										[Input "Text Field" with Name = "Next Question Name"/]
+									</div>
+									<div style="margin-bottom: 5px;">
+										<select>
+											<option>Text</option>
+											<option selected="selected">Multiple Choice</option>
+										</select>
+									</div>
+							
+									<div>
+										<div id="Question_2_Option_1" style="margin-bottom: 3px;">
+											<button class="Better_Remove" style="position: relative; top: 5px;"></button>
+											<input type="text" value="Option 1" />
+										</div>
+										<div id="Question_2_Option_2" style="margin-bottom: 3px;">
+											<button class="Better_Remove" style="position: relative; top: 5px;"></button>
+											<input type="text" onfocus="Jelly.jQuery('#Question_2_Option_3').show();" />
+										</div>
+										<div id="Question_2_Option_3" style="margin-bottom: 3px; display: none;">
+											<button class="Better_Remove" style="position: relative; top: 5px;"></button>
+											<input type="text" onfocus="Jelly.jQuery('#Question_2_Option_4').show();" />
+										</div>
+										<div id="Question_2_Option_4" style="margin-bottom: 3px; display: none;">
+											<button class="Better_Remove" style="position: relative; top: 5px;"></button>
+											<input type="text" onfocus="Jelly.jQuery('#Question_2_Option_5').show();" />
+										</div>
+										<div id="Question_2_Option_5" style="margin-bottom: 3px; display: none;">
+											<button class="Better_Remove" style="position: relative; top: 5px;"></button>
+											<input type="text" style="display: none;" />
+										</div>
+									</div>
+								</div>
+								<br class="Clear" />
+							</section>
+						
+							<section id="Better_Add_Question">
+								<a href="#" onclick="Jelly.jQuery('#Better_Next_Question').show();return false;">
+									+ Add
+								</a>
+							</section>
+							
+							<section class="Links Bottom_Links">
+								[Link to Execute]Done[/Link]
+							</section>
+						</div>
+					</div>
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Added",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only -->
+					
+					[New Lunch_Scheduling_Module]
+						<!-- Disambiguate -->
+						[Set Current_New_Item to This /]
+						
+						<!-- Defaults -->
+						
+						<!-- Set Up Types and Properties -->
+						[Type "Lunch Meeting" from Database]
+							[Else]
+								[New Type with Name = "Lunch Meeting", Parent_Type = "Event", Starred = True]
+									[Save Type /]
+								[/New Type]
+							[/Else]
+						[/Type]
+						[New Lunch_Meeting]
+							[Lunch_Meeting.Property where Alias is "Type_of_Person"]
+								[Else]
+									[New Property with Type = "Lunch_Meeting", Name = "Type of Person", Value_Type = "Text"]
+										[Save This /]
+									[/Property]
+								[/Else]
+							[/Lunch_Meeting.Property]
+							[Lunch_Meeting.Property where Alias is "Notes"]
+								[Else]
+									[New Property with Type = "Lunch_Meeting", Name = "Notes", Value_Type = "Long_Text"]
+										[Save This /]
+									[/Property]
+								[/Else]
+							[/Lunch_Meeting.Property]
+							[Lunch_Meeting.Property where Alias is "Project"]
+								[Else]
+									[New Property with Type = "Lunch_Meeting", Name = "Project", Reverse_Name = "Meeting", Value_Type = Current_Action.Target.Type, Relation = "Many-To-One", Advanced = 1]
+										[Save Property /]
+									[/New]
+								[/Else]
+							[/Lunch_Meeting.Property]
+							[Lunch_Meeting.Property where Alias is "Person"]
+								[Else]
+									[New Property with Type = "Lunch_Meeting", Name = "Person", Reverse_Name = "Meeting", Value_Type = "User", Relation = "Many-To-One"]
+										[Save Property /]
+									[/New]
+								[/Else]
+							[/Lunch_Meeting.Property]
+						[/New Lunch_Meeting]
+						
+						<!-- Add meetings -->
+						<!-- TODO: add to correct presentation -->
+						[New Lunch_Meeting with Start_Time = "[PHP no_wrap]return strtotime('2015-08-14 1:00pm');[/PHP]"][Save This /][Add this to Current_Action.Target.Meeting /][/New]
+						[New Lunch_Meeting with Start_Time = "[PHP no_wrap]return strtotime('2015-08-15 1:00pm');[/PHP]"][Save This /][Add this to Current_Action.Target.Meeting /][/New]
+						[New Lunch_Meeting with Start_Time = "[PHP no_wrap]return strtotime('2015-08-16 1:00pm');[/PHP]"][Save This /][Add this to Current_Action.Target.Meeting /][/New]
+						[New Lunch_Meeting with Start_Time = "[PHP no_wrap]return strtotime('2015-08-17 1:00pm');[/PHP]"][Save This /][Add this to Current_Action.Target.Meeting /][/New]
+						[New Lunch_Meeting with Start_Time = "[PHP no_wrap]return strtotime('2015-08-18 1:00pm');[/PHP]"][Save This /][Add this to Current_Action.Target.Meeting /][/New]
+						[New Lunch_Meeting with Start_Time = "[PHP no_wrap]return strtotime('2015-08-19 1:00pm');[/PHP]"][Save This /][Add this to Current_Action.Target.Meeting /][/New]
+						[New Lunch_Meeting with Start_Time = "[PHP no_wrap]return strtotime('2015-08-20 1:00pm');[/PHP]"][Save This /][Add this to Current_Action.Target.Meeting /][/New]
+						[New Lunch_Meeting with Start_Time = "[PHP no_wrap]return strtotime('2015-08-21 1:00pm');[/PHP]"][Save This /][Add this to Current_Action.Target.Meeting /][/New]
+						[New Lunch_Meeting with Start_Time = "[PHP no_wrap]return strtotime('2015-08-22 1:00pm');[/PHP]"][Save This /][Add this to Current_Action.Target.Meeting /][/New]
+						
+						<!-- Save module -->
+						[Save Current_New_Item /]
+						
+						<!-- Add module to target type -->
+						[Add Current_New_Item to Current_Action.Target.Type.Content_Module /]
+						
+						<!-- Trigger Edited Event -->
+						[External_Script]
+							Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									"Event": "Added",
+									"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+									"Item": "[Current_New_Item.ID no_wrap /]",
+									"Item_Type": "[Current_New_Item.Type as Alias No_Wrap /]",
+									"Badge": "[Format as "Javascript String"][Current_New_Item as Badge with No_Drag = 1 /][/Format]"
+								\});
+						[/External_Script]
+					[/New]
+					
+					<!-- Save target type -->
+					[Save Current_Action.Target.Type /]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

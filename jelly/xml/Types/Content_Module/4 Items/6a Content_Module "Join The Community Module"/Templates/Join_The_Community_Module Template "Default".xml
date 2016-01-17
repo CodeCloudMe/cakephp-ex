@@ -1,0 +1,27 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Get_Involved_Module Template "Default" --}
+		{Template}
+			{Type}Get_Involved_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Get_Involved_Module to This /]
+
+				<!-- Module Content -->
+				<span class="Get_Involved_Module Module_Content" data-module="Get_Involved_Module">
+					[Set Get_Involved_Module.Variables.Show = False/]
+					[Admin Ignore_Preview_Mode][Set Get_Involved_Module.Variables.Show = True/][/Admin]
+					[Guest][Set Get_Involved_Module.Variables.Show = True/][/Guest]
+					<!-- Follow Button -->
+					[If Get_Involved_Module.Variables.Show]
+						[Link to "/Get_Involved" with Class = "Button"]
+							Join the Community
+						[/Link]
+					[/If]
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

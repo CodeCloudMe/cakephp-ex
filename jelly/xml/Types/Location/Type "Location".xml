@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Location" --}
+		{Type}
+			{Name}Location{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Locations{/Plural_Name}
+			{Default_Input}Location{/Default_Input}
+			{Package}Places{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

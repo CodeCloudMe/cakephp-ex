@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Font "Libre Baskerville" --}
+		{Web_Font}
+			{Name}Libre Baskerville{/Name}
+			{URL}https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic{/URL}
+		{/Web_Font}
+	
+{/Jelly}

@@ -1,0 +1,18 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Message Template "Default" --}
+		{Template}
+			{Type}Message{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<body style="margin: 25px; padding: 0px; font-family: Arial; font-size: 14px; width:650px;">
+					[Message.Body_Top/]
+					[Message.Body_Action/]
+					[Message.Body_Bottom/]					
+				</body>
+			{/Content}
+			{Package}Interaction{/Package}
+		{/Template}
+	
+{/Jelly}

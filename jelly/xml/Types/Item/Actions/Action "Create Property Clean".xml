@@ -1,0 +1,244 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Create Property Clean" --}
+		{Action}
+			{Name}Create Property Clean{/Name}
+			{Content}
+				<!-- Admin only -->
+				[Admin]
+					[Input "Hidden" with Name = "Item", Value = This.Variables.Item /]
+					<span class="[Current_Action.Namespace no_wrap /]_Value_Type_Finder">
+						[Input "Hidden" with Name = "Value_Type", Value = "", Execute_On_Change = true /]
+					</span>
+					
+					<span class="Create_Property_Menu">
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Long_Text').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/text.png);"></figure>
+							<span class="Label">Text</span>
+						</a>
+						[Ignore]
+							<menuitem>
+								<figure style="background-image:url(/jelly/images/types/password.png);"></figure>
+								<a href="#" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Password').change(); return false;">Password</a>
+							</menuitem>
+						[/Ignore]
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Number').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/number.png);"></figure>
+							<span class="Label">Number</span>
+						</a>
+						[Ignore]
+							<menuitem>
+								<figure style="background-image:url(/jelly/images/types/currency.png);"></figure>
+								<a href="#" onclick="[Format as "Single Line Code"]
+									Jelly.Handlers.Call_Handler_For_Target(
+										\{
+											'Event': 'Selected',
+											'Target': this,
+											'Value_Type': 'Number',
+											'Relation': 'Simple'
+										\});		
+										return false;
+									[/Format]">Currency</a>
+							</menuitem>
+						[/Ignore]
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Date_Time').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/date.png);"></figure>
+							<span class="Label">Date</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Time').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/time.png);"></figure>
+							<span class="Label">Time</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Boolean').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/checkbox.png);"></figure>
+							<span class="Label">Checkbox</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Picture').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/picture.png);"></figure>
+							<span class="Label">Pictures</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Video').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/video.png);"></figure>
+							<span class="Label">Videos</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Sound').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/sound.png);"></figure>
+							<span class="Label">Sounds</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('File').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/file.png);"></figure>
+							<span class="Label">Files</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Website').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/website.png);"></figure>
+							<span class="Label">Websites</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Social_Media').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/social_media.png);"></figure>
+							<span class="Label">Social Media</span>
+						</a>
+						<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('Location').change(); return false;">
+							<figure class="Cover" style="background-image:url(/jelly/images/types/location.png);"></figure>
+							<span class="Label">Location</span>
+						</a>
+						[Type from Database where Starred]
+							[Set Current_Type to this /]
+							<a href="#" class="Create_Property_Menu_Item" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val('[Current_Type.Alias no_wrap /]').change(); return false;">
+								<figure class="Cover" style="background-image:url(/jelly/images/types/list.png);"></figure>
+								<span class="Label">[If Current_Type.Plural_Name][Then][Current_Type.Plural_Name /][/Then][Else][Current_Type.Name /][/Else][/If]</span>
+							</a>
+						[/Type]
+						[Action "Create List" from database]
+							<a 
+								href="#" 
+								class="Create_Property_Menu_Item" 
+								onclick="[Format as "Single Line Code"]
+									var This_Element = this;
+								
+									Jelly.Handlers.Register_Handler(
+										\{
+											'Element': This_Element,
+											'Event': 'Created',
+											'Code': function (Parameters)
+											\{
+												Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Value_Type_Finder input\[name=Value_Type\]').val(Parameters\['Item_Alias'\]).change();
+											\}
+										\});
+								
+									Jelly.Handlers.Visit_Link(\{
+											'URL': '/Action/Create_List:Parent_Type_Alias=[Current_Action.Variables.Item.Type.Alias no_wrap/]',
+											'Container': 'Window'
+										\});
+
+									return false;									
+									[/Format]"
+							>
+								<figure class="Cover"><span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/plus.svg"></span></figure>
+								<span class="Label">Create New List...</span>
+							</a>
+						[/Action]
+						[Ignore]
+							<!-- TODO: More -->
+							<menuitem>
+								<figure style="background-image:url(/jelly/images/types/multipleitem.png);"></figure>
+								<a href="#">More...</a>
+							</menuitem>
+						[/Ignore]
+					</span>
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Admin only -->
+				[Admin]
+					<!-- Disambiguate -->
+					[Set Current_Item to Form.Values.Item /]
+					[Set Current_Item_Type = Current_Item.Type /]
+					[Set Current_Value_Type_Lookup to Form.Values.Value_Type /]
+					
+					<!-- Get value type -->
+					[Type from database where Alias is "[Current_Value_Type_Lookup no_wrap /]"]
+						<!-- Disambiguate -->
+						[Set Current_Value_Type to This /]
+						
+						<!-- Create property -->
+						[New Property]
+							<!-- Disambiguate -->
+							[Set New_Property to This /]
+							
+							<!-- Set property type -->
+							[Set New_Property.Type to Current_Item_Type.Alias /]
+							
+							<!-- Set property value type -->
+							[Set New_Property.Value_Type to Current_Value_Type.Alias /]
+							
+							<!-- Check if value type is simple or complex -->
+							[If Current_Value_Type is simple type]
+								[Then]
+									<!-- Set default property name -->
+									[Set New_Property.Name to "New Property" /]
+									
+									<!-- Special case value types -->
+									[If Current_Value_Type.Alias is "Long_Text"]
+										[Current_Item.Property where Name = "Description"]
+											[Else][Set New_Property.Name to "Description"/][/Else]
+											[Then][Current_Item.Target.Property where Name = "Details"][Else][Set New_Property.Name to "Details"/][/Else][/Current_Action.Target.Property][/Then]
+										[/Current_Action.Target.Property]
+									[/If]
+									[If Current_Value_Type.Alias is "Number"]
+										[Current_Item.Property where Name = "Amount"]
+											[Else][Set New_Property.Name to "Amount" /][/Else]
+										[/Current_Action.Target.Property]
+									[/If]
+									[If Current_Value_Type.Alias is "Date_Time"]
+										[Current_Item.Property where Name = "Start Time"]
+											[Else][Set New_Property.Name to "Start Time"/][/Else]
+											[Then][Current_Item.Target.Property where Name = "End Time"][Else][Set New_Property.Name to "End Time"/][/Else][/Current_Action.Target.Property][/Then]
+										[/Current_Action.Target.Property]
+									[/If]
+								[/Then]
+								[Else]
+									<!-- Set property name to value type's name -->
+									[Set New_Property.Name to Current_Value_Type.Name /]
+									[Set New_Property.Plural_Name to Current_Value_Type.Plural_Name /]
+									
+									<!-- TODO Hack to also set name to plural name -->
+									[If Current_Value_Type.Plural_Name]
+										[Set New_Property.Name to Current_Value_Type.Plural_Name /]
+									[/If]
+									
+									<!-- Set relation to multiple -->
+									[Set New_Property.Relation to "Many-To-Many"/]
+									
+									<!-- Special case value types -->
+									[If Current_Value_Type.Alias is "Location"]
+										[Current_Item.Property where Name = "Location"]
+											[Else]
+												[Set New_Property.Name to "Location"/]
+											[/Else]
+										[/Current_Action.Target.Property]
+										[Set New_Property.Relation to "Many-To-One"/]
+									[/If]
+								[/Else]
+							[/If]
+							
+							<!-- Set label-->
+							[Set New_Property.Label = New_Property.Name/]
+							
+							<!-- Set privacy-->
+							[Set New_Property.Viewable_By to "Public"/]
+							
+							<!-- Save new property -->
+							[Save New_Property no_refresh /]
+							
+							<!-- If this is a User, add to Get Involved --> 
+							[If Current_Item_Type.Alias = "User"]
+								[Action "Get Involved"]
+									<!-- Disambiguate -->
+									[Set Get_Involved_Action to This /]
+
+									<!-- Create input module for selected property -->
+									[New Input_Module with Property_Item = New_Property]
+										<!-- Disambiguate -->
+										[Set New_Input_Module to This /]
+					
+										<!-- Save the new input module -->
+										[Save New_Input_Module /]
+					
+										<!-- Add input module to item -->
+										[Add New_Input_Module to Get_Involved_Action.Content_Module /]
+									[/New]
+								[/Action]
+							[/If]
+							
+							<!-- Scripts -->
+							[External_Script]
+								// Refresh
+								Jelly.References.Trigger_Refresh(\{Kind: 'Element', Element: Jelly.jQuery('.Page_Modules').get(0)\});
+							[/External_Script]
+						[/New]
+					[/Type]
+				[/Admin]
+			{/Code}
+		{/Action}
+{/Jelly}

@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input Property "Content" --}
+		{Property}
+			{Type}Input{/Type}
+			{Name}Content{/Name}
+			{Value_Type}Long_Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

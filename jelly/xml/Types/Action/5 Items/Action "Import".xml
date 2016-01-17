@@ -1,0 +1,52 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Import" --}
+		{Action}
+			{Name}Import{/Name}
+			{Content}
+				<label>Enter a URL</label>
+				[Input "Text Field" with Name = "URL"/] [Link to Execute/]<br/>
+				or [Input "File" with Name = "File", Execute_On_Change = 1 /]<br/>
+
+				<div>[Action as "Result" /]</div>
+			{/Content}
+			{Code}
+				[Admin]
+					[Then]
+						[If Form.URL]	
+							[PHP]
+								$File_Paths = &New_Array();
+								$File_Paths\[\] = '[Form.URL No_Wrap/]';
+
+								$Database\['Ready'\] = &New_Boolean(false);
+								Load_XML_Files($Database, $File_Paths);
+								$Database\['Ready'\] = &New_Boolean(true);
+							[/PHP]	
+							Imported.
+						[/If]
+
+						[If Form.File]	
+							[PHP]
+								$File_Paths = &New_Array();
+								$File_Paths\[\] = '[Form.File.Path No_Wrap /]';
+
+								$Database\['Ready'\] = &New_Boolean(false);
+								Load_XML_Files($Database, $File_Paths);
+								$Database\['Ready'\] = &New_Boolean(true);
+							[/PHP]	
+							Imported.
+						[/If]
+
+						[External_Script]
+							// TODO - no url prefix here my friend
+							// document.location = "/";
+						[/External_Script]
+					[/Then]
+					[Else]
+						You must be logged in as an adminstrator account to import data.
+					[/Else]	
+				[/Admin]			
+			{/Code}
+		{/Action}
+{/Jelly}

@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Yusef Audeh" --}
+		{Presentation}
+			{Name}Yusef Audeh{/Name}
+			{Website}http://josephaudeh.com/{/Website}
+			{Description}Yusef Audeh is an artist whose work spans the divide between nature and technology. From sculptural and mechanical prototypes to collaborative, research-based experiments, Audeh’s practice bridges art, politics, and social physics.{/Description}
+			{Picture}Yusef_Audeh{/Picture}
+		{/Presentation}
+	
+{/Jelly}

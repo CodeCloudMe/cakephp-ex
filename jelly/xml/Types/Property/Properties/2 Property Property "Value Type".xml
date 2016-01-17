@@ -1,0 +1,17 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Property Property "Value Type" --}
+	
+		{Property}
+			{Type}Property{/Type}
+			{Value_Type}Type{/Value_Type}
+			{Name}Value Type{/Name}
+			{Alias}Value_Type{/Alias}
+			{Data_Name}Value_Type{/Data_Name}
+			{Relation}Many-To-One{/Relation}
+			{Key}Alias{/Key}
+			{Default_Value}Text{/Default_Value}
+		{/Property}
+	
+{/Jelly}

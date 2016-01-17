@@ -1,0 +1,21 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Require User" --}
+		{Action}
+			{Name}Require User{/Name}
+			{Content}
+				req.
+			{/Content}
+			{Code}
+				[If Current_Session.User exists]
+					[Else]
+						[Action "Setup User"]
+							[Go to this into "Window" /]
+						[/Action]
+					[/Else]
+				[/Current_Session.User]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

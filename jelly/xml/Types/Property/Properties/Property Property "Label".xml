@@ -1,0 +1,15 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Property Property "Label" --}
+	
+		{Property}
+			{Type}Property{/Type}
+			{Name}Label{/Name}
+			{Alias}Label{/Alias}
+			{Data_Name}Label{/Data_Name}
+			{Value_Type}Text{/Value_Type}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

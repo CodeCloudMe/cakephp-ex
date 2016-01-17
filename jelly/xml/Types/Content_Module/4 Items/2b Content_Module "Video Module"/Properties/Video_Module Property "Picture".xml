@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Video_Module Property "Video" --}
+		{Property}
+			{Type}Video_Module{/Type}
+			{Name}Video{/Name}
+			{Value_Type}Video{/Value_Type}
+		{/Property}
+	
+{/Jelly}

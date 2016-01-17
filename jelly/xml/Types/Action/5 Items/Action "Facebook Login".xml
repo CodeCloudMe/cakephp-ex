@@ -1,0 +1,50 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Facebook Login" --}
+		{Action}
+			{Name}Facebook Login{/Name}
+			{Content}
+				<div class="Window FB_Login_Menu">
+					<section>
+						<a href="#" onclick="Jelly.Connections.Facebook_Login(\{Namespace: '[Current_Action.Namespace no_wrap /]'\});return false;">
+							<img src="/jelly/images/Facebook_Login_New.jpg" />
+						</a>
+					</section>
+					[Input "Hidden" with Name = "Account_ID"/]
+					[Input "Hidden" with Name = "Email_Address"/]
+					[Input "Hidden" with Name = "First_Name"/]
+					[Input "Hidden" with Name = "Last_Name"/]
+					[Input "Hidden" with Name = "Path_To_Profile_Photo"/]
+				</div>
+			{/Content}
+			{Code}
+				[If Form.Username does not exist or Form.Username = ""]
+					[Show Error for "Username"]Please enter a username.[/Show]
+				[/If]
+				
+				[If not Form.Error]
+					[User from Database where Alias = Globals.Form.Username or Name = Globals.Form.Username or Email_Address = Globals.Form.Username]
+						[Then]
+							[Set Current_User to this /]
+							[New Reset_Password_Code]
+								[Set New_Reset_Password_Code to this /]
+								
+								[Set New_Reset_Password_Code.Name to "asdf" /]
+								
+								[Set New_Reset_Password_Code.User to Current_User /]
+								
+								[Save New_Reset_Password_Code /]
+								
+								A reset link was emailed to you.
+							[/New]
+						[/Then]
+						[Else]
+							[Show Error for "Username"]Could not find the user.[/Show]
+						[/Else]
+					[/User]
+				[/If]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

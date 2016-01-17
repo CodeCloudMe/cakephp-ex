@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Specimen" Picture --}
+		{Picture}
+			{Name}Specimen{/Name}
+			{Path}jelly_data/Files/File/Presentation_Specimen.jpg{/Path}
+		{/Picture}
+	
+{/Jelly}

@@ -1,0 +1,59 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart_Item Template "Simple Checkout Row" --}
+		{Template}
+			{Type}Shopping_Cart_Item{/Type}
+			{Name}Simple Checkout Row{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Shopping_Cart_Item to This /]
+
+				<!-- Get item -->
+				[Current_Shopping_Cart_Item.Item]
+					[This.Specific_Item]
+						<div>
+							<!-- Item Name -->
+							<div class="Name">
+								[Item.Name /]
+							</div>
+			
+							<div>
+								<div style="float: left; width: calc(100% / 3 * 2 - 10px); [1 Item.Reward no_wrap]width:100%;[/1]">
+									<!-- Start Time -->
+									<div class="Time">
+										[Item.Start_Time][Month_Name/] [Short_Date/], [Year/][/]
+									</div>
+			
+									<!-- Location -->
+									<div class="Location">
+										[Item.Start_Time][Hour/][If Minute is not "00"]:[Minute/][/If][Period/][/][Ignore][If Item.Location] @ [Item.Location /][/If][/Ignore]
+									</div>
+				
+								</div>
+
+				
+								<div style="float: left; width: calc(100% / 3 - 10px); margin-left: 10px;[1 Item.Reward no_wrap]margin-left:10px; margin-top:10px; clear:left;[/1]">
+									<!-- Quantity -->
+									<div class="Quantity" style="margin-bottom: 3px;[1 Item.Reward no_wrap]text-align:left;[/1]">
+										[Current_Shopping_Cart_Item.Action "Change Quantity" /]
+									</div>
+								</div>
+				
+								[1 Item.Reward]
+									<div style= "float: right; width: calc(100% / 3 * 2 - 10px); margin-top:10px; margin-right: 10px;">
+										<!-- Reward -->
+										<div class="Quantity" style="margin-bottom: 3px;text-align:left;">
+											[Current_Shopping_Cart_Item.Action "Change Reward" /]
+										</div>
+									</div>
+								[/1]
+								<br style="clear: both;" />
+							</div>
+						</div>
+					[/This.Specific_Item]
+				[/Current_Shopping_Cart_Item.Item]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

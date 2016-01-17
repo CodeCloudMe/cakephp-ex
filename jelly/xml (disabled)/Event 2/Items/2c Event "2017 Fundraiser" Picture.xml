@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event "2017 Fundraiser" Picture --}
+		{Picture}
+			{Name}2017_Fundraiser{/Name}
+			{Path}jelly_data/Files/File/Event_2017_Fundraiser.jpg{/Path}
+		{/Picture}
+	
+{/Jelly}

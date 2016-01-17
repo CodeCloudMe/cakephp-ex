@@ -1,0 +1,55 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "Package View" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}Package View{/Name}
+			{Content}
+				[Package from Database where Alias is not "Core" and Alias is not "Simple"]
+					<div style="margin-top:15px;margin-bottom:25px;">
+						<h3>[Package.Name/]</h3>
+						<!-- TODO add No_Child_Types Support --> 
+						[[Current_Type.Alias No_Wrap /] from Database by Name where Package is "[Package.Alias No_Wrap/]"]
+							[Set Current_Item to This /]
+							<div style="padding-bottom: 1px;">
+								<!-- TODO: display the object itself here? Like a blog? -->
+								<!-- Link to items by Alias? -->
+								<!-- (Current_Item /) -->
+								<div>
+									[Link to Current_Item]
+										[Current_Item as Badge /]
+									[/Link]
+		
+									([Link to Edit Current_Item]Edit[/Link], [Link to Remove Current_Item]Remove[/Link])
+								</div>
+							</div>
+						[/[Current_Type.Alias No_Wrap /]]
+					</div>
+				[/Package]
+				[Package from Database where Alias is "Core" or Alias is "Simple"]
+					<div style="margin-top:15px;margin-bottom:25px;">
+						<h3>[Package.Name/]</h3>
+						<!-- TODO add No_Child_Types Support --> 
+						[[Current_Type.Alias No_Wrap /] from Database by Name where Package is "[Package.Alias No_Wrap/]"]
+							[Set Current_Item to This /]
+							<div style="padding-bottom: 1px;">
+								<!-- TODO: display the object itself here? Like a blog? -->
+								<!-- Link to items by Alias? -->
+								<!-- (Current_Item /) -->
+								<div>
+									[Link to Current_Item]
+										[Current_Item as Badge /]
+									[/Link]
+		
+									([Link to Edit Current_Item]Edit[/Link], [Link to Remove Current_Item]Remove[/Link])
+								</div>
+							</div>
+						[/[Current_Type.Alias No_Wrap /]]
+					</div>
+				[/Package]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

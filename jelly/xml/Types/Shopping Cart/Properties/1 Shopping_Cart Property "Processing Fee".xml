@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Property "Processing Fee" --}
+		{Property}
+			{Type}Shopping_Cart{/Type}
+			{Name}Processing Fee{/Name}
+			{Value_Type}Number{/Value_Type}
+		{/Property}
+	
+{/Jelly}

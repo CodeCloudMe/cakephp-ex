@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Template "Simple Checkout Formatted Total" --}
+		{Template}
+			{Type}Shopping_Cart{/Type}
+			{Name}Simple Checkout Formatted Total{/Name}
+			{Content}
+				[Format decimals 2][Shopping_Cart.Total /][/Format]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

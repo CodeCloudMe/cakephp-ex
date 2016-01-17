@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Package" --}
+		{Type}
+			{Name}Package{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Packages{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Default_Key}Alias{/Default_Key}
+			{Package}Core{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

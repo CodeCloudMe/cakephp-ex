@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Text Block" --}
+		{Type}
+			{Name}Text Block{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Text Blocks{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Website{/Package}
+			{Core}1{/Core}
+		{/Type}	
+{/Jelly}

@@ -1,0 +1,14 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Property Property "Relation" --}
+	
+		{Property}
+			{Type}Property{/Type}
+			{Value_Type}Text{/Value_Type}
+			{Name}Relation{/Name}
+			{Alias}Relation{/Alias}
+			{Data_Name}Relation{/Data_Name}
+		{/Property}
+	
+{/Jelly}

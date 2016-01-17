@@ -1,0 +1,9 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- Privacy "Members" --}
+		{Privacy}
+			{Name}Members{/Name}
+			{Explanation}Only [Site.Name/] members can see this.{/Explanation}
+		{/Privacy}
+{/Jelly}

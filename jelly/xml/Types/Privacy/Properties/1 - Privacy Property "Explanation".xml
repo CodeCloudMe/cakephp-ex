@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Privacy Property "Explanation" --}
+		{Property}
+			{Type}Privacy{/Type}
+			{Name}Explanation{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

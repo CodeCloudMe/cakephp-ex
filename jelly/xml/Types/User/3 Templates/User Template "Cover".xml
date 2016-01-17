@@ -1,0 +1,32 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Template "Cover" --}
+		{Template}
+			{Type}User{/Type}
+			{Name}Cover{/Name}
+			{Content}
+				[Set Current_User to This/]
+				[If not Current_User.Variables.Maximum_Width]
+					[Set Current_User.Variables.Maximum_Width = "1000"/]
+				[/If]
+
+				[1 This.Picture]
+					[Then]
+						<div class="Cover_Content User_Cover_Content">
+							<div class="Cover_Picture" style="background-image: url(/Picture/[This.ID no_wrap /]/File:Maximum_Width=[Current_User.Variables.Maximum_Width no_wrap/]);">
+								<img src="/Picture/[This.ID no_wrap /]/File:Maximum_Width=[Current_User.Variables.Maximum_Width no_wrap/]" style="display:none;"/>
+							</div>
+						</div>
+					[/Then]
+					[Else]
+						<div class="Cover_Content User_Cover_Content">
+							<div class="Cover_Picture" style="background-image:url(/jelly/images/Blank_User_Icon.png);">
+							</div>
+						</div>
+					[/Else]
+				[/This.Picture]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

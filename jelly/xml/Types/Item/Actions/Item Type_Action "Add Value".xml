@@ -1,0 +1,74 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add Value" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add Value{/Name}
+			{Content}
+				<!-- Make sure target property is set. --> 
+				[If Type_Action.Variables.Target_Property exists]
+					[Then]
+						[If Target_Property.Variables.Target_Relation = "One-To-Many"]
+							[Then]
+								<!-- One-To-Many properties -->
+								[Current_Action.Target]
+									<!-- For one to many, create new item... --> 
+									[Link to Add This.[Target_Property.Variables.Target_Alias No_Wrap /] /]
+								[/Current_Action.Target]
+							[/Then]
+							[Else]
+								<!-- Many-To-Many properties -->
+								<!-- TODO: Should this be Target Property, or Property Alias -->
+								[Input "Hidden" with Name = "Target Property Alias", Value = Target_Property.Variables.Target_Alias /]
+								
+								<!-- Default Value -->
+								[If Target_Property.Variables.Target_Value_Type.Default_Input.Alias is "Menu"]
+									[Then]
+										<!-- Menu to select Value -->
+										[Input "Menu" with
+											Name = "Value",
+											Parent_Property_Alias = Target_Property.Alias,
+											Value_Type = Target_Property.Variables.Target_Value_Type,
+											Label = "Add [Target_Property.Variables.Target_Name No_Wrap /]",
+											Execute_On_Change = 1,
+											Display_Value = "False",
+											Show_None = "False"
+										/]
+									[/Then]
+									[Else]
+										<!-- Type Input -->
+										<!-- TODO: should mirror above? -->
+										[Target_Property.Variables.Target_Value_Type.Default_Input
+											with
+											Name = "Value",
+											Parent_Property_Alias = Target_Property.Alias,
+											Value_Type = Target_Property.Variables.Target_Value_Type,
+											Label = "Add [Target_Property.Variables.Target_Name No_Wrap /]",
+											Execute_On_Change = 1,
+											Display_Value = "False",
+											Show_None = "False"
+										/]
+									[/Else]
+								[/If]
+							[/Else]
+						[/If]
+					[/Then]
+					[Else]
+						Error: must provide a property.
+					[/Else]
+				[/If]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Add Value to Target -->
+					[Add Form.Value to Action.Target.[Form.Target_Property_Alias No_Wrap /]/]
+
+					<!-- Add Value to Target -->
+					<!-- TODO - is this implicitly done inside the Add action above? -->
+					[Save Action.Target /]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

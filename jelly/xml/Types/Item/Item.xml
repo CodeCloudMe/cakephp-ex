@@ -1,0 +1,19 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type "Item" --}
+	{!-- TODO hacked having item Name always proceed other properties by moving Item higher alphabetically in load order --}
+	
+	{Type}
+		{Name}Item{/Name}
+		{Alias}Item{/Alias}
+		{Plural_Name}Items{/Plural_Name}
+		{Plural_Alias}Items{/Plural_Alias}
+		{Data_Name}Item{/Data_Name}
+		{Parent_Type /}
+		{Default_Key}ID{/Default_Key}
+		{Default_Input}Menu{/Default_Input}
+		{Core}1{/Core}
+	{/Type}
+	
+{/Jelly}

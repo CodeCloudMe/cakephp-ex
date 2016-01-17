@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Font "Lato" --}
+		{Web_Font}
+			{Name}Lato{/Name}
+			{URL}https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic{/URL}
+		{/Web_Font}
+	
+{/Jelly}

@@ -1,0 +1,132 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add Value Clean" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add Value Clean{/Name}
+			{Content}
+				<!-- Open the current action target -->
+				<!-- TODO: this is because you can't set variables on items that aren't dereferenced yet -->
+				[Current_Action.Target]
+					<!-- Disambiguate -->
+					[Set Current_Item to This /]
+					
+					<!-- Check if the item is editable -->
+					[Set Current_Item.Variables.Editable to false /]
+					[Admin]
+						[Set Current_Item.Variables.Editable to true /]
+					[/Admin]
+					[Member]
+						[If Current_Item.Type.Alias is "User"]
+							[If Current_Item.ID is Current_Session.User.ID]
+								[Set Current_Item.Variables.Editable to true /]
+							[/If]
+						[/If]
+					[/Member]
+					
+					<!-- Check if editable -->
+					[If Current_Item.Variables.Editable]
+					
+						[Set Current_Type to Current_Item.Type /]
+						[Set Current_Property_Alias to Current_Action.Variables.Property_Alias /]
+						
+						<!-- Get property -->
+						[Current_Item.Forward_Properties where Alias is "[Current_Property_Alias no_wrap /]"]
+							[Set Current_Action.Variables.Value_Type to This.Values.Value_Type /]
+						[/Current_Item.Forward_Properties]
+						[Current_Item.Reverse_Properties where Reverse_Alias is "[Current_Property_Alias no_wrap /]"]
+							[Set Current_Action.Variables.Value_Type to This.Values.Type /]
+						[/Current_Item.Reverse_Properties]
+						
+						<!-- Pass property alias to action -->
+						[Input "Hidden" with Name = "Property Alias", Value = Path_Variables.Property_Alias /]
+						
+						<!-- Pass item to action -->
+						[Input "Hidden" with Name = "Item", Value = Current_Item /]
+						
+						<span id="[Current_Action.Namespace no_wrap /]_Value_Input_Finder">
+							[Input "Hidden" with Name = "Value", Value_Type = Current_Action.Variables.Value_Type, Execute_On_Change = 1 /]
+						</span>
+						
+						<!-- Window -->
+						<span class="Add_Value_Clean_Window">
+							<!-- Close Button -->
+							<a class="Close_Button" href="#" onclick="Jelly.Interface.Close_Top_Window();return false;">
+								<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg">
+							</a>
+							
+							[If Current_Item.Type.Alias = "User" and Path_Variables.Property_Alias = "Team"]
+								<span style="font-weight:600">How are you interested in helping out?</span>
+							[/If]
+							
+							<!-- Select input -->
+							[Input "Select Clean" with Name = "Value", Value_Type = Current_Action.Variables.Value_Type, Execute_On_Change = true /]
+						</span>
+					[/If]
+				[/Current_Action.Target]
+			{/Content}
+			{Code}
+				<!-- Open the current action target -->
+				<!-- TODO: this is because you can't set variables on items that aren't dereferenced yet -->
+				[Current_Action.Target]
+					<!-- Disambiguate -->
+					[Set Current_Item to This /]
+					
+					<!-- Check if the item is editable -->
+					[Set Current_Item.Variables.Editable to false /]
+					[Admin]
+						[Set Current_Item.Variables.Editable to true /]
+					[/Admin]
+					[Member]
+						[If Current_Item.Type.Alias is "User"]
+							[If Current_Item.ID is Current_Session.User.ID]
+								[Set Current_Item.Variables.Editable to true /]
+							[/If]
+						[/If]
+					[/Member]
+					
+					<!-- Check if editable -->
+					[If Current_Item.Variables.Editable]
+						<!-- Disambiguate -->
+						[Set Current_Property_Alias to Form.Property_Alias /]
+						
+						<!-- Add value to target -->
+						[Add Form.Value to Current_Item.[Current_Property_Alias no_wrap /] no_refresh /]
+						
+						<!-- Track business metrics --> 
+						[If Current_Item.Type.Alias = "User" and Current_Property_Alias = "Team"]
+							[If Globals.Allow_Tracking]
+								[External_Script]
+									if (mixpanel)
+									\{
+										mixpanel.track(
+												"Team Joined", 
+												\{	
+													"User Name": "[Format as "Javascript String"][Current_Item.Name no_wrap/][/Format]", 
+													"Team Name": "[Format as "Javascript String"][Form.Value.Name no_wrap/][/Format]", 
+													"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+												\}
+											);
+									\}
+								[/External_Script]
+							[/If]
+						[/If]
+						
+						<!-- Close the window -->
+						[External_Script]
+							// Refresh
+							Jelly.jQuery('\[data-parent=[Current_Item.ID no_wrap /]\]\[data-property=[Current_Property_Alias no_wrap /]\]').each(function (index) \{
+								Jelly.References.Trigger_Refresh(\{Kind: 'Element', Element: this\});
+							\});
+							
+							// Close window
+							// TODO hack
+							Jelly.Interface.Close_Top_Window();
+						[/External_Script]
+					[/If]
+				[/Current_Action.Target]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

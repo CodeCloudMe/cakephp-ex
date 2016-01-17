@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Server_Request Property "Session" --}
+		{Property}
+			{Type}Server_Request{/Type}
+			{Name}Session{/Name}
+			{Value_Type}Session{/Value_Type}
+		{/Property}
+	
+{/Jelly}

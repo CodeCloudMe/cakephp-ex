@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web Font Property "URL" --}
+		{Property}
+			{Type}Web_Font{/Type}
+			{Name}URL{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

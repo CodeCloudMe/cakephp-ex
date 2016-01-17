@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Preview" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Preview{/Name}
+			{Content}
+				<div style="max-width:300px;max-height:200px;">
+					[Current_Item:[Current_Property:Alias no_wrap /] No_Wrap /]
+				</div>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

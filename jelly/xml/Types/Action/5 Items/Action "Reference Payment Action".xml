@@ -1,0 +1,36 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Payment Service "Reference Payment Action" --}
+		{Action}
+			{Name}Reference Payment Action{/Name}
+			{Content}
+				Enter a Credit Card Number:<br/>
+				[Input "Text Field" with Sensitive = True, Name = "Credit Card Number", Value = "4242424242424242"/]<br/>
+				<br/>
+				Enter an Expiration Month:<br/>
+				[Input "Text Field" with Sensitive = True, Name = "Expiration Month", Value = "6"/]<br/>
+				<br/>
+				Enter an Expiration Year:<br/>
+				[Input "Text Field" with Sensitive = True, Name = "Expiration Year", Value = "16"/]<br/>
+				<br/>
+				Enter a Verification Number:<br/>
+				[Input "Text Field" with Sensitive = True, Name = "Card Verification Code", Value = "666"/]<br/>
+				<br/>
+				
+				[Payment_Service "Stripe" as "Form_Plugin"/]
+
+				[Link to Submit/]<br/>
+			{/Content}
+			{Code}
+				[New Payment]
+					[Set Payment.Amount to "6.00"/]
+					[Set Payment.Description to "for Sample Item"/]
+					[Payment.Action "Charge" as Execute/]
+					[Payment.Status_Message/]
+					[Save Payment/]
+				[/New Payment]
+			{/Code}
+		{/Action}
+
+{/Jelly}

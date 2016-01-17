@@ -1,0 +1,69 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Change User" --}
+		{Action}
+			{Name}Change User{/Name}
+			{Content}
+				<!-- Action "Change User" Content -->
+
+				<!-- Admin only -->
+				[Member]
+					<span id="Change_User_Menu">
+						[Ignore]
+							[Link to Execute]
+								<span class="Change_User_Menu_Item">
+									<span class="Icon">
+										<img class="iconic" data-src="/jelly/images/privacy/Members.svg">
+									</span>
+									<span class="Label">
+										Preview as Member
+									</span>
+								</span>
+							[/Link]
+		
+							<span class="Change_User_Menu_Item">
+								<span class="Icon">
+									<img class="iconic" data-src="/jelly/images/privacy/Public.svg">
+								</span>
+								<span class="Label">
+									Preview as Public
+								</span>
+							</span>
+
+							<!-- 
+								<span class="Change_User_Menu_Item">
+									<span class="Icon">
+										<img class="iconic" data-src="/jelly/images/privacy/Public.svg">
+									</span>
+									<span class="Label">
+										View as Public 
+									</span>
+								</span>
+							--> 
+						[/Ignore]
+
+						<span class="Change_User_Menu_Item">
+							<span class="Icon">
+								<img data-state="logout" class="iconic" data-src="/jelly/images/flaticon/arrows15.svg">
+							</span>
+							<span class="Label">
+								Logout
+							</span>
+						</span>	
+					</span>
+				[/Member]
+			{/Content}
+			{Code}
+				[Preview_Mode "Public" from Database]
+					[Set Current_Session.Preview_Mode to This/]	
+					[Save Current_Session/]
+				[/Preview_Mode]
+
+				[External_Script]
+					document.location.reload();
+				[/External_Script]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

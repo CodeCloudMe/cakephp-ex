@@ -1,0 +1,58 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add Scripting Module" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add Scripting Module{/Name}
+			{Content}
+				[Admin]
+					[Link to Execute]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/code.svg"> Scripting[/Link]
+					
+					[External_Script]
+						// Selected Handler
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Added",
+							"Code": function (Parameters)
+							\{
+								Jelly.Handlers.Visit_Link(\{'URL': '/' + Parameters\['Item_Type'\] + '/' + Parameters\['Item'\] + '/' + 'Change_Scripting', 'Container': 'Window'\});
+							\}
+						\});
+					[/External_Script]
+					
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					[New Scripting_Module]
+						<!-- Disambiguate -->
+						[Set Current_New_Item to This /]
+						
+						<!-- Save module -->
+						[Save Current_New_Item as "Draft" /]
+						
+						<!-- Add module to target -->
+						[Add Current_New_Item to Current_Action.Target.Content_Module /]
+						
+						<!-- Trigger Edited Event -->
+						[External_Script]
+							Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									"Event": "Added",
+									"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+									"Item": "[Current_New_Item.ID no_wrap /]",
+									"Item_Type": "[Current_New_Item.Type as Alias No_Wrap /]",
+									"Badge": "[Format as "Javascript String"][Current_New_Item as Badge with No_Drag = 1/][/Format]"
+								\});
+						[/External_Script]
+					[/New]
+					
+					<!-- Save target -->
+					[Save Current_Action.Target /]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

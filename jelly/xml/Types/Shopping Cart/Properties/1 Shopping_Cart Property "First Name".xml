@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Property "First Name" --}
+		{Property}
+			{Type}Shopping_Cart{/Type}
+			{Name}First Name{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

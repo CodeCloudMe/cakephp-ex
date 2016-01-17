@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Folder" --}
+		{Type}
+			{Name}Folder{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Folders{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Website{/Package}
+			{Core}1{/Core}	
+		{/Type}
+	
+{/Jelly}

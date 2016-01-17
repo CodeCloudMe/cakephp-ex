@@ -1,0 +1,69 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Message "Invitation" --}
+		{Message}
+			{Name}Invitation{/Name}
+			{Subject}Join us at [1 Site from Database no_wrap][Name no_wrap/][/1].{/Subject}
+			{Body_Top}
+				<div class="Name" style="font-weight: bold; margin-bottom: 17px;">
+					Hi [Message.Variables.Recipient.Name no_wrap/],
+				</div>
+
+				<div class="Time" style="margin-bottom: 17px;">
+					Would you join us at the [Site.Name no_wrap/] community network? 
+				</div>
+
+				[If Site.Summary exists]
+					<div class="Time" style="margin-bottom: 17px;">
+						[Site.Summary no_wrap/]
+					</div>
+				[/If]
+
+				[If Site.Picture exists]
+					<div class="Time" style="margin-bottom: 17px;">
+						[Site.Picture no_wrap with Maximum_Width = 450, Use_Absolute_Path = true/]
+					</div>
+				[/If]
+
+				<div class="Time" style="margin-bottom: 17px;">
+					We’ve set up an invisible account for you with what we know.  To make it active, follow the link below, and make sure to join specific teams to help others in the [Site.Name no_wrap/] community connect and coordinate with you better.
+				</div>
+				
+				<div class="Time" style="margin-bottom: 2px;">
+					Join here:
+				</div>
+			{/Body_Top}
+			{Body_Action}
+				[Set Message.Variables.Action_Link = "http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/user/[If Message.Variables.Recipient.Alias is not ""][Then][Message.Variables.Recipient.Alias no_wrap/][/Then][Else][Message.Variables.Recipient.ID no_wrap/][/Else][/If]:invitation_code=[Message.Variables.Recipient_Invitation_Code no_wrap/]"/]
+				<div class="Time">
+					<a style="color:#41bde1;" href="[Message.Variables.Action_Link no_wrap/]">[Message.Variables.Action_Link no_wrap/]</a>
+					[If Message.Variables.Preview]<span style="color:#aaaaaa; font-size:11px; margin-left:10px; position:relative;">*This line can't be changed.<span>[/If]
+				</div>
+			{/Body_Action}
+			{Body_Bottom}				
+				<div class="Time" style="margin-bottom: 17px;margin-top:17px;">
+					Thanks!
+				</div>
+
+				<div class="Time" style="margin-bottom: 17px;">
+					--
+				</div>
+
+				<div class="Time" style="margin-bottom: 17px;">
+					[If Current_Session.User exists]
+						[Then]
+							[Current_Session.User.Name no_wrap/] @ [Site.Name no_wrap/]<br/>
+							<a style="color:#41bde1;" href="http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[Current_Session.User.Alias no_wrap/]">http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[Current_Session.User.Alias no_wrap/]</a>
+						[/Then]
+						[Else]
+							[Owner.Name no_wrap/] @ [Site.Name no_wrap/]<br/>
+							<a style="color:#41bde1;" href="http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[Owner.Alias no_wrap/]">http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[Owner.Alias no_wrap/]</a>
+						[/Else]
+					[/If]
+				</div>
+			{/Body_Bottom}
+			{Core}1{/Core}
+		{/Message}
+	
+{/Jelly}

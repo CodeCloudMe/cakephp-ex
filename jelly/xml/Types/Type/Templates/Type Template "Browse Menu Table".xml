@@ -1,0 +1,298 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "Browse Menu Table" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}Browse Menu Table{/Name}
+			{Content}
+				<!-- TODO - To Upgrade -->
+				
+				<!-- Disambiguate -->
+				[Set Browse_Type to This /]
+				
+				<!-- Defaults -->
+				[If Browse_Type.Variables.Show_New_Link twas not set and Globals.Path_Variables.Show_New_Link twas not set]
+					[Set Browse_Type.Variables.Show_New_Link to "True" /]
+				[/If]
+				[If Browse_Type.Variables.Parent_Property_Alias twas not set and Globals.Path_Variables.Parent_Property_Alias twas not set]
+					[Set Browse_Type.Variables.Parent_Property_Alias to "" /]
+				[/If]
+				[If Browse_Type.Variables.Show_Items twas not set and Globals.Path_Variables.Show_Items twas not set]
+					[Set Browse_Type.Variables.Show_Items to "True" /]
+				[/If]
+				[If Browse_Type.Variables.Display twas not set and Globals.Path_Variables.Display twas not set]
+					[Set Browse_Type.Variables.Display to "Menu" /]
+				[/If]
+				
+				<table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+					
+					<!-- Separator -->
+					<tr><td colspan="2"><hr class="Jelly_Menu_Separator" /></td></tr>
+				
+					<!-- New Item Link -->
+					<!-- TODO: maybe boolean support would be important? or at least case insensitivity when needed  --> 
+					[If Browse_Type.Variables.Show_New_Link is "True"]
+						<tr class="Jelly_Menu_Row">
+							<td class="Jelly_Menu_Item" colspan="2">
+								[Link to Add [Browse_Type.Alias No_Wrap /][If Browse_Type.Variables.Parent_Property_Alias] With_Parent_Property_Alias  "[Browse_Type.Variables.Parent_Property_Alias No_Wrap /]"[/If]/]
+							</td>
+						</tr>
+						
+						<!-- Separator -->
+						<tr><td colspan="2"><hr class="Jelly_Menu_Separator" /></td></tr>
+					[/If]
+				
+					<!-- Browse as Grid -->
+					<!-- TODO: ??? --> 
+					[If Globals.Path_Variables.Show_Browse_Link is "True"]
+						<tr class="Jelly_Menu_Row">
+							<td class="Jelly_Menu_Item" colspan="2">
+								[Link to Type as Grid into Window]Grid View[/Link]
+							</td>
+						</tr>
+					
+						<!-- Separator -->
+						<tr><td colspan="2"><hr class="Jelly_Menu_Separator" /></td></tr>
+					[/If]
+					
+					[If Browse_Type.Variables.Show_Items is "True"]
+						<!-- If Grid -->
+						[If Browse_Type.Variables.Display is "Grid"]
+							[Then]
+								<!-- Grid -->
+								<tr><td>
+								
+								<span class="Big_List Grid">
+									<!-- Browse Type Items -->
+									[[Browse_Type.Alias No_Wrap /] from Database by Name[If Browse_Type.Variables.Query] where [Browse_Type.Variables.Query No_Wrap/][/If] iterator_classes "Big_List_Items" item_classes "Big_List_Item"]
+									
+										[Set Browse_Item to This /]
+										
+										<!-- Select Link -->
+										<a 
+											class="Big_List_Item_Details"
+											href="#" 
+											id="[Namespace No_Wrap /]_Link"
+											onclick="[Format as "Single Line Code"]
+												/* TODO: I don't think the registered handler uses: Display_Target, Item_Type... make sure, then delete */
+												Jelly.Handlers.Call_Handler_For_Target(
+													\{
+														'Event': 'Selected',
+														'Target': this,
+														'Item': '[Browse_Item as Key No_Wrap /]',
+														'Badge': document.getElementById('[Namespace No_Wrap /]_Link').innerHTML,
+														'Display_Target': this.parentNode,
+														'Item_Type': '[Browse_Item.Type as Alias No_Wrap /]'
+													\});
+												return false;
+											[/Format]"
+										>
+											<span class="Big_List_Item_Cover">
+												[Browse_Item as Cover /]
+											</span>
+											<span class="Big_List_Item_Name">
+												[Browse_Item.Name /]
+											</span>
+											
+										</a>
+										<!-- End Select Link -->
+					
+									[/[Browse_Type.Alias No_Wrap /]]
+									<!-- End Type Items -->
+								</span>
+								
+								</td></tr>
+								<!-- End Grid -->
+							[/Then]
+							
+							[Else]
+								<!-- Not Grid -->
+								
+								<!-- Package_Selection If -->
+								[If Globals.Path_Variables.Package_Selection is "Menu"]
+									[Then]
+										<!-- All -->
+										<tr class="Jelly_Menu_Row" id="[Namespace No_Wrap /]_All_Row">
+											<td class="Jelly_Menu_Item" id="[Namespace No_Wrap /]_All">
+												<a href="#" id="[Namespace No_Wrap /]_Link" class="Do_Not_Close_Menu_On_Click" onclick="[Format as "Single Line Code"]
+													var Menu_Reference = Jelly.Interface.Create_Menu(
+														\{
+															Alias: '[Browse_Type.Alias No_Wrap/]_Menu',
+															Attach: 'Element',
+															Attach_Element: document.getElementById('[Namespace No_Wrap /]_All_Row'),
+															Edge: 'Right',
+															URL: '/Type/[Browse_Type.Alias No_Wrap/]/Browse/Raw:Show_Submenu=[Globals.Path_Variables.Show_Submenu No_Wrap /],Show_New_Link=[Globals.Path_Variables.Show_New_Link No_Wrap /],Show_None=[Globals.Path_Variables.Show_None No_Wrap /],Show_Items=[Globals.Path_Variables.Show_Items No_Wrap /],Package_Selection=All',
+															Do_Not_Focus_First_Item: true,
+															/* TODO - below doesn't seem like it has an effect. */
+															Do_Not_Focus_On_Hover: true
+														\});
+													return false;
+												[/Format]">
+													All
+												</a>
+											</td>
+											<td class="Jelly_Menu_Arrow">
+												&#x25BA;
+											</td>
+										</tr>
+						
+										<!-- Separator -->
+										<tr><td colspan="2"><hr class="Jelly_Menu_Separator" /></td></tr>
+						
+										<!-- Packages --> 
+										[Package from Database]
+											[Set Browse_Package to This /]
+											[1 [Browse_Type.Alias No_Wrap/] from Database where Package is "[Browse_Package.Alias No_Wrap/]"]
+												<tr class="Jelly_Menu_Row" id="[Namespace No_Wrap /]_[Browse_Package.ID No_Wrap /]_Row">
+							
+													<!-- Package -->
+													<td class="Jelly_Menu_Item" id="[Namespace No_Wrap /]_[Browse_Package.ID No_Wrap /]">
+														<a href="#" id="[Namespace No_Wrap /]_Link" class="Do_Not_Close_Menu_On_Click" onclick="[Format as "Single Line Code"]
+															var Menu_Reference = Jelly.Interface.Create_Menu(
+															\{
+																Alias: '[Browse_Type.Alias No_Wrap/]_Menu',
+																Attach: 'Element',
+																Attach_Element: document.getElementById('[Namespace No_Wrap /]_[Browse_Package.ID No_Wrap /]_Row'),
+																Edge: 'Right',
+																URL: '/Type/[Browse_Type.Alias No_Wrap/]/Browse/Raw:Show_Submenu=[Globals.Path_Variables.Show_Submenu No_Wrap /],Show_Items=[Globals.Path_Variables.Show_Items No_Wrap /],Package_Selection=[Browse_Package.Alias no_wrap /],Show_None=False',
+																Do_Not_Focus_First_Item: true,
+															\});
+															return false;
+														[/Format]">
+															<div class="Jelly_Menu_Badge">
+																[Browse_Package as "Badge" /]
+															</div>
+														</a>
+													</td>
+								
+													<!-- Menu Arrow -->
+													<td class="Jelly_Menu_Arrow">
+														&#x25BA;
+													</td>
+												</tr>
+											[/1 [Browse_Type.Alias No_Wrap/]]
+										[/Package]
+									[/Then]
+									[Else]
+										<!-- Create Query... -->
+										[Set Browse_Type.Variables.Query to ""/]
+				
+										<!-- Handle Search Query... -->
+										[If Globals.Path_Variables.Search]
+											[Set Browse_Type.Variables.Query to "Name contains Globals.Path_Variables.Search"/]
+										[/If]
+				
+										<!-- Handle Package Query... -->
+										[If Globals.Path_Variables.Package_Selection != "Menu" and Globals.Path_Variables.Package_Selection != "All"]
+											[If Browse_Type.Variables.Query]
+												[Then]
+													[Set Browse_Type.Variables.Query to "[Browse_Type.Variables.Query/] and Package is Globals.Path_Variables.Package_Selection"/]
+												[/Then]
+												[Else]
+													[Set Browse_Type.Variables.Query to "Package is Globals.Path_Variables.Package_Selection"/]						
+												[/Else]
+											[/If]
+										[/If]
+				
+										<!-- TODO: Hide Types with no items? What if you want to create a new item of an empty type? -->
+										<!-- Items -->
+										[[Browse_Type.Alias No_Wrap /] from Database by Name[If Browse_Type.Variables.Query] where [Browse_Type.Variables.Query No_Wrap/][/If]]
+											[Set Browse_Item to This /]
+											<tr class="Jelly_Menu_Row" id="[Namespace No_Wrap /]_[Browse_Item.ID No_Wrap /]_Row">
+												<td class="Jelly_Menu_Item" id="[Namespace No_Wrap /]_[Browse_Item.ID No_Wrap /]">
+													<a 
+														href="#" 
+														id="[Namespace No_Wrap /]_Link" [If Browse_Type.Alias is "Type" and Globals.Path_Variables.Show_Submenu is "True"]
+														class="Do_Not_Close_Menu_On_Click"[/If] 
+														onclick="[Format as "Single Line Code"]
+															[If Browse_Type.Alias is "Type" and Globals.Path_Variables.Show_Submenu is "True"]
+																[Then]
+																	var Menu_Reference = Jelly.Interface.Create_Menu(
+																	\{
+																		Alias: 'Types_Menu',
+																		Attach: 'Element',
+																		Attach_Element: document.getElementById('[Namespace No_Wrap /]_[Browse_Item.ID No_Wrap /]_Row'),
+																		Edge: 'Right',
+																		URL: '/Type/[Browse_Item.Alias No_Wrap /]/Browse/Raw:Show_New_Link=[Globals.Path_Variables.Show_Submenu No_Wrap /],Show_Browse_Link=[Globals.Path_Variables.Show_Browse_Link No_Wrap /],Show_Items=True'
+																	\});
+																[/Then]
+																[Else]
+																	/* TODO: I don't think the registered handler uses: Display_Target, Item_Type... make sure, then delete */
+																	Jelly.Handlers.Call_Handler_For_Target(
+																		\{
+																			'Event': 'Selected',
+																			'Target': this,
+																			'Item': '[Browse_Item as Key No_Wrap /]',
+																			'Badge': document.getElementById('[Namespace No_Wrap /]_Link').innerHTML,
+																			'Display_Target': this.parentNode,
+																			'Item_Type': '[Browse_Item.Type as Alias No_Wrap /]'
+																		\});
+																[/Else]
+															[/If]
+															return false;
+														[/Format]"
+													>
+														[Browse_Item as "Badge" /]
+													</a>
+													[If Globals.Path_Variables.Show_Edit_Links is "True"]
+														<div class="Jelly_Sub_Menu_Item">
+															([Link to Edit Browse_Item]Edit[/Link])
+														</div>
+													[/If]
+												</td>
+												[If Browse_Type.Alias is "Type" and Globals.Path_Variables.Show_Submenu is "True"]
+													<td class="Jelly_Menu_Arrow">
+														&#x25BA;
+													</td>
+												[/If]
+											</tr>
+										[/[Browse_Type.Alias No_Wrap /]]
+									[/Else]
+								[/If]
+								<!-- End Package_Selection If -->
+								
+								<!-- End Not Grid -->
+							[/Else]
+						[/If]
+						<!-- End If Grid -->
+						
+					[/If]
+				
+					<!-- None -->
+					<!-- TODO: test Item_Type: in the onclick below -->  
+					[If Globals.Path_Variables.Show_None Is "True"]
+						<tr class="Jelly_Menu_Row">
+							<td class="Jelly_Menu_Item" style="border-top-style: solid; border-top-width: 1px; border-top-color: #cccccc;" colspan="2">
+								<a 
+									href="#" 
+									onclick="[Format as "Single Line Code"]
+										Jelly.Handlers.Call_Handler_For_Target(
+											\{
+												'Event': 'Selected',
+												'Target': this,
+												'Item': '', 
+												'Item_Type': '[Browse_Type.Alias No_Wrap /]',
+												'Badge': document.getElementById('[Namespace No_Wrap /]_Badge').innerHTML
+											\});
+										Jelly.Handlers.Call_Handler_For_Target(
+											\{
+												'Event': 'Done',
+												'Target': this
+											\});
+										return false;
+									[/Format]"
+								>
+									<div class="Jelly_Menu_Badge" id="[Namespace No_Wrap /]_Badge">						
+										<i>None</i>
+									</div>
+								</a>
+							</td>
+						</tr>
+					[/If]
+				</table>
+			{/Content}
+		{/Template}
+		
+{/Jelly}

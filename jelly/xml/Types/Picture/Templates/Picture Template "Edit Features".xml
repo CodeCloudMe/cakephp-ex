@@ -1,0 +1,30 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Picture Template "Edit Features" --}
+		{Template}
+			{Type}Picture{/Type}
+			{Name}Edit Features{/Name}
+			{Content}
+				<tr class="Jelly_Edit_Window_Property_Row">
+					<th class="Jelly_Edit_Window_Property_Row_Name">
+						Picture
+					</th>
+					<td class="Jelly_Edit_Window_Property_Row_Value">
+						<div class="Jelly_Edit_Window_Picture">
+							[This as Default with Maximum_Width = 300, Maximum_Height = 300, Refreshable = "True"/]
+						</div>
+						<div>
+							<!-- TODO upgrade below -->
+							<!-- 
+							[Ignore]
+								[This as Edit_Link with Edit_Item_ID = Edit_Item.ID /]
+							[/Ignore]
+							-->
+						</div>
+					</td>
+				</tr>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Lunch_Scheduling_Module Template "Default" --}
+		{Template}
+			{Type}Lunch_Scheduling_Module{/Type}
+			{Name}Default{/Name}
+			{Content}
+				<!-- Schedule Lunch Action -->
+				[Current_Item.Action "Schedule Lunch Button" /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

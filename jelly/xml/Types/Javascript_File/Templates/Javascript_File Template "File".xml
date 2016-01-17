@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Javascript_File Template "File" --}
+		{Template}
+			{Type}Javascript_File{/Type}
+			{Name}File{/Name}
+			{Content}
+				[Header "Content-Disposition" Value "[Format as "Jelly Attribute"]inline; filename="[Format as "File Name"][Javascript_File.Name No_Wrap /][/Format]"[/Format]" /][Javascript_File.Content No_Wrap /]
+			{/Content}
+			{Content_Type}text/javascript{/Content_Type}
+		{/Template}
+	
+{/Jelly}

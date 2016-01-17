@@ -1,0 +1,20 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Update Social Media Previews" --}
+		{Action}
+			{Name}Update Social Media Previews{/Name}
+			{Content}
+				[Link to Execute with Class = "Small_Button"/]
+			{/Content}
+			{Code}
+				[1 Site from Database]
+					[This.Action "Force Scrape" as Execute/]
+				[/]
+
+				[Event from Database]
+					[This.Action "Force Scrape" as Execute/]
+				[/]
+			{/Code}
+		{/Action}
+{/Jelly}

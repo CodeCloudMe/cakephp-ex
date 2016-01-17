@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Website Property "Path" --}
+		{Property}
+			{Type}Website{/Type}
+			{Name}Path{/Name}
+			{Value_Type}Long_Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

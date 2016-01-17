@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Feedback" Input_Module "What is working well for you?" --}
+		{Input_Module}
+			{Action_Item}Share_Feedback{/Action_Item}
+			{Property_Item}12897687698123{/Property_Item}
+			{Package}Local{/Package}
+		{/Input_Module}
+	
+{/Jelly}

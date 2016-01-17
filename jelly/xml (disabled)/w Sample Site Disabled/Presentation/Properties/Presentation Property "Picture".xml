@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation Property "Description" --}
+		{Property}
+			{Type}Presentation{/Type}
+			{Name}Picture{/Name}
+			{Value_Type}Picture{/Value_Type}
+		{/Property}
+	
+{/Jelly}

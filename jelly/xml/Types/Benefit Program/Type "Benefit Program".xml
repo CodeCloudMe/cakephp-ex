@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Benefit Program" --}
+		{Type}
+			{Name}Benefit Program{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Benefit Programs{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Events{/Package}
+			{Starred}1{/Starred}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

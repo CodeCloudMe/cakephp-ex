@@ -1,0 +1,99 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Type_Action "Refresh Item Website Properties" --}
+		{Type_Action}
+			{Type}Type{/Type}
+			{Name}Refresh Item Website Properties{/Name}
+			{Content}
+				<!-- TODO: Disabled to try out asynchronous website loading -->
+				
+				Downloading website previews (#[Path_Variables.Offset /])....
+				
+				[Input "Hidden" with Name = "Offset", Value = Path_Variables.Offset, Do_Not_Persist_Value = "True" /]
+				
+				<!-- Auto-execute the action -->
+				[External_Script]
+					Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': document.getElementById('[This.Namespace no_wrap /]')\});
+				[/External_Script]
+				
+				[Action as "Loading"/]
+			{/Content}
+			{Code}
+				<!-- TODO: Disabled to try out asynchronous website loading -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Type to Current_Action.Target /]
+				
+				[Set Current_Action.Variables.More to false /]
+				[If Form.Offset]
+					[Then]
+						[Set Current_Action.Variables.Offset to Form.Offset /]
+					[/Then]
+					[Else]
+						[Set Current_Action.Variables.Offset to 0 /]
+					[/Else]
+				[/If]
+				
+				<!-- Get next item to refresh -->
+				[1 [Current_Type.Alias no_wrap /] from database at [Current_Action.Variables.Offset no_wrap /]]
+					<!-- Refresh item's website properties -->
+					[This.Action "Refresh Website Properties" as Execute /]
+					
+					<!-- Store that there might be more items to refresh -->
+					[Set Current_Action.Variables.More to true /]
+					
+					<!-- Store the next offset -->
+					[Set Current_Action.Variables.Offset to Current_Action.Variables.Offset + 1 /]
+				[/[Current_Type.Alias no_wrap /]]
+				
+				[If Current_Action.Variables.More]
+					[Then]
+						<!-- Refresh the websites for all loaded items -->
+						[Go to "/Type/[Current_Type.Alias no_wrap /]/Refresh_Item_Website_Properties:Offset=[Current_Action.Variables.Offset no_wrap /]" into "Parent" /]
+					[/Then]
+					[Else]
+						<!-- Publish list to new page -->
+						<!-- TODO only do first time or implement type publishing -->
+						[New Page]
+							<!-- Disambiguate -->
+							[Set Current_Page to This /]
+							
+							<!-- Set Page Name -->
+							[Set Current_Page.Name to Current_Type.Name /]
+							
+							<!-- Save Page -->
+							[Save Current_Page /]
+							
+							<!-- Create a Data Module -->
+							[New Data_Module]
+								<!-- Disambiguate -->
+								[Set Current_Data_Module to This /]
+								
+								<!-- Set the data module's list -->
+								[Set Current_Data_Module.List to Current_Type /]
+								
+								<!-- Save new data module -->
+								[Save Current_Data_Module /]
+				
+								<!-- Reset data module properties -->
+								[Current_Data_Module.Action "Reset Properties" as Execute /]
+								
+								<!-- Add data module to the page -->
+								[Add Current_Data_Module to Current_Page.Content_Module /]
+							[/New]
+							
+							<!-- Go to the new page -->
+							[Go to Current_Page by alias /]
+						[/New]
+				
+						<!-- Trigger Edited Event -->
+						[External_Script]
+							Jelly.Interface.Close_Top_Window();
+						[/External_Script]
+					[/Else]
+				[/If]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

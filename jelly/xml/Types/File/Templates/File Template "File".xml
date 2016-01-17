@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- File Template "File" --}
+	{!-- TODO: better mime type handling --}
+		{Template}
+			{Type}File{/Type}
+			{Name}File{/Name}
+			{Content}[Header "Content-Type" Value File.Mime_Type /][Header "Content-Disposition" Value "[Format as "Jelly Attribute"]inline;filename="[Format as "File Name"][File.Name Process_Once No_Wrap /][/Format]"[/Format]" /][Header "Content-Length" Value "[Format as "Jelly Attribute"][File_Size File.Path /][/Format]" /][Read_File File.Path /]{/Content}
+			{Content_Type}application/unknown{/Content_Type}
+		{/Template}
+	
+{/Jelly}

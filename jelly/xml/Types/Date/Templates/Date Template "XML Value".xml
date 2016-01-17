@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Date Template "Default" --}
+		{Template}
+			{Type}Date{/Type}
+			{Name}XML Value{/Name}
+			{Content}[Year_Number /]-[Month_Number/]-[Date_Number/]{/Content}
+		{/Template}
+	
+{/Jelly}

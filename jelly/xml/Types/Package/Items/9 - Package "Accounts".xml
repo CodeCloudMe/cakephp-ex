@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Package "Accounts" --}
+		{Package}
+			{Name}Accounts{/Name}
+			{Package}Accounts{/Package}
+			{Order}9{/Order}
+		{/Package}
+	
+{/Jelly}

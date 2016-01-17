@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Content_Module "Lunch Scheduling Module" --}
+		{Type}
+			{Name}Lunch Scheduling Module{/Name}
+			{Plural_Name}Lunch Scheduling Modules{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Design{/Package}
+			{Parent_Type}Interaction_Module{/Parent_Type}
+		{/Type}
+	
+{/Jelly}

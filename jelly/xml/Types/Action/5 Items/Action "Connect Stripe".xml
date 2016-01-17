@@ -1,0 +1,101 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Connect Stripe" --}
+		{Action}
+			{Name}Connect Stripe{/Name}
+			{Content}
+			{/Content}
+			{Code}
+				<span class="Page_Item">
+					[If Path_Variables.Code exists and Path_Variables.Code is not "" and Path_Variables.Error twas not set]
+						[1 Site from Database]	
+							[Set Current_Action.Variables.Stripe_Authorization_Error to false/]
+							[Set Current_Action.Variables.Stripe_Authorization_Error to [PHP]
+										$Stripe_Authorization_URL = "https://connect.stripe.com/oauth/token";			
+										$Configuration = &Get_Environment_Variables();
+										$Stripe_Mode = $Configuration\['API_Keys'\]\['Stripe'\]\['Mode'\];
+										$Stripe_Secret_Key = $Configuration\['API_Keys'\]\['Stripe'\]\[$Stripe_Mode\]\['Secret_Key'\];
+										$Stripe_Authorization_Code = "[Path_Variables.Code/]";
+
+										$Stripe_Data = array(
+											'client_secret' => $Stripe_Secret_Key,
+											'code' => $Stripe_Authorization_Code,
+											'grant_type' => 'authorization_code'
+										);
+						
+										$Stripe_Response = Get_Remote_Content($Stripe_Authorization_URL, null, null, $Stripe_Data);
+										$Stripe_Response_Body = $Stripe_Response\['Body'\];
+										$Stripe_Values = json_decode($Stripe_Response_Body, true);
+						
+										if (
+											$Stripe_Values\['error'\] || 
+											!$Stripe_Values\['access_token'\] || 
+											!$Stripe_Values\['refresh_token'\] || 
+											!$Stripe_Values\['stripe_publishable_key'\] || 
+											!$Stripe_Values\['stripe_user_id'\]
+										)
+										\{
+											return 'true';
+										\}
+										else 
+										\{	
+											// Get site item from memory
+											$Site_Command_String = &$_;$_ = '1 Site from Memory as Reference'; unset($_);
+											$Processed_Site_Command = &Process_Command_String($Database, $Site_Command_String, $Memory_Stack_Reference);
+											$Site_Item = &$Processed_Site_Command\['Chunks'\]\[0\]\['Item'\];
+							
+											// Save site variables.
+											Set_Value($Site_Item, 'Stripe_Access_Token', $Stripe_Values\['access_token'\]);
+											Set_Value($Site_Item, 'Stripe_Refresh_Token', $Stripe_Values\['refresh_token'\]);
+											Set_Value($Site_Item, 'Stripe_Publishable_Key', $Stripe_Values\['stripe_publishable_key'\]);
+											Set_Value($Site_Item, 'Stripe_User_ID', $Stripe_Values\['stripe_user_id'\]);
+							
+											// Saves w/o Refresh (refresh is handled in language processing)
+											Save_Item($Site_Item);
+							
+											return 'false';
+										\}
+									[/PHP]
+								/]
+
+							[If not Current_Action.Variables.Stripe_Authorization_Error]
+								[Go to "/"/]
+								[Go to "/settings" into "Window"/]
+							[/If]		
+			
+						[/1 Site from Database]
+					[/If]
+
+					[If Path_Variables.Code twas not set or Path_Variables.Code is "" or Path_Variables.Error twas set or Current_Action.Variables.Stripe_Authorization_Error]
+							Something went wrong.<br/>
+							<br/>
+							[If Path_Variables.Error = "access_denied"]
+								[Then]
+									Did you press cancel?  Try again, and press "Connect" in the next screen. 
+								[/Then]
+								[Else]
+									 Please try again, or reach out at support@better.space.
+								[/Else]
+							[/If]
+							<br/>
+							<br/>
+							[Link to "https://connect.stripe.com/oauth/authorize?response_type=code&client_id=[PHP]
+									$Configuration_File_Path = &New_String('jelly_data/Jelly_Configuration.php');
+									$Configuration = include($Configuration_File_Path);
+									$Stripe_Mode = $Configuration\['API_Keys'\]\['Stripe'\]\['Mode'\];
+									return $Configuration\['API_Keys'\]\['Stripe'\]\[$Stripe_Mode\]\['Client_ID'\];
+								[/PHP]&scope=read_write&state=[PHP]
+									$Host = $_SERVER\['HTTP_HOST'\];
+									if (strtolower($Host) == 'better.dev')
+										return $Host;
+									else 
+										return explode('.', $Host)\[0\];
+								[/PHP]" with Class = "Small_Button"]Connect to Stripe...[/Link]
+					[/If]
+
+				</span>	
+			{/Code}
+		{/Action}
+	
+{/Jelly}

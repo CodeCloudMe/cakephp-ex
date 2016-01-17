@@ -1,0 +1,46 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Set Property Privacy Clean" --}
+		{Action}
+			{Name}Set Property Privacy Clean{/Name}
+			{Content}
+				<!-- Admin only -->
+				[Admin]
+					<!-- Disambiguate -->
+					[Set Current_Item to This.Variables.Item /]
+	
+					<!-- Pass item on to action -->
+					[Input "Hidden" with Name = "Item", Value = This.Variables.Item /]
+	
+					<!-- Public input -->
+					<span class="[Current_Action.Namespace no_wrap /]_Viewable_By_Input_Finder">
+						[Input "Hidden" with Name = "Viewable_By", Value = Current_Item.Viewable_By, Execute_On_Change = true /]
+					</span>
+	
+					<span class="Clean_Menu">
+						[Privacy from Database where Name is not "Guest" and Name is not "Team"]
+							[Set Current_Privacy to This/]
+							<a href="#" class="Clean_Menu_Item [If Current_Item.Viewable_By.ID = "[Current_Privacy.ID no_wrap/]"]Selected[/If]" onclick="Jelly.jQuery('.[Current_Action.Namespace no_wrap /]_Viewable_By_Input_Finder input\[name=Viewable_By\]').val('[Current_Privacy.Alias no_wrap/]').change(); return false;">
+								<span class="Icon"><img class="iconic" data-src="/jelly/images/privacy/[Current_Privacy.Alias no_wrap/].svg" data-direction="bottom"></span>
+								<span class="Label">[Current_Privacy.Name/] ([Current_Privacy.Explanation/])</span>
+							</a>
+						[/Privacy from Database]
+					</span>
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Admin only -->
+				[Admin]
+
+					<!-- Disambiguate -->
+					[Form.Values.Item]
+						[Set Current_Item to This /]	
+						[Set Current_Item.Viewable_By to Form.Viewable_By/]
+						[Save Current_Item/]
+					[/Form]
+	
+				[/Admin]
+			{/Code}
+		{/Action}
+{/Jelly}

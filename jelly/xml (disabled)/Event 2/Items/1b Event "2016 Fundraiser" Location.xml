@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event "2016 Fundraiser" Location --}
+		{Map_Marker}
+			{Name}Silent Barn{/Name}
+			{Original_Address}Silent Barn, 603 Bushwick Ave, Brooklyn, NY, 11206{/Original_Address}
+			{Latitude}40.698661040{/Latitude}
+			{Longitude}-73.9342250{/Longitude}
+		{/Map_Marker}
+	
+{/Jelly}

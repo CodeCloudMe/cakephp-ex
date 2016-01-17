@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Property "Subtotal" --}
+		{Property}
+			{Type}Shopping_Cart{/Type}
+			{Name}Subtotal{/Name}
+			{Value_Type}Number{/Value_Type}
+		{/Property}
+	
+{/Jelly}

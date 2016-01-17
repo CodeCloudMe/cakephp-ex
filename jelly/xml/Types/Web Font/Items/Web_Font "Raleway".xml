@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Font "Raleway" --}
+		{Web_Font}
+			{Name}Raleway{/Name}
+			{URL}https://fonts.googleapis.com/css?family=Raleway:400,700{/URL}
+		{/Web_Font}
+	
+{/Jelly}

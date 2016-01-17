@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Cancel" --}
+		{Action}
+			{Name}Cancel{/Name}
+			{Content/}
+			{Code}
+				[Admin]
+					[If Form.Item.Status.Alias = "Unsaved"]
+						[Remove Form.Item /]
+					[/If]
+				[/Admin]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

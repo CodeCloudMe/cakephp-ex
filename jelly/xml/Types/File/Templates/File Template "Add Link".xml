@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- File Template "Add Link" --}
+		{Template}
+			{Type}File{/Type}
+			{Name}Add Link{/Name}
+			{Content}
+				[Action "Add File From URL" from database /]
+				[Action "Upload File" from database /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

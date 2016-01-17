@@ -1,0 +1,31 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Item Settings" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}Item Settings{/Name}
+			{Content}
+				[Set Current_Item to This /]
+				<span class="Page_Settings_Content">
+					<span class="URL_Detail Setting_Row">
+						<span class="Setting_Label">
+							Permanent Link:
+						</span>
+						<span class="Setting_Value">
+							<input type="text" readonly="readonly" value="http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[This.Type.Alias no_wrap /]/[This.Alias no_wrap /]" />
+						</span>
+					</span>
+					<span class="Show_In_Toolbar_Setting Setting_Row">
+						<span class="Setting_Label">
+							Pin to Navigation:
+						</span>
+						<span class="Setting_Value">
+							[This.Action "Toggle in Toolbar" /]
+						</span>
+					</span>
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

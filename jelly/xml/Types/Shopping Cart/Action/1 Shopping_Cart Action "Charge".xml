@@ -1,0 +1,192 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Shopping_Cart Action "Charge" --}
+		{Type_Action}
+			{Type}Shopping_Cart{/Type}
+			{Name}Charge{/Name}
+			{Content}
+			{/Content}
+			{Code}
+				<!-- Shopping Cart Charge Action Code -->
+
+				<!-- Disambiguate -->
+				[Set Current_Shopping_Cart to Current_Action.Target /]
+
+				<!-- Create payment transaction -->
+				[New Payment_Transaction]
+					<!-- Disambiguate -->
+					[Set Current_Payment_Transaction to This /]
+	
+					<!-- Name and Email -->
+					[Set Current_Payment_Transaction.First_Name to Current_Shopping_Cart.First_Name /]
+					[Set Current_Payment_Transaction.Last_Name to Current_Shopping_Cart.Last_Name /]
+					[Set Current_Payment_Transaction.Email to Current_Shopping_Cart.Email /]
+	
+					<!-- Description --> 
+					[Set Current_Payment_Transaction.Description to "[Current_Shopping_Cart.Item As_Attachment No_Wrap][This.Item.Name No_Wrap/] x [Quantity No_Wrap/][/] ([Current_Shopping_Cart.Email No_Wrap/])"/]	
+	
+					<!-- Add payment transaction to shopping cart -->
+					[Set Current_Payment_Transaction.Shopping_Cart to Current_Shopping_Cart /]
+	
+					<!-- Copy total from shopping cart -->
+					[Set Current_Payment_Transaction.Total to Current_Shopping_Cart.Total /]
+	
+					<!-- Item Description -->
+					<!-- TODO -->
+	
+					<!-- Save Item -->
+					[Save Current_Payment_Transaction /]
+	
+					<!-- Charge -->
+					[Current_Payment_Transaction.Action "Charge" as Execute with Payment_Service = Current_Action.Variables.Payment_Service, Payment_Token = Current_Action.Variables.Payment_Token /]
+
+					<!-- Display Status Message on error -->
+					[If not Current_Payment_Transaction.Completed]
+						[Current_Payment_Transaction.Status_Message /]
+					[/If]
+	
+					<!-- Check if transaction was successful -->
+					[If Current_Payment_Transaction.Completed]
+						<!-- Set Cart Completed -->
+						[Set Current_Shopping_Cart.Completed to true /]
+						[Save Current_Shopping_Cart /]
+		
+						<!-- Email -->
+						[PHP]
+							
+							$Subject = 'Your ticket order';
+							$Body =<<<EOT
+				<body style="margin: 25px; padding: 0px;">
+					<div style="font-family: Arial; font-size: 14px;">
+						<div style="height:50px;background-color:#FD6B03;padding-top:13px;">
+							<center>
+								<img src="http://tixtixtixtixtix.better.space/tixtixtixtixtix/Better_Logo_White.png" style="width:40px;display:block;margin-bottom:25px;"/>	
+							</center>
+						</div>
+
+						<div style="padding:20px;padding-top:25px;">
+							<div style="margin-bottom: 25px; padding: 5px; background-color: black; color: white; display: inline-block;">
+								Ticket Receipt
+							</div>
+		
+							<div style="margin-bottom: 25px;">
+								[Current_Shopping_Cart.Item as_attachment]
+					<div style="margin-bottom: 25px;">
+						<!-- Disambiguate -->
+						[Set Current_Shopping_Cart_Item to This /]
+		
+						<!-- Get item -->
+						[Current_Shopping_Cart_Item.Item]
+							[This.Specific_Item]
+								<!-- Name -->
+								<div class="Name" style="font-weight: bold; margin-bottom: 5px;">
+									[Item.Name /]
+								</div>
+	
+								<!-- Start Time -->
+								<div class="Time" style="margin-bottom: 5px;">
+									[Item.Start_Time /]
+								</div>
+		
+								<!-- Location -->
+								[If Item.Location exists]
+									<div class="Location" style="margin-bottom: 5px;">
+										[If Item.Location.Is_Item]
+											[Then]
+												[Item.Location.Name /]
+											[/Then]
+											[Else]
+												[Item.Location /]
+											[/Else]
+										[/If]
+									</div>
+								[/If]
+	
+								<!-- Price -->
+								<div class="Price" style="margin-bottom: 5px;margin-top:15px; line-height:1.5;">
+									[Current_Shopping_Cart.First_Name /]  [Current_Shopping_Cart.Last_Name/]<br/>
+									[Current_Shopping_Cart_Item.Quantity /] tickets x $[Format decimals 2][Current_Shopping_Cart_Item.Price /][/Format]<br/>
+									[Current_Shopping_Cart.Reward no_wrap]+ $[This.Amount no_wrap/] donation (Receive a [This.Name no_wrap/])<br/>[/Current_Shopping_Cart.Reward]
+									+ $[Format decimals 2][Math Current_Shopping_Cart.Application_Fee + Current_Shopping_Cart.Processing_Fee/][/Format] fee<br/>
+									[If Current_Shopping_Cart.Discount exists and Current_Shopping_Cart.Discount is not "" and Current_Shopping_Cart.Discount is not 0]
+										<span style="color:fd6b03;font-weight:600;">-
+											$[PHP]
+											$Discount = [Current_Shopping_Cart.Discount no_wrap/];
+											return ($Discount * -1);
+										[/PHP] 
+										discount
+										</span>
+									[/If]
+
+								</div>
+							[/This.Specific_Item]
+						[/Current_Shopping_Cart_Item.Item]
+					</div>
+								[/Current_Shopping_Cart.Item as_attachment]
+							</div>
+	
+							<div style="margin-bottom: 25px;">
+								Total: $[Format decimals 2][Current_Shopping_Cart.Total /][/Format]
+							</div>
+							<div>
+								Thanks!
+							</div>
+						</div>
+						<div style="background-color:#efefef;padding:20px;">
+							Better helps people build movements, and helps communities coordinate skills, resources, interests, and action towards a shared goal.<br/>
+							<br/>
+							<a href="http://better.space/learn_more" style="color:#FD6B03; font-weight:bold;text-decoration:underline;">LEARN MORE</a><br/>
+						</div>
+					</div>
+				</body>
+				EOT;
+							
+							// Get from
+							$From = array(
+								'Name' => 'Better Tickets',
+								'Email_Address' => 'tickets@better.space'
+							);
+							
+							// Get recipient
+							$To = array(
+								array(
+									'Name' => '[Format as "PHP Single Quoted String"][Current_Shopping_Cart.First_Name no_wrap /] [Current_Shopping_Cart.Last_Name no_wrap /][/Format]',
+									'Email_Address' => '[Format as "PHP Single Quoted String"][Current_Shopping_Cart.Email no_wrap /][/Format]'
+								)
+							);
+							
+						// Get from
+							$Reply_To = array(
+								'Name' => 'Better Tickets',
+								'Email_Address' => 'tickets@better.space'
+							);
+	
+							// Get BCC
+							$BCC = array(
+								'Email_Address' => 'services@better.space'
+							);
+	
+							// Send message
+							try 
+							\{
+								$Email_Response = sendGridEmail($Subject, $Body, $From, $To, $Reply_To, $BCC);
+								if($Email_Response\['error'\])
+								\{
+									die('Error: Message could be sent. '. $Email_Response\['error'\]);
+								\}
+							\}
+							catch (exception $Exception) 
+							\{
+								echo ('Error: Message could be sent.');
+								traverse($Exception->getMessage());
+								die();
+							\}
+
+						[/PHP]
+					[/If]
+				[/New Current_Payment_Transaction]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

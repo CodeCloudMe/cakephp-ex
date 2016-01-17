@@ -1,0 +1,41 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Type_Action "Set Display to Grid" --}
+		{Type_Action}
+			{Type}Data_Module{/Type}
+			{Name}Set Display to Grid{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					[Link to Execute]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/grid.svg"> Grid[/Link]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Set Picture -->
+					[Set Current_Action.Target.Display to "Grid" /]
+					
+					<!-- Save Item -->
+					[Save Current_Action.Target /]
+						
+					<!-- Focus input on refresh -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Event": "Refreshed",
+							"Code": function (Parameters)
+							\{
+								// Click links inside the link finder
+								// TODO could find it smarter
+								Jelly.jQuery("#[Current_Action.Target.ID no_wrap /]_Edit_Link_Finder a").click();
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

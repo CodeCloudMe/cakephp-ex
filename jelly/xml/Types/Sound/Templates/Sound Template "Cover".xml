@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Sound Template "Cover" --}
+		{Template}
+			{Type}Sound{/Type}
+			{Name}Cover{/Name}
+			{Content}
+				<!-- Sound Template "Cover" -->
+				
+				<span class="Cover_Content">
+					[Sound as Default /]
+				</span>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

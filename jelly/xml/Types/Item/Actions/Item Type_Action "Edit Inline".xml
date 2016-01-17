@@ -1,0 +1,153 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Edit Inline" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Edit Inline{/Name}
+			{Content}
+				<!-- TODO: Below lines are declaring variables because of our error mode, for testing's sake right now. --> 
+				[If Current_Action.Variables.Property_Alias]
+					[Set Current_Action.Variables.Editing_Single_Value to "True" /]
+				[/If]
+				[If Current_Action.Variables.Editing_Single_Value does not exist]
+					[Set Current_Action.Variables.Editing_Single_Value to ""/]
+				[/If]
+				[If Current_Action.Variables.Show_Advanced_Properties does not exist]
+					[Set Current_Action.Variables.Show_Advanced_Properties to ""/]
+				[/If]
+							
+				<!-- Require admin for direct editing -->
+				[Admin]
+					[Then]
+						<!-- Properties Table-->
+						<div class="Jelly_Edit_Window_Properties">
+							<!-- TODO - when Where is implemented, implement Editing_Single_Value, or Parent_Property_Alias, or Advanced checks here --> 
+							[Current_Action.Target.Properties as Edit_Inline /]
+						</div>
+				
+						<!-- Result -->
+						<div class="Jelly_Action_Result">
+							[Action as "Result"/]
+						</div>
+					[/Then]
+					[Else]
+						Must be logged in to do this. <a href="#" onclick="Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Dismiss', 'Target': document.getElementById('[Current_Action_Namespace No_Wrap /]')\}); return false;">Cancel</a>
+					[/Else]
+				[/Admin]
+			{/Content}
+			{Code}
+				<!-- Edit Action Code -->
+				<!-- Editing "[Current_Action.Target.Name /]" -->
+				
+				<!-- If changing item from Unsaved to Published, flag calling the Added handler -->
+				[If Current_Action.Target.Status.Alias is "Unsaved" and Form.Edited_Status is "Published"]
+					[Set Current_Action.Variables.Call_Published_Handler to 1/]
+				[/If]
+				
+				<!-- TODO: unignore -->
+				<!-- TODO - upgrade to unsaved --> 
+				[Ignore](If Admin or Current_Action.Target.Status.Alias is "Unsaved")[/Ignore]
+					
+					<!-- TODO - hack.  fix in it Jelly Editor --> 
+					[If Form.Edited_Alias Twas Not Set and Form.Edited_Name Twas Not Set]
+						[Set Form.Suppress_Validation to "True"/]
+					[/If]
+				
+					<!-- If a name or alias was set by a form, validate it. -->	
+					[If not Form.Suppress_Validation]
+						<!-- Get alias. --> 
+						[If Form.Edited_Alias Twas Not Set]
+							[Set Form.Edited_Alias to "[Format as "Alias"][Form.Edited_Name no_wrap /][/Format]"/]
+						[/If]
+
+						<!-- Validate alias. -->
+						<!-- TODO - correct property depending on what was set.--> 
+						[Validate Form.Edited_Alias for Current_Action.Target.Alias]
+							[Else]	
+								[If Form.Edited_Alias = ""]
+									[Then]
+										[Show Error for "Edited_Name"]Please enter a name.[/Show]
+									[/Then]
+									[Else]
+										[Show Error for "Edited_Name"]Please enter another name.[/Show]
+									[/Else]
+								[/If]
+							[/Else]
+						[/Validate]
+					[/If]
+
+					<!-- TODO Validate these outside of this condition too. -- > 			
+					[If not Form.Error]	
+						<!-- Cycle through properties (but ignore Property and Temporary) -->
+						<!-- TODO: better way to ignore certain properties? (where Alias is not "Property" and Alias is not "Temporary") -->
+						[Current_Action.Target.All_Properties]
+							<!-- TODO: Check if user input is well-formed (i.e. tag language?) -->
+							<!-- Checking: "Form.Edited_[Property.Alias No_Wrap /]" -->
+							[Set Current_Action.Variables.Current_Property to This /]
+						
+							<!-- If matched by property type --> 
+							[If Current_Property.Values.Type is Parent Type of Current_Action.Target.Type]
+
+								<!-- If this is a simple or many-to-one property, set via the forward facing alias -->
+								[If Current_Property.Values.Relation = "" or Current_Property.Values.Relation = "Many-To-One"]
+									<!-- Marker: Forward -->
+									[Set Current_Property.Variables.Target_Alias to Current_Property.Values.Alias /]
+									[If Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] Twas Set]
+										<!-- Marker: Twas Set -->
+										[Set Current_Action.Target.[Current_Property.Variables.Target_Alias No_Wrap /] to Form.Edited_[Current_Property.Variables.Target_Alias No_Wrap /] /]
+									[/If]
+								[/If]
+								
+							[/If]
+						
+						[/Current_Action.Target.All_Properties]
+				
+						<!-- Save Item -->
+						[Save Current_Action.Target /]
+					
+						<!-- "Refresh" Item -->
+						<!-- TODO - not sure if we ever really used this, it was about smart properties, and if it's real, it should be called on Save Item or something? not sure. -->
+						<!-- TODO - when I uncomment the below, it doesn't cause problems.  Suggests strict type l00ph0le --> 
+						[Ignore][Form.Current_Action.Target.Action "Refresh".Execute /][/Ignore]
+									
+						[If Current_Action.Variables.Call_Published_Handler]	
+							[External_Script]					
+								// Call "Added" event for unsaved items that were then published 
+								// TODO - specific type? type? 
+								// TODO - cleanup Item_ID, Item
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										"Event": "Added",
+										"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+										"Item": "[Current_Action.Target as Key No_Wrap /]",
+										"Item_ID": "[Current_Action.Target.ID No_Wrap /]",
+										"Item_Type": "[Current_Action.Target.Type as Alias No_Wrap /]",
+										"Badge": "[Format as "Javascript String"][Current_Action.Target as Badge with No_Drag = 1/][/Format]"
+									\});
+							[/External_Script]
+						[/If]
+						
+						[If not Current_Action.Variables.Suppress_Edited_Handler]
+							[External_Script]
+								// Call "Edited" handler
+								// TODO - specific type? type?
+								// TODO - not sure if this is a hack (if it is necessary), but the Add action suppresses this specific handler.
+								Jelly.Handlers.Call_Handler_For_Target(
+									\{
+										"Event": "Edited",
+										"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+										"Item": "[Current_Action.Target as Key No_Wrap /]",
+										"Item_Type": "[Current_Action.Target.Type as Alias No_Wrap /]",
+										"Badge": "[Format as "Javascript String"][Current_Action.Target as Badge with No_Drag = 1/][/Format]"
+									\});
+							[/External_Script]
+						[/If]					
+					[/If]
+					
+				<!-- TODO: unignore -->
+				[Ignore](/If)[/Ignore]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

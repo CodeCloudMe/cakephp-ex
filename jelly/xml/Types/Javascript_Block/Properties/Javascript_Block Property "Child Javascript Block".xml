@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Javascript_Block Property "Child Javascript Block" --}
+		{Property}
+			{Type}Javascript_Block{/Type}
+			{Name}Child_Javascript_Block{/Name}
+			{Plural_Name}Child Javascript Blocks{/Plural_Name}
+			{Value_Type}Javascript_Block{/Value_Type}
+			{Relation}One-To-Many{/Relation}
+			{Reverse_Name}Parent Javascript Block{/Reverse_Name}
+		{/Property}
+	
+{/Jelly}

@@ -1,0 +1,32 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Website Template "Cover" --}
+		{Template}
+			{Type}Website{/Type}
+			{Name}Cover{/Name}
+			{Content}
+				<!-- Website Template "Cover" -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Item to this /]
+				
+				<!-- Check if website needs to be refreshed -->
+				[If Current_Item.To_Refresh]
+					[Then]
+						<!-- Refresh Website -->
+						<div class="Cover_Content">
+							[Current_Item.Action "Refresh Website" /]
+						</div>
+					[/Then]
+					[Else]
+						<!-- Display first picture as a cover -->
+						<!-- TODO: Pick best picture -->
+						[1 Current_Item.Picture as Cover /]
+					[/Else]
+				[/If]
+			{/Content}
+			{Package}Website{/Package}
+		{/Template}
+	
+{/Jelly}

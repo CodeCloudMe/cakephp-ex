@@ -1,0 +1,59 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Follow" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Follow{/Name}
+			{Content}
+				[If Current_Session.User exists]
+					[Then]
+						[Current_Session.User.Following where ID is Current_Action.Target.ID]
+							[Then]
+								[Current_Action.Target.Action "Unfollow" /]
+							[/Then]
+							[Else]
+								[Link to Execute with Class = "Button" /]
+							[/Else]
+						[/Current_Session.User.Following]
+					[/Then]
+					[Else]
+						[Link to Execute with Class = "Button" /]
+						
+						<!-- Execute on Login -->
+						[External_Script]
+							Jelly.Handlers.Register_Handler(
+							\{
+								"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+								"Event": "Logged_In",
+								"Code": function (Parameters)
+								\{
+									Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': document.getElementById('[This.Namespace no_wrap /]')\});
+								\}
+							\});
+						[/External_Script]
+						
+					[/Else]
+				[/If]
+			{/Content}
+			{Code}
+				<!-- Require User -->
+				[Action "Require User" from database as execute /]
+				
+				<!-- Follow Item -->
+				[If Current_Session.User exists]
+					[Add Current_Action.Target to Current_Session.User.Following /]
+				[/If]
+				
+				<!-- Force refresh of the followed item -->
+				<!-- TODO Improve -->
+				[External_Script]
+					Jelly.References.Trigger_Refresh(\{'Kind': 'Item', 'Item_ID': [Current_Action.Target.ID no_wrap /]\});
+					[Block "Toolbar" no_wrap]
+						Jelly.References.Trigger_Refresh(\{'Kind': 'Item', 'Item_ID': '[This.ID no_wrap /]'\});
+					[/Block]
+				[/External_Script]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

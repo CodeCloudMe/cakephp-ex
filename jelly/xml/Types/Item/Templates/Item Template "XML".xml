@@ -1,0 +1,17 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "XML" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}XML{/Name}
+			{Content_Type}text/xml{/Content_Type}
+			{Content}
+				[Header "Content-Type" Value "text/xml" /][Header "Content-Disposition" Value "[Format as "Jelly Attribute"]attachment;filename="[Format as "File Name"][Current_Site.Name /] - [This.Type.Name /] - [This.Name /] ([PHP]return date('Y-m-d H\hi');[/PHP]).xml[/Format]"[/Format]" /]<?xml version="1.0" encoding="utf-8"?>
+				<Jelly>
+					[This as XML_Item /]
+				</Jelly>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

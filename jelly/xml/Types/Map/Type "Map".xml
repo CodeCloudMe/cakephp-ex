@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Map" --}
+		{Type}
+			{Name}Map{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Maps{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Places{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

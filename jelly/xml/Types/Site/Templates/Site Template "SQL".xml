@@ -1,0 +1,34 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "SQL" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}SQL{/Name}
+			{Content_Type}application/x-sql{/Content_Type}
+			{Content}
+				[Header "Content-Type" Value "application/x-sql" /][Header "Content-Disposition" Value "[Format as "Jelly Attribute"]attachment;filename="[Format
+		 as "File Name"][1 Site from Database:Name /] ([PHP]return date('Y-m-d H\hi');[/PHP]).sql[/Format]"[/Format]" /][Set Globals.Already_Sent_Headers to "True" /]
+				[Admin]
+					[PHP]
+						// Print 'Data' table query.
+						$Queries = Array();
+						
+						$Data = mysqli_query("SHOW CREATE TABLE `Data`");
+						$Row = mysqli_fetch_assoc($Data);
+						array_push($Queries, str_replace("CREATE TABLE", "CREATE TABLE IF NOT EXISTS", $Row\['Create Table'\]));
+											
+						$Data = mysqli_query("SELECT * FROM `Data`");
+						$Row = mysqli_fetch_assoc($Data);
+						$Data_Database_Version = $Row\["Database_Version"\];
+						$Data_Last_ID = $Row\["Last_ID"\];
+						array_push($Queries, "INSERT INTO `Data` (`Database_Version`, `Last_ID`) VALUES ( $Data_Database_Version, $Data_Last_ID)");;
+						
+						return implode($Queries, ";\n\n") . ";\n\n";
+					[/PHP]
+					[Type from Database as SQL nowrap /]
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

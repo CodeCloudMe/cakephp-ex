@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Web_Open_Font_Format_File Property "Data" --}
+		{Property}
+			{Type}Web_Open_Font_Format_File{/Type}
+			{Name}Data{/Name}
+			{Value_Type}Long_Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

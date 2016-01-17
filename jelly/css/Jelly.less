@@ -1,0 +1,1382 @@
+/* TODO - couldn't figure out themes - this should be in Clean Design */ 
+
+// TODO - generalized the below to the one two below, but haven't tested effects.
+/*
+[data-type="User"][data-template="Default"] .Text_Field {border: none; border-bottom: dashed 1px #cccccc; outline: none; border-left-width: 3px; border-left-style: solid; border-left-color: white; margin-left: -5px; padding-left: 7px; border-radius: 0;
+	&:focus {border-bottom-color: @Blue; border-left-color: @Blue;}
+}
+*/
+
+.Text_Field {border: none; border-bottom: dashed 1px #cccccc; outline: none; border-left-width: 3px; border-left-style: solid; border-left-color: white; margin-left: -5px; padding-left: 7px; border-radius: 0;
+	&:focus {border-bottom-color: @Blue; border-left-color: @Blue;}
+}
+
+.Page_Item{
+	&.Get_Involved, &.Share_Feedback
+	{
+		.Jelly_Text_Input, .Jelly_Text_Area_Input {.Text_Field;}
+		.Jelly_Action_Result {display:none; background-color:#ffffcc; padding-left:10px; padding-right:10px; padding-top:6px; padding-bottom:6px; width:275px;}
+	}
+}
+
+// TODO - this > is a hack of short term value at best, without knowing the right way to make this apply to non-editing mode only.  Tristan might know.
+.Property_Module_Value > data[data-type="Long_Text"]
+{
+	line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+input::selection {background-color: lighten(@Blue, 30%);}
+textarea {resize: none;}
+
+/* TODO - Didn't work in Better CSS Foundation xml, so I just moved it here. */
+/* Box Model */
+html {box-sizing: border-box;}
+*, *:before, *:after {box-sizing: inherit;}
+input {line-height: inherit;}
+
+a {color: @Blue; text-decoration: none;}
+a:hover {color: lighten(@Blue, 10%); text-decoration: underline;}
+a:active {color: darken(@Blue, 10%);}
+input[type=text] {-webkit-appearance: none; -moz-appearance: none; appearance: none;}
+input, textarea {box-shadow: none; padding: 5px; padding-bottom: 4px;}
+input, textarea {border-width: 1px; border-style: solid; border-color: @Light_Grey; padding: 5px;}
+input[readonly=readonly] {color: @Grey;}
+
+/* Layout */
+
+@Mobile_Width: 800px;
+@Desktop_Width: 800px;
+@media (max-width: @Mobile_Width) {}
+@media (min-width: @Desktop_Width) {}
+
+@Toolbar_Height: 65px;
+@Toolbar_Collapsed_Height: 45px;
+@Sidebar_Width: 220px;
+@Sidebar_Collapsed_Width: 180px;
+body {overflow:hidden;}
+#Jelly_Wrapper {position: absolute; left: 0px; right: 0px; overflow: scroll; min-height: 100%;
+	#Jelly_Toolbar {position: fixed; top: 0px; height: @Toolbar_Height; width: 100%; z-index: 3; /*transition: top 0.2s;*/ .Small_Shadow;}
+	
+	#Jelly_Main_Wrapper {position: absolute; left: 0px; top: @Toolbar_Height; right: 0px; min-height: calc(~'100% - @Toolbar_Height'); transition: top 0.1s;
+		#Jelly_Sidebar {.Block; position: fixed; left: 0px; width: 0; top: @Toolbar_Height; bottom: 0px; transition: width 0.1s; overflow: auto;
+			@media (min-width: @Desktop_Width) {
+				&.Visible {width: @Sidebar_Width;}
+				&.Browse_Bar_Visible {width: @Sidebar_Collapsed_Width;}
+			}
+		}
+		#Jelly_Browse_Bar {.Block; position: fixed; overflow: auto; left: @Sidebar_Width; width: 0; top: @Toolbar_Height; bottom: 0px; transition: width 0.1s, left 0.1s; display: none;
+			&.Visible {width: @Sidebar_Width; .Block; left: @Sidebar_Collapsed_Width;}
+		}
+		#Jelly_Content {.Block; position: absolute; left: 0; right: 0px; min-height: 100%; transition: left 0.1s, right 0.1s;
+			.Jelly_Progress_Bar {top:@Toolbar_Height; position:fixed; height:4px;}
+			@media (min-width: @Desktop_Width) {
+				&.Sidebar_Visible {left: @Sidebar_Width;}
+				&.Browse_Bar_Visible {left: calc(@Sidebar_Width + @Sidebar_Collapsed_Width);}
+			}
+		}
+	}
+
+	@media (max-width: @Mobile_Width) { .Nice_Scroll;
+		#Jelly_Toolbar {height: @Toolbar_Collapsed_Height;}
+		#Jelly_Main_Wrapper {top: @Toolbar_Collapsed_Height; min-height: calc(~'100% - @Toolbar_Collapssed_Height');
+			#Jelly_Content{
+				.Jelly_Progress_Bar {top:@Toolbar_Collapsed_Height; height:3px;}
+			}
+		}
+	} 
+}
+
+.Jelly_Modal {
+	@media (min-width: 0px) and (max-width: 992px) {position: absolute; width: 100%; height: 100%;}
+	@media (min-width: 992px) {position: fixed;}
+	> * {
+		> [data-kind="Item"] {border-radius: 4px; background-color: white; .Big_Shadow; overflow: auto; padding: 25px; .Border;
+			@media (min-width: 0px) and (max-width: 992px) {position: fixed; left: 0px; top: 0px; right: 0px; bottom: 0px;}
+			@media (min-width: 992px) {max-width: 90%; max-height: 90%; display: block; position: fixed; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); -webkit-transform: translateX(-50%) translateY(-50%); -ms-transform: translateX(-50%) translateY(-50%); -moz-transform: translateX(-50%) translateY(-50%); -o-transform: translateX(-50%) translateY(-50%);}
+		}
+	}
+}
+
+.Jelly_Menu {.Inline_Block; background-color: white; .Small_Shadow;}
+
+body {background-color: white; color: black;}
+body {font-family: Source Sans Pro; font-size: 16px;}
+input, textarea {font-family: inherit; font-size: inherit;}
+
+#Jelly_Wrapper.Admin_Mode { 
+	#Jelly_Toolbar {background-color: white; border-bottom-color: @Grey; color:black; height:@Toolbar_Collapsed_Height; transition:.1s;
+		.Logo {background-color: white;  background-image: url(/jelly/images/Better_Logo_Orange_22px.png);background-position: center; width: 60px; height: calc(@Toolbar_Collapsed_Height - 1px); .Border_Right; display:block; background-size:initial;
+			@media (max-width: @Mobile_Width) {display: block; width: 45px; background-image: url(/jelly/images/Better_Logo_Orange_22px.png);}
+		}
+		.Site_Menu {.Icon_Color(black);}
+		.Site_Name {margin-left: 12px; padding-top: 14px; font-size: 17px; margin-right: 15px; transition: .1s;}
+		@media (min-width: @Desktop_Width) {
+			.Navigation {padding-top: 9px; font-size: 14px;
+				.Navigation_Item { color: #888888; padding-top:6px; padding-bottom:6px;
+					&.Selected {background-color: darken(white, 5%);}
+					&:hover {background-color: darken(white, 5%);}
+					&:active {background-color: darken(white, 10%);}
+					&.About_Better {background-color: @Yellow; margin-left: 15px;}
+				}
+			}
+			.Feedback {color: #888888; padding-top:15px; margin-right:8px; font-size:14px;
+				a { color: #888888; padding-top:6px; padding-bottom:6px;
+					&:hover {background-color: darken(white, 5%);}
+				}
+			}
+			.Support { padding-top:15px; margin-right:17px; font-size:14px;
+				a { color: #888888; padding-top:6px; padding-bottom:6px;
+					&:hover {background-color: darken(white, 5%);}
+				}
+			}
+		}
+		.User {padding-top: 4px; margin-right: 10px;
+			.User_Menu_Link { padding-top:0px; padding-bottom:0px; padding-left:initial; padding-right:initial;
+				&:hover{background-color:transparent;}
+				.Picture {margin-right:7px; width: 30px; height: 30px; border-radius: 15px; background-size: cover; background-repeat: no-repeat; margin-top: 3px;}
+				.Label {font-size:14px;}
+				.Login {font-size:14px;}
+			}
+		}
+	}
+	#Jelly_Main_Wrapper {top: @Toolbar_Collapsed_Height; min-height: calc(~'100% - @Toolbar_Collapsed_Height'); transition: .1s;
+		#Jelly_Sidebar {top: @Toolbar_Collapsed_Height; transition: 0.1s;}
+		#Jelly_Browse_Bar {top: @Toolbar_Collapsed_Height; transition: 0.1s}
+		#Jelly_Content {
+			.Jelly_Progress_Bar {top:@Toolbar_Collapsed_Height; height:2px;}
+		}
+	}
+}
+
+#Jelly_Toolbar {background-color: rgba(253, 107, 3, .8); border-bottom-color: rgba(253, 107, 3, .8); border-bottom-width: 1px; border-bottom-style: solid; color: white; transition: .2s;
+	.Left_Items {.Left_Align;
+		.Logo {.Left; background-image: url(/jelly/images/Better_Logo_White.png); background-repeat: no-repeat; background-position: 25px 20px; width: 60px; height: calc(@Toolbar_Height); background-size: 30px; display:block;
+			@media (max-width: @Mobile_Width) {background-image: url(/jelly/images/Better_Logo_Orange_22px.png);background-position: center; width: 45px; height: calc(@Toolbar_Collapsed_Height - 1px);background-size:initial;background-image: url(/jelly/images/Better_Logo_White_22px.png); margin-right:-10px;}
+		}
+		.Site_Menu {display: none;
+			@media (max-width: @Mobile_Width) {.Block; .Left; margin-left: 10px; padding: 9px; .Plain_Link; .Icon_Size(26px); .Icon_Color(white);}
+		}
+		.Site_Name {.Left; padding-top: 19px;  font-size:25px; margin-right: 20px; margin-left:20px; 
+			@media (max-width: @Mobile_Width){margin-left:12px; padding-top:14px; font-size:17px; margin-right:15px;}
+		}
+		.Navigation {
+			.Navigation_Item {.Plain_Link;
+				&:active {}
+				&.Feedback, &.Support {display:none;}
+				&.About_Better { background-color: @Yellow; 
+					@media (min-width: @Desktop_Width) {margin-left: 15px; background-color:fade(@Yellow, 10%);}
+				}
+			}
+			@media (max-width: @Mobile_Width) {display: none; background-color: white;
+				&.Visible {.Block; position: fixed; left: 0; right: 0; top: @Toolbar_Collapsed_Height; bottom: 0;}
+				a.Navigation_Item {.Block; padding: 15px; padding-top: 20px; padding-bottom: 20px; .Border_Bottom; font-size: 24px; color:black;
+					&.Feedback, &.Support {display:block;}
+				}
+			}
+			@media (min-width: @Desktop_Width) {.Left_Align; padding-top: 12px; font-size: 18px;
+				.Navigation_Item {.Left; color: white; margin-right: 2px;  padding-left: 10px; padding-right: 10px; padding-top:11px; padding-bottom:11px;
+					&.Selected {background-color: rgba(0, 0, 0, 0.1);}
+					&:hover {background-color: rgba(0, 0, 0, 0.1);}
+				}
+			}
+		}
+	}
+	.Right_Items {.Right_Align;
+		.Feedback { .Left_Align; color: white; padding-top:23px; margin-right:8px; font-size:18px;
+			@media (max-width: @Mobile_Width) {display: none;}
+			a { color:white; text-decoration:none; padding-left: 10px; padding-right: 10px; padding-top:11px; padding-bottom:11px;
+				&:hover {background-color: rgba(0, 0, 0, 0.1);}			
+			}
+		}
+		.Support { .Left_Align;  margin-right:20px;padding-top:23px; margin-right:17px; font-size:18px;
+			@media (max-width: @Mobile_Width) {display: none;}
+			a { color: white;text-decoration:none; padding-left: 10px; padding-right: 10px; padding-top:11px; padding-bottom:11px;
+				&:hover {background-color: rgba(0, 0, 0, 0.1);}
+			}
+		}
+		.User {.Left_Align; padding-top: 9px; margin-right: 30px;
+			.User_Menu_Link {.Plain_Link; .Block; .Row; padding-left: 10px; padding-right: 10px; padding-top:3px; padding-bottom:3px;
+				.Picture {.Left; margin-right: 20px; width: 40px; height: 40px; .Circle; background-size: cover; background-repeat: no-repeat; margin-top: 0px;}
+				.Label {.Left; padding-top: 10px;font-size:18px;}
+				.Login {.Left; padding-top:11px; padding-bottom:11px; font-size:18px;}
+				@media (min-width: @Desktop_Width) {
+					&:hover {background-color: rgba(0, 0, 0, 0.1);}
+				}
+			}
+			@media (max-width: @Mobile_Width) { padding-top: 4px; margin-right: 10px;
+				.User_Menu_Link {padding:initial;
+					.Picture { margin-right: 7px; width: 30px; height: 30px; border-radius: 15px; background-size: cover; background-repeat: no-repeat; margin-top: 3px;}
+					.Label {display: none;}
+					.Login {font-size:17px; padding-top:10px;}
+				}
+			}
+		}
+		.User_Settings {
+			float:left; padding-top:15px; margin-right:11px;
+			.User_Settings_Link {.Icon_Color(@Dark_Grey);.Icon_Size(12px);} 		
+		}
+	}
+}
+
+#Jelly_Sidebar {.Border_Right; background-color: @Sidebar_Background; color: black;
+	.Add_Button_Wrapper {.Block; padding: 15px; padding-left: 15px; padding-right: 15px; .Border_Bottom; height: 70px;
+		.Add_Button {.Button; width: 100%;}
+	}
+	.My_Data {.Block; height: calc(~'100% - 70px - 34px'); overflow: auto;
+		.Folder {
+			.Folder_Items {
+				.Sortable_Item {.Block;
+				.Folder_Item {.Row; .Border_Bottom; vertical-align: middle; position: relative;
+					.Details {.Row; .Plain_Link; width: calc(~'100% - 10px - 5px'); padding: 8px; padding-left: 15px;
+						.Icon {.Left; margin-right: 5px; .Icon_Size(14px); vertical-align: middle; .Icon_Color(@Dark_Grey); margin-top: 0.7px;}
+						.Label {.Left; vertical-align: middle; width: calc(~'100% - 14px - 5px'); .Ellipsis;}
+					}
+					.Browse {position: absolute; right: 0px; top: 0px; height: 100%; padding: 8px; padding-right: 15px; padding-left: 15px; .Plain_Link; .Icon_Size(10px); .Icon_Color(@Dark_Grey);
+						&:hover {background-color: darken(white, 8%);}
+					}
+					&:hover {background-color: darken(white, 3%);}
+					&.Selected {background-color: darken(white, 5%);}
+				}
+				}
+			}
+		}
+	}
+	.Settings {.Block; position: absolute; left: 0px; bottom: 0px; right: 0; background-color: white; .Border_Top;
+		.Settings_Link {.Block; position: relative; width: 100%; .Plain_Link; padding: 15px; padding-top: 8px; padding-bottom: 8px;
+			.Content {.Row;
+				.Icon {.Left; margin-right: 5px; .Icon_Size(14px); .Icon_Color(@Dark_Grey); vertical-align: middle;}
+				.Label {.Left; vertical-align: middle;}
+			}
+			&:hover {background-color: darken(white, 3%);}
+		}
+	}
+}
+
+#Jelly_Browse_Bar {.Border_Right; background-color: @Sidebar_Background;
+	.Browse_Bar_Type {
+		.Browse_Bar_Header {.Block; .Border_Bottom; background-color: rgba(0,0,0,.02);
+			.Title {.Row;
+				.Title_Close {padding: 15px; padding-left: 8px; padding-right: 8px; .Left; .Icon_Size(10px); .Icon_Color(@Dark_Grey);}
+				.Title_Label {padding: 15px; padding-left: 0px; .Left;
+					.Title_Label_Link {.Plain_Link;}
+				}
+				.Title_Add {.Right; padding-top: 10px; padding-left: 5px; padding-right: 5px; margin-bottom: 5px;
+					.Add_Link {.Small_Button;}
+				}
+			}
+		}
+		.Browse_Bar_Item {.Row; .Border_Bottom; color: inherit; text-decoration: inherit; padding: 8px;
+			.Cover {.Left; width: 40px;
+				.Cover_Content {.Cover_Content_Wrapper; .Percentage_Height(80%);}
+			}
+			.Browse_Item_Label {.Left; padding-left: 8px; width: calc(~'100% - 40px - 2px');}
+			&:hover {background-color: darken(white, 3%);}
+			&.Selected {background-color: darken(white, 5%);}
+		}
+	}
+}
+
+/* Pages */
+
+h1, .H1 {.Block; font-size: 35px; margin-bottom: 25px;}
+
+
+.Page {}
+.Page_Item {.Page; .Block; width: 900px; max-width: 100%; padding-top: 50px; padding-bottom: 30px; padding-left: 5%; padding-right: 5%; .Centered_Horizontal;
+	
+	.Page_Header {.Block; margin-bottom: 10px;
+		.Page_Title {.Block; margin-bottom: 20px;
+			.Left_And_Right {.Row;
+				.Page_Name {.Left; .H1; margin-bottom: 8px;
+					.Type_Name_Link {.Plain_Link;}
+				}
+				.Right {.Right_Align;
+					.Visible {.Left_Align; margin-right: 20px; padding-top: 10px;
+						.Visible_Label {.Left; margin-right: 6px;}
+						.Visible_Value {.Left; .Border_Bottom; border-bottom-color: @Dark_Grey; padding-bottom: 2px; margin-right: 6px;
+							a {.Plain_Link;}
+						}
+						.Visible_Chevron {.Left; .Icon_Size(8px);}
+					}
+					.Settings {.Left_Align;
+						.Settings_Link {.Left; .Icon_Size(20px); .Icon_Color(@Dark_Grey); background-color: white; padding: 8px; .Circle; .Plain_Link;
+							&:hover {background-color: darken(white, 5%);}
+							&.Selected {background-color: darken(white, 5%); border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; padding-bottom: 15px;}
+							&:last-of-type {margin-right: 0;}
+						}
+					}
+					.Edit_Settings{ .Icon_Color(@Dark_Grey); .Left; margin-top:0px; margin-left:10px; .Plain_Link; padding:6px; border-radius:21px; .Icon_Size(20px); border: dashed 1px #cccccc;
+						&.Selected {border: solid 2px @Blue; background-color:white;} 						
+						@media (min-width: @Desktop_Width) {
+							&:hover {background-color: @Blue} 
+						}
+					}
+					/*.Preview_Link {.Icon_Size(24px);}  */
+				}
+			}
+			.Page_Settings {.Item_Settings;}
+		}
+	}
+	
+	.Page_Cover {
+		.Cover_Content {.Cover_Content_Wrapper; margin-bottom: 20px; .Percentage_Height(35%);}
+		.User_Cover_Content {.Cover_Content_Wrapper; margin-left: auto; margin-right: auto; margin-bottom: 20px; .Percentage_Height(100%); .Circle;
+				@media (max-width: @Mobile_Width) {width: 50%;}
+				@media (min-width: @Desktop_Width) {width: 33%;}
+		}
+	}
+	
+	.Page_Purchases { display:block; text-align:center; margin-bottom:55px; margin-top:25px;
+			.Purchase_Tickets_Button {.Button; padding:8px; padding-left:5px; width:165px;
+				.Content {
+					.Icon {margin-right:12px; .Icon_Size(20px);}
+					.Label {padding-top: 1px; font-size: 19px; font-weight: 100; letter-spacing: 0.2px;}
+				}
+			}
+	}
+	
+	.Page_Communications {display:block; text-align:center; margin-bottom:55px; margin-top:25px;
+		.Big_List_Item_Mail, .Big_List_Item_Text_Desktop, .Big_List_Item_Text_Mobile, .Big_List_Item_Call {.Icon_Size(40px); .Icon_Color(@Blue); margin-right:7px;margin-left:7px; display:inline-block;text-align:center;
+			.iconic {}
+			.Label {display:block; font-size:15px;} 
+			&:hover {.Icon_Color(lighten(@Blue, 10%)); text-decoration:none;}
+		}
+		.Big_List_Item_Text_Mobile {display:inline-block;
+			@media (min-width: @Desktop_Width) {display:none;}
+		}
+		.Big_List_Item_Text_Desktop { display:none;
+			@media (min-width: @Desktop_Width) {display:inline-block;}
+		}
+		.Big_List_Item_Call {.Icon_Size(37px); position:relative; top:-3px;
+		}
+	}
+	
+	.Section {.Block; margin-bottom: 30px;
+		.Label {.Block; margin-bottom: 10px; font-weight:600;}
+		.Tip {.Block; color:#333;margin-bottom:10px;}
+		.Value {.Block;
+			input, textarea {width: 100%;
+				@media (max-width: @Mobile_Width) {font-size: 22px;}
+				@media (min-width: @Desktop_Width) {}
+			}
+		}
+	}
+	.Link {.Row;
+		.Jelly_Loading {float:right; top:8px; margin-left:10px;} 
+		a {.Right; .Button;}
+	}
+	
+	.Page_Modules {
+		.Module_Content {.Section; position: relative;
+			.Module_Edit_Link {position: absolute; top: 0px; right: -25px; .Icon_Size(12px); .Icon_Color(@Dark_Grey); background-color: white; padding: 6px; .Circle; .Plain_Link;
+				&:hover {background-color: darken(white, 5%);}
+				&.Selected {background-color: darken(white, 5%); border-bottom-left-radius: 0px; border-top-left-radius: 0px; padding-left: 15px;}
+				&:last-of-type {margin-right: 0;}
+			}
+			.Module_Settings {.Item_Settings;}
+		}
+		
+		.Text_Module {.Module_Content;}
+		.Picture_Module {.Module_Content;
+			.Picture {.Block; width: 100%; .Cover_Image;}
+		}
+		
+		.Property_Module {.Module_Content;
+			.Property_Module_Header {.Row; margin-bottom: 10px;
+				.Property_Module_Label_Content {.Row;
+					.Property_Module_Label_Value {.Left; font-size: 16px; font-weight: 600; margin-right: 5px; padding-top: 4px;margin-bottom:4px;}
+					.Property_Module_Privacy {.Left; .Icon_Size(12px); .Icon_Color(@Grey); background-color: white; margin-left:8px; padding-top:5px;
+						&.Private {padding-top:4px;} 
+						&.Public {padding-top:4px;} 
+						.Explanation {display:none;}
+						@media (min-width: @Desktop_Width) { 
+							.Explanation {display:inline; color:@Grey; font-size:11px; margin-left:10px; position:relative; top:-2px; opacity:0; transition: .3s;}
+							&:hover {
+								.Explanation {opacity:1; transition: .1s;}
+							}
+						}
+					}
+					
+					
+					.Property_Module_Settings_Link {.Left; .Icon_Size(9px); .Icon_Color(@Dark_Grey); background-color: white; padding: 4px; .Circle; .Plain_Link;
+						&:hover {background-color: darken(white, 5%);}
+						&.Selected {background-color: darken(white, 5%); border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; padding-bottom: 8px;}
+					}
+					.Property_Module_Controls {.Right_Align;
+						.Property_Module_Display_Wrapper {.Left; margin-bottom:-6px; margin-top:-6px;
+							.Display {.Left_Align;
+								.Display_Grid, .Display_List, .Display_Spreadsheet {.Left; margin-right: 5px; .Icon_Size(20px); .Icon_Color(@Dark_Grey); padding: 8px; border-radius: 5px;
+									&:hover {background-color: darken(white, 5%);}
+									&.Selected {background-color: darken(white, 10%);}
+									&:last-of-type {margin-right: 0;}
+								}
+							}
+						}
+						.Property_Module_Add_Wrapper {.Left; margin-left:15px;
+							.Property_Module_Add_Link {.Small_Button; min-width:120px;}
+						}
+						.Property_Module_Set_Wrapper {.Left; margin-left:15px;
+							.Property_Module_Set_Link {.Small_Button; min-width:120px;}
+						}
+					}
+				}
+				.Page_Settings {.Item_Settings;}
+			}
+			.Property_Module_Communications {display:block; text-align:left; margin-bottom:12px; margin-top:-2px; margin-left:-6px;
+				.Big_List_Item_Mail, .Big_List_Item_Text {.Icon_Size(27px); .Icon_Color(@Blue); margin-right:7px;margin-left:7px; display:inline-block;text-align:center;
+					.iconic {}
+					.Label {display:inline; font-size:15px;vertical-align:top; margin-left:5px; position:relative; top:5px;} 
+					&:hover {.Icon_Color(lighten(@Blue, 10%)); text-decoration:none;}
+				}
+			}
+			.Property_Module_Value {.Row;
+				input, textarea {font-size: inherit; font-size: 18px;}
+				input {
+					@media (max-width: @Mobile_Width) {width: 100%; font-size: 22px;}
+					@media (min-width: @Desktop_Width) {width: 50%;}
+				}
+				textarea {width: 100%; max-height: 200px;}
+				input.Jelly_Time_Input {.Left; width: 100px;}
+				input.Jelly_Date_Input {.Left; width: 100px; margin-right: 10px;}
+			}
+		}
+	}
+	.Page_Content_Actions {.Controls_Box;}
+	.Page_Add_Property {
+		.Page_Add_Property_Link {.Button;}
+	}
+}
+
+/* Modules */
+
+/* Module Controls */
+
+.Inline_Text {outline: none;}
+
+.Module_Controls {.Controls_Box; position: absolute; top: -85px;}
+.Controls_Box {
+	@media (max-width: @Mobile_Width) {display: none;}
+	@media (min-width: @Desktop_Width) {.Row; .Centered_Horizontal; background-color: rgba(0, 0, 0, .8); font-size: 12px; font-family: Lato; border-radius: 8px; overflow: hidden; text-align: center; color: white;
+			div.Inner_Group {padding-left: 15px; padding-right: 15px; display: inline-block; vertical-align: middle;
+				.Items {.Row; margin-top: 11px; margin-bottom: 4px; height: 28px;
+					a {padding-top: 4px; padding-left: 8px; padding-right: 8px; padding-bottom: 4px;}
+				}
+				.Label {padding-bottom: 15px;}
+			}
+			div.Group {display: inline-block; border-right-style: solid; border-right-width: 1px; border-right-color: rgba(255,255,255,.15); float: left; color: white; text-transform: uppercase; text-align: center;}
+			a {display: inline-block; height: 100%; padding: 15px; text-transform: uppercase; vertical-align: middle; .Plain_Link;
+				.iconic {width: 20px; height: 20px; display: block; margin: auto; margin-bottom: 8px;
+					* {fill: white; stroke: white;}}
+				&:hover {color: white; text-decoration: none; background-color: #666666;}
+				float: left;
+			}
+		
+		.Selected {background-color: rgba(255,255,255,.2);}
+		[data-target-property="Size"] {
+			[data-size="Large"] {font-size: 150%;}
+			[data-size="Small"] {font-size: 75%;}
+		}
+	}
+}
+
+
+/* Lists */
+
+.Big_List {
+	.Big_List_Display {.Row; margin-bottom: 10px;
+		.Left_Items {.Left_Align;
+			.Add {.Left; margin-right: 10px;
+				.Add_Link {.Button;}
+			}
+			.Search {position: relative; top: 2px; .Grayed_Out;
+				.Icon {position: absolute; left: 10px; top: 2px; .Icon_Size(16px); .Icon_Color(@Dark_Grey);}
+				.Input {
+					input {height: auto; width: 200px; border-radius: 5px;}
+				}
+			}
+		}
+		.Right_Items {.Right_Align;
+			.Show {.Left_Align; margin-right: 20px; padding-top: 10px; .Grayed_Out;
+				.Show_Label {.Left; margin-right: 6px;}
+				.Show_Chevron {.Left; .Icon_Size(8px);}
+			}
+			.Sort {.Left_Align; margin-right: 20px; padding-top: 10px; .Grayed_Out;
+				.Sort_Label {.Left; margin-right: 6px;}
+				.Sort_Value {.Left; .Border_Bottom; border-bottom-color: @Dark_Grey; padding-bottom: 2px; margin-right: 6px;}
+				.Sort_Chevron {.Left; .Icon_Size(8px);}
+			}
+			.Display {.Left_Align;
+				.Display_Grid, .Display_List, .Display_Spreadsheet {.Left; margin-right: 5px; .Icon_Size(20px); .Icon_Color(@Dark_Grey); background-color: white; padding: 8px; border-radius: 5px;
+					&:hover {background-color: darken(white, 5%);}
+					&.Selected {background-color: darken(white, 10%);}
+					&:last-of-type {margin-right: 0;}
+				}
+			}
+		}
+	}
+	.Big_List_Items {
+		.Big_List_Item {
+			&.Hover:hover {background-color: darken(white, 3%);}
+			.Big_List_Item_Details {
+				.Big_List_Item_Cover {
+					.Cover_Content {.Cover_Content_Wrapper; .Percentage_Height(35%);
+						&.User_Cover_Content {.Circle; .Percentage_Height(100%);}
+					}
+				}
+				.Big_List_Item_Name {}
+				.Big_List_Item_Date {display:block; margin-top:5px; font-size:13px;}
+			}
+			.Big_List_Item_Actions {
+				.Delete {.Icon_Size(14px); .Icon_Color(@Dark_Grey); .Action;}
+				.Action {
+					&:hover {.Plain_Link; background-color: darken(white, 8%);}
+				}
+			}
+		}
+	}
+}
+
+.Big_List.Map{
+	.Big_List_Items {.Block; .Border_Top; margin-left: -10px; margin-right: -10px; position:relative; width:100%; height:400px;
+		.List_Map{position:absolute; top:0px; left:0px; width:100%; height:100%;
+			.Big_List.Popup {			
+				.Cover_Content { .Percentage_Height(100%)}
+			}
+		}
+	}
+}
+
+.Big_List.List {
+	.Big_List_Items {.Block; .Border_Top; margin-left: -10px; margin-right: -10px;
+		.Big_List_Item {.Row; .Border_Bottom; position: relative;
+			.Big_List_Item_Details {.Row; .Plain_Link; position: relative; width: calc(~'100% - 14px - 2*10px'); padding: 10px;
+				.Big_List_Item_Cover {.Left; width: 25%; margin-right: 10px;
+					.Cover_Content {
+						&.User_Cover_Content {width: 50%;}
+					}
+				}
+				.Big_List_Item_Name {.Left; width: calc(~'100% - 25% - 10px');
+					.Name { display: block;}
+					.Tagline { display:block; margin-top:5px; font-size:13px;}
+					.Description {display:block; margin-top:5px; font-size:13px;}
+					.Status { float: right; font-size: 11px; letter-spacing: 0.3px; font-family: Montserrat; font-weight: 700; background-color: #ffffcc; padding: 5px; margin-right: 5px; text-transform: uppercase; position: relative; top: -2px;}
+				}
+			}
+			.Big_List_Item_Value {.Block; margin-bottom: 10px; font-weight: lighter;}
+			.Big_List_Item_Actions {.Row; position: absolute; top: 0px; right: 0px; height: 100%;
+				.Delete {.Left; padding: 10px; height: 100%;
+					.Content {.Block; position: relative; top: 50%; transform: translateY(-50%);}
+				}
+				.Leave_Team {.Small_Button;  margin-right: 10px; position: relative; top: 50%; transform: translateY(-50%);}
+				.Leave_Team {.Block;} // Ordering for server-side compiler.
+			}
+		}
+		
+		// Special cases by value type
+		
+		// Sound
+		[data-type="Sound"][data-template="Property_Module_List_Item"] {
+			.Big_List_Item_Cover { width:100%;
+				.Cover_Content {
+					&:before { padding-top:24%;}
+				}
+			}
+			.Big_List_Item_Name { display:none;}
+		}
+	}
+}
+ 
+.Big_List.Team_List {
+	.Big_List_Items {.Block; margin-left: -10px; margin-right: -10px;
+		.Big_List_Item {.Row; position: relative; 
+			.Big_List_Item_Details {.Row; .Plain_Link; position: relative;
+				.Big_List_Item_Cover {.Block; 
+					.Cover_Content {.Cover_Content_Wrapper; .Percentage_Height(40%);
+						.Cover_Picture { filter: ~'contrast(1.4) brightness(0.9) sepia(0.05)'; -webkit-filter: ~'contrast(1.4) brightness(0.9) sepia(0.05)';}
+					}
+				}
+				.Big_List_Item_Name {font-size: 32px; font-weight:200; letter-spacing:1px; display:block; text-align:center; width:100%; text-transform:initial; padding-top: 60px;}
+				.Big_List_Item_Content {.Block;margin-top: 30px; margin-bottom:30px;text-align:center;
+					.Big_List_Item_Label {.Block; margin-bottom: 10px;}
+				}
+				.Communications {display:block; text-align:center; margin-bottom:30px;
+					.Big_List_Item_Mail, .Big_List_Item_Text {.Icon_Size(30px); .Icon_Color(@Blue); margin-right:7px;margin-left:7px; display:inline-block;text-align:center;
+						.iconic {}
+						.Label {display:block; font-size:15px;} 
+						&:hover {.Icon_Color(lighten(@Blue, 10%)); text-decoration:none;}
+					}
+				}
+			}
+			.Big_List_Item_Value {.Block; margin-bottom: 10px; font-weight: lighter;
+				.Team_Member { width: 25%; padding: 10px; height:250px;
+					.General_User_Cover {margin-bottom: 18px; margin-left:auto; margin-right:auto; max-width:130px;}
+					.Name {.Block; font-weight:600; padding-top:12px; font-size:15px; text-transform:uppercase;}
+					&.With_Title {
+						.General_User_Cover {margin-bottom:10px; border:solid 4px @Blue;max-width:138px; width:~"calc(100% + 8px)";position:relative; top:-4px;}
+						.Title {text-align:center; font-size:15px; display:block; margin-top:15px;letter-spacing:.3px;}
+					}
+					@media (min-width: @Desktop_Width) {width: 25%;}
+				}
+			}
+			.Big_List_Item_Actions {.Row; position: absolute; top: 0px; right: 0px; height: 100%;
+				.Delete {.Left; padding: 10px; height: 100%;
+					.Content {.Block; position: relative; top: 50%; transform: translateY(-50%);}
+				}
+			}
+		}
+	}
+}
+.Big_List.Grid {
+	.Big_List_Items {.Border_Top; margin-left: -10px; margin-right: -10px; display: flex; display: -ms-flexbox; display: -webkit-box; display: -webkit-flex; flex-wrap:wrap; -webkit-flex-wrap:wrap; -webkit-box-orient: horizontal;  -moz-box-orient: horizontal;   -webkit-box-direction: normal;   -moz-box-direction: normal;   -webkit-flex-direction: row;  -ms-flex-direction: row;  flex-direction: row;
+	
+		.Big_List_Item { .Border_Bottom; position: relative; .Border_Left; display: flex; display: -ms-flexbox; display: -webkit-box; display: -webkit-flex;
+			&:last-of-type {.Border_Right;}
+			@media (max-width: @Mobile_Width) {width:calc(~'100%/2');
+				&:nth-of-type(2n+2) {.Border_Right;}
+			}
+			@media (min-width: @Desktop_Width) {width:calc(~'100%/3');
+				&:nth-of-type(3n+3) {.Border_Right; }
+			}
+			.Big_List_Item_Details {.Block; .Plain_Link; position: relative; width: 100%; padding: 10px; padding-top:12px; padding-bottom:14px; -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex:1;
+				.Big_List_Item_Cover {.Block;
+					.Cover_Content {.Cover_Content_Wrapper; .Percentage_Height(80%); margin-bottom: 10px;
+						&.User_Cover_Content {.Circle; .Percentage_Height(100%);}
+					}
+				}
+				.Big_List_Item_Name {.Block; .Ellipsis; font-size:17px; width: calc(~'100% - 14px - 2*10px');
+					.Description {display:block; margin-top:5px; font-size:13px;}
+					.Status { float: right; font-size: 11px; letter-spacing: 0.3px; font-family: Montserrat; font-weight: 700; background-color: #ffffcc; padding: 5px; margin-right: 5px; text-transform: uppercase; position: relative; top: -2px;}
+				}
+				.Big_List_Item_Content {.Block;	 margin-top:9px; font-size:14px; width: calc(~'100% - 14px - 2*10px'); letter-spacing: 0.15px;
+					.Big_List_Item_Value {font-weight:lighter;}
+				}
+			}
+			.Big_List_Item_Actions {.Row; position: absolute; bottom: 0px; right: 0px;
+				.Delete {.Left; padding: 10px; height: 100%;
+					.Content {.Block;}
+				}
+				.Leave_Team {.Small_Button;  margin-right: 10px; position: relative; top: 50%; transform: translateY(-50%);}
+				.Leave_Team {.Block;} // Ordering for server-side compiler.
+			}
+		}
+		
+		// Teams
+		// TODO - cleanup...
+		&[data-parent-type="User"][data-property="Team"][data-template="Property_Module_List_Item"] {padding-top:10px;
+			.Big_List_Item {border:none; border-radius:2px; margin-bottom:10px; .Percentage_Height(100%);margin-right:10px;
+				@media (max-width: @Mobile_Width) {width:calc(~'100%/2 - 10px');}
+				@media (min-width: @Desktop_Width) {width:calc(~'100%/4 - 10px');}
+				.Big_List_Item_Details { position:absolute; background-size:cover; background-position: center center; padding:0px;
+					/* .Cover_Content {.Percentage_Height(100%); border-top-left-radius:2px; border-top-right-radius:2px;}	*/
+					.Big_List_Item_Badge{.Percentage_Height(100%);}
+					.Big_List_Item_Name { .Block;position:absolute; bottom:0px; text-align:center;width:100%; font-weight:600; padding-top:12px;text-transform:uppercase;padding:0px; white-space:inherit; overflow:inherit; text-overflow:initial;padding-top:17px; background-color: rgba(255,255,255,.95);
+						.Tagline {.Block; margin-top:12px; margin-bottom:20px; padding-left:15px; padding-right:15px;font-size:13px;  text-transform:none; font-weight:200;  line-height:1.2;}
+					}
+				}
+			}
+		}
+		
+		// Video	
+		[data-type="Video"][data-template="Property_Module_List_Item"] {
+			.Big_List_Item_Cover { width:100%; }
+		}
+	}
+	&.Large {
+		.Big_List_Item {width:100%; clear:left;}
+	}
+	&.Small {
+		.Big_List_Item { width: 12.5%; border:none;
+			&:nth-of-type(3n+3) {clear: none; border:none;}
+			&:nth-of-type(3n+4) {clear: none;}
+			&:last-of-type {border:none;}
+						
+			&:nth-of-type(8n+9) {clear: left;}
+		}
+	}
+	&.Tiny {
+		.Big_List_Item { width: initial; border:none; margin-top:10px; margin-right:9px;
+			&:last-of-type {border:none;}
+			&:nth-of-type(3n+3) {border:none;}
+			&:nth-of-type(2n+2) {border:none;}
+			&.Hover:hover {background-color: initial;
+				@media (min-width: @Desktop_Width) { 
+					.Big_List_Item_Details {background-color: @Blue; border-color: @Blue;
+							&.Selected {background-color: inherit; transition: .2s;}
+						}
+				}
+			}
+			.Big_List_Item_Details {padding:0px; padding-right:8px; border-radius:25px; border: 1px dashed #ccc; transition:.15s;
+				&.Selected {border: solid 2px @Blue; background-color: @Blue; background-color: white; transition:.2s;
+					.Big_List_Item_Check {width: 14px;} 
+				}
+				.Big_List_Item_Cover {display:none;}
+				.Big_List_Item_Name { float:left; width:initial; font-size:15px; margin-left:10px; line-height:28px}
+				.Big_List_Item_Check {display: block; float:left; margin-left: 7px; line-height: 27px; color: @Blue; width:0px; overflow:hidden;}
+				
+				@media (min-width: @Desktop_Width) {padding-left:8px; padding-right:13px; padding-top:5px; padding-bottom:5px; padding-right: 17px;
+					.Big_List_Item_Cover {display:block; float:left; width:40px; height:40px;}
+					.Big_List_Item_Name {margin-left:14px; line-height:40px}	
+					.Big_List_Item_Check {margin-left: 9px; line-height: 38px;}
+				}
+			 }
+		}
+	}
+	&.Flex {
+		.Big_List_Item {display: flex; display: -ms-flexbox; display: -webkit-box; display: -webkit-flex; -webkit-box-flex: 1; -webkit-flex: 1; -ms-flex: 1; flex:1;
+			@media (max-width: @Mobile_Width) {min-width:calc(~'100%/2');}
+			@media (min-width: @Desktop_Width) {min-width:calc(~'100%/3');}
+			.Big_List_Item_Inner {display:block; position:relative; width:100%; height:100%;}
+		}
+	}
+}
+.Big_List.Spreadsheet {
+		@Cell_Padding: 8px;
+		table {padding: 0px; margin: 0px; width: 100%;
+			thead {padding: 0px; margin: 0px;
+				tr {padding: 0px; margin: 0px;
+					td {padding: @Cell_Padding; margin: 0px; .Border_Left;
+						.Property_Name {text-decoration: underline;}
+						.Add_Property_Link {.Small_Button;}
+					}
+				}
+			}
+			tbody {padding: 0px; margin: 0px;
+				tr {padding: 0px; margin: 0px;
+					td {padding: 0px; margin: 0px; .Border_Left;
+						input {border-radius: 0; width: 250px; border-style: none; padding: @Cell_Padding; background-color: inherit;
+							&:focus {outline-width: 1px;}
+						}
+						&:last-of-type {.Border_Right;}
+					}
+					&:last-of-type {}
+					&:nth-of-type(2n+1) {background-color: #fafafa;}
+				}
+			}
+		}
+}
+
+.Big_List.Join_Team {
+	.Big_List_Items {.Block; .Border_Top; margin-left: -10px; margin-right: -10px;
+		.Big_List_Item {.Row; .Border_Bottom; position: relative;
+			.Big_List_Item_Details {.Row; .Plain_Link; position: relative; width: calc(~'100% - 100px'); padding: 10px;
+				.Big_List_Item_Cover {.Left; width: 50%; margin-right: 10px;
+					.Cover_Content {.Cover_Content_Wrapper; .Percentage_Height(45%);}
+				}
+				.Big_List_Item_Name {.Left; width: calc(~'100% - 50% - 10px'); margin-bottom: 10px;}
+				.Big_List_Item_Content {.Block;}
+			}
+			.Big_List_Item_Value {.Block; margin-bottom: 10px; font-weight: lighter;}
+			.Big_List_Item_Actions {.Row; position: absolute; top: 0px; right: 0px; width: 100px; height: 100%; text-align: center; padding-top: 10px;
+				a {.Small_Button;}
+			}
+		}
+	}
+}
+
+.Big_List_Item_Top_Image {
+	.Big_List_Item_Details {.Block; .Plain_Link; position: relative; width: 100%;
+		.Big_List_Item_Cover {.Block;
+			.Cover_Content {.Cover_Content_Wrapper; .Percentage_Height(80%); margin-bottom: 10px;}
+		}
+		.Big_List_Item_Name {.Block; .Ellipsis; width: calc(~'100% - 14px - 2*10px');}
+	}
+	.Big_List_Item_Actions {.Row; position: absolute; bottom: 0px; right: 0px;
+		.Delete {.Left; padding: 10px; height: 100%;
+			.Content {.Block;}
+		}
+	}
+}
+
+.Item_Settings {display: none; padding: 10px; background-color: darken(white, 5%); border-radius: 5px; border-top-right-radius: 0; margin-bottom: 10px;
+	&.Visible {.Block;}
+	.Setting_Row {.Row; margin-bottom: 10px;
+		.Setting_Label {.Left; padding-right: 10px; width: 140px; padding-top: 6px;}
+		.Setting_Value {.Left; width: calc(~'100% - 140px');
+			input {width: 100%;}
+			.Setting_Button {.Icon_Size(9px); .Icon_Color(white);	
+				svg {position:relative; top:-1px;}
+			}
+			.Setting_Privacy_Menu_Link {.Plain_Link; .Left; background-color:white; .Border_Bottom; border-bottom-color: @Dark_Grey; padding-bottom: 2px; margin-right: 6px;}
+			.Setting_Privacy_Menu_Chevron {.Left; .Icon_Size(8px);}
+		}
+		a {.Small_Button;}
+		&:last-of-type {margin-bottom: 0;}
+	}
+}
+
+/* Embeds */
+
+.Sound_Wrapper  { height: 0; position: relative;
+	iframe {height:150px;}
+}
+.Video_Wrapper  { height: 0; position: relative; padding-top: 25%; padding-bottom: 56.25%;
+	iframe {width:100%; height:100%; position: absolute; left: 0; top: 0; }
+}
+.Social_Media_Wrapper  { height: 0; position: relative; height:100%;
+	figure { width:100%; height: 0px; padding-bottom:100%; background-image: url(/jelly/images/social/Social.png); 
+		&.Twitter {background-image: url(/jelly/images/social/Twitter.png);} 
+		&.Facebook {background-image: url(/jelly/images/social/Facebook.png);} 
+		&.LinkedIn {background-image: url(/jelly/images/social/LinkedIn.png);} 
+		&.Pinterest {background-image: url(/jelly/images/social/Pinterest.png);} 
+		&.Google_Plus {background-image: url(/jelly/images/social/Google_Plus.png);} 
+		&.Tumblr {background-image: url(/jelly/images/social/Tumblr.png);} 
+		&.Instagram {background-image: url(/jelly/images/social/Instagram.png);} 
+		&.Better {background-image: url(/jelly/images/social/Better.png);} 
+	}
+}
+
+
+/* Dashboard */
+/* TODO Cleanup */
+.Dashboard_Item {.Block; padding: 30px;
+	.Feed {.Block;
+		.Feed_Label {.Block; font-size: 35px; margin-top: 15px; margin-bottom: 10px;}
+		.Feed_Items {.Inline_Block; .Border_Top; padding-top: 10px;
+			.Feed_Item {.Row; margin-bottom: 6px;
+				.Label {.Left; width: 300px; .Ellipsis;}
+				.Person {.Left; width: 150px; margin-right: 20px;}
+				.Time {.Left; width: 80px;}
+			}
+		}
+	}
+}
+
+/* Add Menu */
+.Add_Item_Menu {.Block; padding: 15px; width: 200px;
+	.Add_Page_Link, .Add_List_Link {.Block; .Button; margin-bottom: 15px; width: 100%;}
+	.Add_Spreadsheet_Link {}
+}
+
+.Create_Property_Menu {
+	.Create_Property_Menu_Item {.Plain_Link; .Row; padding: 5px; padding-right:25px;
+		&:focus {outline-style: none;}
+		&:hover {background-color: darken(white, 8%);}
+		.Cover {.Left; width: 20px; height: 20px; background-size: contain; background-repeat: no-repeat; background-position: 50% 50%; margin-right: 13px; 
+			.Icon {.Icon_Size(15px);.Icon_Color(black);margin-left:2px;}
+		}
+		.Label {.Left;}
+	}
+}
+
+#Change_User_Menu { display:none; background-color:white; .Small_Shadow; position:absolute; right:0px; top:43px; padding-right:15px;
+	.Change_User_Menu_Item {.Block; .Row; padding:4px; padding-top:6px; padding-bottom:6px; padding-left:8px;
+		.Icon {.Left; margin-right: 9px; .Icon_Size(18px); .Icon_Color(@Blue); vertical-align: middle; border-radius: 15px; width:30px; height:30px; border: solid 1px @Blue; padding-left:5px; padding-top:5px;}
+		.Label {.Left; vertical-align: middle; margin-top:6px; }
+	}
+}
+
+// TODO - These can be removed when the overall Jelly interface stylesheet gets repaired
+.Value_Type_Badge
+{
+	.Plain_Link; .Row; padding: 5px;
+	&:focus {outline-style: none;}
+	&:hover {background-color: darken(white, 8%);}
+	.Cover {.Left; width: 20px; height: 20px; background-size: contain; background-repeat: no-repeat; background-position: 50% 50%; margin-right: 13px;}
+	.Label {.Left;}
+}
+.Value_Type_Closed_Menu {padding:5px; border: solid 1px #e7e7e7; cursor: pointer; &:hover {background-color: darken(white, 8%);}}
+.Value_Type_Closed_Menu_Arrow {.Right; margin-top:5px;}
+
+.Clean_Menu {.Block;
+	.Clean_Menu_Item {.Plain_Link; .Row; padding: 10px;
+		&:hover {background-color: darken(white, 8%);}
+		&.Selected {background-color: darken(white, 10%);}
+		.Icon {.Left; margin-right: 5px; .Icon_Size(14px); vertical-align: middle; .Icon_Color(@Dark_Grey); margin-top: 0.7px;}
+		.Label {.Left;}
+	}
+}
+
+// TODO - Move around somewhere - Kunal's Korner
+
+[data-type="Event"][data-template="View_Guest_List"]
+{
+	h2 {font-size:24px; margin-bottom:25px}
+	.Event_Guest_List
+	{
+		li {display:block; margin-bottom: 15px;
+			h3 { 
+				.Plus {margin-left:15px; font-weight:bold; font-size:1.1em;}
+			}
+			.Donation {display:block; color:#666;}
+		}
+	}
+}
+
+/* Various Windows */
+
+.Add_Value_Clean_Window {width: 800px; .Clean_Window;}
+.Create_Other_List {.Clean_Window; width: 400px;}
+.Import_Google_Sheet {.Clean_Window; width: 400px;}
+.Create_Item {.Clean_Window; width: 400px;}
+.Add_Picture {.Clean_Window; width: 800px;}
+.Add_Sound {.Clean_Window; width: 800px;}
+.Add_Video {.Clean_Window; width: 800px;}
+.Add_Data_Module_Window {.Clean_Window; width: 800px;}
+.Remove_Window {.Clean_Window; width: 400px;}
+.Remove_Value_Window {.Clean_Window; width: 400px;}
+.Settings_Window {.Clean_Window; width: 400px;
+	.Payment_Status {.Icon_Size(20px); .Icon_Color(@Dark_Grey);
+		.iconic { border: solid 2px @Blue;padding:2px; border-radius:20px; position:relative; top:4px;} 
+	}
+}
+.Add_Ticket_Window {.Clean_Window; width: 375px;
+	.Price { 	
+		.Label {float: initial}
+		.Input {margin-bottom:5px; position:relative;
+			&:before {content: '$'; position:absolute; top:10px; left:10px; font-size:14px;}
+			input { width:120px; padding-left:18px; font-size:20px;}
+		}
+	}
+	.Capacity {
+		margin-left:33px;
+		.Label {float: initial}		
+		.Input {margin-bottom:5px; position:relative;
+			input { width:120px; padding-left:18px; font-size:20px;}
+		}
+	}
+	.Forecast { margin-bottom:25px; display:block; overflow:hidden; max-height:0px; transition:.1s;
+		&.Show {max-height:28px;}
+		&.Show_Hint {max-height:100px;}
+		.Value { background-color: #ffffcc; padding:5px; display:block; 
+			.Number {font-weight:600}; 
+		}
+		.Hint {margin-top:6px;}
+	}
+	.Hint {display:block; margin-top:2px; color:#999999;} 
+}
+
+.User_Settings_Window {.Clean_Window; width: 300px;}
+.Add_Input_Module_Window {.Clean_Window; width: 450px;
+	.Input_Row
+	{
+		.Description { width: 130px;}
+		.Input { width:300px;}
+	}
+}
+.Send_Invitation_Window {.Clean_Window; width: 700px;}
+
+[data-kind="Item"][data-type="Type_Action"][data-alias="Purchase"]{border:none;
+	.Purchase_Conversion_Window {.Clean_Window;
+		@media(min-width: @Desktop_Width) {min-width:650px;}
+		.Appeal_Image {width:100%; height:250px;background-size:cover; background-position: center center; background-repeat: no-repeat;}
+		.Window_Content { .Block; padding:30px;
+			.Header {text-align:center;}
+			.Introduction {.Block; text-align:center; margin-top:20px; margin-bottom:11px; line-height:1.3;}
+			.Appeal {.Block; text-align:center; margin-top:17px; margin-bottom:11px; line-height:1.3; display:none;}
+			.Big_List.Select_Reward{ 
+				.Big_List_Items { border:none; margin-top:5px;
+					.Big_List_Item { border:none; margin-top:2px; margin-bottom:5px; text-align:center;
+						.Big_List_Item_Details {width: 100%;
+							.Button { margin-bottom:12px;
+								@media (min-width:@Desktop_Width) {width:350px; margin-bottom:18px;}
+								.Label {text-transform:uppercase;font-weight:600; font-size:17px; letter-spacing:.2px;
+									&.Large {line-height:35px;}
+								}
+								.Bonus {display:block; font-weight:normal; font-size:14px; text-transform:none;margin-top:8px;}
+							}
+							.Big_List_Item_Cover {width:75px; height:75px; margin-right:25px;display:inline-block;  float:none;
+								&:hover {
+									.Cover_Content {border: solid 2px @Blue;} 
+								}
+								.Cover_Content {.Percentage_Height(100%); .Circle; border: dashed 1px #aaaaaa;}
+							}
+							.Big_List_Item_Content {display:inline-block;position:relative; vertical-align:top; top:7px;} 
+						} 
+					}
+					.List_Item[data-type="Reward"] { 
+						@media (min-width: @Mobile_Width) {position:relative; left:-52px;}
+						.Big_List_Item {margin-bottom:-6px;}
+					}
+				}
+			}
+		}
+	}
+}
+
+.Purchase_Receipt_Window {.Clean_Window; .Page_Item; width:400px; padding:30px;
+	.Number {font-weight:600;}
+}
+
+[data-kind="Item"][data-type="Type_Action"][data-alias="Email_Team"],[data-kind="Item"][data-type="Type_Action"][data-alias="Email_Group"], [data-kind="Item"][data-type="Action"][data-alias="Email_All_Active_Users"],[data-kind="Item"][data-type="Action"][data-alias="Email_Other"] { padding:0px; padding-bottom:15px;
+	.Send_Email_Window {.Clean_Window; width:100%; 
+		.Close_Button {margin-right:16px; margin-top:14px; .Icon_Size(19px;)}
+		.Header { font-size: 22px; padding-left:16px; padding-top:14px; padding-bottom:14px; background-color:#efefef; margin:0px;}
+		.Recipients {display:block; .Row;
+			label {display:block; padding:14px; color:#999; width:75px;}
+			.Input_Wrapper {display:block; margin-bottom:10px; margin-left:20px; margin-right:20px;max-width:600px;
+				.Big_List_Items {border:none;} 
+			}
+		}
+		.Author {display:block; width:100%;border:none; border-top:solid 1px #e7e7e7; padding:14px;outline:none; color: #999;
+			label {margin-right:40px;}
+		} 
+		.Subject {
+			input {display:block; width:100%;border:none; border-top:solid 1px #e7e7e7; padding:14px;outline:none} 
+		}
+		.Message {
+			.Inline_Text {display:block; line-height:1.3; width:100%;overflow:scroll;border-top:solid 1px #e7e7e7; padding:14px; font-family:sans-serif;
+			} 	
+		}
+		.Signature {display:block; width:100%; background-color:#ffffcc; margin-bottom:10px; padding:5px;}
+		.Jelly_Action_Result {.Error; margin-bottom:10px;} 
+		.Execute { float:right; margin-right:25px;
+			a {float:initial;}
+		}
+		
+		@media (min-width: @Desktop_Width) {min-width:675px;
+			.Recipients {display:block; .Row;
+				label {float:left;}
+				.Input_Wrapper {float:left; margin-left:0px; margin-right:0px;}
+			}
+		}
+	}	
+}
+
+/* TODO : This is copied from elsewhere and needs to be integrated */
+[data-kind="Item"][data-type="Type_Action"][data-alias="Purchase"] {padding:0px; padding-bottom:15px;
+	.Purchase_Window {.Clean_Window; font-family: Raleway; font-size: 14px; line-height: 125%; .Row; padding: 0px;
+		label {display: block; text-transform: uppercase; font-size: 12px; margin-bottom: 1px;}
+		.Padded {width: 100%; padding-left: 20px; padding-right: 20px;}
+		.Row {margin-bottom: 10px;
+			&:after {content: ""; display: table; clear: both;}
+		}
+		.Big_Row {margin-bottom: 20px;}
+		input, select {border-color: #D1D1D1; font-size: 15px; height: 38px; background-color: white; font-family: Raleway;}
+		input[name="Expiration_Month"], input[name="Expiration_Year"], input[name="Card_Verification_Code"] {text-align: center;}
+		input {padding: 6px 10px;}
+		select {}
+		.Cart_Item_Image {
+			@media (min-width: 992px) {
+				position: absolute; left: 0px; width: calc(~'(100%) / 3'); height: 100%;
+			}
+			.Cover_Image {width: 100%; background-size: cover; background-position: 50% 50%; background-repeat: no-repeat; overflow: hidden;
+				&:before {content: ''; padding-top: 30%; float: left;}
+				@media (min-width: 992px) {height: 100%;}
+			}
+		}
+		.Purchase_Details {position: relative; padding: 20px;
+
+			@media (min-width: 992px) {
+				position: relative; left: calc(~'(100%) / 3'); width: calc(~'(100%) / 3 * 2');
+			}
+			.Cart_Item {width: 100%; margin-bottom: 10px;
+				.Name {font-size: 18px; line-height: 130%; margin-bottom: 5px;}
+				.Time {font-size: 13px; text-transform: uppercase; margin-bottom: 1px;}
+				.Location {font-size: 13px; text-transform: uppercase; margin-bottom: 1px;}
+				.Price {font-size: 13px; text-transform: uppercase; margin-bottom: 1px;}
+				.Quantity {text-align: center;}
+				.Donation {
+						input[type="number"] {width:100px; border:solid 1px #d1d1d1; border-radius:5px; outline:none;}
+					}
+			}
+			.Payment_Information {border-top-width: 1px; border-top-style: solid; border-top-color: #eeeeee; padding-top: 15px; .Row;
+				.Card_Icon {float: left; width: calc(~'(100% - 10px) / 6'); text-align: center;}
+				.Card_Form {float: left; width: calc(~'(100% - 10px) / 6 * 5'); margin-left: 10px;
+					.Card_Name_And_Email {.Row;
+						.Name {float: left; width: calc(~'(100% - 10px) / 2');
+							.First_Name {float: left; width: calc(~'(100% - 10px) / 2');}
+							.Last_Name {float: left; width: calc(~'(100% - 10px) / 2'); margin-left: 10px;}
+						}
+						.Email {float: left; width: calc(~'(100% - 10px) / 2 * 1'); margin-left: 10px;}
+					}
+					.Card_Information {.Row;
+						.Credit_Card_Number {float: left; width: calc(~'(100% - 10px * 2) / 12 * 6');}
+						.Credit_Card_Expiration {float: left; width: calc(~'(100% - 10px * 2) / 12 * 4'); margin-left: 10px;
+							.Credit_Card_Expiration_Month {float: left; width: calc(~'(100% - 3px * 2) / 12 * 5');}
+							.Credit_Card_Expiration_Separator {float: left; width: calc(~'(100% - 3px * 2) / 12 * 2'); margin-left: 3px; text-align: center; padding-top: 7px;}
+							.Credit_Card_Expiration_Year {float: left; width: calc(~'(100% - 3px * 2) / 12 * 5'); margin-left: 3px;}
+						}
+						.Credit_Card_CVC {float: left; width: calc(~'(100% - 10px*2) / 12 * 2'); margin-left: 10px;}
+					}
+				}
+			}
+			.Pay_Button {text-align: center; margin-top: 25px;
+				.Price {
+					.Discount {background-color:@Orange; color:white; padding:4px; padding-left:9px; padding-right:14px;}
+				}
+			}
+			.Result {text-align: center;}
+		}
+		.Button {position: relative; text-decoration: none; width: 75%; font-size: 24px; padding: 15px; font-weight: normal;
+			&:hover {text-decoration: none;}
+			&:active {top: 2px; transition: top .1s;}
+		}
+		.Result {
+			.Jelly_Action_Result {display: block; border-style: none; background-color: white; color: red; font-size: 14px; padding: 0; margin-top: 5px; text-align: center;}
+		}
+		@media screen and (max-width:@Mobile_Width) {
+			.Purchase_Details {
+				.Payment_Information {
+					.Card_Form {width:100%;
+						.Card_Name_And_Email {
+							.Name {float:none;width:100%;}
+							.Email {float: none;width: 100%;margin-top: 10px;margin-left:0px;}
+						}
+						.Card_Information {
+							.Credit_Card_Number {float: none;width: 100%;}
+							.Credit_Card_Expiration {float: left; width: calc((100% - 10px * 2) / 12 * 8);margin-left:0px;margin-top: 10px;}
+							.Credit_Card_CVC {float: left;width: calc((100% - 10px*2) / 12 * 4);margin-left: 10px;margin-top: 10px;}
+						}
+					}
+				}
+			}
+			.Card_Icon {display:none;}
+		}
+	}	
+} 
+
+[data-kind="Item"][data-type="Type_Action"][data-alias="Send_Text_to_Team"],[data-kind="Item"][data-type="Type_Action"][data-alias="Text_Group"],[data-kind="Item"][data-type="Type_Action"][data-alias="Send_Text"] { padding:0px; padding-bottom:15px;
+	.Send_Text_Window {.Clean_Window; width:100%; 
+		.Close_Button {margin-right:16px; margin-top:14px; .Icon_Size(19px;)}
+		.Header { font-size: 22px; padding-left:16px; padding-top:14px; padding-bottom:14px; background-color:#efefef; margin:0px;}
+		.Recipients {display:block; .Row;
+			label {display:block; padding:14px; color:#999; width:100px;}
+			.Input_Wrapper {display:block; margin-bottom:10px; margin-left:20px; margin-right:20px;
+				.Big_List_Items {border:none;} 
+			}
+		}
+		.Message {
+			label {display:block; padding:14px; color:#999; width:100px;}
+			textarea {display:block; line-height:1.3; width:calc(~'100% - 20px');margin-left:10px; margin-right:10px; overflow:scroll;border-top:solid 1px #e7e7e7; padding:14px; outline:none;
+			} 	
+			.Signature {display:block; width:calc(~'100% - 20px'); margin-left:10px; margin-right:10px; background-color:#ffffcc; margin-bottom:10px; padding:5px;}
+		}
+		.Jelly_Action_Result {.Error; margin-bottom:10px;} 
+		.Execute { float:right; margin-right:25px;
+			a {float:initial;}
+		}
+		
+		@media (min-width: @Desktop_Width) {min-width:475px;
+			.Recipients {
+				label { float:left;}
+				.Input_Wrapper{margin-left:0px; margin-right:0px;} 
+			}
+			.Message {
+				label { float:left;}
+				textarea {width:calc(~'100% - 120px');} 
+				.Signature {width:calc(~'100% - 120px');margin-left:100px;}
+			}
+		}
+
+	}	
+}
+
+
+.General_Cover {.Cover_Content_Wrapper; .Percentage_Height(80%);}
+.General_User_Cover {.Cover_Content_Wrapper; .Percentage_Height(100%); .Circle;}
+.Circle {border-radius: 50%;}
+
+.Cover_Content_Wrapper {.Block; position: relative;
+	.Cover_Picture {.Cover_Image; width: 100%; height: 100%; position: absolute;}
+	.Map {width: 100%; height: 100%; position: absolute;}
+}
+
+.Clean_Window {.Block; .Nice_Scroll; max-width: 100%; padding: 0px; margin: 0px; color: black; 
+	.Close_Button {.Block; .Right; .Icon_Size(18px;); .Plain_Link; margin-bottom: 15px; margin-left:5px}
+	.Big_List_Items {clear:right;}
+	.Header {.Block; font-size: 25px; margin-bottom: 15px;}
+	.Text {.Block; margin-bottom: 15px;}
+	.User_Picture {.Block; margin-bottom: 15px; margin: auto; .Percentage_Height(100%); width: 150px; .Circle; overflow: hidden; position: relative; border-width: 5px; border-color: white; border-style: solid;
+		.Cover_Content {.Cover_Content_Wrapper; width: 100%; height: 100%; position: absolute; margin-bottom: 10px;}
+		&:hover {border-color: #cccccc;}
+	}
+	.Input_Row {
+		.Description {.Left; width: 100px; margin-right: 10px; padding-top: 7px;}
+		.Input {.Left; width: 200px; margin-right: 10px;
+			input, textarea {width: 100%;}
+		}
+		.Link {.Left; margin-right: 10px; padding-top: 3px;
+			a {.Small_Button;}
+		}
+	}
+	.Input_Row_With_Preview {.Row; margin-bottom: 15px;margin-top:5px;
+		.Cover {.Left; margin-right: 10px;
+			.Placeholder {width:150px; height:150px; .Border;}
+		}
+		.Input {.Left;
+			.Input_Set_Link {.Small_Button;}
+		}
+	}
+	.Section {.Block; margin-bottom: 15px;
+		.Description {.Block; margin-bottom: 10px;}
+		.Label {.Left; .Block; font-size: 16px; font-weight: 600; margin-right: 5px; padding-top: 4px;margin-bottom:10px;}
+		.Privacy {.Left; .Icon_Size(12px); .Icon_Color(@Grey); background-color: white; margin-left:8px; padding-top:5px; 
+			.Explanation { color:@Grey; font-size:11px; margin-left:10px; position:relative; top:-2px; opacity:0; transition: .3s;}
+			&:hover {
+				.Explanation { opacity:1; transition: .1s;}
+			}
+		}
+		.Input {.Block; margin-bottom: 10px;
+			input, textarea {width: 100%;}
+		}
+	}
+	.Execute {.Row;
+		a {.Right; .Button;}
+	}
+}
+
+.Jelly_Loading {
+	visibility:hidden;
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+	animation: rotate 0.8s infinite linear;
+	border: 3px solid #cccccc;
+	border-right-color: transparent;
+	border-radius: 50%;
+	margin-left:6px;
+	position:relative;
+	top:1px;
+}
+
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
+}
+
+.Jelly_Lightbox {position: fixed; background-color: rgba(0,0,0,.7); opacity: .3; left: 0px; top: 0px; width: 100%; height: 100%;}
+
+.Jelly_Progress_Bar {top:0px; position:absolute; height: 2px; z-index: 2}
+
+/* Old */
+
+.Jelly_Edit_Window {width: 800px; margin: auto; padding: 30px;
+	.Jelly_Edit_Window_Header {.Row; margin-bottom: 10px;
+		.Jelly_Edit_Window_Header_Title {.Left; font-size: 30px;}
+		.Jelly_Edit_Window_Header_Right {.Right;}
+	}
+	.Jelly_Edit_Window_Properties_Row {.Block; margin-bottom: 10px;
+		.Jelly_Edit_Window_Properties_Row_Heading {.Block; margin-bottom: 5px;
+			.Jelly_Edit_Window_Properties_Row_Heading_Fill {.Row;
+				.Jelly_Edit_Window_Properties_Row_Heading_Fill_Name {.Left;}
+				.Jelly_Edit_Window_Properties_Row_Heading_Fill_Controls {.Right;}
+			}
+		}
+		.Jelly_Edit_Window_Properties_Row_Value {.Block;
+			input, textarea {width: 100%;}
+			textarea {height: 200px;}
+			.Jelly_Closed_Menu {.Row; display: inline-block; padding: 5px; background-color: #eeeeee; margin-bottom: 5px;
+				.Jelly_Closed_Menu_Badge {.Left; margin-right: 5px;}
+				.Jelly_Closed_Menu_Arrow {.Left;}
+			}
+		}
+	}
+}
+
+.Input_Row_A {
+	@media (max-width: @Mobile_Width) {.Block; margin-bottom: 20px;
+		.Input_Row_A_Image {.Block; margin-bottom: 10px;}
+		label, .Input_Row_A_Label {.Block; margin-bottom: 10px;}
+		input, .Input_Row_A_Input {.Block; margin-bottom: 10px;}
+ 		.Input_Row_A_Link {.Block; margin-bottom: 10px; a {.Small_Button;}}
+ 		.Input_Row_A_Disclaimer {.Block; color:#aaaaa; margin-bottom:10px;}
+ 		input {font-size: 22px;}
+	}
+	@media (min-width: @Desktop_Width) {.Row; margin-bottom: 10px;
+		.Input_Row_A_Image {.Left; width: 150px; margin-right: 10px;}
+		label, .Input_Row_A_Label {.Left; width: 150px; margin-right: 10px; padding-top: 6px; line-height: normal;}
+		input, .Input_Row_A_Input {.Left; width: 250px; margin-right: 10px; line-height: normal;}
+		.Input_Row_A_Link {.Left; padding-top: 2px; a {.Small_Button;} line-height: normal;}
+		.Input_Row_A_Disclaimer {.Left; margin-left:15px; padding-top: 6px; line-height:normal; color:#aaaaaa;}
+	}
+}
+
+.Member_Login {.Block;
+	@media (max-width: @Mobile_Width) {}
+	@media (min-width: @Desktop_Width) {width: 50%;}
+}
+.Input_Row_B {.Block; margin-bottom: 15px;
+	label {.Block; margin-bottom: 10px;}
+	input {.Block; margin-bottom: 10px; width: 100%;
+		@media (max-width: @Mobile_Width) {font-size: 22px;}
+	}
+}
+
+/* Higher Classes */
+.Cell {.Left;}
+.Row {.Block;
+	&:after {content: ""; display: table; clear: both;}
+}
+
+.Button { .Plain_Link; .Row; border-radius: 3px; display: inline-block; background-color: @Button_Background; color: white; padding: 10px; padding-left: 14px; padding-right: 14px; text-align: center; text-decoration: none;
+	.Content {.Inline_Block;
+		.Icon {.Left; margin-right: 5px; .Icon_Size(12px); .Icon_Color(white); vertical-align: middle;}
+		.Label {.Left; vertical-align: middle;}
+	}
+	&.Executing{background-color:@Button_Background_Active; pointer-events:none;
+		&:hover {background-color:@Button_Background_Active;}
+		&:active {background-color:@Button_Background_Active;}
+	}
+	&:hover {background-color: @Button_Background_Hover; color:white;}
+	&:active {background-color: @Button_Background_Active; color:white;} 
+}
+
+.Button_Orange {.Button; background-color:@Button_Orange_Background;
+	&:hover {background-color: @Button_Orange_Background_Hover; color:white;}
+	&:active {background-color: @Button_Orange_Background_Active; color:white;}
+
+}
+
+.Small_Button {.Button; padding: 4px; padding-left: 8px; padding-right: 8px;}
+.Icon_Size (@Width) {.iconic {width: @Width; height: @Width;}}
+.Icon_Color (@Color) {.iconic {* {fill: @Color; stroke: @Color;}}}
+.Centered_Horizontal {display: inline-block; position: relative; left: 50%; margin-right: -50%; transform: translateX(-50%); -webkit-transform: translateX(-50%); -ms-transform: translateX(-50%); -moz-transform: translateX(-50%); -o-transform: translateX(-50%);}
+.Centered_Vertical { position: relative; top: 50%; margin-top: -50%; transform: translateY(-50%); -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); -moz-transform: translateY(-50%); -o-transform: translateY(-50%);}
+
+/* Basic Classes */
+.Selected {background-color: @Blue;}
+.Active {background-color: darken(white, 10%);}
+.Block {display: block;}
+.Inline_Block {display: inline-block;}
+.Left_Align {.Left; .Row;}
+.Right_Align {.Right; .Row;}
+.Left {.Block; float: left;}
+.Right {.Block; float: right;}
+.Full_Width {width: 100%;}
+.Caps {text-transform: uppercase;}
+.Small_Caps {.Caps; .Bold; font-size: 12px;}
+.Bold {font-weight: bold;}
+.Border {.Border_Bottom; .Border_Top; .Border_Left; .Border_Right;}
+.Border_Bottom {border-bottom-style: solid; border-bottom-color: @Border; border-bottom-width: 1px;}
+.Border_Top {border-top-style: solid; border-top-color: @Border; border-top-width: 1px;}
+.Border_Left {border-left-style: solid; border-left-color: @Border; border-left-width: 1px;}
+.Border_Right {border-right-style: solid; border-right-color: @Border; border-right-width: 1px;}
+.Percentage_Height (@Height) {overflow: hidden;
+	&:before {content: ''; padding-top: @Height; float: left;}
+}
+.Cover_Image {background-size: cover; background-repeat: no-repeat; background-position: center;}
+.Plain_Link {text-decoration: inherit; color: inherit; &:hover {text-decoration: inherit;} &:focus {outline-style: none;}}
+.Ellipsis {overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.Small_Shadow {box-shadow: 0px 1px 3px 2px rgba(0,0,0,.1);}
+.Big_Shadow {box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5); }
+.Hidden {display: none;}
+.File_Input_Wrapper {.Small_Button; position: relative; input[type=file] {.Block; cursor: hand; position: absolute; opacity: 0; left: 0; top: 0; width: 100%; height: 100%;}}
+.Grayed_Out {opacity: .3;}
+.Nice_Scroll {-webkit-overflow-scrolling: touch; /* start android hack */ z-index:0; /* end android hack */}
+
+/* Colors */
+@Blue: #41bde1;
+@Grey: #aaaaaa;
+@Dark_Grey: #333333;
+@Light_Grey: #e7e7e7;
+@Very_Light_Grey: #f9f9f9;
+//@Orange: #e2642a;
+//@Orange:#fe6b02;
+@Orange: #fd6b03;
+@Sidebar_Background: #fefefd;
+@Yellow: #FFFFCC;
+
+/* Style Colors */
+@Button_Background: @Blue;
+@Button_Background_Hover: darken(@Button_Background, 5%);
+@Button_Background_Active: darken(@Button_Background, 10%);
+@Button_Orange_Background: @Orange;
+@Button_Orange_Background_Hover: darken(@Button_Orange_Background, 5%);
+@Button_Orange_Background_Active: darken(@Button_Orange_Background, 10%);
+
+@Border: @Light_Grey;
+
+.Error {color: @Orange;}
+.Jelly_Action_Input_Result {.Error; margin-top:8px;}
+

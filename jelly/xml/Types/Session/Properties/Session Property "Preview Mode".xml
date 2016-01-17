@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Session Property "Preview Mode" --}
+		{Property}
+			{Type}Session{/Type}
+			{Name}Preview Mode{/Name}
+			{Value_Type}Boolean{/Value_Type}
+		{/Property}
+	
+{/Jelly}

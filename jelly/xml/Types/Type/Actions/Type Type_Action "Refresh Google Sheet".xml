@@ -1,0 +1,478 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Type_Action "Refresh Google Sheet" --}
+		{Type_Action}
+			{Type}Type{/Type}
+			{Name}Refresh Google Sheet{/Name}
+			{Content}
+				Importing items...
+				
+				<!-- Auto-execute the action -->
+				[External_Script]
+					Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': document.getElementById('[This.Namespace no_wrap /]')\});
+				[/External_Script]
+				
+				[Action as "Loading"/]
+			{/Content}
+			{Code}
+				<!-- Disambiguate -->
+				[Set Current_Type to Current_Action.Target /]
+				
+				<!-- Delete existing items of the current type -->
+				[[Current_Type.Alias no_wrap /] from database]
+					[Remove this /]
+				[/[Current_Type.Alias no_wrap /]]
+				
+				[PHP]
+					$Type_ID = &New_String('[Format as "PHP Single Quoted String"][Current_Type.ID no_wrap /][/Format]');
+					$URL = &New_String('[Format as "PHP Single Quoted String"][Current_Type.Remote_URL no_wrap /][/Format]');
+					
+					// Check if the file is coming from Google Docs
+					if (strpos($URL, 'docs.google.com/spreadsheets') !== false)
+					\{
+						// Generate new URL by finding the document ID, in case they didn't pass in the correct published CSV URL
+						$Request_Document_ID = substr($URL, strpos($URL, '/d/') + strlen('/d/'));
+						$Request_Document_ID = substr($Request_Document_ID, 0, strpos($Request_Document_ID, '/'));
+						$CSV_Request_URL = &New_String('https://docs.google.com/spreadsheets/d/' . $Request_Document_ID . '/pub?output=csv');
+					\}
+					else
+						$CSV_Request_URL = &$URL;
+					
+					// Get Type Item
+					$Type_Item_Command_String = &New_String('1 Type from Database where ID is "' . $Type_ID . '" as reference');
+					$Type_Item_Result = Process_Command_String($Database, $Type_Item_Command_String, $Memory_Stack_Reference);
+					$Type_Item = $Type_Item_Result\['Chunks'\]\[0\]\['Item'\];
+								
+					// TODO plural types seem to get properties from existing types with same single name
+					
+					// TODO improve value mapping (use heuristics to check for repeated values that would indicate a dropdown list, booleans, dates, numbers, etc)
+					
+					// Get type
+					$Type_Name = &New_String('[Format as "PHP Single Quoted String"][Current_Type.Name no_wrap /][/Format]');
+					$Type_Alias = &New_String('[Format as "PHP Single Quoted String"][Current_Type.Alias no_wrap /][/Format]');
+					$Cached_Type = &Get_Cached_Type($Database, $Type_Alias);
+					
+					// Fetch URL again to get header
+					$Handle = fopen($CSV_Request_URL.'&'.mt_rand(), "r");
+					if (!$Handle)
+						return "Error: could not open the connection.";
+					
+					// Fetch the header data
+					$Header_Data = fgetcsv($Handle, null, ",");
+					if ($Header_Data === FALSE)
+						die("Error reading CSV header.");
+					
+					// Read the remaining data
+					$Lines = &New_Array();
+					while (($Line_Data = fgetcsv($Handle, null, ",")) !== FALSE)
+						$Lines\[\] = $Line_Data;
+					
+					// Create Properties
+					$Header_Property = array();
+					$Found_Name_Column = false;
+					foreach ($Header_Data as $Header_Property_Index => &$Header_Property_Name)
+					\{
+						// Create the property unless an existing property can be used
+						$Create_Property = true;
+						
+						// Check if a property with that name already exists...
+						
+						// Use the header as the starting property name
+						$Property_Base_Name = &$Header_Property_Name;
+						
+						// Turn number property names into strings
+						// TODO support number property names
+						if (is_numeric($Property_Base_Name))
+							$Property_Base_Name = &New_String('Property ' . $Property_Base_Name);
+						
+						// Check if property name is blank
+						if (!$Property_Base_Name)
+							$Property_Base_Name = 'New Property';
+						
+						// Check if this is a Name column
+						if ($Property_Base_Name == 'Name')
+							$Found_Name_Column = true;
+						
+						// Search for existing properties in all parent types
+						$Property_Name = &$Property_Base_Name;
+						$Property_Index = 1;
+						while (true)
+						\{
+							$Recursive_Type = &$Cached_Type;
+							$Found_Property = false;
+							while ($Recursive_Type)
+							\{
+								// TODO sanitize?
+								
+								// Get type alias
+								$Recursive_Type_Alias = &$Recursive_Type\['Alias'\];
+								
+								// Check if property exists for type
+								$Check_Property_Command_String = &New_String('Property from database where Type is "' . Jelly_Format($Recursive_Type_Alias, 'jelly attribute') . '" and Name is "' . Jelly_Format($Property_Name, 'jelly attribute') . '" as reference');
+								$Check_Property_Result = Process_Command_String($Database, $Check_Property_Command_String, $Memory_Stack_Reference);
+								$Check_Property_Item = $Check_Property_Result\['Chunks'\]\[0\]\['Item'\];
+								
+								// If property exists, stop searching
+								if (!$Check_Property_Item\['End_Of_Results'\])
+								\{
+									$Found_Property = true;
+									break;
+								\}
+								
+								// Move to parent type
+								$Recursive_Type = &$Recursive_Type\['Cached_Parent_Type'\];
+							\}
+							
+							// If a property already exists, check if it can be used
+							if ($Found_Property)
+							\{
+								switch (strtolower($Property_Name))
+								\{
+									// TODO automate this?
+									case 'id':
+									case 'created':
+									case 'modified':
+									case 'alias':
+									case 'package':
+									case 'viewable_by':
+									case 'created_by':
+									case 'modified_by':
+									case 'status':
+									case 'order':
+									\{
+										// If the property is metadata, generate a new unique property name
+										$Property_Index++;
+										$Property_Name = &New_String($Property_Base_Name . ' ' . $Property_Index);
+										break;
+									\}
+									case 'name':
+									default:
+									\{
+										// Re-use existing properties that are not metadata
+										$Property_Alias = &$Check_Property_Item\['Data'\]\['Alias'\];
+										$Cached_Property = &$Cached_Type\['Cached_Property_Lookup'\]\[strtolower($Property_Alias)\];
+										$Header_Property\[\] = &$Cached_Property;
+										
+										$Create_Property = false;
+										break 2;
+									\}
+								\}
+							\}
+							else
+							\{
+								// If property does not already exist, create it
+								break;
+							\}
+						\}
+						
+						// Check if a property should be created
+						if ($Create_Property)
+						\{
+							// Create the property
+							$Property_Item = &Create_Memory_Item($Database, Get_Cached_Type($Database, 'Property'));
+							
+							// Set the property's values
+							Set_Value($Property_Item, 'Type', $Type_Alias);
+							Set_Value($Property_Item, 'Name', Jelly_Format($Property_Name, 'jelly text block'));
+							Set_Simple($Property_Item, 'Viewable_By', 'Public'	);
+							
+							switch (strtolower($Property_Base_Name))
+							\{	
+								// Set value type based on header base name for special cases
+								case 'address':
+									$Value_Type = 'Location';
+									break;
+									
+								// Determine value type statistically
+								default:
+									// Count how many times values validate for different value types
+									$Matches_By_Type = array('Number' => 0, 'Date' => 0, 'Date_Time' => 0, 'Time' => 0, 'Boolean' => 0, 'URL' => 0, 'Video' => 0);
+									$Value_String_Matches = array();
+									$Value_Count = 0;
+									foreach ($Lines as &$Line)
+									\{
+										$Line_Data_Value = &$Line\[$Header_Property_Index\];
+								
+										if ($Line_Data_Value)
+										\{
+											$Value_Count++;
+									
+											if (!isset($Value_String_Matches\[$Line_Data_Value\]))
+												$Value_String_Matches\[$Line_Data_Value\] = 0;
+											$Value_String_Matches\[$Line_Data_Value\]++;
+									
+											// Check if the value is numeric
+											if (is_numeric($Line_Data_Value))
+											\{
+												// TODO Add checks for meaningful leading zero (i.e. not a zero followed by a decimal)
+												$Matches_By_Type\['Number'\]++;
+											\}
+									
+											// Ignore date handling for special values
+											// TODO not sure why these are parsed as valid dates
+											if (strtolower($Line_Data_Value) != 'y')
+											\{
+												// Check if the value has date/time data
+												$Date_Time_Value = strtotime($Line_Data_Value, 0);
+												if ($Date_Time_Value !== false)
+												\{
+													$Matches_By_Type\['Date_Time'\]++;
+											
+													// Check if the time portion is midnight (indicating a date value)
+													if (date('H:i:s', $Date_Time_Value) == '00:00:00')
+														$Matches_By_Type\['Date'\]++;
+											
+													// Check if year is unaffected by the value (indicating a time value)
+													if (date('Y-m-d', $Date_Time_Value) == '1970-01-01')
+														$Matches_By_Type\['Time'\]++;
+												\}
+											\}
+										
+											// Check if the value is a standard URL or validates with the http prefix
+											// TODO better URL checking
+											if (strpos($Line_Data_Value, 'http') === 0 || (filter_var(('http://' . $Line_Data_Value), FILTER_VALIDATE_URL) !== false && strpos($Line_Data_Value, '.') !== false))
+											\{
+												// TODO add checks for media types
+												$Matches_By_Type\['URL'\]++;
+											\}
+									
+											// Check if the value includes youtube
+											// TODO better video checking
+											if (strpos($Line_Data_Value, 'youtube') !== false)
+											\{
+												// TODO add checks for media types
+												$Matches_By_Type\['Video'\]++;
+											\}
+									
+											// Check if the value includes youtube
+											// TODO better video checking
+											if ((strpos($Line_Data_Value, '.jpg') !== false) || (strpos($Line_Data_Value, '.jpeg') !== false) || (strpos($Line_Data_Value, '.gif') !== false) || (strpos($Line_Data_Value, '.png') !== false))
+											\{
+												// TODO add checks for media types
+												$Matches_By_Type\['Picture'\]++;
+											\}
+										\}
+									\}
+							
+									// Choose value type based on percentage matches of the data validation
+									if ($Value_Count > 0)
+									\{
+										if ($Matches_By_Type\['Date'\] / $Value_Count >= .75)
+											$Value_Type = &New_String('Date');
+										elseif ($Matches_By_Type\['Time'\] / $Value_Count >= .75)
+											$Value_Type = &New_String('Time');
+										elseif ($Matches_By_Type\['Date_Time'\] / $Value_Count >= .75)
+											$Value_Type = &New_String('Date_Time');
+										else if ($Matches_By_Type\['Number'\] / $Value_Count >= .75)
+											$Value_Type = &New_String('Number');
+										else if ($Matches_By_Type\['Video'\] / $Value_Count >= .75)
+											$Value_Type = &New_String('Video');
+										else if ($Matches_By_Type\['Picture'\] / $Value_Count >= .75)
+											$Value_Type = &New_String('Picture');
+										else if ($Matches_By_Type\['URL'\] / $Value_Count >= .75)
+											$Value_Type = &New_String('Website');
+										else
+											$Value_Type = &New_String('Long_Text');
+									\}
+									else
+										$Value_Type = &New_String('Long_Text');
+									break;
+							\}
+							
+							// Set value type
+							Set_Value($Property_Item, 'Value_Type', $Value_Type);
+							
+							// Save the property
+							Save_Item($Property_Item);
+							
+							// Fetch the cached property for the property that was just created
+							$Property_Alias = &$Property_Item\['Data'\]\['Alias'\];
+							$Cached_Property = &$Cached_Type\['Cached_Property_Lookup'\]\[strtolower($Property_Alias)\];
+							$Header_Property\[\] = &$Cached_Property;
+						\}
+					\}
+					
+					// Continue fetching data to get items
+					$Item_Index = &New_Number(0);
+					foreach ($Lines as &$Line)
+					\{
+						// Check if all values are blank
+						$All_Values_Are_Blank = true;
+						foreach ($Line as $Line_Data_Index => &$Line_Data_Value)
+						\{
+							if ($Line_Data_Value)
+								$All_Values_Are_Blank = false;
+						\}
+						
+						// Only create item if not all values are blank
+						if (!$All_Values_Are_Blank)
+						\{
+							// Increment index of item
+							$Item_Index = &New_Number($Item_Index + 1);
+							
+							// Create a new item for each line
+							$Item = &Create_Memory_Item($Database, $Cached_Type);
+							
+							// Set each value for the item
+							foreach ($Line as $Line_Data_Index => &$Line_Data_Value)
+							\{
+								// Fetch the mapped property alias
+								$Cached_Property = &$Header_Property\[$Line_Data_Index\];
+								$Property_Alias = &$Cached_Property\['Alias'\];
+								
+								$Cached_Property_Value_Type = $Cached_Property\['Cached_Value_Type'\];
+								$Cached_Property_Value_Type_Alias = $Cached_Property_Value_Type\['Alias'\];
+								switch (strtolower($Cached_Property_Value_Type_Alias))
+								\{
+									case 'text':
+									case 'long_text':
+									\{
+										// Set text values by escaping it first
+										Set_Value($Item, $Property_Alias, Jelly_Format($Line_Data_Value, 'jelly text block'));
+										break;
+									\}
+									case 'number':
+									\{
+										// Revalidate the number (in case it was one of the outliers before)
+										if (is_numeric($Line_Data_Value))
+										\{
+											// Set the value directly
+											Set_Value($Item, $Property_Alias, $Line_Data_Value);
+										\}
+										break;
+									\}
+									case 'date':
+									case 'time':
+									case 'date_time':
+									\{
+										// Revalidate the date (in case it was one of the outliers before)
+										if (strtotime($Line_Data_Value) !== false)
+										\{
+											// Set the value directly
+											$Converted_Line_Data_Value = &New_Number(strtotime($Line_Data_Value));
+											Set_Value($Item, $Property_Alias, $Converted_Line_Data_Value);
+										\}
+										break;
+									\}
+									case 'picture':
+									case 'video':
+									case 'website':
+									\{
+										// Check if a value has been set
+										if ($Line_Data_Value)
+										\{
+											// Revalidate the link and don't set if not a link
+											if (strpos($Line_Data_Value, 'http') === 0 || (filter_var(('http://' . $Line_Data_Value), FILTER_VALIDATE_URL) !== false && strpos($Line_Data_Value, '.') !== false))
+											\{
+												// For websites, prepend http prefix if needed
+												if (strtolower($Cached_Property_Value_Type_Alias) == 'website')
+												\{
+													if (strpos($Line_Data_Value, 'http') === 0)
+													\{
+													\}
+													else if (filter_var(('http://' . $Line_Data_Value), FILTER_VALIDATE_URL) !== false && strpos($Line_Data_Value, '.') !== false)
+													\{
+														// If adding the http prefix creates a valid URL, add the prefix to the value
+														$Line_Data_Value = &New_String('http://' . $Line_Data_Value);
+													\}
+												\}
+												
+												// Create a picture/video item and set its path
+												$URL_Item = &Create_Memory_Item($Database, Get_Cached_Type($Database, $Cached_Property_Value_Type_Alias));
+												Set_Value($URL_Item, 'Path', New_String(Jelly_Format($Line_Data_Value, 'jelly text block')));
+												Save_Item($URL_Item);
+												
+												// Set the value to the new item
+												Set_Value($Item, $Property_Alias, $URL_Item);
+											\}
+										\}
+										
+										break;
+									\}
+									
+									case 'location':									
+										// Create location item
+										$Location_Item = &Create_Memory_Item($Database, Get_Cached_Type($Database, 'Location'));
+										
+										// Clean row value 
+										$Address_Value = &Jelly_Format($Line_Data_Value, 'jelly text block');
+										
+										// Set location values...
+										
+										// Set original address
+										Set_Value($Location_Item, 'Original_Address', $Address_Value);
+										
+										// Get geocoded values
+										$Geocoded_Address = &Geocode($Address_Value);
+										
+										// Set geocoded values
+										if ($Geocoded_Address !== false)
+										\{
+											Set_Value($Location_Item, 'Latitude', $Geocoded_Address\['lat'\]);
+											Set_Value($Location_Item, 'Longitude', $Geocoded_Address\['lng'\]);
+											Set_Value($Location_Item, 'Name', $Geocoded_Address\['Address'\]);
+										\}
+										
+										// Save location item
+										Save_Item($Location_Item);
+										
+										// Set location item to row value item
+										Set_Value($Item, $Property_Alias, $Location_Item);
+										break;
+										
+									default:
+									\{
+										traverse($Cached_Property);
+										die("Could not match property value type.");
+										break;
+									\}
+								\}
+							\}
+							
+							// If no name column is specified, generate a name for it
+							if (!$Found_Name_Column)
+							\{
+								// Use the type name and item index to generate the name
+								$Generated_Item_Name = &New_String($Type_Name . ' ' . 'Item' . ' ' . $Item_Index);
+								
+								// Set the item's name
+								Set_Value($Item, 'Name', Jelly_Format($Generated_Item_Name, 'jelly text block'));
+							\}
+							
+							// Save the new item
+							Save_Item($Item);
+						\}
+					\}
+					
+					// Close the CSV reading handle
+					fclose($Handle);
+				[/PHP]
+				
+				<!-- Add to navigation root -->
+				[Folder "Root" from database]
+					[Set Current_Folder to this /]
+					[Add Current_Type to Folder.Child_Item /]
+				[/Folder]
+				
+				<!-- Add to toolbar root -->
+				[Navigation "Root" from database]
+					[Set Current_Navigation to this /]
+					[Add Current_Type to Current_Navigation.Navigation_Item /]
+				[/Folder]
+				
+				<!-- Set Star -->
+				[Set Current_Type.Starred to true /]
+				[Save Current_Type /]
+				
+				<!-- Go to type -->
+				[Go to Current_Type by alias /]
+				
+				<!-- Close window -->
+				[External_Script]
+					Jelly.Interface.Close_Top_Window();
+				[/External_Script]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

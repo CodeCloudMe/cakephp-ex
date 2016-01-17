@@ -1,0 +1,54 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Scripting_Module Type_Action "Change Scripting" --}
+		{Type_Action}
+			{Type}Scripting_Module{/Type}
+			{Name}Change Scripting{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					[Input "Text Area" with Name = "Script", Value = Current_Action.Target.Script /]
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Edited",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Set Picture -->
+					[Set Current_Action.Target.Script to Form.Script_Original /]
+				
+					<!-- Save Item -->
+					[Save Current_Action.Target /]
+					
+					<!-- Trigger Edited Event -->
+					[External_Script]
+						Jelly.Handlers.Call_Handler_For_Target(
+							\{
+								"Event": "Edited",
+								"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+								"Item": "[Current_Action.Target as Key No_Wrap /]",
+								"Item_Type": "[Current_Action.Target.Type as Alias No_Wrap /]",
+								"Badge": "[Format as "Javascript String"][Current_Action.Target as Badge with No_Drag = 1/][/Format]"
+							\});
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

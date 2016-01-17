@@ -1,0 +1,101 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "Data Module List Item" --}
+	
+		{Template}
+			{Type}Item{/Type}
+			{Name}Data Module List Item{/Name}
+			{Content}
+				<!-- Required Variables: Data_Module -->
+				<!-- Disambiguate -->
+				[Set Current_List_Item to This /]
+				
+				<!-- Link to item -->
+				<!-- TODO Show_Links -->
+				[Link to Current_List_Item by Alias with Class = "Big_List_Item_Details"]
+					<!-- Cover Image -->
+					<!-- TODO: Use Data Module's Cover Property -->
+					<span class="Big_List_Item_Cover">
+						[Current_List_Item as Cover /]
+					</span>
+					
+					[If not Current_List_Item.Variables.No_Details]
+						<!-- TODO: Bring over from Item Data_Module_List_Item template -->
+						<span class="Big_List_Item_Name"> 
+							<span class="Name">
+								[Current_List_Item.Name /]
+							</span>
+							
+							[Ignore]
+								<!-- TODO fix -->
+								<!-- Properties -->
+								<!-- TODO: display the object itself here? Like a blog? -->
+								<!-- Link to items by Alias? -->
+								<!-- (Current_List_Item /) -->
+								<!-- TODO: Hacky -->
+								[Current_Data_Module.Child_Property_Item]
+									[If Attachment.Visible]
+										<!-- Disambiguate -->
+										[Set Current_Property to This /]
+								
+										<span class="Description">
+											[If Current_Property.Value_Type.Parent_Type.Alias = "Picture"]
+												[Then]
+													[Current_List_Item.[Current_Property.Alias no_wrap /] with Maximum_Width = 200 /]
+												[/Then]
+												[Else]
+													[If Current_Property.Value_Type.Parent_Type.Alias = "Location"]
+														[Then]
+															[Current_List_Item.[Current_Property.Alias no_wrap /].Original_Address /]
+														[/Then]
+														[Else]
+															[Current_List_Item.[Current_Property.Alias no_wrap /] /]
+														[/Else]
+													[/If]
+												[/Else]
+											[/If]
+										</span>
+									[/If]
+								[/Current_Data_Module.Child_Property_Item]
+							[/Ignore]
+						</span>
+					[/If]
+				[/Link]
+				
+				<span class="Big_List_Item_Actions">
+					[Admin]
+						<!-- TODO fix this for various relations -->
+						[If Current_Property_Item.Relation is "Many-To-Many"]
+							[Link to "/Type/[Current_List_Item.Attachment.Type.Alias no_wrap /]/[Current_List_Item.Attachment.ID no_wrap /]/Remove" into "Window" with Class = "Delete"]
+								<span class="Content">
+									<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg">
+								</span>
+							[/Link]
+						[/If]
+					[/Admin]
+				</span>
+				
+				[ignore]
+					<!-- TODO Fix maps -->							
+					<!-- Locations -->
+					[Current_Data_Module.Child_Property_Item where Value_Type is "Location"]
+						[Set Current_List_Item.Variables.Location_Property to This.Alias /]
+						[Current_List_Item.[Current_List_Item.Variables.Location_Property No_Wrap/]]
+							[External_Script]
+								// Add marker to map
+								Jelly.Interface.Create_Location(
+										\{
+											"Map_Alias": "[Current_Data_Module.Namespace no_wrap /]_Map",
+											"Position": \[[This.Latitude no_wrap /], [This.Longitude no_wrap /]\],
+											"Content": "[Format as "Javascript String"][Current_List_Item Iterator_Classes "Data_Module_Map_List" Item_Classes "Data_Module_Map_List_Item" as Data_Module_Map_List_Item with Data_Module = Current_Data_Module/][/Format]"
+										\}
+									);
+							[/External_Script]
+						[/]
+					[/Current_Data_Module.Child_Property_Item]
+				[/ignore]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- File Property "Mime Type" --}
+		{Property}
+			{Type}File{/Type}
+			{Name}Mime Type{/Name}
+			{Value_Type}Text{/Value_Type}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

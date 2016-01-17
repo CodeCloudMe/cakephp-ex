@@ -1,0 +1,48 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Sound Template "Default" --}
+		{Template}
+			{Type}Sound{/Type}
+			{Name}Default{/Name}
+			{Content}
+				[If Sound.Path]
+					[Then]
+						<div class="Sound_Wrapper">
+							[PHP]	
+								$Path = "[Sound.Path no_wrap/]";			
+				
+								// Determine service
+								$Path_Host = parse_url($Path)\['host'\];
+				
+								// Map hosts
+								switch ($Path_Host)
+								\{	
+									case 'www.soundcloud.com':				
+									case 'soundcloud.com':
+									case 'snd.sc':
+										$OEmbed_URL = 'http://soundcloud.com/oembed?iframe=true&format=json&url=' . $Path;
+										break;
+						
+									default:
+										return "We don't support this media provider! Currently limited to Soundcloud.";
+										break;
+								\}
+								$OEmbed_Response = Get_Remote_Content($OEmbed_URL);
+								$OEmbed_String = $OEmbed_Response\['Body'\];
+								$OEmbed_JSON = json_decode($OEmbed_String);
+								if($OEmbed_JSON !== null)
+									return $OEmbed_JSON->html;
+								else
+									return "We're sorry, we're having trouble loading this media.";
+							[/PHP]
+						</div>
+					[/Then]
+					[Else]
+						Sound URL not set.
+					[/Else]
+				[/If]
+			{/Content}
+		{/Template}
+
+{/Jelly}

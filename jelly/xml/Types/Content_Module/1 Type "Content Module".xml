@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Content Module" --}
+		{Type}
+			{Name}Content Module{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Content Modules{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Design{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

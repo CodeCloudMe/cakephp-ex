@@ -1,0 +1,29 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_List_Filter Type_Action "Change List Filter" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Change List Filter{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin only -->
+					[Input "Text Field" with Name = "Property Alias", Value = Current_Action.Target.Property_Alias /]
+					[Input "Text Field" with Name = "Operator", Value = Current_Action.Target.Operator /]
+					[Input "Text Field" with Name = "Value", Value = Current_Action.Target.Value /]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin only -->
+					
+					[Set Current_Action.Target.Property_Alias to Form.Property_Alias /]
+					[Set Current_Action.Target.Operator to Form.Operator /]
+					[Set Current_Action.Target.Value to Form.Value /]
+					
+					[Save Current_Action.Target /]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

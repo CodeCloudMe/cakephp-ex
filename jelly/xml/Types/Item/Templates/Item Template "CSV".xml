@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Template "CSV" --}
+		{Template}
+			{Type}Item{/Type}
+			{Name}CSV{/Name}
+			{Content_Type}text/csv{/Content_Type}
+			{Content}
+				[Set Current_Item to This /][Set Current_Type to This.Self_Type /][Header "Content-Type" Value "[Format as "Jelly Attribute"]text/csv[/Format]" /][Header "Content-Disposition" Value "[Format as "Jelly Attribute"]attachment;filename="[Format as "File Name"][Process_Once][1 Site from Database:Name /] - [Current_Type:Name /] - [Current_Item:Name /] ([PHP]return date('Y-m-d H\hi');[/PHP]).csv[/Process_Once][/Format]"[/Format]" /][New [Current_Type:Alias no_wrap /] henceforth Header_Item][Header_Item:Property][If Not Property.Is_Complex or Property.Relation is "Many-To-One"][If Property.Index > 0],[/If][Property:Alias no_wrap /][/If][/Header_Item:Property][/New]
+				[Current_Item:Property][If Not Property.Is_Complex or Property.Relation is "Many-To-One"][If Property.Index > 0],[/If][If Property.Is_Complex][Then][Current_Item:[Property:Alias no_wrap /] as Key /][/Then][Else][Format as "CSV Value"][Process_Once][Current_Item:[Property:Alias no_wrap /] /][/Process_Once][/Format][/Else][/If][/If][/Current_Item:Property]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

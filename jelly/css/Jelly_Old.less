@@ -1,0 +1,825 @@
+/* Import */
+
+@import "Library.less";
+@import "Manage.less";
+@import "Resources.less";
+@import "Styles.less";
+
+/* Init */
+
+/* Colors */
+
+@Jelly_Overlay_Color: black;
+@Jelly_Highlight_Color: black;
+@Jelly_Border_Color: #cccccc;
+@Jelly_Menu_Heading_Color:#aaaaaa;
+@Jelly_Menu_Background_Color: white;
+@Jelly_Menu_Focused_Background_Color: #5555CC;
+@Jelly_Menu_Link_Color: #222222;
+@Jelly_Menu_Focused_Link_Color: rgba(255, 255, 255, .5);
+@Jelly_Menu_Arrow_Color:#888888;
+@Jelly_Closed_Menu_Hover_Color: #eeeeff;
+@Jelly_Closed_Menu_Light_Color: #888888;
+@Jelly_Alert_Color: #9f392b;
+@Jelly_Greyed: #aaaaaa;
+
+/* Fonts */
+
+@Jelly_Input_Font: "Lucida Grande", Arial;
+
+/* Internal Primitives */
+
+#Jelly_Primitives
+{
+	.No_Spacing {list-style: none; margin: 0px; padding: 0px;}
+	
+	.Hidden {visibility: hidden;}
+	
+	.Border {border-style: solid; border-width: 1px; border-color: @Jelly_Border_Color;}
+			
+	.Centered_Full_Table
+	{
+		position: fixed; 
+		left: 0px; top: 0px;
+		width: 100%; height: 100%; 
+		border-style: none; border-spacing: 0px; border-collapse: separate;
+
+		> tbody
+		{
+			> tr
+			{
+				> td
+				{
+					vertical-align: middle;
+					> table
+					{
+						margin: auto;
+					}
+				}
+			}
+		}
+	}
+	
+	// from http://nicolasgallagher.com/css-drop-shadows-without-images/demo/
+	.Drop_Shadow_Raised
+	{
+		-webkit-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+		-moz-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+		box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+	}	
+
+	// from http://nicolasgallagher.com/css-drop-shadows-without-images/demo/
+	.Drop_Shadow_Slightly_Raised
+	{
+		-webkit-box-shadow: 0 10px 5px -5px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.1);
+		-moz-box-shadow: 0 10px 5px -5px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 10px 5px -5px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.1);
+	}	
+
+}
+
+/* Public Primitives */
+
+.Jelly
+{
+	&_Clear {clear: both;}
+	&_Hidden {#Jelly_Primitives.Hidden;}
+}
+
+/* Controls */
+
+.Jelly
+{		
+	/* Lightbox */
+	
+	&_Lightbox
+	{
+		position: fixed; 
+		background-color: @Jelly_Overlay_Color; 
+		opacity: .3;
+		left: 0px; top: 0px; 
+		width: 100%; height: 100%;
+	}
+	
+	
+	/* Highlights */
+
+	&_Highlight_Edge
+	{
+		position: absolute; 
+		background-color: @Jelly_Highlight_Color; 
+		opacity: .05;
+		&_Left, &_Right {}
+		&_Top, &_Bottom {}	
+	}
+	
+	
+	/* Menu */
+	
+	&_Menu
+	{
+		#Jelly_Primitives.Border;
+		#Jelly_Primitives.Drop_Shadow_Slightly_Raised;
+		display: block; 
+		position: fixed; 
+		z-index: 1000; 
+		background-color:@Jelly_Menu_Background_Color;
+		font-family:Arial;
+		font-size: 13px;
+		list-style-type: none;
+		
+		tr.Jelly_Menu_Row
+		{
+			
+			td.Jelly_Menu_Header
+			{
+				color: @Jelly_Menu_Heading_Color;
+				padding: 5px;
+				font-weight: bold; 
+			}
+			
+			td.Jelly_Menu_Item
+			{
+				text-decoration: none; 
+				padding: 6px; 
+				padding-right: 10px;
+				
+				a
+				{
+					text-decoration: none; 
+					color: @Jelly_Menu_Link_Color;
+					
+					.Jelly_Menu_Badge
+					{
+						margin-right:10px;
+					}
+				}
+				
+				.Jelly_Sub_Menu_Item 
+				{
+					padding: 0px; 
+					display: inline-block;
+					
+					a:focus
+					{
+						background-color: @Jelly_Menu_Focused_Link_Color;
+					}
+				}
+			}
+						
+			td.Jelly_Menu_Arrow
+			{
+				color: @Jelly_Menu_Arrow_Color;
+				padding-right: 6px;
+			}
+			
+			&_Focused
+			{
+				background-color: @Jelly_Menu_Focused_Background_Color; 
+				color: white;
+				
+				td.Jelly_Menu_Item
+				{
+					color: white; 
+
+					a, a:hover
+					{
+						color: white; 
+					}
+					
+					a:focus
+					{
+						/*TODO - not sure if this was actually implemented correctly in the original*/
+						outline-width:0px;
+					}
+				}				
+			}
+		}
+		
+		hr.Jelly_Menu_Separator 
+		{
+			color: @Jelly_Border_Color; 
+			background-color: @Jelly_Border_Color; 
+			height: 1px; 
+			border-width: 0px; 
+			padding: 0px; 
+			margin: 0px;
+		}
+	}
+	
+	/* Closed Menu */
+	&_Closed_Menu
+	{
+		padding: 4px; 
+		display: inline-block;
+		vertical-align: top;
+		margin-left: -4px; margin-top: -4px; 
+		cursor: pointer;	
+		
+		&_Hover
+		{
+			#Jelly_Primitives.Border;
+			padding: 3px; 
+			text-decoration:none;
+			background-color: @Jelly_Closed_Menu_Hover_Color;
+		}
+		
+		&_Badge
+		{
+			float:left;
+		}
+		
+		&_Arrow
+		{
+			float:left;
+			padding-left:3px;
+			color:@Jelly_Menu_Arrow_Color;
+			padding-top: 5px;
+			font-size: 60%;
+		}
+		
+		&_Light
+		{
+			color:@Jelly_Closed_Menu_Light_Color;
+		}	
+	}
+	
+	
+	/* Window */
+
+	&_Window {
+		
+		/* TODO - probably overkill on the generalization here but I like separating the ugly out... */
+		#Jelly_Primitives.Centered_Full_Table;
+		
+		&_Drop_Shadow {#Jelly_Primitives.Drop_Shadow_Raised;}
+		
+		&_Handle {background-color: white;}
+		
+		&.Visible {}
+	}
+	
+	
+	/* Loading Icon */
+	
+	&_Loading 
+	{
+		#Jelly_Primitives.Hidden;
+		margin-left:6px;
+	}
+	
+	/* Loading Overlay */
+	/* TODO - This hasn't been tested.  A TODO in the original css claims it does not make sense and remains to be cleaned up and correctly implemented. */
+	&_Loading_Overlay
+	{
+		background-image: url(/jelly/images/pixel/40_percent_white.png);
+		position: absolute; 
+		font-family: Arial; 
+		font-size: 12px; 
+		z-index: 10001; 
+		overflow: hidden; 
+		text-align: center; 
+		display: table-row;
+		
+		table 
+		{
+			width:100%; height:100%;
+			
+			tr
+			{
+				vertical-align:middle;
+
+				td
+				{
+					vertical-align:middle; 
+					text-align:center;
+				}
+			}
+		}
+	}
+	
+	/* Pictures */
+	
+	&_Picture
+	{
+		border:0px;
+	}
+	
+	
+	/* Actions */
+	
+	&_Action 
+	{
+	
+		/* Tables */	
+		
+		&_Table
+		{
+			padding-top:3px;
+			
+			tr.Jelly_Table_Input_Row
+			{
+				/* Heading */ 			
+
+				th
+				{
+					text-align: left; 
+					font-weight: normal; 
+					vertical-align: top; 
+					padding-bottom: 3px; 
+					text-align: right; 
+					padding-right: 8px; 
+					padding-top: 2px;	
+				}
+				
+				/* Content  */ 
+			
+				td
+				{
+					text-align: left; 
+					font-weight: normal; 
+					vertical-align: top; 
+					padding-bottom: 3px;			
+				}
+			}
+			
+			tr.Jelly_Table_Execute_Row
+			{
+
+			}
+		}	
+	
+		&_Result {font-family: Source Sans Pro; display: none; font-size: 13px; padding: 10px; background-color: #fce3e4; border: solid 1px #fccfd0; color: @Jelly_Alert_Color;}
+		&_Input_Result {font-family: Source Sans Pro; display: none; font-size: 13px; padding: 10px; background-color: #fce3e4; border: solid 1px #fccfd0; color: @Jelly_Alert_Color;}
+	}
+	
+	/* Individual Components */
+	
+	&_Greyed_Option
+	{
+		color:@Jelly_Greyed;
+	}
+	
+}
+
+
+/* Inputs */
+
+/* TODO - can't seem to organize this one well. */
+.Jelly_Input_Text_Style
+{
+	font-family: @Jelly_Input_Font; font-size: 12px; 
+}
+
+.Jelly
+{
+	
+	&_Text
+	{
+		&_Input
+		{
+			#Jelly_Primitives.Border;
+			.Jelly_Input_Text_Style;
+			width: 250px;
+			padding: 4px;
+			&:focus
+			{
+				/* TODO -  not sure if this ever worked */
+				outline: 1px;
+			}
+		}	
+	}
+	
+	&_Text_Area
+	{
+		&_Input
+		{	
+			#Jelly_Primitives.Border;
+			.Jelly_Input_Text_Style;
+			width: 400px; height: 120px; 
+			padding: 4px;
+		}
+	
+		&_Toolbar 
+		{
+			margin-top: 5px;
+
+			&_Items
+			{
+				#Jelly_Primitives.No_Spacing;
+				float: left;
+				margin-bottom: 3px;
+				width:100%;
+				
+				li
+				{
+					float: left; margin-right: 8px;	
+				}
+				
+				.Jelly_Text_Area_Toolbar_Edit_Locally
+				{
+					float:right;
+					margin:0px;
+				}
+			}
+		}
+	}
+	
+	&_Date
+	{
+		&_Input
+		{
+			#Jelly_Primitives.Border;
+			.Jelly_Input_Text_Style;
+			width: 80px; 
+			padding: 4px;
+		}	
+	}
+
+	&_Time
+	{
+		&_Input
+		{
+			#Jelly_Primitives.Border;
+			.Jelly_Input_Text_Style;
+			width: 58px; 
+			text-transform: lowercase;			
+			padding: 4px;
+		}	
+
+		/* TODO - UNTESTED */
+		&_Menu
+		{
+			#Jelly_Primitives.Border;
+			position: absolute; width: 80px; height: 160px; overflow: auto;
+			background-color: @Jelly_Menu_Background_Color; 
+		}
+	}
+	
+	&_Year
+	{
+	}
+	
+	
+	&_Checkbox
+	{
+		
+	}	
+	
+	&_Picture_Input
+	{
+		&_Badge_Wrapper
+		{
+			#Jelly_Primitives.Border;
+			width:150px; height:200px;
+			margin-bottom: 3px; margin-right: 3px; 
+		}	
+	}
+	
+	&_Uploader
+	{
+		&_Wrapper
+		{
+			display:inline-block;
+		}
+		&_Hidden_Button
+		{
+			display:none;
+		}
+	}
+	
+	&_Drop_Input
+	{
+		display: inline-block;
+	}	
+}
+
+.Jelly	
+{
+	&_Grid
+	{
+		tr, th, td
+		{	
+			vertical-align:top;
+		}
+		th, td 
+		{
+			font-family: Arial; 
+			font-size: 12px;
+			padding: 5px; 
+			max-width: 200px; 
+			overflow: hidden;
+		}
+		th
+		{	
+			text-align: left; 
+			font-weight: bold;
+		}
+		td
+		{	
+			padding: 5px;
+		}
+
+		.Border
+		{
+			border-right-style: solid; 
+			border-right-width: 1px; 
+			border-right-color: #dddddd; 
+			border-bottom-style: solid; 
+			border-bottom-width: 1px; 
+			border-bottom-color: #dddddd;
+		}
+	}
+	
+	&_Grid.Border
+	{
+		border-left-style: solid; 
+		border-left-width: 1px; 
+		border-left-color: #dddddd; 
+		border-top-style: solid; 
+		border-top-width: 1px; 
+		border-top-color: #dddddd;
+	}
+}
+
+/* Input Value Type Wrappers */
+.Jelly
+{
+	&_Text_Input_Wrapper {padding-top: 0px;}
+	&_Long_Text_Input_Wrapper {padding-top: 2px;}
+	&_Boolean_Input_Wrapper {padding-top: 5px;}
+	&_Text_Input_Wrapper {}
+	&_Property_Input_Wrapper {padding-top: 3px;}
+}
+
+
+/* Edit Window */
+/* TODO - Isolated, because I feel like it belongs in its own package at some point */
+@Jelly_Edit_Window_Color: #444444;
+
+.Jelly
+{
+	&_Window {
+		.Action {
+			&_Row {position: relative; width: 500px; border: none; border-bottom-style: solid; border-width: 1px; border-color: #CCCCCC;
+				&_Heading {position: absolute; top: 0px; left: 0px; left: 3px; right: 0px; font-family: Source Sans Pro; font-size: 13px; color: #555555;
+					&_Fill {background-color: white; width: 100%; height: 30px; box-sizing: border-box; padding-left: 7px; padding-top: 10px; padding-right: 10px;
+						&_Label {float: left;}
+					}
+				}
+				&_Input
+				{
+					input, textarea {width: 100%; max-height: 400px; box-sizing: border-box; margin: 0px; padding: 10px; padding-left: 7px; padding-top: 30px; border: none; border-left-width: 3px; border-left-style: solid; border-left-color: white;
+						font-family: Source Sans Pro; font-size: 16px; vertical-align: bottom;}
+					textarea {resize: none;}
+					input:focus, textarea:focus {border-left-style: solid; border-left-color: #00AAFF; border-left-width: 3px; outline: none;}
+				}
+			}
+			&_Footer {
+				&_Right {float: right; text-align: right;
+					&_Cancel {display: inline-block;
+						a {display: inline-block; padding: 15px; background-color: white; font-family: Source Sans Pro; font-size: 16px;}
+					}
+
+					&_Execute {display: inline-block;
+						a {display: inline-block; padding: 15px; padding-left: 30px; padding-right: 30px; background-color: #00AAFF; color: white; font-family: Source Sans Pro; font-size: 16px;}
+						a:hover {color: white; background-color: #33CCFF; text-decoration: none;}
+					}
+				}
+			}
+		}
+	}
+	&_Edit_Window
+	{
+		.Jelly_Input_Text_Style;
+		color: @Jelly_Edit_Window_Color;
+		margin: 0px;
+		
+		&_Header {padding: 10px; padding-top: 15px; padding-bottom: 15px; border: none; border-bottom-style: solid; border-width: 1px; border-color: #CCCCCC; background-color: #f7f7f7;
+			&_Title {float: left; font-family: Source Sans Pro; font-size: 22px;}
+			&_Right {float: right; font-family: Arial; font-size: 13px;}
+		}
+		
+		&_Properties
+		{
+			&_Row {position: relative; width: 500px; border: none; border-bottom-style: solid; border-width: 1px; border-color: #CCCCCC;
+				&_Heading {position: absolute; top: 0px; left: 0px; left: 3px; right: 0px; font-family: Source Sans Pro; font-size: 13px; color: #555555;
+					&_Fill {background-color: white; width: 100%; height: 30px; box-sizing: border-box; padding-left: 7px; padding-top: 10px; padding-right: 10px;
+						&_Name {float: left;}
+						&_Controls {float: right; opacity: .5;}
+					}
+				}
+				&_Heading_Checkbox {left: 26px;}
+				&_Value
+				{
+					input, textarea {width: 100%; max-height: 400px; box-sizing: border-box; margin: 0px; padding: 10px; padding-left: 7px; padding-top: 30px; border: none; border-left-width: 3px; border-left-style: solid; border-left-color: white;
+						font-family: Source Sans Pro; font-size: 16px; vertical-align: bottom;}
+					textarea {resize: none;}
+					input:focus, textarea:focus {border-left-style: solid; border-left-color: #00AAFF; border-left-width: 3px; outline: none;}
+				}
+				&_Value_Checkbox {padding: 10px;
+					input {width: 14px; height: 14px; margin: 0px; padding: 0px;}
+				}
+				&_Value_Complex {padding: 10px; font-family: Source Sans Pro; font-size: 16px; padding-top: 30px;}
+			}
+		}
+		
+		&_Add_Property_Row {border: none; border-bottom-style: solid; border-width: 1px; border-color: #CCCCCC; padding: 10px;
+			a {font-family: Source Sans Pro; font-size: 13px;}
+		}
+		
+		&_Footer {
+			&_Left {float: left; padding: 10px; padding-top: 15px;
+				&_Advanced_Properties_Toggle {}
+			}
+			&_Right {float: right; text-align: right;
+				&_Cancel {display: inline-block;
+					a {display: inline-block; padding: 15px; background-color: white; font-family: Source Sans Pro; font-size: 16px;}
+				}
+
+				&_Save {display: inline-block;
+					a {display: inline-block; padding: 15px; padding-left: 30px; padding-right: 30px; background-color: #00AAFF; color: white; font-family: Source Sans Pro; font-size: 16px;}
+					a:hover {color: white; background-color: #33CCFF; text-decoration: none;}
+				}
+			}
+		}
+	}
+}
+
+/* Wrapping */
+
+.Jelly
+{
+	/* Namespacing */
+	&_Namespace 
+	{
+	}
+}
+
+/* Debugging */
+/* TODO - Isolated, out of intuition */
+@Jelly_Error_Color:#eeeeff;
+.Jelly
+{
+	&_Error
+	{
+		background-color:@Jelly_Error_Color;
+		&_Heading
+		{
+			display:inline-block;
+			width:16px; height:18px; 
+			background-position: 0px 2px; background-repeat: no-repeat; background-image:url(/jelly/images/exclamation.png);
+			font-weight:bold;
+			color:transparent;
+		}
+	
+		&_Description
+		{
+			font-style:italic;
+		}
+	}
+}
+
+
+/* TODO - The below were commented out in the original CSS, as they are here, but are preserved until we look at them.*/
+
+/*
+
+.Jelly_Controls {position: absolute; left: 0px; top: 0px; width: 1px; height: 1px; overflow: visible;}
+.Jelly_Controls {position: absolute; left: 0px; top: 0px; width: 1px; height: 1px; overflow: visible;}
+
+*/
+
+/* TODO - The below are unimplemented, but were not commented out. They appeared useful.*/
+
+/*
+
+.Jelly_Progress_Bar {width: 100px; height: 10px; border-style: solid; border-width: 1px; border-color: #aaaaaa; overflow: hidden; float: left; margin-right: 5px;}
+.Jelly_Progress_Bar_Label {float: left;}
+.Jelly_Progress_Fill {width: 0px; height: 10px; background-color: #aaaaaa; overflow: hidden;}
+
+.Jelly_Media_Player_Progress_Bar_Position {position: absolute; top:-1px; left: 0%; height: 100%; width: 5px; background-color: red; border: solid 1px #555555;}
+
+.Droppable_Visible {visibility: hidden;}
+.Jelly_Droppable .Droppable_Visible, .Jelly_Droppable {visibility: visible;}
+.Jelly_Droppable {opacity: .5;}
+
+.Jelly_Calendar {width: 168px; padding: 10px;}
+.Jelly_Calendar_Header {margin-bottom: 3px;}
+.Jelly_Calendar_Header_Previous {float: left;}
+.Jelly_Calendar_Header_Month {text-align: center;}
+.Jelly_Calendar_Header_Next {float: right;}
+.Jelly_Calendar_Days {}
+.Jelly_Calendar_Days_Day {float: left; width: 24px; text-align: center;}
+.Jelly_Calendar_Items {}
+.Jelly_Calendar_Items_Previous_Item {float: left; width: 24px; text-align: center; padding-top: 2px; padding-bottom: 2px;}
+.Jelly_Calendar_Items_Current_Item {float: left; width: 24px; text-align: center; padding:0px;}
+.Jelly_Calendar_Items_Current_Item_Link {display: block; width: 100%; padding-top: 2px; padding-bottom: 2px;}
+.Jelly_Calendar_Items_Next_Item {float: left; width: 24px; text-align: center; padding-top: 2px; padding-bottom: 2px;}
+
+.Jelly_Design_Editor_Tabs {font-family: Arial; font-size: 11px;}
+.Jelly_Design_Editor_Tabs div {float: left; padding: 3px; padding-left: 7px; padding-right: 7px; border-top-style: solid; border-left-style: solid;}
+.Jelly_Design_Editor_Tabs:last-child {border-right-style: solid;}
+.Jelly_Design_Editor_Active_Tab {background-color: #ffffff;}
+.Jelly_Design_Editor_Inactive_Tab {background-color: #eeeeee;}
+.Jelly_Design_Editor_Tab_Link {text-decoration: none; color: black;}
+.Jelly_Design_Editor_Edit_Locally_Link {font-size: 11px; padding-top: 4px; float: right;}
+
+div.Shadow_Element {position:absolute; opacity: .2;}
+div.Shadow_Right {background-image: url(/jelly/images/shadow_right.png); background-repeat: repeat-y; background-position: -2px 0px; width: 4px;}
+div.Shadow_Bottom {background-image: url(/jelly/images/shadow_bottom.png); background-repeat: repeat-x; background-position: 0px -2px; height: 4px; }
+div.Shadow_Bottom_Right { background-image: url(/jelly/images/shadow_bottom_right.png); background-repeat: no-repeat; background-position: -2px -2px; width:4px; height:4px; }
+div.Shadow {position: absolute; background-color: black; opacity: .1;}
+
+// Highlight
+div.Highlight_Border {position: absolute;  z-index: 10;  #background-color:#dddddd;  opacity: .5;}
+div.Highlight_Left {background-image: url(/jelly/images/shadow_left.png); background-repeat: repeat-y;}
+div.Highlight_Right {background-image: url(/jelly/images/shadow_right.png); background-repeat: repeat-y; background-position: -2px 0px;}
+div.Highlight_Top {background-image: url(/jelly/images/shadow_top.png); background-repeat: repeat-x;}
+div.Highlight_Bottom {background-image: url(/jelly/images/shadow_bottom.png); background-repeat: repeat-x; background-position: 0px -2px;}
+div.Highlight_Top_Left {background-image: url(/jelly/images/shadow_top_left.png); width:5px; height:5px; background-repeat: no-repeat; background-position: 2px 2px;}
+div.Highlight_Top_Right {background-image: url(/jelly/images/shadow_top_right.png);	 background-repeat: no-repeat; background-position: -2px 2px; width:5px; height:5px;}
+div.Highlight_Bottom_Left {background-image: url(/jelly/images/shadow_bottom_left.png); background-repeat: no-repeat; background-position: 2px -2px; width:5px; height:5px;}
+div.Highlight_Bottom_Right {background-image: url(/jelly/images/shadow_bottom_right.png); background-repeat: no-repeat; background-position: -2px -2px; width:5px; height:5px;}
+
+div.Highlight_Flag {z-index: 10; height: 16px; position: absolute; border-style: solid; border-width: 1px; border-color: #bbbbbb; background-color:white; background-repeat: repeat; padding-left: 20px; padding-right: 30px; padding-top: 2px; font-family: Arial; font-size: 11px;}
+
+div.Highlight_Pointer {position: absolute; top: 18px; left: 46px; background-image:url(/jelly/images/item_pointer.png); background-repeat: no-repeat; width:13px; height: 8px;}
+
+.Jelly_Flash_Audio_Player {position: absolute; left: 0px; top: 0px; width: 1px; height: 5px;}
+
+.Jelly_Media_Player_Control {display: inline-block;}
+.Jelly_Media_Player_Controls {}
+.Jelly_Media_Player_Container {display: inline-block;}
+.Jelly_Media_Player_Progress_Bar {position: relative; height: 10px; width: 100%; background-color: #777777}
+.Jelly_Media_Player_Progress_Bar_Loaded {height: 100%; width: 0%; background-color: #5555CC}
+.Jelly_Media_Player_Progress_Bar_Position {position: absolute; top:-1px; left: 0%; height: 100%; width: 5px; background-color: red; border: solid 1px #555555;}
+
+#Jelly_Global_Audio_Player_Wrapper {display: none;}
+*/
+
+.Centered_Horizontal {display: inline-block; position: relative; left: 50%; margin-right: -50%; transform: translateX(-50%); -webkit-transform: translateX(-50%); -ms-transform: translateX(-50%); -moz-transform: translateX(-50%); -o-transform: translateX(-50%);}
+
+.Jelly {
+	.Module_Edit_Link {display: block; position: absolute; top: 3px; left: 15px; width: 26px; height: 26px; background-color: rgba(0,0,0,.8); color: black; font-size: 30px; border-style: solid; border-color: rgba(0, 0, 0, .2); border-width: 1px; border-radius: 22px; box-sizing: border-box; text-decoration: none;
+		.iconic {width: 16px; height: 16px; position: relative; top: -15px; left: 4px;
+			* {fill: white; stroke: white;}
+		}
+		&:hover {text-decoration: none; color: inherit; background-color: rgba(50,50,50,1);}
+		&.Active {background-color: rgba(125,125,125,1); color: white;
+			.iconic {
+				* {fill: white; stroke: white;}
+			}
+			&:hover {text-decoration: none; color: inherit; background-color: rgba(110,110,110,1);}
+		}
+	}
+	.Item_Edit_Link, .Small_Pencil {display: inline-block; border-radius: 50%; line-height: 0;}
+	.Item_Edit_Link {position: absolute; top: 0px; right: 15px; padding: 8px; background-color: rgba(0,0,0,.1);
+		.Icon {width: 40px; height: 40px;}
+	}
+	.Small_Pencil {margin-left: 1px; padding: 4px;
+		.Icon {width: 12px; height: 12px;}
+		.iconic {width: 16px; height: 16px;
+			* {fill: black; stroke: black;}
+		}
+		&:hover {text-decoration: inherit; color: inherit; background-color: rgba(200,200,200,1);}
+		&.To_Side {margin: 0; position: absolute; top: 0px; right: 5px;}
+	}
+	.Content_Actions {.Controls_Box;}
+}
+.Inline_Text {outline: none;}
+.Row {&:after {content: ""; display: table; clear: both;}}
+
+.Controls_Box {.Centered_Horizontal; background-color: rgba(0, 0, 0, .8); font-size: 12px; font-family: Lato; border-radius: 8px; overflow: hidden; text-align: center;
+		div.Inner_Group {padding-left: 15px; padding-right: 15px; display: inline-block; vertical-align: middle;
+			.Items {.Row; margin-top: 11px; margin-bottom: 4px; height: 28px;
+				a {padding-top: 4px; padding-left: 8px; padding-right: 8px; padding-bottom: 4px; line-height: 20px;}
+			}
+			.Label {padding-bottom: 15px;}
+		}
+		div.Group {display: inline-block; border-right-style: solid; border-right-width: 1px; border-right-color: rgba(255,255,255,.15); float: left; color: white; text-transform: uppercase; text-align: center;}
+		a {display: inline-block; height: 100%; padding: 15px; color: white; text-transform: uppercase; text-decoration: none; text-align: center; box-sizing: border-box; vertical-align: middle;
+			.iconic {width: 20px; height: 20px; display: block; margin: auto; margin-bottom: 8px;
+				* {fill: white; stroke: white;}}
+			&:hover {color: white; text-decoration: none; background-color: #666666;}
+			float: left;
+		}
+	.Row;
+	
+	.Selected {background-color: rgba(255,255,255,.2);}
+	[data-target-property="Size"] {
+		[data-size="Large"] {font-size: 150%;}
+		[data-size="Small"] {font-size: 75%;}
+	}
+}
+.Module_Controls {.Controls_Box; position: absolute; top: -85px;}
+
+
+/* Overview */
+
+.Jelly_Item_Overview 
+{
+	tr, th, td {vertical-align: top;}
+	td, th {padding: 5px; }
+	th {font-weight: bold; padding-right: 10px; text-align: right;}
+}

@@ -1,0 +1,69 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "List Assistant" --}
+		{Action}
+			{Name}List Assistant{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin only -->
+					<div class="Window Create_List">
+						<div class="Close_Link">
+							<a href="#" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+						</div>
+						
+						[Ignore]
+						<div class="Create_List">
+							<h1>Create a list using an existing structure:</h1>					
+						</div>
+
+						<div class="Links">
+							[Type from Database where Starred and Name is not "Site" and Name is not "Page"]
+								<!-- TODO: Hacky -->
+								[Link to "/type/[This.Alias no_wrap /]/create_child_list" into "Parent"][This.Name /][/Link]
+							[/Type]
+							<br style="clear: both;" />
+						</div>
+						[/Ignore]
+					
+						<div class="Blank_List">
+							<h1>Create a blank list:</h1>
+						</div>
+					
+						<div class="Links">
+							[Action "Create List"]
+								[Link to this into "Parent"]New Blank List[/Link]	
+							[/Action]
+						</div>
+					
+						<div class="Blank_List">
+							<h1>Create a blank list:</h1>
+						</div>
+					
+						<div class="Links">
+							[Action "Create List"]
+								[Link to this into "Parent"]Create List[/Link]	
+							[/Action]
+						</div>
+					</div>	
+				[/Admin]
+				
+				<!-- Close Window on Save -->
+				[External_Script]
+					Jelly.Handlers.Register_Handler(
+					\{
+						"Element": document.getElementById("[Current_Action.Namespace no_wrap /]"),
+						"Event": "Added",
+						"Code": function (Parameters)
+						\{
+							Parameters\["Event"\] = "Dismiss";
+							Jelly.Handlers.Call_Handler_For_Target(Parameters);
+						\}
+					\});
+				[/External_Script]		
+			{/Content}
+			{Code}
+				<!-- Does nothing -->
+			{/Code}
+		{/Action}
+{/Jelly}

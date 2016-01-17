@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Page "Welcome to Better" Text_Module --}
+		{Text_Module}
+			{Page}Welcome_to_Better{/Page}
+			{Body}
+				<p>Try clicking around.</p>
+			{/Body}
+		{/Text_Module}
+	
+{/Jelly}

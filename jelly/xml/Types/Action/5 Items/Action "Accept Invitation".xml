@@ -1,0 +1,185 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Accept Invitation" --}
+		{Action}
+			{Name}Accept Invitation{/Name}
+			{Content}
+				<!-- Required: Current_Item -->
+
+				<!-- Check if a code was set -->
+				[If Current_Action.Variables.Invitation_Code]
+				
+					<!-- Search for a matching reset code -->
+					[Invitation_Code from database where Name is Current_Action.Variables.Invitation_Code]
+						<!-- Disambiguate -->
+						[Set Current_Invitation_Code to this /]
+		
+						<!-- Check if the reset code was already used -->
+						[If not Current_Invitation_Code.Used]
+						
+						<!-- Track visit --> 
+						[If Globals.Allow_Tracking]
+							[Current_Invitation_Code.User]
+								[Set Current_Invitation_User to This/]
+								[External_Script]
+									// Don't die on adblock
+								
+									if (mixpanel)
+									\{
+
+										// Register identity (should be first time... for this site.)
+										mixpanel.alias("[Current_Invitation_User.Email_Address no_wrap/]:[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]");
+									
+										// Register additional information
+										var Mixpanel_Super_Properties = \{\};
+						
+										[If Current_Invitation_User.First_Name]
+											Mixpanel_Super_Properties\['$first_name'\] = "[Format as "Javascript String"][Current_Invitation_User.First_Name no_wrap/][/Format]";
+										[/If]
+		
+										[If Current_Invitation_User.Last_Name]
+											Mixpanel_Super_Properties\['$last_name'\] = "[Format as "Javascript String"][Current_Invitation_User.Last_Name no_wrap/][/Format]";
+										[/If]														
+										Mixpanel_Super_Properties\['$email'\] = "[Format as "Javascript String"][Current_Invitation_User.Email_Address no_wrap/][/Format]";
+										Mixpanel_Super_Properties\['Email'\] = "[Format as "Javascript String"][Current_Invitation_User.Email_Address no_wrap/][/Format]";
+									
+										// Track state
+										mixpanel.track(
+												'Invite Viewed', 
+												\{	
+													'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]',
+													'Email_Address': '[Current_Invitation_User.Email_Address no_wrap/]',
+													[If "[PHP]return strtolower($_SERVER\['HTTP_HOST'\]);[/PHP]" = "community.better.space"]
+														[Set Current_Action.Markets_Traversed to false/]
+														'Markets': 
+															\[
+																[Current_Invitation_User.What_kind_of_communities_do_you_organize_or_work no_wrap][If Markets_Traversed], 
+																	[/If]'[Name no_wrap/]'[Set Current_Action.Markets_Traversed to true/][/Current_Invitation_User.What_kind_of_communities_do_you_organize_or_work]
+															\]
+													[/If]
+												\}
+											);
+									\}
+								[/External_Script]
+							[/Current_Invitation_Code.User]
+						[/If]
+						
+							<!-- Pass code on to action -->
+							[Input "Hidden" with Name = "Code", Value = Current_Action.Variables.Invitation_Code /]
+
+							<!-- Execute link -->
+							<div style="background-color: #ffffee; padding: 25px; text-align: center; margin-bottom: 25px;">
+								<p style="margin-bottom:15px;line-height:1.5;">
+									Hello, [Current_Invitation_Code.User.First_Name/]! <br/>
+									This is your profile in the [Site.Name/] Better network.  It's invisible right now!<br/> 
+									Accept the invitation to allow [Site.Name/] members to reach out to you.<br/>
+									To help people find you, join the volunteer teams you like.
+								</p>
+								[Link to Execute with Class = "Button" /]
+							</div>
+						[/If]
+					[/Invitation_Code]
+				[/If]
+			{/Content}
+			{Code}
+				<!-- Requires: Form.Code -->
+				
+				<!-- Check for code -->
+				[If Form.Code]
+					[Then]
+						<!-- Search for a matching reset code -->
+						[Invitation_Code from database where Name is Form.Code]
+							[Then]
+								<!-- Disambiguate -->
+								[Set Current_Invitation_Code to this /]
+				
+								<!-- Check if the reset code was already used -->
+								[If Current_Invitation_Code.Used]
+									[Then]
+										Code was used.
+									[/Then]
+									[Else]
+										[Current_Invitation_Code.User]
+											[Then]
+												<!-- Disambiguate -->
+												[Set Current_User to this /]
+
+												<!-- Track accept --> 
+												[If Globals.Allow_Tracking]
+													[External_Script]
+														// Don't die on adblock
+										
+														if (mixpanel)
+														\{
+													
+															// Track state
+															mixpanel.track(
+																	'Invite Accepted', 
+																	\{	
+																		'Account': '[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]',
+																		'Email_Address': '[Current_User.Email_Address no_wrap/]',
+																		[If "[PHP]return strtolower($_SERVER\['HTTP_HOST'\]);[/PHP]" = "community.better.space"]
+																			[Set Current_Action.Markets_Traversed to false/]
+																			'Markets': 
+																				\[
+																					[Current_User.What_kind_of_communities_do_you_organize_or_work no_wrap][If Markets_Traversed], 
+																						[/If]'[Name no_wrap/]'[Set Current_Action.Markets_Traversed to true/][/Current_User.What_kind_of_communities_do_you_organize_or_work]
+																				\]
+																		[/If]
+																	\}
+																);
+															
+															mixpanel.track(
+																	"Network Joined", 
+																	\{	
+																		"Via": "Invite",
+																		"User Name": "[Format as "Javascript String"][Current_User.Name no_wrap/][/Format]",
+																		"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+																	\}
+																);
+														\}
+													[/External_Script]
+												[/If]
+																			
+												<!-- Mark reset code as used -->
+												[Set Current_Invitation_Code.Used to true /]
+												[Save Current_Invitation_Code /]
+												
+												<!-- Mark user as activated -->
+												[Set Current_User.Activated to true /]
+												
+												<!-- Save user with new password -->
+												[Save Current_User /]
+												
+												<!-- Log in user -->
+												[Set Current_Session.User to User /]
+												[Save Current_Session /]
+												
+												<!-- Go to user -->
+												[Go to Current_User by Alias /]
+
+												<!-- Ask for a team Join -->
+												[Go to "/User/[Current_User.ID no_wrap /]/Add_Value_Clean:Property_Alias=Team" into "Window"/]
+
+											[/Then]
+											[Else]
+												Could not load user for invitation code.
+											[/Else]
+										[/Current_Invitation_Code.User]
+									[/Else]
+								[/If]
+							[/Then]
+							[Else]
+								Invalid code.
+							[/Else]
+						[/Reset_Password_Code]
+					[/Then]
+					[Else]
+						Code required.
+					[/Else]
+				[/If]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

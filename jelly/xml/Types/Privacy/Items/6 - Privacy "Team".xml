@@ -1,0 +1,9 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- Privacy "Team" --}
+		{Privacy}
+			{Name}Team{/Name}
+			{Explanation}EXPERIMENTAL.{/Explanation}
+		{/Privacy}
+{/Jelly}

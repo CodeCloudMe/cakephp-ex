@@ -1,0 +1,69 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Theme "Simple Theme" --}
+	
+		{Theme}
+			{Name}Simple Theme{/Name}
+			{Package}Design{/Package}
+			{Less_Style}
+				/* Font */
+				@text-color: #222222;
+				line-height: 1.6;
+				font-weight: 400;
+				font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+				color: @text-color;
+				header \{.Block; .container; text-align: center; padding-top: 25px;\}
+				
+				nav \{.Block; .container; .Caps; .Border-Bottom; list-style-type: none; margin-bottom: 20px; padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom: 10px;
+					ul \{.Block; .Clearer; padding: 0px; margin: 0px;
+						li \{display: inline-block; float: left; padding: 0px; margin: 0px; margin-right: 10px;
+							a, a:hover \{text-decoration: none; color: inherit;\}
+						\}
+					\}
+				\}
+				
+				/* Content Container */
+				\[data-kind="Container"\] \{.container; .Block;
+					
+					section \{.Section;\}
+					
+					/* Text */
+					section\[data-type="Text_Module"\]\[data-kind="Item"\] \{.Inset_Width; .Section;\}
+					
+					/* Data */
+					\[data-type="Data_Module"\] \{
+						a \{
+							color: inherit; text-decoration: inherit;
+							&:hover \{color: inherit; text-decoration: inherit;\}
+						\}
+						\[data-kind="Iterator"\].List \{.Content_Width; .Block;
+							> \[data-kind="Item"\] \{.Block;
+								.Cover \{.Cover_Image;
+									&:before \{padding-top: 40%;\}
+								\}
+							\}
+						\}
+						\[data-kind="Iterator"\].Grid \{.row; .Block;
+							> \[data-kind="Item"\] \{.small-cell; .Block;
+								.Cover \{.Cover_Image;\}
+							\}
+						\}
+					\}
+				\}
+			{/Less_Style}
+			{Web_Font}Inconsolata{/Web_Font}
+			{Web_Font}Karla{/Web_Font}
+			{Web_Font}Lato{/Web_Font}
+			{Web_Font}Libre_Baskerville{/Web_Font}
+			{Web_Font}Montserrat{/Web_Font}
+			{Web_Font}Open_Sans{/Web_Font}
+			{Web_Font}Playfair_Display{/Web_Font}
+			{Web_Font}Raleway{/Web_Font}
+			{Web_Font}Roboto{/Web_Font}
+			{Web_Font}Source_Sans_Pro{/Web_Font}
+			{Web_Font}Sorts_Mill_Goudy{/Web_Font}
+			{Web_Font}Dosis{/Web_Font}
+		{/Theme}
+	
+{/Jelly}

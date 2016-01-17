@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Page "Welcome to Better" --}
+		{Page}
+			{Name}Welcome to Better{/Name}
+			{Package}Local{/Package}
+			{Public}1{/Public}
+		{/Page}
+	
+{/Jelly}

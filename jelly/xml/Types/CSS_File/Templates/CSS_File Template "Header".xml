@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- CSS_File Template "Header" --}
+		{Template}
+			{Type}CSS_File{/Type}
+			{Name}Header{/Name}
+			{Content}
+				<link href="[Globals.URL_Prefix No_Wrap /][If CSS_File.Source][Then]/File/[CSS_File.Source.ID No_Wrap /]/File[/Then][Else]/CSS_File/[CSS_File.ID No_Wrap /]/File[/Else][/If]" rel="stylesheet" type="text/css" />
+			{/Content}
+		{/Template}
+	
+{/Jelly}

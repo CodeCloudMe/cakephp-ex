@@ -1,0 +1,44 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Unfollow" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Unfollow{/Name}
+			{Content}
+				[If Current_Session.User exists]
+					[Then]
+						[Current_Session.User.Following where ID is Current_Action.Target.ID]
+							[Then]
+								[Link to Execute with Class = "Button" /]
+							[/Then]
+							[Else]
+								Error: Shouldn't be seen.
+							[/Else]
+						[/Current_Session.User.Following]
+					[/Then]
+					[Else]
+						Error: Shouldn't be seen since user is not logged in.
+					[/Else]
+				[/If]
+			{/Content}
+			{Code}
+				<!-- TODO Error if not logged in -->
+				<!-- Find the item that the user is following -->
+				[Current_Session.User.Following where ID is Current_Action.Target.ID]
+					<!-- Delete the attachment -->
+					[Remove This.Attachment /]
+				[/Current_Session.User.Following]
+			
+				<!-- Force refresh of the followed item -->
+				<!-- TODO Improve -->
+				[External_Script]
+					Jelly.References.Trigger_Refresh(\{'Kind': 'Item', 'Item_ID': [Current_Action.Target.ID no_wrap /]\});
+					[Block "Toolbar" no_wrap]
+						Jelly.References.Trigger_Refresh(\{'Kind': 'Item', 'Item_ID': '[This.ID no_wrap /]'\});
+					[/Block]
+				[/External_Script]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

@@ -1,0 +1,75 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add Picture Module" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add Picture Module{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<span class="Window Add_Picture">
+						<!-- Close Link -->
+						<a href="#" class="Close_Button" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+						
+						<!-- TODO: Add from URL -->
+						[Type "Picture" from Database]
+							[Input "Select" with Name = "Picture", Value_Type = This, Execute_On_Change = 1, Display = "Grid", Display_Menu = "False", Display_Value = "False" /]
+						[/Type]
+					
+						<!-- Close Window on Save -->
+						[External_Script]
+							Jelly.Handlers.Register_Handler(
+							\{
+								"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+								"Event": "Added",
+								"Code": function (Parameters)
+								\{
+									Parameters\["Event"\] = "Dismiss";
+									Jelly.Handlers.Call_Handler_For_Target(Parameters);
+								\}
+							\});
+						[/External_Script]
+					</span>
+					
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+				
+					<!-- Create Module -->
+					[New Picture_Module]
+						<!-- Disambiguate -->
+						[Set Current_New_Item to This /]
+				
+						<!-- Set Picture -->
+						[Set Current_New_Item.Picture to Form.Picture /]
+					
+						<!-- Save module -->
+						[Save Current_New_Item /]
+					
+						<!-- Add module to target -->
+						[Add Current_New_Item to Current_Action.Target.Content_Module /]
+					
+						<!-- Trigger Edited Event -->
+						[External_Script]
+							Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									"Event": "Added",
+									"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+									"Item": "[Current_New_Item.ID no_wrap /]",
+									"Item_Type": "[Current_New_Item.Type as Alias No_Wrap /]",
+									"Badge": "[Format as "Javascript String"][Current_New_Item as Badge with No_Drag = 1/][/Format]"
+								\});
+						[/External_Script]
+					[/New]
+				
+					<!-- Save target -->
+					[Save Current_Action.Target /]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

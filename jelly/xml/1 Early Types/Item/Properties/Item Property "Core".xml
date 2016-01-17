@@ -1,0 +1,15 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "Core" --}
+	
+		{Property}
+			{Type}Item{/Type}
+			{Value_Type}Boolean{/Value_Type}
+			{Name}Core{/Name}
+			{Alias}Core{/Alias}
+			{Default_Value}0{/Default_Value}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

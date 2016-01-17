@@ -1,0 +1,16 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action Template "Execute" --}
+		{Template}
+			{Type}Action{/Type}
+			{Name}Execute{/Name}
+			{Content}
+				[Clean Newlines]
+					[Set Current_Action to Action /]
+					[Current_Action.Code /]
+				[/Clean]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

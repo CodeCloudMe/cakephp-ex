@@ -1,0 +1,20 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Template Property "Type" --}
+	
+		{Property}
+			{Type}Template{/Type}
+			{Value_Type}Type{/Value_Type}
+			{Name}Type{/Name}
+			{Alias}Type{/Alias}
+			{Reverse_Name}Template{/Reverse_Name}
+			{Reverse_Alias}Template{/Reverse_Alias}
+			{Reverse_Plural_Name}Templates{/Reverse_Plural_Name}
+			{Reverse_Plural_Alias}Templates{/Reverse_Plural_Alias}
+			{Relation}Many-To-One{/Relation}
+			{Data_Name}Type{/Data_Name}
+			{Key}Alias{/Key}
+		{/Property}
+	
+{/Jelly}

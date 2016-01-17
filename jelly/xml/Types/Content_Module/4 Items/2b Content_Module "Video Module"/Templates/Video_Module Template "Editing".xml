@@ -1,0 +1,52 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Video_Module Template "Editing" --}
+		{Template}
+			{Type}Video_Module{/Type}
+			{Name}Editing{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Picture_Module to This /]
+				[Set Current_Picture to Current_Picture_Module.Picture /]
+				
+				<!-- Video -->
+				<span class="Module_Content" data-module="Video_Module" data-size="[Current_Content_Module.Size no_wrap /]" data-width="[Current_Content_Module.Width no_wrap /]">
+					[This.Video /]
+				</span>
+				
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Editing Controls -->
+					<div class="Module_Controls">
+						
+						<!-- Change Width -->
+						<div class="Group">
+							[Current_Content_Module.Action "Change Width" /]
+						</div>
+						
+						<!-- Change Size -->
+						<div class="Group">
+							[Current_Content_Module.Action "Change Size" /]
+						</div>
+						
+						<!-- Change Picture -->
+						<!-- TODO Clean up link -->
+						[Link to "/Video_Module/[This.ID no_wrap /]/Change_Video" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/video.svg" > Change Video[/Link]
+						
+						<!-- Delete -->
+						<div class="Group">
+							[Link to "/Content_Module/[This.ID no_wrap /]/Delete" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/trash.svg"> Delete[/Link]
+						</div>
+						
+						<!-- Done -->
+						[Link to "/[Current_Item.Type.Alias no_wrap /]/[Current_Item.ID no_wrap /]/Viewing_Content_Module:Content_Module_ID=[Current_Content_Module.ID no_wrap /]" into "[Current_Content_Module_Namespace no_wrap /]"]
+							<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/check-thin.svg"> Done
+						[/Link]
+					</div>
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

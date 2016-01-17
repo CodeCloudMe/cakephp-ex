@@ -1,0 +1,124 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Add Property Module" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Add Property Module{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Disambiguate -->
+					[Set Current_Type to Current_Action.Target /]
+					
+					<!-- Property List -->
+					<!-- TODO: Hacky, could be done better without a hidden input, etc -->
+					<div id="[Current_Action.Namespace no_wrap /]_Property_Item_Input_Finder">
+						[Input "Hidden" with Name = "Property Item", Value_Type = "Property" /]
+					</div>
+					[New [Current_Type.Alias no_wrap /]]
+						<!-- Only show properties that are not advanced -->
+						[This.Property where not Advanced]
+							<!-- Disambiguate -->
+							[Set Current_Property to this /]
+							
+							<!-- Check if there is a matching property module that is not visible -->
+							[Current_Type.Content_Module restrict_type Property_Module where Property_Item is Current_Property.ID and not Visible]
+								<div>
+									<!-- TODO: Check if still works -->
+									<!-- Link to select property -->
+									<a href="#" onclick="Jelly.jQuery('#[Current_Action.Namespace no_wrap /]_Property_Item_Input_Finder \[name=Property_Item\]').val('[Current_Property.ID no_wrap /]');Jelly.Handlers.Call_Handler_For_Target(\{'Event': 'Execute', 'Target': document.getElementById('[This.Namespace no_wrap /]')\});return false;">[Current_Property.Name /]</a>
+								</div>
+							[/Current_Type.Content_Module]
+						[/This.Property]
+					[/New]
+					
+					<!-- Add property link -->
+					[Link to "/type/[Current_Type.Alias /]/add_property" into "Parent"]Add Property[/Link]
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Added",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin only -->
+					
+					<!-- Disambiguate -->
+					[Set Current_Type to Current_Action.Target /]
+					
+					<!-- TODO: consider deleting and re-adding to move to bottom -->
+					<!-- Check if there is a matching property module that is not visible -->
+					[Current_Type.Content_Module restrict_type Property_Module where Property_Item is Form.Property_Item.ID]
+						[Then]
+							<!-- Set existing property module visibility -->
+							[Set This.Visible to True /]
+						
+							<!-- Save existing property module -->
+							[Save This /]
+						[/Then]
+						[Else]
+							<!-- Create property module -->
+							<!-- TODO: not sure if we will ever need to create any property modules, or just unhide them -->
+							[New Property_Module]
+								<!-- Disambiguate -->
+								[Set Current_New_Item to This /]
+						
+								<!-- Save Property -->
+								[Set Current_New_Item.Property_Item to Form.Property_Item /]
+								
+								<!-- Set visibility -->
+								[Current_New_Item.Visible to True /]
+								
+								<!-- Set display -->
+								[If Form.Property_Item.Value_Type is simple type]
+									[Else]
+										<!-- Set complex properties to display as a grid -->
+										[Set Current_New_Item.Display to "Grid" /]
+										
+										<!-- Set single properties differently -->
+										[If Form.Property_Item.Relation is "Many-To-One"]
+											[Set Current_New_Item.Size to "Large" /]
+											[Set Current_New_Item.Width to "Inset" /]
+											[Set Current_New_Item.Display to "List" /]
+										[/If]
+									[/Else]
+								[/If]
+						
+								<!-- Save module -->
+								[Save Current_New_Item /]
+						
+								<!-- Add module to target -->
+								[Add Current_New_Item to Current_Type.Content_Module /]
+							[/New]
+						[/Else]
+					[/If]
+						
+					<!-- Trigger Edited Event -->
+					[External_Script]
+						Jelly.Handlers.Call_Handler_For_Target(
+							\{
+								"Event": "Added",
+								"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+							\});
+					[/External_Script]
+					
+					<!-- Save target -->
+					[Save Current_Type /]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

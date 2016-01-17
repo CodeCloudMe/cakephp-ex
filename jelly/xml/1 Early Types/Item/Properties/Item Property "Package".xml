@@ -1,0 +1,17 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "Name" --}
+	
+		{Property}
+			{Type}Item{/Type}
+			{Value_Type}Package{/Value_Type}
+			{Name}Package{/Name}
+			{Alias}Package{/Alias}
+			{Data_Name}Package{/Data_Name}
+			{Key}Alias{/Key}
+			{Default_Value}Local{/Default_Value}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

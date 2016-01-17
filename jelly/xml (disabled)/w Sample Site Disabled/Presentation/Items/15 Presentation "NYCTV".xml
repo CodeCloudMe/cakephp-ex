@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "NYCTV" --}
+		{Presentation}
+			{Name}NYCTV{/Name}
+			{Website}http://watchnyc.tv/{/Website}
+			{Description}NYC.TV is a video-only platform featuring original and curated programming made by New York City creators.{/Description}
+			{Picture}NYCTV{/Picture}
+		{/Presentation}
+	
+{/Jelly}

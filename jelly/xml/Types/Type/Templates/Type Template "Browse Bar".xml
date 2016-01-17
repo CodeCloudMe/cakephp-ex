@@ -1,0 +1,51 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "Browse Bar" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}Browse Bar{/Name}
+			{Content}
+				<!-- Type "Browse Bar" Template -->
+				
+				<!-- Disambiguate -->
+				[Set Current_Type to This /]
+				
+				<span class="Browse_Bar_Type">
+					<span class="Browse_Bar_Header">
+						<span class="Title">
+							<a class="Title_Close" href="#" onclick="Jelly.Interface.Hide_Browse_Bar(); return false;">
+								<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x.svg">
+							</a>
+							<span class="Title_Label">
+								[Link to "/[Current_Type.Alias no_wrap /]" with Class = "Title_Label_Link"][If Current_Type.Plural_Name][Then][Current_Type.Plural_Name /][/Then][Else][Current_Type.Name /][/Else][/If][/Link]
+							</span>
+							<span class="Title_Add">
+								[Link to "/Type/[Current_Type.Alias no_wrap /]/Create_Item" into "Window" with Class = "Add_Link"]
+									<span class="Content">
+										<span class="Label">Add</span>
+									</span>
+								[/Link]
+							</span>
+						</span>
+					</span>
+					[[Current_Type.Alias no_wrap /] 
+						[If Current_Type.Sort_Property_Alias]by [Current_Type.Sort_Property_Alias no_wrap/][If Current_Type.Sort_Reverse] Descending[/If][/If]
+						from database
+					]
+						[Set Current_Item to This /]
+						<a href="#" onclick="Jelly.Handlers.Visit_Link(\{URL: '/[Current_Type.Alias no_wrap /]/[Current_Item.Alias no_wrap /]'\}); return false;" class="Browse_Bar_Item Item_[This.ID no_wrap /]">
+							<span class="Cover">
+								[Current_Item as Cover /]
+							</span>
+							<span class="Browse_Item_Label">
+								[This.Name /]
+							</span>
+						</a>
+					[/[Current_Type.Alias no_wrap /]]
+				</span>
+			{/Content}
+		{/Template}
+		
+{/Jelly}

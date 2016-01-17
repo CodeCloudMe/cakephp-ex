@@ -1,0 +1,8 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- Status "Draft" --}
+		{Status}
+			{Name}Draft{/Name}
+		{/Status}
+{/Jelly}

@@ -1,0 +1,16 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Item Property "Created By" --}
+	
+		{Property}
+			{Type}Item{/Type}
+			{Value_Type}User{/Value_Type}
+			{Name}Created By{/Name}
+			{Alias}Created_By{/Alias}
+			{Data_Name}Created_By{/Data_Name}
+			{Relation}Many-To-One{/Relation}
+			{Advanced}1{/Advanced}
+		{/Property}
+		
+{/Jelly}

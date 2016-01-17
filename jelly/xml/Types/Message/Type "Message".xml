@@ -1,0 +1,15 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "Message" --}
+		{Type}
+			{ID}12539081{/ID}
+			{Name}Message{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}Messages{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Interaction{/Package}
+			{Core}1{/Core}
+		{/Type}
+	
+{/Jelly}

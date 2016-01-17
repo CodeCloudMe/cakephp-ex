@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Luisa" --}
+		{Presentation}
+			{Name}Luisa Pereira{/Name}
+			{Website}http://luisaph.com/{/Website}
+			{Description}Luisa Pereira is an artist, programmer, and musician whose work explores music through coding and design, taking the form of interactive installations, generative devices, sculptures, and prints.{/Description}
+			{Picture}Luisa{/Picture}
+		{/Presentation}
+	
+{/Jelly}

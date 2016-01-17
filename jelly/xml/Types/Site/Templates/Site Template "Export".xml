@@ -1,0 +1,106 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "Export" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}Export{/Name}
+			{Content_Type}text/plain{/Content_Type}
+			{Content}
+				[Ignore]<!-- DEPRECATED BUT STILL NEEDED TILL PHASED OUT. -->[/Ignore]
+				[Admin]
+					[PHP]	
+						header('HTTP/1.1 200 OK');
+						header('Status: 200 OK');
+						header('Content-type:' . ' ' . 'text/html' . ';' . ' ' . 'charset=utf-8');	
+
+						// TODO - This whole function is hopefully a temporary hack. 
+						// TODO - but if jelly export always costs so much time & memory, it can maybe be restored in a File Type called Backups, etc, and redirected to a template of it...
+						// TODO - but in that case, you'd want to redo this atomicization in javascript, perhaps, for a better continuous feedback system than echos and flushes...
+						$XML_Backup_Directory = $GLOBALS\["Data_Directory_Path"\] . '/' . 'Export';
+						Make_Directories_If_Nonexistent($XML_Backup_Directory);
+						$XML_File_Name = $XML_Backup_Directory . "/" . "[Format as "File Name"][Site.Name No_Wrap /] ([PHP]return date('Y-m-d H\hi');[/PHP]).xml[/Format]";
+	
+						$XML_File_Handler = fopen($XML_File_Name, w);
+	
+						fwrite($XML_File_Handler, '<?xml version="1.0" encoding="utf-8"?>' . "\n");
+						fwrite($XML_File_Handler, '<Jelly>' . "\n");
+
+						//TODO - Cleanup somehow...
+						set_time_limit(500);
+	
+						$Explicit_Types_Block_String = '';
+						$Types_Command_String = &New_String('Types from Database by ID as Reference where (Parent_Type exists and Parent_Type is not "")');
+						$Types_Processed_Command = &Process_Command_String($Database, $Types_Command_String, $Memory_Stack_Reference);
+						$Types_Item = &$Types_Processed_Command\\['Chunks'\\]\\[0\\]\\[Item\\];						
+
+						$Type_Alias_Array = &New_Array();						
+						while(!array_key_exists('End_Of_Results', $Types_Item) || !$Types_Item\\['End_Of_Results'\\])
+						\{
+							$Type_Alias_Array\\[\\] = &$Types_Item\\['Data'\\]\\['Alias'\\];
+							Move_Next($Types_Item);	
+						\}
+						unset($Types_Item);
+						unset($Types_Processed_Command);
+	
+						$Type_Alias_Count = count ($Type_Alias_Array);
+						for ($Type_Alias_Index = 0; $Type_Alias_Index < $Type_Alias_Count; $Type_Alias_Index++)
+						\{
+							$Type_Alias = $Type_Alias_Array\\[$Type_Alias_Index\\];
+
+							echo "exporting $Type_Alias... "; flush();ob_flush();
+		
+							$Type_Items_Command_String = &New_String($Type_Alias . ' ' . 'from Database where (Item.Package does not exist or Item.Package = "Local") No_Child_Types as Reference by ID');
+							$Types_Items_Processed_Command = &Process_Command_String($Database, $Type_Items_Command_String, $Memory_Stack_Reference);
+							$Type_Items_Item = &$Types_Items_Processed_Command\\['Chunks'\\]\\[0\\]\\[Item\\];
+		
+							$Type_Item_ID_Array = &New_Array();
+							while(!array_key_exists('End_Of_Results', $Type_Items_Item) || !$Type_Items_Item\\['End_Of_Results'\\])
+							\{
+								$Type_Item_ID_Array\\[\\] = &$Type_Items_Item\\['Data'\\]\\['ID'\\];
+								Move_Next($Type_Items_Item);
+							\}
+							unset($Type_Items_Item);
+							unset($Types_Items_Processed_Command);
+		
+							$Item_Count = 0;
+							echo "\{";
+		
+							$Type_Item_ID_Count = count($Type_Item_ID_Array);
+							for ($Type_Item_ID_Index = 0; $Type_Item_ID_Index < $Type_Item_ID_Count; $Type_Item_ID_Index++)
+							\{
+								if ($Item_Count)
+									echo ", ";
+								echo ++$Item_Count; flush();ob_flush();
+			
+								$Type_Item_ID = $Type_Item_ID_Array\\[$Type_Item_ID_Index\\];
+								$Type_Item_Block_String = '\\[';
+								$Type_Item_Block_String .= '1 ' . $Type_Alias . ' from Database where ID = ' . $Type_Item_ID . ' as XML_Item';
+								$Type_Item_Block_String .= '/\\]';
+								$Type_Item_Block_String .= "\n";
+
+								$Processed_Type_Item_Block_String = &Process_Block_String($Database, $Type_Item_Block_String, $Context);							
+								Render_Processed_Block($Processed_Type_Item_Block_String, array('No_Wrap' => true));
+								fwrite($XML_File_Handler, $Processed_Type_Item_Block_String\\['Content'\\]);
+							\}	
+							echo "\}\n<br/>";
+						\}
+								
+						fwrite($XML_File_Handler, '</Jelly>');		
+						fclose($XML_File_Handler);
+	
+						echo '<br/>';
+						echo '<div style="padding-bottom:400px;font-weight:bold;">' . "\n";
+						echo 'Export Complete: <a href="' . $XML_File_Name . '" download>' . basename($XML_File_Name) . '</a>' . "\n";
+						echo '</div>' . "\n";
+					[/PHP]			
+					[Ignore]
+						<!-- TODO - Implement Packages method --> 
+						<!-- TODO - then change content type back to text/xml --> 
+						[This as XML with Current_Package = "Local" /]
+					[/Ignore]
+				[/Admin]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

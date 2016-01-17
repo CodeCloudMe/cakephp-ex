@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Team Property_Module "Picture" --}
+		{Property_Module}
+			{Type_Item}Team{/Type_Item}
+			{Property_Item}59173412{/Property_Item}
+		{/Property_Module}
+	
+{/Jelly}

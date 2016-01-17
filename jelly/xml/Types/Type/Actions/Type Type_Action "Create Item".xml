@@ -1,0 +1,123 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Type_Action "Create Item" --}
+		{Type_Action}
+			{Type}Type{/Type}
+			{Name}Create Item{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<div class="Window Create_Item">
+						<a href="#" class="Close_Button" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+						
+						<span class="Header">
+							Name your [Current_Action.Target.Name /]
+						</span>
+						
+						<span class="Section">
+							<span class="Input">
+								[Input "Text Field" with Name = "Name" /]
+							</span>
+						</span>
+						
+						<span class="Execute">
+							[Link to Execute]Create[/Link]
+						</span>
+					</div>	
+					
+					<!-- Close Window on Save -->
+					[External_Script]
+						Jelly.Handlers.Register_Handler(
+						\{
+							"Element": document.getElementById("[Current_Action_Namespace No_Wrap /]"),
+							"Event": "Added",
+							"Code": function (Parameters)
+							\{
+								Parameters\["Event"\] = "Dismiss";
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+							\}
+						\});
+					[/External_Script]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Disambiguate -->
+					[Set Current_Type to Current_Action.Target /]
+					
+					<!-- Create item -->
+					[New [Current_Type.Alias no_wrap /]]
+						<!-- Disambiguate -->
+						[Set New_Item to This /]
+						
+						<!-- Name -->
+						[Set New_Item.Name to Form.Name /]
+						
+						<!-- For new users, auto-set first and last name -->
+						[If Current_Type.Alias is "User"]
+							[If New_Item.Name]
+								[If [PHP]return (int)(strpos('[Format as "PHP Single Quoted String"][New_Item.Name no_wrap /][/Format]', ' ') !== false);[/PHP]]
+									[Then]
+										[Set New_Item.First_Name to "[Format as "Jelly Attribute"][PHP]return substr('[Format as "PHP Single Quoted String"][New_Item.Name no_wrap /][/Format]', 0, strpos('[Format as "PHP Single Quoted String"][New_Item.Name no_wrap /][/Format]', ' '));[/PHP][/Format]" /]
+										[Set New_Item.Last_Name to "[Format as "Jelly Attribute"][PHP]return substr('[Format as "PHP Single Quoted String"][New_Item.Name no_wrap /][/Format]', strpos('[Format as "PHP Single Quoted String"][New_Item.Name no_wrap /][/Format]', ' ') + 1);[/PHP][/Format]" /]
+									[/Then]
+									[Else]
+										[Set New_Item.First_Name to New_Item.Name /]
+									[/Else]
+								[/If]
+							[/If]
+						[/If]
+						
+						<!-- Save item -->
+						[Save New_Item /]
+						
+						<!-- If creating a page, set up default content modules -->
+						[If Current_Type.Alias is "Page"]
+							<!-- Create a sample text module -->
+							[New Text_Module]
+								<!-- Disambiguate -->
+								[Set New_Text_Module to this /]
+								
+								<!-- Set sample body -->
+								[Set New_Text_Module.Body to "Some new content for your new page." /]
+								
+								<!-- Save the new text module -->
+								[Save New_Text_Module no_refresh /]
+								
+								<!-- Add the new text module to the page -->
+								[Add New_Text_Module to New_Item.Content_Module /]
+							[/New]
+						[/If]
+				
+						<!-- Add types/pages/dashboards/folders to navigation root -->
+						[If This.Type.Alias is "Type" or This.Type.Alias is "Page" or This.Type.Alias is "Dashboard" or This.Type.Alias is "Folder"]
+							[Folder "Root" from database]
+								[Set Current_Folder to this /]
+								[Add New_Item to Folder.Child_Item /]
+							[/Folder]
+						[/If]
+					
+						<!-- Go to new item for most items-->
+						<!-- TODO - this should be a setting, not a heuristic -->
+						[If Current_Type.Package.Name is not "Local"]
+							[Go to New_Item by ID /]
+						[/If]
+					[/New]
+						
+					<!-- Trigger Edited Event -->
+					[External_Script]
+						Jelly.Handlers.Call_Handler_For_Target(
+							\{
+								"Event": "Added",
+								"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]")
+							\});
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

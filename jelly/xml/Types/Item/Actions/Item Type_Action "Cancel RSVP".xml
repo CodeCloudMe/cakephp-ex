@@ -1,0 +1,22 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Item Type_Action "Cancel RSVP" --}
+		{Type_Action}
+			{Type}Item{/Type}
+			{Name}Cancel RSVP{/Name}
+			{Content}
+				<!-- Pass Current RSVP Module to Action -->
+				[Input "Hidden" with Name = "RSVP Module", Value = Current_RSVP_Module /]
+				
+				<!-- Link -->
+				[Link to Execute /]
+			{/Content}
+			{Code}
+				<!-- TODO -->
+				TODO
+				[External_Script]alert("j/k");[/External_Script]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

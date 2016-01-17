@@ -1,0 +1,41 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Type_Action "Create Child List" --}
+		{Type_Action}
+			{Type}Type{/Type}
+			{Name}Create Child List{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Execute link for manual implementations -->
+					[Input "Text Field" with Name = "Type Name" /]
+					[Link to Execute]Create[/Link]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only -->
+					
+					<!-- Create type -->
+					<!-- TODO set parent type not as alias? -->
+					[New Type with Name = Form.Type_Name, Parent_Type = Current_Action.Target.Alias, Package = "Local", Starred = True]
+						<!-- Save item -->
+						[Save This /]
+					
+						<!-- Go to new item -->
+						<!-- TODO Clean up -->
+						[Go to "/type/[This.Alias no_wrap /]/manage" /]
+					[/New]
+						
+					<!-- Trigger Edited Event -->
+					[External_Script]
+						<!-- TODO: Calling handlers this many levels down doesn't seem to be working -->
+						Jelly.Interface.Close_Top_Window();				
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

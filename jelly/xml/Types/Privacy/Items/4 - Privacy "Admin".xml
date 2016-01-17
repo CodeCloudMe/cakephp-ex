@@ -1,0 +1,9 @@
+{?xml version="1.0"?}
+{Jelly}
+
+	{!-- Privacy "Admin" --}
+		{Privacy}
+			{Name}Admin{/Name}
+			{Explanation}For admin eyes only.{/Explanation}
+		{/Privacy}
+{/Jelly}

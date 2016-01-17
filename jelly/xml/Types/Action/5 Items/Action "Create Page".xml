@@ -1,0 +1,36 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Create Page" --}
+		{Action}
+			{Name}Create Page{/Name}
+			{Content}
+				[Admin]
+					[Link to Execute]Page[/Link]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					[New Page]
+						[Set New_Item to this /]
+						
+						[Set This.Name to "New Page" /]
+						[Save this /]
+						
+						[New Text_Module]
+							[Set This.Body to "Enter some text" /]
+							[Save This /]
+							[Add this to New_Item.Content_Module /]
+						[/Text_Module]
+						
+						[Go to this by Alias /]
+					[/Event]
+					
+					[External_Script]
+						Jelly.Interface.Close_Top_Window();
+					[/External_Script]
+				[/Admin]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

@@ -1,0 +1,383 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Feedback" --}
+		{Action}
+			{Name}Share Feedback{/Name}
+			{Package}Local{/Package}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Action to this /]
+
+				<span class="Page_Item Share_Feedback">
+					<span class="Page_Header">
+						<span class="Page_Title">
+							<span class="Left_And_Right">
+								<span class="Page_Name">
+									Share Feedback
+								</span>
+								<!-- TODO finish -->
+								<span class="Right">
+									[Admin]
+										<span class="Settings">
+											<a href="#" onclick="Jelly.jQuery('.Page_Settings.Item_Settings').toggleClass('Visible');Jelly.jQuery('.Settings_Link').toggleClass('Selected');return false;" class="Settings_Link">
+												<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/cog.svg">
+											</a>
+										</span>
+									[/Admin]
+								</span>
+							</span>
+							[Admin]
+								<span class="Page_Settings Item_Settings">
+									[Current_Action as Action_Settings /]
+								</span>
+							[/Admin]
+						</span>
+					</span>
+	
+					<!-- Login Modules -->
+					[Guest]
+						<span class="Section">
+							<span class="Label">
+								What's your name?
+							</span>
+							<span class="Value">
+								[Input "Text Field" with Name = "Name"/]
+							</span>
+						</span>
+			
+						<span class="Section">
+							<span class="Label">
+								What's your email address?
+							</span>
+							<span class="Value">
+								[Input "Text Field" with Name = "Email Address"/]
+							</span>
+						</span>
+					[/Guest]
+					[Member]
+						[Input "Hidden" with Name = "Author", Value = Current_Session.User/]
+					[/Member]
+	
+					<!-- Content Modules -->
+					<div class="Page_Modules">
+						[Current_Action.Content_Module where Visible item_wrap_element "section" no_refresh /]
+					</div>
+	
+					[1 App]
+						<span class="Section">
+							<span class="Label">
+								If you could install these apps into your community directory, which would you use?
+							</span>
+							<span class="Value">
+								<span class="Big_List Join_Team">
+									[6 Apps from Database by Random iterator_classes "Big_List_Items" item_classes "Big_List_Item Hover"]
+										<!-- Disambiguate -->
+										[Set Current_App to This /]
+										
+										<span class="[Current_App.Namespace no_wrap /]_App_Input_Finder">
+											[Input "Hidden" with Name = "App_[Current_App.ID no_wrap /]", Value = "0" /]
+										</span>
+										
+										<a href="#" onclick="Jelly.jQuery(this).toggleClass('Selected');var Value = '0'; if (Jelly.jQuery(this).hasClass('Selected')) Value = '1'; Jelly.jQuery('.[Current_App.Namespace no_wrap /]_App_Input_Finder input\[name=App_[Current_App.ID no_wrap /]\]').val(Value); return false;" class="Big_List_Item_Details">
+											<span class="Big_List_Item_Name">
+												[App.Name /]
+											</span>
+											<span class="Big_List_Item_Content">
+												<span class="Big_List_Item_Value">
+													[App.Description /] [If App.Suggested_By](Suggested by [Suggested_By.Name/])[/If]
+												</span>
+											</span>
+										</a>
+										<span class="Big_List_Item_Actions">
+											[Current_App.Followers as Count/] followers
+										</span>
+									[/6 Apps]
+								</span>
+							</span>
+						</span>
+					[/1 App]
+	
+					<span class="Section">
+						<span class="Label">
+							Or suggest an app name!
+						</span>
+						<span class="Value">
+							[Input "Text Field" with Name = "App Name"/]
+						</span>
+					</span>
+
+					<span class="Section">
+						<span class="Label">
+							 Describe it briefly.
+						</span>
+						<span class="Value">
+							[Input "Text Field" with Name = "App Description"/]
+						</span>
+					</span>
+	
+					<span class="Link">
+						<!-- Execute -->
+						[Link to Execute]Submit Feedback[/Link] [Action as Result /]
+					</span>
+	
+					<!-- TODO move structure to template -->
+	
+					[Admin]
+						<!-- Admin Only -->
+						<span class="Page_Content_Actions">
+							[Current_Action.Action "Add Text Module" /]
+							[Link to "/Action/[Current_Action.ID no_wrap /]/Add_Picture_Module" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/image.svg" data-orientation="landscape" > Picture[/Link]
+							[Link to "/Action/[Current_Action.ID no_wrap /]/Add_Video_Module" into "Window"]<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/video.svg"> Video[/Link]
+							[Ignore]
+								[Current_Action.Action "Add Scripting Module" /]
+							[/Ignore]
+							[Link to "/Action/Add_Input_Module:Current_Item=[Current_Action.ID no_wrap /],Current_Item_Type=[Current_Action.Type.Alias no_wrap /],Type_Alias=User" into "Window"]
+								<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/action.svg" data-orientation="landscape" >
+								Input
+							[/Link]
+						</span>
+					[/Admin]
+				</span>
+			{/Content}
+			{Code}
+				[New Feedback]
+					<!-- Disambiguate -->
+					[Set New_Feedback to This /]
+	
+					<!-- Save item so items can be added to it -->
+					[Save New_Feedback no_refresh /]
+	
+					<!-- Cycle over input modules -->
+					[Current_Action.Content_Module restrict_type Input_Module where Visible]
+						<!-- Disambiguate -->
+						[Set Current_Input_Module to This /]
+						[Set Current_Property to Current_Input_Module.Property_Item /]
+		
+						<!-- Set value on feedback -->
+						[If Current_Property.Value_Type is complex type]
+							[Then]
+								[If Current_Property.Relation is "Many-To-Many" or Current_Property.Relation is "One-To-Many"]
+									[Then]
+										[If Form.[Current_Property.Alias no_wrap /]]
+											[Add Form.[Current_Property.Alias no_wrap /] to New_Feedback.[Current_Property.Alias no_wrap /] /]
+										[/If]
+									[/Then]
+									[Else]
+										[If Form.[Current_Property.Alias no_wrap /]]
+											[Set New_Feedback.[Current_Property.Alias no_wrap /] to Form.[Current_Property.Alias no_wrap /] /]
+										[/If]
+									[/Else]
+								[/If]
+							[/Then]
+							[Else]
+								[Set New_Feedback.[Current_Property.Alias no_wrap /] to Form.[Current_Property.Alias no_wrap /] /]
+							[/Else]
+						[/If]
+					[/Current_Action.Content_Module]
+	
+					[If Form.Author]
+						[Then]
+							[Set Feedback.Author to Form.Author/]
+						[/Then]
+						[Else]
+							[New User]
+								[Set New_User to This /]
+		
+								<!-- Set full name -->
+								[Set New_User.Name to Form.Name/]								
+								[If [PHP]return (int)(strpos('[Format as "PHP Single Quoted String"][New_User.Name no_wrap /][/Format]', ' ') !== false);[/PHP]]
+									[Then]
+										[Set New_User.First_Name to "[Format as "Jelly Attribute"][PHP]return substr('[Format as "PHP Single Quoted String"][New_User.Name no_wrap /][/Format]', 0, strpos('[Format as "PHP Single Quoted String"][New_User.Name no_wrap /][/Format]', ' '));[/PHP][/Format]" /]
+										[Set New_User.Last_Name to "[Format as "Jelly Attribute"][PHP]return substr('[Format as "PHP Single Quoted String"][New_User.Name no_wrap /][/Format]', strpos('[Format as "PHP Single Quoted String"][New_User.Name no_wrap /][/Format]', ' ') + 1);[/PHP][/Format]" /]
+									[/Then]
+									[Else]
+										[Set New_User.First_Name to New_User.Name /]
+									[/Else]
+								[/If]
+	
+								<!-- Generate random password -->
+								[Set New_User.Password to "[PHP]
+									$Alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+									for ($Character_Index = 0; $Character_Index < 8; $Character_Index++)
+									\{
+										$Random_Alphabet_Index = rand(0, count($Alphabet)-1);
+										$Password\[$Character_Index\] = substr($Alphabet, $Random_Alphabet_Index, 1);
+									\}
+									return $Password;
+									[/PHP]" /]
+					
+								<!-- Set email --> 
+								[Set New_User.Email_Address = Form.Email_Address/]
+					
+								[Save New_User/]
+				
+				
+								<!-- Email -->
+								[PHP]
+									
+									// Message subject and body
+									$Subject = 'Thanks for your feedback!';
+									$Body    = <<<EOT
+				<body style="margin: 25px; padding: 0px;">
+					<div style="font-family: Arial; font-size: 14px;">
+						<div style="height:50px;background-color:#FD6B03;padding-top:13px;">
+							<center>
+				<img src="http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/jelly/images/Better_Logo_White.png" style="width:40px;display:block;margin-bottom:25px;"/>	
+							</center>
+						</div>
+
+						<div style="padding:20px; padding-top:25px;">
+							<div style="margin-bottom: 25px; padding: 5px; background-color: black; color: white; display: inline-block;">
+				Thanks for your feedback!
+							</div>
+
+							<div style="margin-bottom: 25px;">
+				<div style="margin-bottom: 25px;">
+					<!-- Name -->
+					<div class="Name" style="font-weight: bold; margin-bottom: 10px;">
+						Hi [New_User.First_Name /]
+					</div>
+
+					<!--  -->
+					<div class="Time" style="margin-bottom: 10px;">
+						Thanks for your feedback!
+					</div>
+
+					<!-- Page -->
+					<div class="Time" style="margin-bottom: 10px;">
+						<div class="Time" style="margin-bottom: 2px;">
+							You have a profile here in the Better Feedback team. You can update it anytime, or choose to hide it.
+						</div>
+						<div class="Time" style="margin-bottom: 5px;">
+							<a style="color:#41bde1;" href="http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[New_User.Type.Alias no_wrap /]/[New_User.Alias no_wrap /]">http://[PHP]return $_SERVER\['HTTP_HOST'\];[/PHP]/[New_User.Type.Alias no_wrap /]/[New_User.Alias no_wrap /]</a>
+						</div>
+					</div>
+				</div>
+							</div>	
+							<div>
+				Thanks!<br/>
+				[Site.Name No_Wrap/]
+							</div>
+						</div>
+
+						<div style="background-color:#efefef;padding:20px;">
+							Better is an app to help coordinate and grow powerful, participatory volunteer communities around a shared mission, created by organizers of Silent Barn, Showpaper, Babycastles Gallery, 285 Kent, and other historic NYC volunteer-run initiatives.<br/>
+							<br/>
+							<a href="http://better.space/learn_more" style="color:#FD6B03; font-weight:bold;text-decoration:underline;">LEARN MORE</a><br/>
+						</div>
+
+					</div>
+				</body>
+				EOT;
+									
+
+									// Get from
+							$From = array(
+								'Name' => '[Format as "PHP Single Quoted String"][1 Site from Database no_wrap][Name no_wrap/][/1][/Format] (via Better)',
+								'Email_Address' => 'services@better.space'
+							);
+			
+							// Get recipient
+							$To = array(
+								array(
+									'Name' => '[Format as "PHP Single Quoted String"][New_User.Name no_wrap /][/Format]',
+									'Email_Address' => '[Format as "PHP Single Quoted String"][New_User.Email_Address no_wrap /][/Format]'
+								)
+							);
+
+							// Get sender
+							$Reply_To = array(
+								'Name' => '[Format as "PHP Single Quoted String"][Current_Item.Variables.Sender.Name no_wrap /][/Format]',
+								'Email_Address' => 'services@better.space'
+							);
+	
+							// Get BCC
+							$BCC = array(
+								'Email_Address' => 'services@better.space'
+							);
+	
+							// Send message
+							try 
+							\{
+								$Email_Response = sendGridEmail($Subject, $Body, $From, $To, $Reply_To, $BCC);
+								if($Email_Response\['error'\])
+								\{
+									die('Error: Message could be sent. '. $Email_Response\['error'\]);
+								\}
+							\}
+							catch (exception $Exception) 
+							\{
+								echo ('Error: Message could be sent.');
+								traverse($Exception->getMessage());
+								die();
+							\}
+
+
+								[/PHP]
+		
+								<!-- Add user to feedback -->
+								[Set Feedback.Author to New_User/]
+		
+								<!-- Add user to feedback teams -->
+								[Team "Better Early Users & Feedback" from Database]
+									[Add New_User to Team.Member /]
+								[/Team]
+	
+								<!-- Log in user -->
+								[Set Current_Session.User to New_User /]
+								[Save Current_Session /]
+							[/New_User]
+						[/Else]
+					[/If]
+	
+					<!-- Add follower to selected apps -->
+					[App from Database]
+						<!-- Check if the app was selected -->
+						[If Form.App_[App.ID no_wrap /] is "1"]
+							<!-- Add the app to the follower -->
+							[Add New_Feedback.Author to App.Followers /]
+						[/If]
+					[/App]	
+	
+					<!-- Create app if in form --> 
+					[If Form.App_Name]
+						[New App]
+							[Set App.Name = Form.App_Name/]
+							[If Form.App_Description][Set App.Description = Form.App_Description/][/If]
+							[Set App.Suggested_By = New_Feedback.Author/]
+							[Save App/]
+							[Add New_Feedback.Author to App.Followers /]
+						[/New App]
+					[/If]
+	
+					[Save New_Feedback /]
+	
+					Thank you for sharing your feedback.
+			
+					[External_Script]	
+						[If Form.Author]
+							[Then]
+								[Page "Community" no_wrap]
+									window.setTimeout(function () \{
+												window.location = "/Page/[Page.Alias no_wrap/]";
+											\},
+											600
+										);
+								[/Page]
+							[/Then]
+							[Else]
+								window.setTimeout(function () \{
+											window.location = "/User/[New_Feedback.Author.Alias no_wrap/]";
+										\},
+										600
+									);
+							[/Else]
+						[/If]
+					[/External_Script]
+	
+				[/New Feedback]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

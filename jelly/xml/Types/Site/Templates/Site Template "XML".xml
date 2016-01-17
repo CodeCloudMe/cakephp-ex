@@ -1,0 +1,75 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Site Template "XML" --}
+		{Template}
+			{Type}Site{/Type}
+			{Name}XML{/Name}
+			{Content_Type}text/xml{/Content_Type}
+			{Content}
+				<Jelly>
+					Deprecated for now.
+					[Ignore]
+						[Header "Content-Type" Value "text/xml" /][Header "Content-Disposition" Value "[Format as "Jelly Attribute"]attachment;filename="[Format as "File Name"][Site.Name /] ([PHP]return date('Y-m-d H\hi');[/PHP]).xml[/Format]"[/Format]" /]<?xml version="1.0" encoding="utf-8"?>
+						[Set Current_Site to This /]
+						<Jelly>
+							[PHP]
+								//TODO - Cleanup somehow...
+								set_time_limit(300);
+						
+								$Explicit_Types_Block_String = '';
+								$Types_Command_String = &New_String('Type from Database as Reference where Parent_Type exists');
+								$Types_Processed_Command = &Process_Command_String($Database, $Types_Command_String, $Memory_Stack_Reference);
+								$Types_Item = &$Types_Processed_Command\\['Chunks'\\]\\[0\\]\\[Item\\];						
+
+								$Type_Alias_Array = &New_Array();						
+								while(!array_key_exists('End_Of_Results', $Types_Item) || !$Types_Item\\['End_Of_Results'\\])
+								\{
+									$Type_Alias_Array\\[\\] = &$Types_Item\\['Data'\\]\\['Alias'\\];
+									Move_Next($Types_Item);
+			
+								\}
+								unset($Types_Item);
+								unset($Types_Processed_Command);
+		
+								$XML_Content_String = '';
+								$Type_Alias_Count = count ($Type_Alias_Array);
+								for ($Type_Alias_Index = 0; $Type_Alias_Index < $Type_Alias_Count; $Type_Alias_Index++)
+								\{
+									$Type_Alias = $Type_Alias_Array\\[$Type_Alias_Index\\];
+									$Type_Items_Command_String = &New_String($Type_Alias . ' ' . 'from Database where Package is "Local" No_Child_Types as Reference');
+									$Types_Items_Processed_Command = &Process_Command_String($Database, $Type_Items_Command_String, $Memory_Stack_Reference);
+									$Type_Items_Item = &$Types_Items_Processed_Command\\['Chunks'\\]\\[0\\]\\[Item\\];
+							
+									$Type_Item_ID_Array = &New_Array();
+									while(!array_key_exists('End_Of_Results', $Type_Items_Item) || !$Type_Items_Item\\['End_Of_Results'\\])
+									\{
+										$Type_Item_ID_Array\\[\\] = &$Type_Items_Item\\['Data'\\]\\['ID'\\];
+										Move_Next($Type_Items_Item);
+									\}
+									unset($Type_Items_Item);
+									unset($Types_Items_Processed_Command);
+							
+									$Type_Item_ID_Count = count($Type_Item_ID_Array);
+									for ($Type_Item_ID_Index = 0; $Type_Item_ID_Index < $Type_Item_ID_Count; $Type_Item_ID_Index++)
+									\{
+										$Type_Item_ID = $Type_Item_ID_Array\\[$Type_Item_ID_Index\\];
+										$Type_Item_Block_String = '\\[';
+										$Type_Item_Block_String .= '1 ' . $Type_Alias . ' from Database where ID = ' . $Type_Item_ID . ' as XML_Item';
+										$Type_Item_Block_String .= '/\\]';
+										$Type_Item_Block_String .= "\n";
+
+										$Processed_Type_Item_Block_String = &Process_Block_String($Database, $Type_Item_Block_String, $Context);							
+										Render_Processed_Block($Processed_Type_Item_Block_String, array('No_Wrap' => true));
+										$XML_Content_String .= $Processed_Type_Item_Block_String\\['Content'\\];
+									\}		
+								\}
+		
+								return $XML_Content_String;
+							[/PHP]
+						[/Ignore]
+				</Jelly>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

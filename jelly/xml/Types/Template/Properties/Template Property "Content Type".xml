@@ -1,0 +1,13 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Template Property "Content Type" --}
+	
+		{Property}
+			{Type}Template{/Type}
+			{Value_Type}Text{/Value_Type}
+			{Name}Content Type{/Name}
+			{Default_Value}text/html{/Default_Value}
+		{/Property}
+	
+{/Jelly}

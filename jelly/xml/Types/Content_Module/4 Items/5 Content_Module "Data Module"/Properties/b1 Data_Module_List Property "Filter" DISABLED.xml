@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module_List Property "List Filter" --}
+	{!--
+		{Property}
+			{Type}Data_Module_List{/Type}
+			{Name}Filter{/Name}
+			{Plural_Name}Filters{/Plural_Name}
+			{Relation}Many-To-Many{/Relation}
+			{Value_Type}List_Filter{/Value_Type}
+		{/Property}
+	--}
+{/Jelly}

@@ -1,0 +1,112 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type Template "Clean Browse" --}
+	
+		{Template}
+			{Type}Type{/Type}
+			{Name}Clean Browse{/Name}
+			{Content}
+				<!-- Disambiguate -->
+				[Set Current_Type to This /]
+				
+				<!-- Defaults -->
+				[If Current_Type.Variables.Show_New_Link twas not set and Globals.Path_Variables.Show_New_Link twas not set]
+					[Set Current_Type.Variables.Show_New_Link to "True" /]
+				[/If]
+				[If Current_Type.Variables.Parent_Property_Alias twas not set and Globals.Path_Variables.Parent_Property_Alias twas not set]
+					[Set Current_Type.Variables.Parent_Property_Alias to "" /]
+				[/If]
+				[If Current_Type.Variables.Show_Items twas not set and Globals.Path_Variables.Show_Items twas not set]
+					[Set Current_Type.Variables.Show_Items to "True" /]
+				[/If]
+				[If Current_Type.Variables.Display twas not set and Globals.Path_Variables.Display twas not set]
+					[Set Current_Type.Variables.Display to "Menu" /]
+				[/If]
+				
+				<!-- New Item Link -->
+				<!-- TODO: maybe boolean support would be important? or at least case insensitivity when needed  --> 
+				[If Current_Type.Variables.Show_New_Link is "True"]
+					<tr class="Jelly_Menu_Row">
+						<td class="Jelly_Menu_Item" colspan="2">
+							[Link to Add [Current_Type.Alias No_Wrap /][If Current_Type.Variables.Parent_Property_Alias] With_Parent_Property_Alias  "[Current_Type.Variables.Parent_Property_Alias No_Wrap /]"[/If]/]
+						</td>
+					</tr>
+					
+					<!-- Separator -->
+					<tr><td colspan="2"><hr class="Jelly_Menu_Separator" /></td></tr>
+				[/If]
+				
+				[If Current_Type.Variables.Show_Items is "True"]
+					<span class="Big_List [Current_Type.Variables.Display no_wrap /]">
+						<!-- Browse Type Items -->
+						[[Current_Type.Alias No_Wrap /] from Database by Name[If Current_Type.Variables.Query] where [Current_Type.Variables.Query No_Wrap/][/If] iterator_classes "Big_List_Items" item_classes "Big_List_Item Hover"]
+						
+							[Set Browse_Item to This /]
+							
+							<!-- Select Link -->
+							<a 
+								class="Big_List_Item_Details"
+								href="#" 
+								id="[Namespace No_Wrap /]_Link"
+								onclick="[Format as "Single Line Code"]
+									/* TODO: I don't think the registered handler uses: Display_Target, Item_Type... make sure, then delete */
+									Jelly.Handlers.Call_Handler_For_Target(
+										\{
+											'Event': 'Selected',
+											'Target': this,
+											'Item': '[Browse_Item as Key No_Wrap /]',
+											'Badge': document.getElementById('[Namespace No_Wrap /]_Link').innerHTML,
+											'Display_Target': this.parentNode,
+											'Item_Type': '[Browse_Item.Type as Alias No_Wrap /]'
+										\});
+									return false;
+								[/Format]"
+							>
+								<span class="Big_List_Item_Cover">
+									[Browse_Item as Cover /]
+								</span>
+								<span class="Big_List_Item_Name">
+									[Browse_Item.Name /]
+								</span>
+								
+							</a>
+							<!-- End Select Link -->
+			
+						[/[Current_Type.Alias No_Wrap /]]
+						<!-- End Type Items -->
+					</span>
+					
+				[/If]
+				
+				<!-- None -->
+				<!-- TODO: test Item_Type: in the onclick below -->  
+				[If Globals.Path_Variables.Show_None Is "True"]
+					<a 
+						href="#" 
+						onclick="[Format as "Single Line Code"]
+							Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									'Event': 'Selected',
+									'Target': this,
+									'Item': '', 
+									'Item_Type': '[Current_Type.Alias No_Wrap /]',
+									'Badge': document.getElementById('[Namespace No_Wrap /]_Badge').innerHTML
+								\});
+							Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									'Event': 'Done',
+									'Target': this
+								\});
+							return false;
+						[/Format]"
+					>
+						<div class="Jelly_Menu_Badge" id="[Namespace No_Wrap /]_Badge">						
+							<i>None</i>
+						</div>
+					</a>
+				[/If]
+			{/Content}
+		{/Template}
+		
+{/Jelly}

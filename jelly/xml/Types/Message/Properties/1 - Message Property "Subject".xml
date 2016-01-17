@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Message Property "Subject" --}
+		{Property}
+			{Type}Message{/Type}
+			{Name}Subject{/Name}
+			{Value_Type}Text{/Value_Type}
+			{Default_Value}{/Default_Value}
+		{/Property}
+	
+{/Jelly}

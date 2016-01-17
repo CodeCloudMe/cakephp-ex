@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Data_Module Property "Cover Property Item" --}
+		{Property}
+			{Type}Data_Module{/Type}
+			{Name}Cover Property Item{/Name}
+			{Value_Type}Property{/Value_Type}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

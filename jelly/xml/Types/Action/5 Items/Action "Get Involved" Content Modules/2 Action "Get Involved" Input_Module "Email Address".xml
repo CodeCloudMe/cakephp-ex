@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Get Involved" Input_Module "Email Address" --}
+		{Input_Module}
+			{Action_Item}Get_Involved{/Action_Item}
+			{Property_Item}31295743{/Property_Item}
+			{Package}Local{/Package}			
+		{/Input_Module}
+	
+{/Jelly}

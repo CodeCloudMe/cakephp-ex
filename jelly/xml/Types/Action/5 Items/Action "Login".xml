@@ -1,0 +1,79 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Login" --}
+		{Action}
+			{Name}Login{/Name}
+			{Content}
+				<span class="Page_Item">
+					<h1>Register</h1>
+					
+					<span class="Block">
+						<span class="Block" style="width: 50%;">
+							<span class="Block" style="margin-bottom: 25px;">
+								<!-- Facebook login -->
+								[Action "Facebook Login" /]
+							</span>
+							
+							<span class="Block" style="margin-bottom: 25px;">
+								<!-- Register User -->
+								[Action "Register User" /]
+							</span>
+							
+							<span class="Block" style="margin-bottom: 25px;">
+								<!-- Link to login -->
+								[Action "Member Login"]
+									Already have an account? [Link to "/member_login"]Login[/Link]
+								[/Action]
+							</span>
+						</span>
+					</span>
+				</span>
+			{/Content}
+			{Code}
+				<!-- Hack: copied code from member_login to support local editor -->
+				
+				[If Form.Username does not exist or Form.Username = ""]
+					[Show Error for "Username"]Please enter a username.[/Show]
+				[/If]
+							
+				[If Form.Password does not exist or Form.Password = ""]
+					[Show Error for "Password"]Please enter a password.[/Show]
+				[/If]
+							
+				[If not Form.Error]
+					[Set Action.Variables.Success to False/]
+					[User from Database where Alias = Globals.Form.Username or Name = Globals.Form.Username or Email_Address = Globals.Form.Username]
+						[If User.Password Is Hash Of Globals.Form.Password]
+							[Set Action.Variables.Success to True/]
+							[Set Current_Session.User to User /]
+							[Save Current_Session /]				
+							[Go to User by Alias /]
+							[External_Script]
+								// Trigger "Dismiss" event
+								var Parameters = \{Event: "Dismiss", 'Target': document.getElementById('[Current_Action.Namespace No_Wrap /]')\};
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+								
+								// Trigger "Logged_In" event
+								var Parameters = \{Event: "Logged_In", 'Target': document.getElementById('[Current_Action.Namespace No_Wrap /]')\};
+								Jelly.Handlers.Call_Handler_For_Target(Parameters);
+								
+								// Refresh Toolbar
+								// TODO: Shouldn't manually do this
+								[Block "Toolbar" no_wrap]
+									Jelly.References.Trigger_Refresh(\{'Kind': 'Item', 'Item_ID': '[This.ID no_wrap /]'\});Jelly.References.Refresh_All();
+								[/Block]
+								
+								// Show "Toolbar"
+								Jelly.Interface.Show_Toolbar();								
+							[/External_Script]
+						[/If]
+					[/User]					
+					[If not Action.Variables.Success]
+						Incorrect password.
+					[/If]
+				[/If]
+			{/Code}
+		{/Action}
+	
+{/Jelly}

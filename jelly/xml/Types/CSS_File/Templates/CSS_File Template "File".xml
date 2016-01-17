@@ -1,0 +1,14 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- CSS_File Template "File" --}
+		{Template}
+			{Type}CSS_File{/Type}
+			{Name}File{/Name}
+			{Content}
+				[Header "Content-Type" Value "text/css" /][Header "Content-Disposition" Value "[Format as "Jelly Attribute"]inline;filename="[Format as "File Name"][CSS_File.Name No_Wrap /][/Format]"[/Format]" /][CSS_File.Content /]
+			{/Content}
+			{Content_Type}text/css{/Content_Type}
+		{/Template}
+	
+{/Jelly}

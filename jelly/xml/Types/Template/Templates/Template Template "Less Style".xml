@@ -1,0 +1,19 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Template Template "Less Style" --}
+	
+		{Template}
+			{Type}Template{/Type}
+			{Name}Less Style{/Name}
+			{Content}
+				.[Template.Values.Type.Alias /]_Item \{
+					&.[Template.Values.Type.Alias /]_[Template.Alias /]_Template, &.[Template.Alias /]_Template \{
+						[Template.Less_Style /]
+					\}
+				\}
+				
+			{/Content}
+		{/Template}
+		
+{/Jelly}

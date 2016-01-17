@@ -1,0 +1,12 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Type Property "Remote URL" --}
+	
+		{Property}
+			{Type}Type{/Type}
+			{Name}Remote URL{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

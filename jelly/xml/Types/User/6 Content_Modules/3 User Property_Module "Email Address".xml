@@ -1,0 +1,10 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- User Property_Module "Email Address" --}
+		{Property_Module}
+			{Type_Item}User{/Type_Item}
+			{Property_Item}31295743{/Property_Item}
+		{/Property_Module}
+	
+{/Jelly}

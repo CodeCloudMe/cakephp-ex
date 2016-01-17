@@ -1,0 +1,179 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Input "Menu" --}
+		{Input}
+			{Name}Menu{/Name}
+			{Content}
+				<!-- TODO: Rename to "Select" -->
+				
+				<!-- TODO: support implicit value type --> 
+				[If Current_Input.Variables.Value_Type Exists]
+					[Else]
+						Error: Input "Menu" needs Value Type passed in.
+					[/Else]
+				[/If]
+				
+				<!-- Dereference Value Type to Alias --> 
+				[If Current_Input.Variables.Value_Type.Is_Item]
+					[Then][Set Current_Input.Variables.Value_Type_Alias to Current_Input.Variables.Value_Type.Alias/][/Then]
+					[Else][Set Current_Input.Variables.Value_Type_Alias to Current_Input.Variables.Value_Type/][/Else]
+				[/If]
+				
+				<!-- Create hidden input that the menu will set -->
+				<!--TODO: is there a better search clause for this? Is_Set? Exists?-->
+				<!-- TODO - not sure if that Value passing in is done correctly (if Exists is the right check, and what happens without a value? Null?) -->
+				<!-- TODO: should be Value_Type instead of Alias ? -->
+				[Input "Hidden" Preserve_Namespace with 
+						Alias = Current_Input.Variables.Alias,
+						Value_Type = Current_Input.Variables.Value_Type_Alias
+						[If Current_Input.Variables.Value Exists], Value = Current_Input.Variables.Value[/If]
+					/]
+				
+				<!-- Menu Settings --> 
+				<!-- TODO: I'd like something like If Current_Input.Variables.Show_New_Link does not exist / is not set, etc --> 
+				<!-- TODO: I'd also like true and false booleans --> 
+				<!-- TODO: I'd also like in this case, the syntax to be (Input "Menu" with Show_New_Link, Show_None/) etc, if possible! -->
+				<!-- TODO - these checks should be done better with Exists -->
+				[If Current_Input.Variables.Show_New_Link twas not set]
+					[Set Current_Input.Variables.Show_New_Link to "True"/]
+				[/If]
+				[If Current_Input.Variables.Show_None twas not set]
+					[Set Current_Input.Variables.Show_None to "True"/]
+				[/If]
+				[If Current_Input.Variables.Show_Items twas not set]
+					[Set Current_Input.Variables.Show_Items to "True"/]
+				[/If]
+				[If Current_Input.Variables.Display_Value twas not set]
+					[Set Current_Input.Variables.Display_Value to "True" /]
+				[/If]
+				[If Current_Input.Variables.Show_Search twas not set]
+					[Set Current_Input.Variables.Show_Search to "True"/]
+				[/If]				
+				[If Current_Input.Variables.Display twas not set]
+					[Set Current_Input.Variables.Display to "Menu"/]
+				[/If]				
+				[If Current_Input.Variables.Package_Selection twas not set]
+					[If Value_Type_Alias = "Type"]
+						[Then]
+							[Set Current_Input.Variables.Package_Selection to "Menu"/]
+						[/Then]
+						[Else]
+							[Set Current_Input.Variables.Package_Selection to "All"/]
+						[/Else]
+					[/If]
+				[/If]
+				
+				[If Current_Input.Variables.Display = "Grid"]
+					[Then]
+						[Current_Input.Variables.Value_Type as Browse with Display = "Grid", Query = Current_Input.Variables.Query, Show_New_Link = Current_Input.Variables.Show_New_Link /]
+					[/Then]
+					[Else]
+						<!-- Closed Menu -->
+						<div
+							class="Jelly_Closed_Menu"
+							id="[Current_Input_Namespace No_Wrap /]_Menu"
+							onmousemove="jQuery(this).addClass('Jelly_Closed_Menu_Hover');"
+							onmouseout="jQuery(this).removeClass('Jelly_Closed_Menu_Hover');"
+							onclick="[Format as "Single Line Code"]
+								var This_Item = this;
+								var Menu_Reference = Jelly.Interface.Create_Menu(
+								\{
+									Alias: 'Menu_List',
+									Attach: 'Element',
+									Attach_Element: document.getElementById('[Current_Input_Namespace No_Wrap /]_Menu'),
+									URL: '/[Current_Input.Variables.Value_Type_Alias No_Wrap /]/Browse/Raw:Show_New_Link=[Current_Input.Variables.Show_New_Link No_Wrap /],Show_None=[Current_Input.Variables.Show_None No_Wrap /],Show_Items=[Current_Input.Variables.Show_Items No_Wrap /],Show_Search=[Current_Input.Variables.Show_Search No_Wrap /],Package_Selection=[Current_Input.Variables.Package_Selection No_Wrap /][If Current_Input.Variables.Parent_Property_Alias Twas Set],Parent_Property_Alias=[Current_Input.Variables.Parent_Property_Alias No_Wrap /][/If]',
+									Do_Not_Focus_First_Item: true,
+									Do_Not_Focus_On_Hover: true,
+									Block_Refresh: '[Current_Action.Namespace No_Wrap /]'
+								\});
+								return false;
+							[/Format]"
+						>
+							<div id="[Current_Input_Namespace No_Wrap /]_Menu_Trigger" class="Jelly_Closed_Menu_Badge">
+								[If Current_Input.Variables.Display_Value is "False" or Current_Input.Variables.Value does not exist]
+									[Then]
+										<i class="Jelly_Closed_Menu_Light">
+											[If Input.Variables.Label exists]
+												[Then]
+													[Input.Variables.Label /]
+												[/Then]
+												[Else]
+													None
+												[/Else]
+											[/If]
+										</i>
+									[/Then]
+									[Else]
+										[Current_Input.Variables.Value as "Badge" /]
+									[/Else]
+								[/If]
+							</div>
+					
+							<!-- Arrow -->
+							<div class="Jelly_Closed_Menu_Arrow">
+								&#x25BC;
+							</div>
+					
+							<br class="Jelly_Clear" />
+						</div>
+					[/Else]
+				[/If]
+				
+				[External_Script]
+					// Selected Handler
+					Jelly.Handlers.Register_Handler(
+					\{
+						"Element": document.getElementById("[Current_Input_Namespace No_Wrap /]"),
+						"Event": \["Selected", "Added"\],
+						"Code": function (Parameters)
+						\{
+							document.getElementById("[Current_Input_Namespace No_Wrap /]_Value").value = Parameters\["Item"\];
+							
+							[If Current_Input.Variables.Display_Value is "True"]
+								document.getElementById("[Current_Input_Namespace No_Wrap /]_Menu_Trigger").innerHTML = Parameters\["Badge"\];
+							[/If]
+							
+							[If Current_Input.Variables.On_Selected]
+								[Current_Input.Variables.On_Selected No_Wrap No_Wrap /]
+							[/If]
+							
+							[If Current_Input.Variables.Execute_On_Change]
+								Jelly.Handlers.Call_Handler_For_Target(\{"Event": "Execute", "Target": document.getElementById("[Current_Input_Namespace No_Wrap /]")\});
+							[/If]
+						\}
+					\});
+									
+					/*
+					// TODO: disabled
+					jQuery("#[Current_Input_Namespace No_Wrap /]_Menu").droppable
+					(
+						\{
+							hoverClass: "Jelly_Droppable",
+							tolerance: "pointer",
+							greedy: true,
+							drop: function (Event, UI)
+							\{
+								var Draggable_Reference = Jelly.References.Get_Reference_For_Element(UI.draggable.context);
+								
+								if (Draggable_Reference.Type != "[Current_Input.Variables.Value_Type_Alias No_Wrap /]")
+									return;
+								
+								Jelly.Handlers.Call_Handler_For_Target(
+								\{
+									'Event': 'Selected',
+									'Target': document.getElementById('[Current_Input_Namespace No_Wrap /]_Menu'),
+									'Badge': UI.draggable.context.innerHTML,
+									'Item': Draggable_Reference.ID,
+									'Item_Alias': Draggable_Reference.Alias,
+									'Item_Type': Draggable_Reference.Type
+								\});
+							\}
+						\}
+					);
+					*/
+				[/External_Script]
+			{/Content}
+		{/Input}
+	
+{/Jelly}

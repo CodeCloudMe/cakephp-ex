@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Payment Service Property "Public Key" --}
+		{Property}
+			{Type}Payment_Service{/Type}
+			{Name}Public Key{/Name}
+			{Value_Type}Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

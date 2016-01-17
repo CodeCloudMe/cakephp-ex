@@ -1,0 +1,11 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Scripting_Module Property "Script" --}
+		{Property}
+			{Type}Scripting_Module{/Type}
+			{Name}Script{/Name}
+			{Value_Type}Long_Text{/Value_Type}
+		{/Property}
+	
+{/Jelly}

@@ -1,0 +1,91 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Navigator" --}
+		{Block}
+			{Name}Navigator{/Name}
+			{Content}
+				<!-- Admin only -->
+				[Admin Ignore_Preview_Mode]
+					<!-- Add -->
+					<span class="Add_Button_Wrapper">
+						<a class="Add_Button" href="#" onclick="Jelly.Interface.Create_Menu(\{URL: '/Action/Clean_Add_Assistant', 'Alias': 'New_Item_Menu', Menu_Namespace: '[Namespace no_wrap /]_Menu', Attach: 'Element', Attach_Element: this, Edge: 'Bottom'\});return false;">
+							<span class="Content">
+								<span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/plus.svg"></span>
+								<span class="Label">Add...</span>
+							</span>
+						</a>
+					</span>
+	
+					<!-- Trim empty items -->
+					[Item_Parent_Folder from database]
+						[This.Child_Item]
+							[Else]
+								[Remove Item_Parent_Folder /]
+							[/Else]
+						[/This.Child_Item]
+					[/Item_Parent_Folder]
+	
+					<!-- Root folder -->
+					<span class="My_Data">
+						[Folder "Root" from database Item_Classes "Folder"]
+							<span class="Folder_Items">
+								[This.Child_Item Iterator_Classes "Sortable" Item_Classes "Sortable_Item"]
+									[This.Specific_Item]
+										<span class="Folder_Item Item_[This.ID no_wrap /]">
+											[If This.Type.Alias is "Type"]
+												<a class="Details" href="#" onclick="Jelly.Handlers.Visit_Link(\{URL: '/[This.Alias no_wrap /]'\}); return false;">
+													<span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/list.svg"></span>
+													<span class="Label">[If This.Plural_Name][Then][This.Plural_Name /][/Then][Else][This.Name /][/Else][/If]</span>
+												</a>
+												<a class="Browse" href="#" onclick="Jelly.Interface.Show_Browse_Bar(\{Type_Alias: '[This.Alias no_wrap /]'\});  return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/caret.svg"></a>
+											[/If]
+											[If This.Type.Alias is "Folder"]
+												<a class="Details Folder" href="#" onclick="Jelly.Handlers.Visit_Link(\{URL: '/[This.Type.Alias no_wrap /]/[This.Alias no_wrap /]'\}); return false;">
+													<span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/folder.svg"></span>
+													<span class="Label">[This.Name /]</span>
+												</a>
+											[/If]
+											[If This.Type.Alias is "Dashboard"]
+												<a class="Details" href="#" onclick="Jelly.Handlers.Visit_Link(\{URL: '/[This.Alias no_wrap /]'\}); return false;">
+													<span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/dashboard.svg"></span>
+													<span class="Label">[This.Name /]</span>
+												</a>
+											[/If]
+											[If This.Type.Alias is "Page"]
+												<a class="Details" href="#" onclick="Jelly.Handlers.Visit_Link(\{URL: '/[This.Alias no_wrap /]'\}); return false;">
+													<span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/document.svg"></span>
+													<span class="Label">[This.Name /]</span>
+												</a>
+											[/If]
+										</span>
+									[/This.Specific_Item]
+								[/This.Folder_Item]
+							</span>
+						[/Folder]
+						[External_Script]
+							Jelly.jQuery('.Sortable').sortable(\{
+								update: function (event, ui) \{
+									console.log(ui);
+									console.log(event);
+								\}
+							\});
+						[/External_Script]
+					</span>
+					<span class="Settings">
+						[Link to "/settings" into "Window" with Class = "Settings_Link"]
+							<span class="Content">
+								<span class="Icon"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/cog.svg"></span>
+								<span class="Label">Settings</span>
+							</span>
+						[/Link]
+					</span>
+					[ignore]
+						[Action from database][Link to this /][/Action]
+						[Type from database][Link to this /][/Action]
+					[/ignore]
+				[/Admin]
+			{/Content}
+		{/Block}
+	
+{/Jelly}

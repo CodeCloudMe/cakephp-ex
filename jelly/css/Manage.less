@@ -1,0 +1,1441 @@
+@link: #5555CC;
+@link-hover: #555599;
+
+/* TODO - Didn't work in Better CSS Foundation xml, so I just moved it here. */
+/* Box Model */
+html { 
+	box-sizing: border-box;
+}
+*, *:before, *:after {
+	box-sizing:inherit;	
+}
+
+/* Layout */
+
+#Jelly_Wrapper {position: absolute; left: 0px; right: 0px; min-height: 100%;
+	#Jelly_Toolbar {.Better-Clearfix; position: fixed; top: -50px; height: 50px; width: 100%; z-index: 1; background-color: @Orange; text-align: center; transition: top 0.2s;
+		&.Visible {top: 0px;}
+	}
+	#Jelly_Main_Wrapper {position: absolute; left: 0px; top: 0px; right: 0px; min-height: 100%; transition: top 0.2s;
+		&.Toolbar_Visible {top: 50px; min-height:calc(~'100% - 50px');}
+		#Jelly_Sidebar {position: fixed; left: 0px; width: 0px; height: 100%; background-color: yellow; overflow-x: hidden;
+			&:before {content: 'test';}
+		}
+		#Jelly_Content {position: absolute; left: 0px; right: 0px; min-height: 100%; transition: right 0.2s, background-color .75s;
+			&.Inspector_Visible {right: 400px; overflow: auto; top: 0px; bottom:0px;}
+			&.Backend
+			{
+				transition:right 0.2s, background-color 2s;
+				background-color:@Medium-Gray;
+				
+				.Frontend_Only
+				{
+					display:none;
+				}
+				[data-kind="Container"]
+				{
+					
+					max-width: initial;
+					padding:0px;
+					position:absolute;
+					min-height:100%;
+					transition:background-color 2s;
+					background-color:@Medium-Gray;
+				}
+				
+			}
+		}
+		#Jelly_Inspector {.Better-Clearfix; position: fixed; top: 0px; right: 0px; width: 0px; height: 100%; overflow-y: scroll; background-color: @Near-White; padding: 0px; box-sizing: border-box; transition: width 0.2s, top 0.2s;
+			&.Visible {width: 400px; padding-left: 45px; padding-top: 20px; padding-right: 45px; padding-bottom: 40px;}
+			&.Toolbar_Visible {top: 50px; min-height:calc(~'100% - 50px');}
+		}
+	}	
+}
+
+
+[data-kind="Item"][data-type="Type"][data-template="Manage"] 
+{
+	.Better-Clean;
+	.Better-Block;
+	font-family:@Standard;
+	height:100%;
+	padding-left:75px;
+	padding-right:75px;
+	padding-top:50px;
+	padding-bottom:50px;
+	position:relative;
+}
+
+[data-kind="Item"][data-type="Type"][data-template="Card_View"]
+{
+	.Better-Clean;
+	width:100%;
+	display:block;
+}
+
+/* Lists */
+
+.Better_Manage
+{	
+	ul&_Card_List, .Jelly_Content ul&_Card_List
+	{
+		.Better-Clean;
+		.Better-Horizontal-Center;
+		li 
+		{
+			.Better-Clean;
+			> div
+			{
+				.Better-Clean;
+				background-color: @White;
+				border: solid 1px @Near-White;
+				width:300px;
+				margin-bottom:10px;
+				padding:20px;
+				position:relative;
+				cursor:pointer;
+					
+				&:hover
+				{
+					border: solid 1px @Near-White;
+					background-color:@Near-White;
+				}
+				
+		
+				h1
+				{	
+					.Better-Clean;
+					font-family:"Avenir";
+					font-weight:100;
+					font-size:36px;
+					color:@Text-Light;
+					margin-bottom:15px;
+				}
+				
+				h3
+				{
+					.Better-Clean;
+					font-family:"Avenir";
+					font-weight:100;
+					font-size:12px;
+					color:@Text-Light;
+					margin:0px;
+				}
+		
+				a
+				{
+					.Better-Clean;
+					position:absolute;
+					bottom:20px;
+					margin-right:5px;
+					font-family:@Standard;
+					font-weight:600;
+					text-transform:uppercase;
+					font-size:11px;
+					line-height:1;
+					color:@Blue;
+					
+					background-image: url(/jelly/images/viewall.png);
+					background-repeat:no-repeat;
+					background-position:left top;
+
+					padding-left:18px;
+					
+					&:hover
+					{
+						text-decoration:none;
+					}
+				}
+			}
+		}
+	}
+	
+	ul&_List
+	{	
+		.Better-Clean;
+		width: 100%;
+		margin-top:12px;
+		margin-bottom:20px;
+	
+		li
+		{
+			.Better-Clean;
+			.Better-Clearfix;
+			border: solid 1px @Near-White;
+					
+			background-color: @White;
+			margin-bottom:0px;
+			cursor:pointer;
+			padding:15px;
+			padding-right:25px;
+			min-height:95px;
+					
+			&:hover
+			{
+				background-color:@Light-Gray;
+				border: solid 1px @Light-Gray;
+			}
+			
+			.Better_Left
+			{	
+				.Better-Clean;
+				.Better-Block;
+				float:left;
+			}
+
+			.Better_Right
+			{	
+				.Better-Clean;
+				.Better-Block;			
+				float:right;
+			}
+
+			button
+			{	
+				.Better-Clean;
+				&.Better_Drag
+				{
+					.Better-Clean;
+					width:20px;
+					height:20px;
+					background-repeat:no-repeat;
+					background-image: url(/jelly/images/Drag.png);
+					margin-right:40px;
+				}
+				
+				&.Better_Menu
+				{
+					.Better-Clean;
+					width:13px;
+					height:18px;
+					background-position: left top;
+					background-repeat:no-repeat;
+					background-image: url(/jelly/images/Chevron.png);
+					margin-right:35px;
+				}
+				
+				&.Better_Remove
+				{
+					.Better-Clean;
+				}					
+			}		
+
+			div.Better_Information
+			{	
+				.Better-Clean;
+				.Better-Clearfix;
+				float:left;
+				
+				figure
+				{	
+					.Better-Clean;
+					width:140px;
+					height:60px;
+					background-size: cover;
+					background-position: 50% 50%;
+					margin-right:13px;
+				}
+	
+				div.Better_Heading
+				{	
+					.Better-Clean;
+					font-weight:normal;
+				}
+			}
+		}
+		
+		&.Better_Expanded li
+		{
+			div.Better_Information
+			{	
+				.Better-Clean;
+				// TODO - unclear why this is needed, things just behaving wack
+				width:calc(~'100% - 128px');
+				position:relative;
+				div.Better_Heading
+				{	
+					.Better-Clean;
+					.Better-Content-Heading;
+					margin-bottom:7px;
+				}
+				div.Better_Details
+				{
+					.Better-Clean;
+					width:330px;
+					font-weight:200;
+					font-size:12px;
+					color: @Text-Light;
+					line-height:14px;
+				}
+			}
+		}
+	}
+	
+	&_Close
+	{
+		float:right;
+		margin-top:-30px;
+		margin-right:-55px;
+	}
+	
+	header&_Filter
+	{
+		.Better-Clean;
+		.Better-Clearfix;
+		background-repeat:no-repeat;
+		background-image: url(/jelly/images/Search.png);
+		background-position: 0px 3px;
+		padding-left:26px;
+		
+		a.Better_Publish
+		{
+			.Better-Clean;
+			float:right;
+			.Better_Manage_Button;
+			.Better-Black-Button;
+			margin-left: 10px;
+		}
+		
+		a.Better_Refresh
+		{
+			.Better-Clean;
+			float:right;
+			.Better_Manage_Button;
+			.Better-Black-Button;
+			margin-left: 10px;
+		}
+		
+		label
+		{
+			.Better-Clean;
+			display:block;
+			font-family:@Thin;
+			font-size:19px;
+			color:@Text-Dark-Gray;
+		}
+
+		input.Better_Input
+		{
+			.Better-Clean;
+			background:none;
+			display:block;
+			border:none;
+			font-family:@Thin;
+			font-size:19px;
+				color:@Text-Dark-Gray;
+			
+			&[type=text]
+			{
+				background-color:transparent;
+				padding:0px;
+				border-radius:0px;
+				color:@Text-Dark-Gray;
+			}
+		}
+	}
+}
+
+/* Elements */
+
+button.Better_Remove, button.Better_Drag, button.Better_Menu, button.Better_Add_Property
+{
+	.Better-Clean;
+	border:0;
+	background-color:transparent;
+	cursor: pointer;
+	
+	&.Better_Remove
+	{
+		.Better-Clean;
+		width:13px;
+		height:19px;
+		background-position: left top;
+		background-repeat:no-repeat;
+		background-image: url(/jelly/images/X.png);
+	}
+	
+	&.Better_Add_Property
+	{
+		.Better-Clean;
+		width:15px;
+		height:30px;
+		background-position: left bottom;
+		background-repeat:no-repeat;
+		background-image: url(/jelly/images/+.png);
+	}
+}
+
+.Better_Manage_Button, .Jelly_Content .Better_Manage_Button
+{
+	.Better-Clean;
+	.Better-Blue-Curved-Button;
+	font-weight:bold;
+	color:@White;
+	font-size: 12px;
+	line-height:48px;
+	height:48px;
+	display:inline-block;
+	padding-left:60px;
+	padding-right:60px;
+	text-decoration:none;
+	text-transform:uppercase;
+			
+	figure
+	{
+		.Better-Clean;
+		color:@White;
+		display:inline;
+		margin-right:20px;
+		font-size:18px;
+		vertical-align:middle;
+		transition: .2s;
+	}
+}
+
+
+/* Toolbar */
+
+#Jelly_Toolbar {
+	button
+	{
+		.Better-Clean;
+		border:0px;
+		cursor:pointer;
+		background-color:transparent;
+	}
+	
+	button.Better_Toolbar_Manage
+	{
+		.Better-Clean;
+		position:absolute;
+		outline:none;
+		top:13px;
+		left:95px;
+		width:30px;
+		height:23px;
+		background-repeat:no-repeat;
+		background-image: url(/jelly/images/Better_Toolbar.png);
+
+	}
+	
+	button.Better_Toolbar_Add
+	{
+		.Better-Clean;
+		.Better_Manage_Button;
+		.Better-Orange-Toolbar-Button;
+		border-radius:0px;
+		height:100%;
+		float:right;
+	}
+	
+	button.Better_Toolbar_User
+	{
+		.Better-Clean;
+		margin-top:9px;
+		float:right;
+		font-weight:normal;
+		font-size:14px;
+		margin-left:47px;
+		margin-right:47px;
+		color:@White;
+		
+		figcaption, figure
+		{	
+			vertical-align:middle;
+			display:inline-block;
+		}
+		figure
+		{	
+			display:inline-block;
+			margin-left:15px;
+			width:28px;
+			height:28px;
+			border-radius:14px;
+			background-color:@Dark-Gray;
+			background-size:cover;
+			background-repeat:no-repeat;
+		}
+	}
+	
+	.Better_Following_Hover, .Better_RSVPd_Events_As_Rider_Hover, .Better_RSVPd_Events_As_Captain_Hover
+	{		
+		.Better-Clean;	
+		position:relative;	
+		float:right;
+		height:50px;
+		width:100px;
+		text-align:center;
+		
+		button.Better_Following
+		{
+			.Better-Clean;		
+			margin:auto;
+			margin-top:9px;		
+			background-repeat: no-repeat;
+			background-image: url(/jelly/images/flaticon/heart.png);
+			width: 27px;
+			height: 27px;
+			background-size: contain;
+			outline:none;
+		}
+		button.Better_RSVPd_Events_As_Rider, button.Better_RSVPd_Events_As_Captain
+		{
+			.Better-Clean;		
+			margin:auto;
+			margin-top:9px;		
+			background-repeat: no-repeat;
+			background-image: url(/jelly/images/flaticon/calendar.png);
+			width: 27px;
+			height: 27px;
+			background-size: contain;
+			outline:none;
+		}
+		
+		table
+		{	
+			.Better-Clean;	
+			display:none;
+			&:hover
+			{	
+				display:table;
+			}
+			
+			position:absolute;
+			top:49px;
+			left:-85px;
+			background-color:@Near-White;
+			width:235px;
+			
+			tr
+			{
+				cursor:pointer;		
+				td.Image
+				{	
+					.Better-Clean;
+					vertical-align:middle;
+					padding:10px;
+					width:105px;
+					img
+					{
+						width:80px;
+					}
+				}
+				
+				td.Name
+				{
+					vertical-align:middle;
+					padding:10px;
+					font-family:@Thin;
+					font-size:16px;
+					color:@Text-Dark-Gray;
+					text-align:left;
+				}
+				
+				&:hover
+				{
+					td
+					{
+						background-color:@Medium-Gray;	
+					}
+				}
+			}
+		}
+		
+		&:hover
+		{
+			table
+			{
+				display:table;
+			}
+		}
+	}
+	
+	.Better_Events_Hover
+	{	
+		.Better-Clean;	
+		position:relative;	
+		float:right;
+		height:50px;
+		width:100px;
+		text-align:center;
+		
+		button.Better_Events
+		{
+			.Better-Clean;		
+			margin:auto;
+			margin-top:9px;		
+			background-repeat: no-repeat;
+			background-image: url(/jelly/images/flaticon/calendar.png);
+			width: 27px;
+			height: 27px;
+			background-size: contain;
+			outline:none;
+		}
+		
+		table
+		{	
+			.Better-Clean;
+			display:none;
+			&:hover
+			{	
+				display:table;
+			}
+			
+			position:absolute;
+			top:49px;
+			left:-87px;
+			background-color:@Near-White;
+			width:288px;
+			
+			tr
+			{
+				height:80px;
+				cursor:pointer;		
+				td.Image
+				{	
+					vertical-align:middle;
+					padding:10px;
+					width:105px;
+					img
+					{
+						width:80px;
+					}
+				}
+				
+				td.Name
+				{
+					.Name_Property
+					{	
+						font-weight:bold;
+					}
+					vertical-align:middle;
+					padding:10px;
+					font-family:@Thin;
+					font-size:16px;
+					color:@Text-Dark-Gray;
+					text-align:left;
+					line-height:1.2;
+				}
+				
+				&:hover
+				{
+					td
+					{
+						background-color:@Medium-Gray;	
+					}
+				}
+			}
+		}
+		
+		&:hover
+		{
+			table
+			{
+				display:table;
+			}
+		}
+	}
+}
+
+
+/* Inspector */
+
+#Jelly_Inspector {
+	h1
+	{
+		.Better-Clean;
+		.Better-Content-Heading;
+		margin-bottom:30px;
+	}
+	
+	h2
+	{
+		.Better-Clean;
+		.Better-Label;
+		margin-bottom:8px;
+		margin-top:8px;
+	}
+	
+	button.Better_Remove
+	{
+		.Better-Clean;
+		float:right;
+		margin-right:-25px;
+	}
+	
+	button.Better_Menu
+	{
+		.Better-Clean;
+		float:right;
+		width:12px;
+		height:10px;
+		background-position: left bottom;
+		background-repeat:no-repeat;
+		background-image: url(/jelly/images/Chevron.png);
+		margin-top:3px;
+	}
+	
+	button.Better_Add_Property
+	{
+		.Better-Clean;	
+		float:right;
+		margin-right:-25px;			
+	}
+	
+	.Jelly_Closed_Menu
+	{
+		.Better-Clean;
+		.Better-Clearfix;
+		padding:20px;
+		background-color:white;
+		display:block;
+		margin:0px;
+		border:solid 1px white;
+		
+		.Jelly_Closed_Menu_Badge
+		{
+			font-family:@Thin;
+			color:@Black;
+			font-weight:200;
+			font-size:12px;
+			
+			.Jelly_Closed_Menu_Light
+			{	
+				color:@Black;
+				font-style:italic;
+			}
+		}
+		
+		&:hover
+		{
+			border:solid 1px @Medium-Gray;
+		}
+		
+		.Jelly_Closed_Menu_Arrow
+		{
+			background-repeat: no-repeat;
+			float:right;
+			background-image:url(/jelly/images/Chevron.png);
+			color:transparent;
+		}
+				
+	}
+	
+	input
+	{
+		.Better-Clean;
+		width:100%;
+		background-color:@White;
+		height:48px;
+		border:none;
+		
+		&[type="text"],&[type="password"],&[type="number"]
+		{
+			padding-left:13px;
+			padding-right:13px;
+			font-size:12px;
+			color:@Black;
+			font-weight:200;
+		}
+		
+		&.Edit_Property_Label_Inline
+		{
+			background:none;
+			padding:0px;
+			width:initial;
+			margin:0px;
+			.Better-Label;	
+			margin-bottom:8px;
+			margin-top:8px;
+			height:initial;
+			display:block;
+			
+			&.Enabled
+			{			
+				padding:7px;
+				background-color: #dddddd;
+			}
+		}
+	}
+	
+	[data-type="Block"][data-alias="List"] .Jelly_Closed_Menu
+	{
+		margin-bottom:6px;
+	}
+
+	[data-type="Input"][data-alias="Date_Time"]
+	{
+		.Better-Clearfix;
+		
+		.Jelly_Date_Input, .Jelly_Time_Input
+		{
+			display:block;
+			float:left;
+			width:calc(~'50%  - 8px');		
+		}
+		
+		.Jelly_Date_Input
+		{
+			margin-right:16px;
+		}
+	}
+	
+	textarea
+	{
+		.Better-Clean;	
+		width:100%;
+		background-color:@White;
+		min-height:48px;
+		padding-top:20px;
+		padding-bottom:20px;
+		line-height: 1.35;
+		border:none;
+		padding-left:13px;
+		padding-right:13px;
+		font-size:12px;
+		color:@Black;
+		font-weight:200;
+	}
+	
+	.Map {.Block; width: 100%; height: 100%;
+		&:before {content: ''; padding-top: 50%; float: left;}
+		}
+}
+
+menu.Better_Inspector_Property_Menu
+{	
+	.Better-Clean;	
+	background-color: @Light-Gray;
+	
+	width:150px;
+	figure {display:none;}
+	menuitem {margin-top:0px;}
+	
+	&.New_Property
+	{	
+		width:275px;
+		
+		menuitem
+		{
+			margin-top:2px;			
+			a 
+			{
+				line-height:1.3;
+			}
+		}
+		
+		figure
+		{
+			display:initial;
+		}
+	}
+	
+	menuitem
+	{
+		.Better-Clean;
+		.Better-Clearfix;
+		display:block;
+		display:relative;
+		background-color:@White;
+		margin-top:0px;
+				
+		figure
+		{
+			.Better-Clean;
+			float:left;
+			width:20px;
+			height:20px;
+			background-size:contain;
+			background-repeat:no-repeat;
+			background-position: 50% 50%;
+			margin-right:13px;
+			margin-left:13px;
+			margin-top:7px;
+		}
+		
+		a
+		{
+			.Better-Clean;
+			font-family:@Thin;
+			font-size:14px;
+			color:@Black;
+			display:block;
+			width:100%;
+			height:100%;
+			padding:10px;
+			line-height:1;
+			
+			&:hover
+			{	
+				outline:none;
+				text-decoration:none;
+				background-color:@Light-Gray;
+//				border: solid 1px @Light-Gray;
+			}
+		}
+	}
+	
+	> menuitem:first-child
+	{
+		margin-top:0px;
+	}
+}
+
+
+/*  Dialogs  */
+
+#Better_Dialog
+{
+	.Better-Clean;
+
+	&_Create_List
+	{
+		.Better-Clean;	
+		min-width:600px;
+		min-height:300px;
+		background-color: @Near-White;
+		padding-left:40px;
+		padding-right:40px;		
+		padding-top:40px;
+		padding-bottom:25px;
+		
+		button.Better_Remove
+		{
+			.Better-Clean;
+			float:right;
+		}
+		
+		h1
+		{	
+			.Better-Clean;
+			font-family:@Thin;
+			font-weight:100;
+			font-size:36px;
+			color:#929292;
+			margin-bottom:10px;
+		}
+		
+		div.New
+		{
+			.Better-Clean;
+		}
+		
+		div.Import
+		{
+			.Better-Clean;
+			.Better-Hidden;
+		}
+	}
+}	
+				
+.Window {font-family: Source Sans Pro; font-size: 18px;
+	.Section {margin-bottom: 15px; display: block;}
+	.Section:last-of-type {margin-bottom: 0;}
+	textarea {height: auto; width: 350px;}
+	input {height: 38px; border-radius: 3px; font-size: 18px; padding: 6px;}
+	section {.Section;}
+	h1 {.Section; font-size: 18px; color: black;}
+	.Close_Link {margin-bottom: 10px; .iconic {width: 20px; height: 20px;}}
+	.Button {display: inline-block; padding: 10px; padding-left: 20px; padding-right: 20px; background-color: rgba(0,0,0,.8); color: white; border-radius: 5px; font-size: 18px; text-decoration: none; text-align: center;
+		.iconic {width: 34px; height: 34px; display: block; margin-left: auto; margin-right: auto;
+			* {fill: white; stroke: white;}
+		}
+		&:hover {text-decoration: inherit; background-color: rgba(0,0,0,.7);}
+	}
+	.Small_Button {.Button; padding: 5px;}
+	.Square_Button {.Button;}
+	.Lighter {background-color: lighten(@Light-Blue, 10%);}
+	.Close_Button {float: right;}
+	.Links {
+		&::after {content: ' '; display:table; clear:both;}
+		a {.Button;}
+	}
+	.Bottom_Links {.Links; text-align: right;}
+	&.Create_Other_List {
+	}
+	&.Create_List {
+		.Links a {.Square_Button; float: left; margin-right: 15px; margin-bottom:15px;}
+		.Create_List, .Links, .Blank_List {margin-bottom: 15px;}
+	}
+	&.Add_Assistant {
+		.Links a {.Square_Button; float: left; margin-right: 10px;}
+		.Links a:nth-of-type(2n+2) {margin-right: 0px;}
+		.Create_New {font-size: 20px; margin-bottom: 15px;}
+		.Create_Links {.Links; .Section;}
+		.Import_Link {a {.Small_Button;}}
+	}
+	&.Create_Item {
+		.Name_Label {margin-bottom: 15px;}
+		.Name_Input {margin-bottom: 15px;}
+		.Links {}
+	}
+	&.Setup_Assistant {
+		.Links a {.Square_Button; float: left; margin-right: 10px;}
+		.Links a:nth-of-type(2n+2) {margin-right: 0px;}
+	}
+	&.Add_Interaction {
+		.Links a {.Square_Button;}
+	}
+	&.Add_Scheduling {
+		a {.Square_Button;}
+	}
+	&.Change_Data {
+		.Properties a {.Small_Button;}
+	}
+	&.Add_Lunch_Scheduling {
+		.Date_Toggles {
+			.Item {display: block; float: left; margin-right: 5px; margin-bottom: 5px; width: 25px; height: 25px; text-align: center; padding-top: 2px;}
+			.Item:nth-of-type(7n+1) {clear: left;}
+			a {.Item; background-color: white; color: black; border-style: solid; border-width: 1px; border-color: #dddddd;}
+			a:hover {text-decoration: none;}
+			a.Enabled {background-color: @link; color: white;}
+			a.Enabled:hover {background-color: @link-hover;}
+			label {.Item; font-weight: bold; font-size: 12px; text-transform: uppercase;}
+			.Date_Toggle {.Item;}
+		}
+		.Questions {
+			.Better-Clearfix;
+			.Question_Remove {float: left; margin-top: 1px;}
+			.Question_Content {float: left; margin-left: 5px; margin-bottom: 5px;
+				label {display: block; text-transform: uppercase; font-size: 12px; margin-bottom: 3px;}
+			}
+		}
+		#Better_Add_Question {
+			a {.Button;}
+		}
+	}
+	&.Schedule_Lunch {
+		[data-kind="Iterator"][data-type="Lunch_Meeting"] {
+			[data-kind="Item"][data-type="Lunch_Meeting"] {
+				a {.Button; margin-bottom: 3px; display: block;}
+			}
+		}
+		label {.Label;}
+		.Label {margin-bottom: 5px;
+			&.Block {display: block;}
+		}
+	}
+	&.Setup_User {
+		.Register_User {
+			label {display: block; margin-bottom: 3px;}
+			.Links {text-align: center;}
+		}
+		.Left {float: left; margin-right: 25px;}
+		.Right {float: left;}
+	}
+	
+	.Column_Row {
+		&:after {content: ""; display: table; clear: both;}
+	}
+	&.Purchase {font-family: Raleway; font-size: 14px; line-height: 125%; .Column_Row; padding: 0px;
+	
+		label {display: block; text-transform: uppercase; font-size: 12px; margin-bottom: 1px;}
+		.Padded {width: 100%; padding-left: 20px; padding-right: 20px;}
+		.Row {margin-bottom: 10px;}
+		.Big_Row {margin-bottom: 20px;}
+		input, select {border-color: #D1D1D1; font-size: 15px; height: 38px; background-color: white; font-family: Raleway;}
+		input[name="Expiration_Month"], input[name="Expiration_Year"], input[name="Card_Verification_Code"] {text-align: center;}
+		input {padding: 6px 10px;}
+		select {}
+		.Cart_Item_Image {
+			@media (min-width: 992px) {
+				position: absolute; left: 0px; width: calc(~'(100%) / 3'); height: 100%;
+			}
+			.Cover_Image {width: 100%; background-size: cover; background-position: 50% 50%; background-repeat: no-repeat; overflow: hidden;
+				&:before {content: ''; padding-top: 30%; float: left;}
+				@media (min-width: 992px) {height: 100%;}
+			}
+		}
+		.Purchase_Details {position: relative; padding: 20px;
+	
+			@media (min-width: 992px) {
+				position: relative; left: calc(~'(100%) / 3'); width: calc(~'(100%) / 3 * 2');
+			}
+			.Cart_Item {width: 100%; margin-bottom: 10px;
+				.Name {font-size: 18px; line-height: 130%; margin-bottom: 5px;}
+				.Time {font-size: 13px; text-transform: uppercase; margin-bottom: 1px;}
+				.Location {font-size: 13px; text-transform: uppercase; margin-bottom: 1px;}
+				.Price {font-size: 13px; text-transform: uppercase; margin-bottom: 1px;}
+				.Quantity {text-align: center;}
+				.Donation {
+						input[type="number"] {width:100px; border:solid 1px #d1d1d1; border-radius:5px; outline:none;}
+					}
+			}
+			.Payment_Information {border-top-width: 1px; border-top-style: solid; border-top-color: #eeeeee; padding-top: 15px; .Column_Row;
+				.Card_Icon {float: left; width: calc(~'(100% - 10px) / 6'); text-align: center;}
+				.Card_Form {float: left; width: calc(~'(100% - 10px) / 6 * 5'); margin-left: 10px;
+					.Card_Name_And_Email {.Column_Row; .Row;
+						.Name {float: left; width: calc(~'(100% - 10px) / 2');
+							.First_Name {float: left; width: calc(~'(100% - 10px) / 2');}
+							.Last_Name {float: left; width: calc(~'(100% - 10px) / 2'); margin-left: 10px;}
+						}
+						.Email {float: left; width: calc(~'(100% - 10px) / 2 * 1'); margin-left: 10px;}
+					}
+					.Card_Information {.Column_Row; .Row;
+						.Credit_Card_Number {float: left; width: calc(~'(100% - 10px * 2) / 12 * 6');}
+						.Credit_Card_Expiration {float: left; width: calc(~'(100% - 10px * 2) / 12 * 4'); margin-left: 10px;
+							.Credit_Card_Expiration_Month {float: left; width: calc(~'(100% - 3px * 2) / 12 * 5');}
+							.Credit_Card_Expiration_Separator {float: left; width: calc(~'(100% - 3px * 2) / 12 * 2'); margin-left: 3px; text-align: center; padding-top: 7px;}
+							.Credit_Card_Expiration_Year {float: left; width: calc(~'(100% - 3px * 2) / 12 * 5'); margin-left: 3px;}
+						}
+						.Credit_Card_CVC {float: left; width: calc(~'(100% - 10px*2) / 12 * 2'); margin-left: 10px;}
+					}
+				}
+			}
+			.Pay_Button {text-align: center; margin-top: 25px;}
+			.Result {text-align: center;}
+		}
+		.Button {position: relative; text-decoration: none; width: 75%; font-size: 24px; padding: 15px; font-weight: normal;
+			&:hover {text-decoration: none;}
+			&:active {top: 2px; transition: top .1s;}
+		}
+		.Result {
+			.Jelly_Action_Result {display: block; border-style: none; background-color: white; color: red; font-size: 14px; padding: 0; margin-top: 5px; text-align: center;}
+		}
+		
+	}
+	&.Simple_Receipt {width: 300px;
+		.Thanks {font-size: 18px; font-family: Raleway; font-size: 24px; line-height: 140%; margin-bottom: 5px; text-align: center; margin-bottom: 25px;}
+		.Description {text-align: center; margin-bottom: 25px;}
+		.Email {font-weight:bold;}
+		.Support {color: @link; font-weight:bold;
+			&:hover {color: @link-hover;}
+		}
+		.Links {text-align: center;}
+		.Button {position: relative; text-decoration: none; width: 50%; font-size: 24px; padding: 15px; font-weight: normal;
+			&:hover {text-decoration: none;}
+			&:active {top: 2px; transition: top .1s;}
+		}
+	}
+}
+
+.Icon {font-family: Helvetica, Arial;}
+
+.Manage_Wrapper {display: none;}
+
+.Jelly_Modal {
+	@media (min-width: 0px) and (max-width: 992px) {position: absolute; width: 100%; height: 100%;}
+	@media (min-width: 992px) {position: fixed;}
+	> * {
+		> [data-kind="Item"] {border-radius: 4px; background-color: white; box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5); overflow: auto; padding: 25px;
+			@media (min-width: 0px) and (max-width: 992px) {position: fixed; left: 0px; top: 0px; right: 0px; bottom: 0px;}
+			@media (min-width: 992px) {max-width: 90%; max-height: 90%; display: block; position: fixed; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); -webkit-transform: translateX(-50%) translateY(-50%); -ms-transform: translateX(-50%) translateY(-50%); -moz-transform: translateX(-50%) translateY(-50%); -o-transform: translateX(-50%) translateY(-50%);}
+		}
+		> [data-kind="Item"][data-alias="Simple_Checkout"], [data-kind="Item"][data-alias="Simple_Donation_Checkout"] {padding: 0px;
+			@media (min-width: 0px) and (max-width: 992px) {}
+			@media (min-width: 768px) and (max-width: 992px) {}
+			@media (min-width: 992px) {width: 60%; max-width: 800px;}
+		}
+		> [data-kind="Item"][data-alias="Add_Grid_Data_Module"]
+		{
+		}
+	}
+}
+
+
+.Jelly_Content {
+	/* Content Modules */
+	[data-kind="Iterator"][data-type="Content_Module"] >[data-kind="Item"] {
+		.Module_Content {.Block; .Section; transition: width 0.3s, font-size 0.3s, left 0.3s;
+			/* Width */
+			&[data-width="Full"] {.Full_Width;}
+			&[data-width="Normal"] {.Content_Width;}
+			&[data-width="Inset"] {.Inset_Width;}
+	
+			/* Text Modules */
+			&[data-module="Text_Module"] {
+				&[data-size=Large] {font-size: 24px;}
+				&[data-size=Normal] {}
+				&[data-size=Small] {font-size: 10px;}
+			}
+			/* Picture Modules */
+			&[data-module="Picture_Module"] {
+				&[data-size=Large] {font-size: 24px;}
+				&[data-size=Normal] {}
+				&[data-size=Small] {font-size: 10px;}
+				
+				&[data-size=Large] {}
+				&[data-size=Normal] {overflow: hidden; &:before {content: ''; padding-top: 50%; float: left;}}
+				&[data-size=Small] {overflow: hidden; &:before {content: ''; padding-top: 20%; float: left;}}
+				
+				.Picture {display: block; width: 100%; background-size: cover; background-position: 50% 50%;}
+			}
+			/* Property Modules */
+			&[data-module="Property_Module"] {
+				&[data-size=Large] {font-size: 24px;}
+				&[data-size=Normal] {}
+				&[data-size=Small] {font-size: 12px;}
+				&[data-show-label="True"] {.Label {display: block;}}
+				&[data-show-label="False"] {.Label {display: none;}}
+				.Label {.Bold; .Uppercase; font-size: 13px;}
+				.Value {}
+				> [data-kind="Property"][data-property="Price"] {&:before {content: '$';}} /* TODO This won't work anymore */
+			}
+			/* Data Modules */
+			&[data-module="Data_Module"] {
+				> [data-kind="Property"][data-property="Price"] {&:before {content: '$';}} /* TODO This won't work anymore */
+			}
+			/* Interaction Modules */
+			&[data-module="Purchase_Module"], &[data-module="Follow_Module"], &[data-module="Lunch_Scheduling_Module"], &[data-module="Donate_Module"] {
+				> [data-kind="Property"][data-property="Price"] {&:before {content: '$';}} /* TODO This won't work anymore */
+			}
+	
+			/* Modules with Lists */
+			&[data-module="Property_Module"], &[data-module="Data_Module"] {
+				/* Cover Image */
+				.Value {.Block; position: relative;}
+				.Items {
+					.Cover {.Cover_Image;}
+				}
+				.Cover_Picture {.Cover_Image;}
+				a, a:hover, a:active {text-decoration: inherit; color: inherit;}
+				
+				.Details {
+					> * > *:first-of-type {font-weight: bold;}
+				}
+				.Cover {
+					.Map {.Block; position: absolute; width: 100%; height: 100%; &:before {content: ''; float: left; padding-top: 50%; transition: padding-top 0.3s;}}
+				}
+				
+				.List_Map_Wrapper {position: relative; overflow: hidden;}
+				.List_Map {visibility: hidden; position: absolute; width: 100%;
+					&:before {content: ''; float: left; padding-top: 50%; transition: padding-top 0.3s;}}
+		
+				&[data-display="Grid"]
+				{
+					.Items {
+						> [data-kind="Iterator"] {.Grid;
+							> [data-kind="Item"] {.Left; position: relative; padding: 10px; transition: width .3s;
+								.Cover {position: relative;}
+								.Details {}
+							}
+						}
+					}
+					&[data-overlay="True"] {.Details {.Block; position: absolute; left: 10px; right: 10px; bottom: 10px; padding: 5px; background-color: rgba(0,0,0,.5); color: white;
+						data {display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 1.7em;}
+					}}
+					
+					&[data-size="Small"] .Items > [data-kind="Iterator"] > [data-kind="Item"] {width: calc(~'100% / 6'); &:nth-of-type(6n+1) {clear: left;}}
+					&[data-size="Normal"] .Items > [data-kind="Iterator"] > [data-kind="Item"] {width: calc(~'100% / 4'); &:nth-of-type(4n+1) {clear: left;}}
+					&[data-size="Large"] .Items > [data-kind="Iterator"] > [data-kind="Item"] {width: calc(~'100% / 3'); &:nth-of-type(3n+1) {clear: left;}}
+				}
+				&[data-display="List"]
+				{
+					.Items {
+						> [data-kind="Iterator"] {.Block;
+							> [data-kind="Item"] {.Block; .Clearer; position: relative; padding: 10px; border-bottom-width: 1px; border-bottom-color: rgba(0,0,0,.1); border-bottom-style: solid; transition: width 0.3s;
+								&:last-of-type {border-bottom-style: none;}
+							}
+						}
+					}
+					
+					&[data-overlay="True"] {
+						.Details {.Block; position: absolute; left: 10px; right: 10px; bottom: 10px; padding: 5px; background-color: rgba(0,0,0,.5); color: white;}
+						.Cover {width: 100%;}
+						
+						&[data-size="Small"] .Items > [data-kind="Iterator"] > [data-kind="Item"] {
+							.Cover, .Cover_Picture {&:before {padding-top: 25%; transition: padding-top 0.3s;}}
+							.Details {}
+						}
+						&[data-size="Normal"] .Items > [data-kind="Iterator"] > [data-kind="Item"] {
+							.Cover, .Cover_Picture {&:before {padding-top: 50%; transition: padding-top 0.3s;}}
+							.Details {}
+						}
+						&[data-size="Large"] .Items > [data-kind="Iterator"] > [data-kind="Item"] {
+							.Cover, .Cover_Picture {transition: padding-top 0.3s;}
+							.Details {}
+						}
+					}
+					
+					&[data-overlay="False"] {
+						.Cover, .Details {transition: width 0.3s; position: relative;}
+						
+						&[data-size="Small"] .Items > [data-kind="Iterator"] > [data-kind="Item"] {
+							.Cover {.Left; width: 10%;}
+							.Details {.Left; width: 90%; padding-left: 10px;}
+						}
+						&[data-size="Normal"] .Items > [data-kind="Iterator"] > [data-kind="Item"] {
+							.Cover {.Left; width: 30%;}
+							.Details {.Left; width: 50%; padding-left: 10px;}
+						}
+						&[data-size="Large"] .Items > [data-kind="Iterator"] > [data-kind="Item"] {
+							.Cover {.Left; width: 80%;}
+							.Details {.Left; padding-top: 10px;}
+						}
+					}
+				}
+				&[data-display="Commas"]
+				{
+					.Items {
+						> [data-kind="Iterator"] {
+							> [data-kind="Item"] {
+								.Cover {visibility: hidden; position: absolute;}
+								.Details {}
+								.Details data:after {content: ', '};
+								&:last-of-type .Details data:after {content: ''};
+							}
+						}
+					}
+					&[data-size=Large] {font-size: 24px;}
+					&[data-size=Normal] {}
+					&[data-size=Small] {font-size: 10px;}
+				}
+				&[data-display="Map"]
+				{
+					.List_Map {display: block; visibility: visible; position: relative;}
+					&[data-size=Large] {.Map {&:before {padding-top: 80%;}}}
+					&[data-size=Normal] {}
+					&[data-size=Small] {.Map {&:before {padding-top: 25%;}}}
+					.Items {visibility: hidden; position: absolute;}
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+				/* Screen Sizes */
+				@screen-extra-small: 0px;
+				@screen-small: 768px;
+				@screen-medium: 992px;
+				@screen-large: 1200px;
+				
+				/* Margins */
+				@Small-Margin: 10px;
+				@Medium-Margin: 15px;
+				@Big-Margin: 20px;
+				
+				/* Cells */
+				.three-columns {.make-width(3/12, @Medium-Margin)}
+				.nine-columns {.make-width(9/12, @Medium-Margin)}
+				.small-cell() {
+					.cell-base;
+					@media (min-width: @screen-small) and (max-width: @screen-medium) {.cell(1/3, @Small-Margin);}
+					@media (min-width: @screen-medium) and (max-width: @screen-large) {.cell(1/4, @Medium-Margin);}
+					@media (min-width: @screen-large) {.cell(1/6, @Big-Margin);}
+				}
+				.medium-cell() {
+					.cell-base;
+					@media (min-width: @screen-small) and (max-width: @screen-medium) {.cell(1/2, @Small-Margin);}
+					@media (min-width: @screen-medium) and (max-width: @screen-large) {.cell(1/3, @Medium-Margin);}
+					@media (min-width: @screen-large) {.cell(1/4, @Big-Margin);}
+				}
+				.medium-cell-with-margin(@Margin) {
+					.cell-base;
+					@media (min-width: @screen-small) and (max-width: @screen-medium) {.cell(1/2, @Margin);}
+					@media (min-width: @screen-medium) and (max-width: @screen-large) {.cell(1/3, @Margin);}
+					@media (min-width: @screen-large) {.cell(1/4, @Margin);}
+				}
+				.big-cell() {
+					.cell-base;
+					@media (min-width: @screen-small) and (max-width: @screen-medium) {.cell(1, @Small-Margin);}
+					@media (min-width: @screen-medium) and (max-width: @screen-large) {.cell(1/2, @Medium-Margin);}
+					@media (min-width: @screen-large) {.cell(1/2, @Big-Margin);}
+				}
+				
+				.Clearer {
+					&:after {content: ""; display: table; clear: both;}
+				}
+				
+				.cell-base {border-sizing: border-box; width: 100%;}
+				.make-width(@Width, @Margin) {width: calc(~'100% * @{Width} - @{Margin}');}
+				.cell(@Width, @Margin) {float: left; margin-left: @Margin; margin-bottom: @Margin; @Count: 1/@Width; .make-width(@Width, @Margin);
+					&:nth-of-type(@{Count}n+1) {margin-left: 0; clear: left;}
+				}
+				.container {position: relative; width: 100%; max-width: 960px; box-sizing: border-box; margin: auto;}
+				.row {.Clearer;}
+				.Grid {.Block; .Clearer;}
+				
+				.Block {display: block;}
+				.Relative {position: relative;}
+				.Left {float: left;}
+				.Right {float: right;}
+				.Centered {margin-left: auto; margin-right: auto;} /*position: relative; left: 50%; transform: translateX(-50%);}*/
+				.Cover_Image {.Cover_Image_With_Height(80%);}
+				.Cover_Image_With_Height(@Cover_Image_Height) {.Block; background-color: #eeeeee; background-size: cover; background-repeat: no-repeat; background-position: 50% 50%; overflow: hidden;
+					&:before {content: ''; padding-top: @Cover_Image_Height; float: left;}
+				}
+				.Section {margin-bottom: 2rem; .Relative; .Block;}
+				.Uppercase {text-transform: uppercase;}
+				.Bold {font-weight: bold;}
+				
+				.Item_Cover_Image {
+					.Cover_Content {display: block; width: 100%; margin-bottom: 20px; position: relative; overflow: hidden;
+						&:before {content: ''; padding-top: 30%; float: left;}
+						.Cover_Picture, .Map {position: absolute; left: 0; top: 0; right: 0; bottom: 0;}
+						.Cover_Picture {background-position: 50% 10%; background-size: cover;}
+					}
+				}
+				
+				/* Content Widths */
+				.Inset_Width {.Block; width: 50%; .Centered;}
+				.Content_Width {.Block; width: 75%; .Centered;}
+				.Full_Width {.Block; width: 100%; .Centered;}
+				
+				.Caps {font-size: 80%; text-transform: uppercase;}
+				.Border-Bottom {border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #cccccc;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {font-family: Source Sans Pro; line-height: 1.6;}
+				
+.Jelly_Content {
+	[data-kind="Iterator"][data-type="Content_Module"] >[data-kind="Item"] {.Block; .Relative;}
+				
+				/* Nav */
+				nav {background-color: black; width: 100%; color: white; .Clearer; padding: 20px; box-sizing: border-box; .Uppercase; margin-bottom: 25px;
+					/* Site Logo */
+					h1 {.Block; .Left; font-family: Montserrat; font-size: 22px; .Bold; padding: 0px; margin: 0px; letter-spacing: 1px;}
+					
+					/* Pages */
+					[data-type="Page"][data-kind="Iterator"] {.Right; .Clearer; font-family: "Helvetica Neue"; font-size: 10px; padding: 0; margin: 0; list-style-type: none;
+						[data-type="Page"][data-kind="Item"] {.Block; .Left; margin: 0; padding: 0; margin-left: 15px;
+							a {.Block; padding-top: 5px;
+								&:first-of-type {margin-left: 0;}
+							}
+						}
+					}
+					
+					/* Links */
+					a {color: inherit; text-decoration: inherit;
+						&:hover {color: inherit; text-decoration: inherit;}
+					}
+				}
+				
+				[data-kind="Container"] {.Block; .Relative;}
+}
+.Backend {[data-kind="Container"] {width: 100%;}}
+
+/* Quick Interaction */
+
+[data-type="Donate_Module"][data-kind="Item"][data-template="Default"],
+[data-type="Follow_Module"][data-kind="Item"][data-template="Default"],
+[data-type="RSVP_Module"][data-kind="Item"][data-template="Default"],
+[data-type="Purchase_Module"][data-kind="Item"][data-template="Default"],
+[data-type="Lunch_Scheduling_Module"][data-kind="Item"][data-template="Default"],
+{	
+	display:block;
+	width: 75%;	
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:15px;	
+	a 
+	{
+		.Better_Manage_Button;
+		border-radius:5px;
+	}
+}

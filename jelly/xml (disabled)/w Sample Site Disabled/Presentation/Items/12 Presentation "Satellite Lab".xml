@@ -1,0 +1,12 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Presentation "Satellite Lab" --}
+		{Presentation}
+			{Name}Satellite Lab{/Name}
+			{Website}http://satellite-lab.com/{/Website}
+			{Description}Satellite Lab is a new company that sits at the intersection of science and creativity. Having developed patented technology that enables the use of moving light sources within the frozen world of high-speed imaging, Satellite Lab is opening new doors for in-camera image-making.{/Description}
+			{Picture}Satellite_Lab{/Picture}
+		{/Presentation}
+	
+{/Jelly}

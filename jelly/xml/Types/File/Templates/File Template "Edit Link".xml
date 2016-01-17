@@ -1,0 +1,34 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- File Template "Edit Link" --}
+		{Template}
+			{Type}File{/Type}
+			{Name}Edit Link{/Name}
+			{Content}
+				<!-- This is for later, if we implement link templates-->
+				[Set This.Action_Type to "Edit" /]
+				
+				[Set Edit_Link_Item to This /]
+				<div>
+					<div class="Uploader_Wrapper">
+						<span id="[Namespace No_Wrap /]_Jelly_Flash_Uploader_Display" class="Jelly_Flash_Uploader_Display" onmousemove="Jelly.Files.Position_Flash_Uploader(\{'Namespace': '[Namespace No_Wrap /]', 'Attach': '[Namespace No_Wrap /]_Jelly_Flash_Uploader_Display'\});">
+							<a href="#" onclick="return false;">Upload a [Edit_Link_Item:Self_Type:Alias No_Wrap /]</a>
+							<span id="[Namespace No_Wrap /]_Uploader_No_Flash" class="Jelly_Flash_Uploader_No_Flash"></span>
+						</span>
+						
+						<!--
+						<div id="[Namespace No_Wrap /]_Jelly_Flash_Uploader_Container" class="Jelly_Flash_Uploader_Container">
+							<div id="[Namespace No_Wrap /]_Jelly_Flash_Uploader_Object" class="Jelly_Flash_Uploader_Object" onclick="Show_HTML_Uploader(\{'Namespace': '[Namespace No_Wrap /]', 'Action_Namespace': '[Current_Action:Namespace No_Wrap /]', 'Input_Alias': '[Input:Alias No_Wrap /]', 'File_Type': '[Edit_Link_Item:Self_Type:Alias No_Wrap /]'\});return false;">&nbsp;</div>
+						</div>
+						-->
+						
+						[External_Script]
+							Jelly.Files.Add_Flash_Uploader(\{"Namespace": "[Namespace No_Wrap /]", "Attach": "[Namespace No_Wrap /]_Jelly_Flash_Uploader_Display", "Action_Alias": "[Action_Type No_Wrap /]", "Item_Type": "[Edit_Link_Item:Self_Type:Alias No_Wrap /]", "Item_Key": "[Edit_Link_Item:Edit_Item_ID No_Wrap /]"\});
+						[/External_Script]
+					</div>
+				</div>
+			{/Content}
+		{/Template}
+	
+{/Jelly}

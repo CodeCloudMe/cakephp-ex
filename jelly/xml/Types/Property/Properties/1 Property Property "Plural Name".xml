@@ -1,0 +1,15 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Property Property "Plural Name" --}
+	
+		{Property}
+			{Type}Property{/Type}
+			{Value_Type}Text{/Value_Type}
+			{Name}Plural Name{/Name}
+			{Alias}Plural_Name{/Alias}
+			{Data_Name}Plural_Name{/Data_Name}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

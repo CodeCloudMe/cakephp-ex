@@ -1,0 +1,20 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Event Action "Stop Selling Tickets" --}
+		{Type_Action}
+			{Type}Event{/Type}
+			{Name}Stop Selling Tickets{/Name}
+			{Content}
+				[Link to Execute with Class="Button"]Stop Selling Tickets[/Link]
+			{/Content}
+			{Code}
+				[Current_Action.Target]
+					[Set Current_Event to This/]
+					[Set Current_Event.On_Sale to False/]
+					[Save Current_Event/]
+				[/Current_Action.Target]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}

@@ -1,0 +1,15 @@
+{?xml version="1.0" encoding="utf-8"?}
+{Jelly}
+	
+	{!-- Property Property "Reverse Key" --}
+	
+		{Property}
+			{Type}Property{/Type}
+			{Value_Type}Text{/Value_Type}
+			{Name}Reverse Key{/Name}
+			{Alias}Reverse_Key{/Alias}
+			{Data_Name}Reverse_Key{/Data_Name}
+			{Advanced}1{/Advanced}
+		{/Property}
+	
+{/Jelly}

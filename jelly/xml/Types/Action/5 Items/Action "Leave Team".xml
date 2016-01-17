@@ -1,0 +1,69 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Action "Leave Team" --}
+		{Action}
+			{Name}Leave Team{/Name}
+			{Content}
+				<!-- TODO privs -->
+				
+				<div class="Remove_Window">
+					<!-- Close Link -->
+					<a href="#" class="Close_Button" onclick="Jelly.Interface.Close_Top_Window(); return false;"><img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/x-thin.svg"></a>
+					
+					<!-- Pass value to action -->
+					[Input "Hidden" with Name = "Value", Value = Current_Action.Variables.Value /]
+					
+					<!-- Title -->
+					<div class="Header">
+						Leave the team?
+					</div>
+					
+					<!-- Save/Cancel -->
+					<div class="Execute">
+						[Action as Loading /]
+						[Link to Execute]Leave[/Link]	
+					</div>
+					
+					<!-- Result -->
+					<div>[Action as Result /]</div>
+				</div>
+			{/Content}
+			{Code}
+				[If Globals.Allow_Tracking]
+					[External_Script]
+						if (mixpanel)
+						\{
+							mixpanel.track(
+									"Team Left", 
+									\{	
+										"User Name": "[Format as "Javascript String"][Form.Value.Member.Name no_wrap/][/Format]",
+										"Team Name": "[Format as "Javascript String"][Form.Value.Team.Name no_wrap/][/Format]",
+										"Account": "[PHP]return $_SERVER\["HTTP_HOST"\];[/PHP]"
+									\}
+								);
+						\}
+					[/External_Script]
+				[/If]
+				
+				<!-- TODO privs -->	
+				[Remove Form.Value /]
+				
+				[External_Script]
+					Jelly.Handlers.Call_Handler_For_Target(
+						\{
+							"Event": "Item_Removed",
+							"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]"),
+							"Item": "[Current_Action.Target as Key No_Wrap /]",
+							"Item_Type": "[Current_Action.Target.Type as Alias No_Wrap /]"
+						\});
+				
+					Jelly.Handlers.Call_Handler_For_Target(
+						\{
+							"Event": "Dismiss",
+							"Target": document.getElementById("[Form.Metadata_Namespace No_Wrap /]")
+						\});
+				[/External_Script]
+			{/Code}
+		{/Action}
+{/Jelly}

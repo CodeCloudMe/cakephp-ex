@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Not_Found_Item Template "Default" --}
+		{Template}
+			{Type}Not_Found_Item{/Type}
+			{Name}Default{/Name}
+			{Content}
+				[Not_Found_Item.Content /]
+			{/Content}
+		{/Template}
+	
+{/Jelly}

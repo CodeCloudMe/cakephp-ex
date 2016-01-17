@@ -1,0 +1,13 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Type "List Filter" --}
+		{Type}
+			{Name}List Filter{/Name}
+			{Parent_Type}Item{/Parent_Type}
+			{Plural_Name}List Filters{/Plural_Name}
+			{Default_Input}Menu{/Default_Input}
+			{Package}Design{/Package}
+		{/Type}
+	
+{/Jelly}

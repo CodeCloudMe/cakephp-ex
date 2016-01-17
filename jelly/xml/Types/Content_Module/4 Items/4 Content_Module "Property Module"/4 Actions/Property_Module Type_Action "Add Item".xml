@@ -1,0 +1,55 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Property_Module Type_Action "Add Item" --}
+		{Type_Action}
+			{Type}Property_Module{/Type}
+			{Name}Add Item{/Name}
+			{Content}
+				[Admin]
+					<!-- Admin only -->
+					
+					<!-- Pass current item to action -->
+					[Input "Hidden" with Name = "Current Item", Value = Current_Item /]
+					
+					<!-- Link to select property -->
+					[Link to Execute]
+						<img class="iconic" data-src="/jelly/libraries/iconic/svg/smart/plus-thin.svg">
+						Add
+					[/Link]
+				[/Admin]
+			{/Content}
+			{Code}
+				[Admin]
+					<!-- Admin Only... -->
+					
+					<!-- Disambiguate -->
+					[Set Current_Property_Module to Current_Action.Target /]
+					[Set Current_Property_Module_Property_Item to Current_Property_Module.Property_Item /]
+					[Set Current_Item to Form.Current_Item /]
+					
+					<!-- Create Item -->
+					[New [Current_Property_Module_Property_Item.Value_Type.Alias no_wrap /]]
+						<!-- Disambiguate -->
+						[Set Current_New_Item to This /]
+						
+						<!-- Save Item -->
+						[Save Current_New_Item /]
+						
+						<!-- TODO: Reverse? -->
+						[Add Current_New_Item to Current_Item.[Current_Property_Module_Property_Item.Alias no_wrap /] /]
+						
+						<!-- Show Inspector -->
+						[External_Script]
+							Jelly.Interface.Inspect(\{Type_Alias: "[Current_New_Item.Type.Alias no_wrap /]", Item_ID: [Current_New_Item.ID no_wrap /]\});
+						[/External_Script]
+					[/New]
+					
+						
+					<!-- Trigger Edited Event -->
+					<!-- TODO -->
+				[/Admin]
+			{/Code}
+		{/Type_Action}
+	
+{/Jelly}
