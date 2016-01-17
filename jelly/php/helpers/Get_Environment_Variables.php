@@ -9,16 +9,16 @@ function &Get_Environment_Variables()
 			"Database" =>
 			array(
 				// Database Name
-				"Database_Name" => getenv("OPENSHIFT_APP_NAME"),
+				"Database_Name" => getenv("DATABASE_NAME"),
 				
 				// Database Host Name
-				"Host_Name" => getenv("OPENSHIFT_MYSQL_DB_HOST"),
+				"Host_Name" => "localhost",
 				
 				// Database Username
-				"Username" => getenv('OPENSHIFT_MYSQL_DB_USERNAME'),
+				"Username" => getenv('DATABASE_PASSWORD'),
 				
 				// MySQL Database Password
-				"Password" => getenv('OPENSHIFT_MYSQL_DB_PASSWORD'),
+				"Password" => getenv('DATABASE_USER'),
 				
 				// MySQL Table Prefix
 				"Table_Prefix" => ""
