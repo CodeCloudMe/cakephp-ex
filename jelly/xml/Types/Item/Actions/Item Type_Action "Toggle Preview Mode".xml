@@ -32,13 +32,16 @@
 				</span>
 			{/Content}
 			{Code}
+				[Set Current_Action.Preview_Mode to True/]
 				[Current_Session]
 					[If Session.Preview_Mode]
-						[Then][Set Session.Preview_Mode to False/][/Then]
-						[Else][Set Session.Preview_Mode to True/][/Else]
+						[Then][Set Current_Action.Preview_Mode to False/][/Then]
+						[Else][Set Current_Action.Preview_Mode to True/][/Else]
 					[/If]
-					[Save Current_Session/]
-				[/]
+				[/Current_Session]
+
+				[Set Current_Session.Preview_Mode to Current_Action.Preview_Mode/]
+				[Save Current_Session/]
 			{/Code}
 		{/Type_Action}
 	

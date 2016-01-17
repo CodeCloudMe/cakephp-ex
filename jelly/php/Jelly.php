@@ -55,6 +55,7 @@ $Start_Time = microtime(true);
 	$GLOBALS['Compiled_Javascript'] = &$Configuration['Compiled_Javascript'];
 	$GLOBALS['Compiled_Styles'] = &$Configuration['Compiled_Styles'];
 	$GLOBALS['Allow_Tracking'] = &$Configuration['Allow_Tracking'];
+	$GLOBALS['Upgrading'] = &$Configuration['Upgrading'];
 	global $URL_Prefix;
 	
 	// Check if using Soft URLs
@@ -238,6 +239,7 @@ $Start_Time = microtime(true);
 		Set_Value($Globals_Item, 'Compiled_Javascript', $GLOBALS['Compiled_Javascript']);
 		Set_Value($Globals_Item, 'Compiled_Styles', $GLOBALS['Compiled_Styles']);
 		Set_Value($Globals_Item, 'Allow_Tracking', $GLOBALS['Allow_Tracking']);
+		Set_Value($Globals_Item, 'Upgrading', $GLOBALS['Upgrading']);
 		
 		// Store Globals Item in PHP Globals
 		// TODO is this clean? So far only used in setting up sessions
@@ -403,11 +405,10 @@ $Start_Time = microtime(true);
 	$Memory_Stack_Reference = &$Path_Item_Reference;
 
 	$Render_Flags = array();	
-// 	traverse($Processed_URL);
 	
 	// If not requesting Raw, render the default site
 	if (isset($Processed_URL['Raw']) && $Processed_URL['Raw'])
-	{
+	{	
 		// TODO: this is for the autosetting of action.target entirely. Maybe there's a better way.
 		// TODO: need to wrap sometimes, i.e. direct loading of raw content for fills
 		// TODO: Tristan randomly tried removing Preserve_Variables from second option below...
@@ -435,6 +436,13 @@ $Start_Time = microtime(true);
 		elseif (isset($Processed_URL['Template']))
 			$Path_Block_String  = '[This as ' . $Path_Template_Alias . '  ' . implode(' ', $Command_String_Flags) . ' /]';
 // 		traverse($Path_Block_String);
+
+		// TODO 
+		// Move elsewhere
+		if ($GLOBALS['Upgrading'])
+		{	
+			$Path_Block_String = '[External_Script]Jelly.Utilities.Reload_Page();[/External_Script]';
+		}
 	}
 	// Otherwise, render the path item from memory
 	else
@@ -453,7 +461,6 @@ $Start_Time = microtime(true);
 			$Path_Block_String = '[1 Site from Database No_Wrap From_Request/]';
 		}
 	}
-	
 	
 	// Add global no_wrap for non-HTML
 	// TODO clean up like above

@@ -359,157 +359,6 @@ Jelly.AJAX.Request = function(Parameters)
 	}
 };
 
-Jelly.Debug = 
-{
-	// Debug mode flag values
-	Level: 
-	{ 
-		None: "None",
-		Errors_Only: "Errors Only",
-		All: "All"
-	},
-	
-	// Global debug mode flag
-	Debug_Mode: "All",
-	Alert_Errors: false,
-	
-	// TODO: doesn't seem to be used.
-	End_Early: 0
-}
-
-;
-
-// TODO - doesn't seem to be used.
-Jelly.Debug.Dir = function(Obj)
-{
-	return;
-	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
-		if (window.console)
-			if (console.dir)
-				console.dir(Obj);
-};
-
-Jelly.Debug.Log = function(Text)
-{
-	var Smart_Debug = false;
-	
-	// If in Debug Mode, verify console compatibility and display text in console
-	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
-		if (window.console )
-			if (console.log)
-			{
-				if (Smart_Debug)
-				{
-					console.group('Log');
-					var Trace = printStackTrace();
-					console.log(Trace[4]);
-//					console.group(Trace[Trace.length - 1]);
-//					console.log(Trace);
-				}
-				console.log(Text);
-				if (Smart_Debug)
-					console.groupEnd();
-			}
-};
-
-Jelly.Debug.Group = function(Name)
-{
-	// Verify debug mode and console compatibility, begin log group with name.
-	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
-		if (window.console)
-			if (console.group)
-				console.group(Name);
-};
-
-Jelly.Debug.End_Group = function(Name)
-{
-	// Verify debug mode and console compatibility, end log group
-	
-	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
-		if (window.console)
-			if (console.groupEnd)
-			{
-				Jelly.Debug.Log("/endgroup (" + Name + ")");
-				console.groupEnd();
-			}
-};
-
-Jelly.Debug.Display_Error = function(Text)
-{
-	// Displays text in console and alert text if according to debugging value. 	
-	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All || Jelly.Debug.Debug_Mode == Jelly.Debug.Level.Errors_Only)
-	{
-		// Display text in console
-		console.log(Text);
-	
-		// Alert text
-		if (Jelly.Debug.Alert_Errors)
-			alert(Text);
-	}
-};
-
-Jelly.Debug.Print_All_Actions = function()
-{
-	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
-	{
-		Jelly.Debug.Group("Print All Actions");
-
-		for (Namespace in Jelly.References.References_By_Namespace)
-		{
-			if (Jelly.References.References_By_Namespace.hasOwnProperty(Namespace))
-			{
-				var Reference = Jelly.References.References_By_Namespace[Namespace];
-			
-				if (Reference["Kind"] == "Item" && Reference["Type_Alias"] && (["Action", "Type_Action"].indexOf(Reference["Type_Alias"]) >= 0))
-				{
-					Jelly.Debug.Log(Reference["Element"]);
-					Jelly.Debug.Log(Reference["Input_Elements"]);
-// 					for (Handler_Event in Reference["Handlers"])
-// 					{
-// 						if (Reference["Handlers"].hasOwnProperty(Handler_Event))
-// 						{
-// 							Jelly.Debug.Log(Namespace + " - " + Handler_Event +":");
-// 							Jelly.Debug.Log(Reference["Handlers"][Handler_Event]);
-// 						}
-// 					}
-				}
-			}
-		}
-	
-		Jelly.Debug.End_Group("Print All Actions");
-	}
-};
-
-Jelly.Debug.Print_All_Handlers = function()
-{
-	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
-	{
-		Jelly.Debug.Group("Print All Handlers");
-
-		for (Namespace in Jelly.References.References_By_Namespace)
-		{
-			if (Jelly.References.References_By_Namespace.hasOwnProperty(Namespace))
-			{
-				var Reference = Jelly.References.References_By_Namespace[Namespace];
-
-				if (Reference["Handlers"])
-				{
-					for (Handler_Event in Reference["Handlers"])
-					{
-						if (Reference["Handlers"].hasOwnProperty(Handler_Event))
-						{
-							Jelly.Debug.Log(Namespace + " - " + Handler_Event +":");
-							Jelly.Debug.Log(Reference["Handlers"][Handler_Event]);
-						}
-					}
-				}
-			}
-		}
-	
-		Jelly.Debug.End_Group("Print All Handlers");
-	}
-};
-
 // TODO
 Jelly.Media =
 {
@@ -853,6 +702,157 @@ Jelly.Media.Register_Global_Sound_Event = function(Event, URL, Callback)
 		Jelly.Media.Global_Audio_URL_Callbacks[URL][Event] = [];
 	
 	Jelly.Media.Global_Audio_URL_Callbacks[URL][Event].push(Callback);
+};
+
+Jelly.Debug = 
+{
+	// Debug mode flag values
+	Level: 
+	{ 
+		None: "None",
+		Errors_Only: "Errors Only",
+		All: "All"
+	},
+	
+	// Global debug mode flag
+	Debug_Mode: "All",
+	Alert_Errors: false,
+	
+	// TODO: doesn't seem to be used.
+	End_Early: 0
+}
+
+;
+
+// TODO - doesn't seem to be used.
+Jelly.Debug.Dir = function(Obj)
+{
+	return;
+	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
+		if (window.console)
+			if (console.dir)
+				console.dir(Obj);
+};
+
+Jelly.Debug.Log = function(Text)
+{
+	var Smart_Debug = false;
+	
+	// If in Debug Mode, verify console compatibility and display text in console
+	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
+		if (window.console )
+			if (console.log)
+			{
+				if (Smart_Debug)
+				{
+					console.group('Log');
+					var Trace = printStackTrace();
+					console.log(Trace[4]);
+//					console.group(Trace[Trace.length - 1]);
+//					console.log(Trace);
+				}
+				console.log(Text);
+				if (Smart_Debug)
+					console.groupEnd();
+			}
+};
+
+Jelly.Debug.Group = function(Name)
+{
+	// Verify debug mode and console compatibility, begin log group with name.
+	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
+		if (window.console)
+			if (console.group)
+				console.group(Name);
+};
+
+Jelly.Debug.End_Group = function(Name)
+{
+	// Verify debug mode and console compatibility, end log group
+	
+	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
+		if (window.console)
+			if (console.groupEnd)
+			{
+				Jelly.Debug.Log("/endgroup (" + Name + ")");
+				console.groupEnd();
+			}
+};
+
+Jelly.Debug.Display_Error = function(Text)
+{
+	// Displays text in console and alert text if according to debugging value. 	
+	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All || Jelly.Debug.Debug_Mode == Jelly.Debug.Level.Errors_Only)
+	{
+		// Display text in console
+		console.log(Text);
+	
+		// Alert text
+		if (Jelly.Debug.Alert_Errors)
+			alert(Text);
+	}
+};
+
+Jelly.Debug.Print_All_Actions = function()
+{
+	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
+	{
+		Jelly.Debug.Group("Print All Actions");
+
+		for (Namespace in Jelly.References.References_By_Namespace)
+		{
+			if (Jelly.References.References_By_Namespace.hasOwnProperty(Namespace))
+			{
+				var Reference = Jelly.References.References_By_Namespace[Namespace];
+			
+				if (Reference["Kind"] == "Item" && Reference["Type_Alias"] && (["Action", "Type_Action"].indexOf(Reference["Type_Alias"]) >= 0))
+				{
+					Jelly.Debug.Log(Reference["Element"]);
+					Jelly.Debug.Log(Reference["Input_Elements"]);
+// 					for (Handler_Event in Reference["Handlers"])
+// 					{
+// 						if (Reference["Handlers"].hasOwnProperty(Handler_Event))
+// 						{
+// 							Jelly.Debug.Log(Namespace + " - " + Handler_Event +":");
+// 							Jelly.Debug.Log(Reference["Handlers"][Handler_Event]);
+// 						}
+// 					}
+				}
+			}
+		}
+	
+		Jelly.Debug.End_Group("Print All Actions");
+	}
+};
+
+Jelly.Debug.Print_All_Handlers = function()
+{
+	if (Jelly.Debug.Debug_Mode == Jelly.Debug.Level.All)
+	{
+		Jelly.Debug.Group("Print All Handlers");
+
+		for (Namespace in Jelly.References.References_By_Namespace)
+		{
+			if (Jelly.References.References_By_Namespace.hasOwnProperty(Namespace))
+			{
+				var Reference = Jelly.References.References_By_Namespace[Namespace];
+
+				if (Reference["Handlers"])
+				{
+					for (Handler_Event in Reference["Handlers"])
+					{
+						if (Reference["Handlers"].hasOwnProperty(Handler_Event))
+						{
+							Jelly.Debug.Log(Namespace + " - " + Handler_Event +":");
+							Jelly.Debug.Log(Reference["Handlers"][Handler_Event]);
+						}
+					}
+				}
+			}
+		}
+	
+		Jelly.Debug.End_Group("Print All Handlers");
+	}
 };
 
 Jelly.Actions = 
@@ -1820,6 +1820,61 @@ Jelly.Actions.Register_Action_Input_Loading_Element = function(Parameters)
 	// TODO
 };
 
+Jelly.Payments = 
+{
+};
+
+;
+
+Jelly.Payments.Update_Ticket_Forecast = function(Parameters)
+{	
+	// TODO - Notate Description & Inputs Up here
+	
+	// Get values
+	var Namespace = Parameters['Namespace'];
+	console.log(Namespace);
+	var Ticket_Price = Jelly.jQuery('#' + Namespace + ' ' + '.Price .Input input').val();
+	var Capacity = Jelly.jQuery('#' + Namespace + ' ' + '.Capacity .Input input').val();
+	var Volunteers = Jelly.jQuery('#' + Namespace + ' ' + '.Volunteers .Input input').is(':checked');
+	var Donations = Jelly.jQuery('#' + Namespace + ' ' + '.Donations .Input input').is(':checked');
+	
+	var Forecast = "";
+	
+	if (Ticket_Price && Capacity && Ticket_Price != 0 && Capacity != 0)
+	{
+		Forecast = '$' + '<span class="Number">' + Math.round(Ticket_Price * Capacity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</span>' + ' ' + 'at sellout';
+		
+		if (Donations)
+			Forecast += ' + ' + '$' + '<span class="Number">' + Math.round(Ticket_Price * Capacity * .15).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</span>' + ' ' + 'in donations';
+		
+		if (Volunteers)
+		{
+			Forecast += ' + ' + '<span class="Number">' + Math.round(Capacity * .05) + '</span>' + ' ' + 'volunteer';
+			if (Math.round(Capacity * .05) != 1) Forecast += 's';
+		}
+	}
+				
+	var Forecast_Element = Jelly.jQuery('#' + Namespace + ' ' + '.Forecast');
+	
+	if (Forecast)
+	{
+		var Forecast_Value_Element = Jelly.jQuery('#' + Namespace + ' ' + '.Forecast .Value');
+		Forecast_Value_Element.html(Forecast);	
+
+		Forecast_Element.addClass('Show');
+
+		if (Donations || Volunteers)
+			Forecast_Element.addClass('Show_Hint');
+		else
+			Forecast_Element.removeClass('Show_Hint');
+	}
+	else
+	{
+		Forecast_Element.removeClass('Show')
+		Forecast_Element.removeClass('Show_Hint')
+	}
+};
+
 Jelly.Handlers = 
 {
 	// Initialize blank instance variables.
@@ -2641,59 +2696,317 @@ Jelly.Handlers.Call_Handler_For_Target = function(Parameters)
 	return;
 };
 
-Jelly.Payments = 
+Jelly.Utilities = 
 {
 };
 
 ;
 
-Jelly.Payments.Update_Ticket_Forecast = function(Parameters)
-{	
-	// TODO - Notate Description & Inputs Up here
+// TODO Some of this needs major debugging.
+Jelly.Utilities.Serialize = function(Parameters)
+{
+	// Returns string of the key and values of Values array separate by Token
+	// Parameters: Values, Token, Is_URI, Namespace
 	
-	// Get values
-	var Namespace = Parameters['Namespace'];
-	console.log(Namespace);
-	var Ticket_Price = Jelly.jQuery('#' + Namespace + ' ' + '.Price .Input input').val();
-	var Capacity = Jelly.jQuery('#' + Namespace + ' ' + '.Capacity .Input input').val();
-	var Volunteers = Jelly.jQuery('#' + Namespace + ' ' + '.Volunteers .Input input').is(':checked');
-	var Donations = Jelly.jQuery('#' + Namespace + ' ' + '.Donations .Input input').is(':checked');
+	var Debug = false && Jelly.Debug.Debug_Mode;
 	
-	var Forecast = "";
-	
-	if (Ticket_Price && Capacity && Ticket_Price != 0 && Capacity != 0)
+	if (Debug)
 	{
-		Forecast = '$' + '<span class="Number">' + Math.round(Ticket_Price * Capacity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</span>' + ' ' + 'at sellout';
-		
-		if (Donations)
-			Forecast += ' + ' + '$' + '<span class="Number">' + Math.round(Ticket_Price * Capacity * .15).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</span>' + ' ' + 'in donations';
-		
-		if (Volunteers)
-		{
-			Forecast += ' + ' + '<span class="Number">' + Math.round(Capacity * .05) + '</span>' + ' ' + 'volunteer';
-			if (Math.round(Capacity * .05) != 1) Forecast += 's';
+		Jelly.Debug.Group("Serialize");
+		Jelly.Debug.Log(Parameters);
+	}
+
+	// Instantiate array of value strings
+	var Serialized_Strings = [];
+	
+	// Generate new namespace as blank, or Namespace_
+	var New_Namespace = "";
+	if (Parameters["Namespace"])
+		New_Namespace = Parameters["Namespace"] + "_";
+	
+	// For each value in array, serialize to key=value, and add to serialized strings array
+	for (Value_Key in Parameters["Values"])
+	{
+		if (Parameters["Values"].hasOwnProperty(Value_Key))
+		{			
+			var Value = Parameters["Values"][Value_Key];
+			switch (typeof(Value))
+			{
+				case "boolean":
+				case "number":
+				case "string":				
+					// Encode URI if specified
+					// TODO: should Value_Key be encodeURIComponented??
+//					if (Parameters["IS_URI"])
+					Value = encodeURIComponent(Value);
+						
+					// Serialize to key=value and store in serialized strings array
+					Serialized_Strings.push(New_Namespace + Value_Key + "=" + Value);
+					break;
+
+				// TODO: This seems like an old thing
+				case "function":
+					Jelly.Debug.Log("AJAX Request: cannot submit functions as post variables");
+					break;
+				
+				case "object":
+					// If array, store namespace type as array, store value count, and serialize values with namespace
+					if (Value.hasOwnProperty('length'))
+					{
+						// Add type for this value 
+						Serialized_Strings.push(New_Namespace + Value_Key + "_" + "Type" + "="  + "Array");
+						
+						// Add count for this value
+						Serialized_Strings.push(New_Namespace + Value_Key + "_" + "Count" + "="  + Value.length);
+						
+						// Add serialized values for this value
+						Serialized_Strings.push(Jelly.Utilities.Serialize(
+								{
+									'Values': Value,
+									'Namespace': New_Namespace + Value_Key,
+//									'Is_URI': Parameters['Is_URI'],
+								}
+							));							
+					}
+					else
+					{
+						// If an item, store namespace type as item,  and serialize values with namespace
+					
+						// Add type for this value 
+						Serialized_Strings.push(New_Namespace + Value_Key + "_" + "Type" + "="  + "Item");
+
+						// Add serialized values for this value
+						Serialized_Strings.push(Jelly.Utilities.Serialize(
+								{
+									'Values': Value,
+									'Namespace': New_Namespace + Value_Key,
+//									'Is_URI': Parameters['Is_URI'],
+								}
+							));
+						}
+					break;
+				default:
+					// Handle undefined case
+					if (Value == undefined)
+					{
+						// Serialize to "key=" and store in serialized strings array
+						Serialized_Strings.push(New_Namespace + Value_Key + "=");
+						break;					
+					}					
+					// Handle unknown case
+					else
+					{
+						// Throw error.
+						Jelly.Debug.Display_Error("Unsupported Post Value Type: " + typeof(Value));
+					}
+					break;
+			}
 		}
 	}
-				
-	var Forecast_Element = Jelly.jQuery('#' + Namespace + ' ' + '.Forecast');
 	
-	if (Forecast)
+	// Join each serialized string by join_token
+	if (Parameters["Token"])
+		Token = Parameters["Token"];
+	else
+		Token = "&";
+
+	var Value_String = Serialized_Strings.join(Token);
+	
+	if (Debug)
 	{
-		var Forecast_Value_Element = Jelly.jQuery('#' + Namespace + ' ' + '.Forecast .Value');
-		Forecast_Value_Element.html(Forecast);	
+		Jelly.Debug.Log(Value_String);
+		Jelly.Debug.End_Group("Serialize");
+	}
+	
+	// Return 
+	return Value_String;
+}
 
-		Forecast_Element.addClass('Show');
 
-		if (Donations || Volunteers)
-			Forecast_Element.addClass('Show_Hint');
+Jelly.Utilities.Require_SSL = function()
+{
+	// Checks for https protocol, redirect to https if not alreay
+	// TODO: lol obsolete
+	
+	// If not https protocol
+	if (document.location.href.substr(0, 5) != "https")
+	{
+		// Assumes http protocol, replaces https in place of the the first four letters in the document location
+		// TODO: i guess this works..., but it's not the right code.
+		document.location.href = "https" + document.location.href.substr(4);
+	}
+};
+
+Jelly.Utilities.Reload_Page = function()
+{
+	// Reloads page.
+	
+//			alert("Reload");
+	// TODO: parameter forceGet = true? false (default) loads from cache.
+	document.location.reload();
+// 	throw 'FAKE RELOAD PAGE';
+};
+
+Jelly.Utilities.Clean_Scripts = function(HTML_Text)
+{	
+	// Cleans scripts from HTML text.
+	// TODO - totally untested
+	
+	// Create a tag with the passed in text as the inner HTML
+	var Content = jQuery(HTML_Text.bold());
+	
+	// Find and remove all script tags
+   Content.find('script').remove();
+   
+   // Return inner HTML
+   return Content.html();
+};
+
+Jelly.Utilities.Execute_Scripts = function(HTML_Text)
+{	
+	// Parses response for scripts, and executes them.	
+	
+	// TODO:  tried jQuery implementation..., but utlimately don't trust it.
+	/*
+	// Turn into jQuery object
+	var DOM = $(HTML_Text);
+	DOM.filter('script').each( function() 
+			{
+				var Script = (this.text || this.textContent || this.innerHTML || '';
+				eval(Script);
+			}
+		);
+	*/
+
+	// TODO: Isn't documented, but seems to work.
+	var Open_Tag = "<script";
+	var Close_Tag = "</script";
+	
+	var Script_Count = 0;
+	var Script_Position = -1;
+	
+	while (1)
+	{
+		var Open_Position = HTML_Text.indexOf(Open_Tag, Script_Position + 1);
+		var Close_Position = HTML_Text.indexOf(Close_Tag, Script_Position + 1);
+
+		if (Open_Position != -1 && (Close_Position == -1 || Open_Position < Close_Position))
+		{
+			Script_Count++;
+			Script_Position = Open_Position;
+			
+			if (Script_Count == 1)
+			{
+				var Script_Start = Open_Position;
+			}
+		}
+		else if (Close_Position != -1 && (Open_Position == -1 || Close_Position < Open_Position))
+		{
+			Script_Count--;
+			Script_Position = Close_Position;
+			
+			if (Script_Count == 0)
+			{				
+				var Script = HTML_Text.substring(HTML_Text.indexOf(">", Script_Start) + 1, Close_Position);
+				try 
+				{
+					eval(Script);
+				} 
+				catch (e)
+				{
+					Jelly.Debug.Log ("Error in Script.");
+					Jelly.Debug.Log (e);
+					Jelly.Debug.Log(e.stack);
+					Jelly.Debug.Log (Script);
+				}
+			}
+		}
 		else
-			Forecast_Element.removeClass('Show_Hint');
+		{
+			break;
+		}
+	}
+
+	/*
+	var Script_Div = document.createElement("div");
+	Script_Div.innerHTML = HTML_Text;
+	var Script_Tags = Script_Div.getElementsByTagName("script");
+	for (Script_Tag_Index in Script_Tags)
+	{
+		var Script = Script_Tags[Script_Tag_Index].innerHTML;
+		if (Script)
+		{
+			Jelly.Debug.Group("Script");
+			Jelly.Debug.Log(Script);
+			eval(Script);
+			Jelly.Debug.End_Group("");
+		}
+	}
+	*/
+	
+//			Jelly.Debug.End_Group("");
+};
+
+Jelly.Utilities.Insert_At_Cursor = function(Parameters)
+{
+	// TODO: Should be in interface
+	// Inserts Value in Element
+	// Parameters: Element, Value, ID
+	// TODO: Rewrite this function
+	if (Parameters["Element"])
+		var Text_Area_Element = Parameters["Element"];
+	else
+		var Text_Area_Element = document.getElementById(Parameters["ID"]);
+//			Jelly.Debug.Log(Parameters["ID"]);
+//			Jelly.Debug.Log(Text_Area_Element);
+	
+	if (!Text_Area_Element)
+		return;
+	
+	var Scroll_Position = Text_Area_Element.scrollTop; 
+	var Cursor_Position = 0; 
+
+	// Determine browser.
+	var Is_Internet_Explorer;
+	if (Text_Area_Element.selectionStart || Text_Area_Element.selectionStart == "0")
+		Is_Internet_Explorer = false;
+	else
+		Is_Internet_Explorer = false;
+
+	// Get cursor position.
+	if (Is_Internet_Explorer)
+	{
+		Text_Area_Element.focus();
+		var Text_Area_Range = document.selection.createRange();
+		Text_Area_Range.moveStart ('character', Text_Area_Element.value.length); 
+		Cursor_Position = range.text.length; 
+	}
+	else
+		Cursor_Position = Text_Area_Element.selectionStart; 
+
+	// Insert text at cursor.
+	Text_Area_Element.value = Text_Area_Element.value.substr(0, Cursor_Position) + Parameters["Value"] + Text_Area_Element.value.substring(Cursor_Position, Text_Area_Element.value.length);				
+
+	// Advance cursor.
+	Cursor_Position += Parameters["Value"].length;
+
+	if (Is_Internet_Explorer)
+	{
+		Text_Area_Element.focus(); 	
+		var Text_Area_Range = document.selection.createRange();
+		range.moveStart ('character', -Text_Area_Element.value.length); 
+		range.moveStart ('character', Cursor_Position); 
+		range.moveEnd ('character', 0);
+		range.select();
 	}
 	else
 	{
-		Forecast_Element.removeClass('Show')
-		Forecast_Element.removeClass('Show_Hint')
+		Text_Area_Element.selectionStart = Cursor_Position;
+		Text_Area_Element.selectionEnd = Cursor_Position;
+		Text_Area_Element.focus();
 	}
+
+	Text_Area_Element.scrollTop = Scroll_Position; 
 };
 
 Jelly.Interface =
@@ -5764,319 +6077,6 @@ Jelly.Interface.Insert_Return_With_Indented_Text = function(Target)
 	
 	if (Debug)
 		Jelly.Debug.End_Group("");
-};
-
-Jelly.Utilities = 
-{
-};
-
-;
-
-// TODO Some of this needs major debugging.
-Jelly.Utilities.Serialize = function(Parameters)
-{
-	// Returns string of the key and values of Values array separate by Token
-	// Parameters: Values, Token, Is_URI, Namespace
-	
-	var Debug = false && Jelly.Debug.Debug_Mode;
-	
-	if (Debug)
-	{
-		Jelly.Debug.Group("Serialize");
-		Jelly.Debug.Log(Parameters);
-	}
-
-	// Instantiate array of value strings
-	var Serialized_Strings = [];
-	
-	// Generate new namespace as blank, or Namespace_
-	var New_Namespace = "";
-	if (Parameters["Namespace"])
-		New_Namespace = Parameters["Namespace"] + "_";
-	
-	// For each value in array, serialize to key=value, and add to serialized strings array
-	for (Value_Key in Parameters["Values"])
-	{
-		if (Parameters["Values"].hasOwnProperty(Value_Key))
-		{			
-			var Value = Parameters["Values"][Value_Key];
-			switch (typeof(Value))
-			{
-				case "boolean":
-				case "number":
-				case "string":				
-					// Encode URI if specified
-					// TODO: should Value_Key be encodeURIComponented??
-//					if (Parameters["IS_URI"])
-					Value = encodeURIComponent(Value);
-						
-					// Serialize to key=value and store in serialized strings array
-					Serialized_Strings.push(New_Namespace + Value_Key + "=" + Value);
-					break;
-
-				// TODO: This seems like an old thing
-				case "function":
-					Jelly.Debug.Log("AJAX Request: cannot submit functions as post variables");
-					break;
-				
-				case "object":
-					// If array, store namespace type as array, store value count, and serialize values with namespace
-					if (Value.hasOwnProperty('length'))
-					{
-						// Add type for this value 
-						Serialized_Strings.push(New_Namespace + Value_Key + "_" + "Type" + "="  + "Array");
-						
-						// Add count for this value
-						Serialized_Strings.push(New_Namespace + Value_Key + "_" + "Count" + "="  + Value.length);
-						
-						// Add serialized values for this value
-						Serialized_Strings.push(Jelly.Utilities.Serialize(
-								{
-									'Values': Value,
-									'Namespace': New_Namespace + Value_Key,
-//									'Is_URI': Parameters['Is_URI'],
-								}
-							));							
-					}
-					else
-					{
-						// If an item, store namespace type as item,  and serialize values with namespace
-					
-						// Add type for this value 
-						Serialized_Strings.push(New_Namespace + Value_Key + "_" + "Type" + "="  + "Item");
-
-						// Add serialized values for this value
-						Serialized_Strings.push(Jelly.Utilities.Serialize(
-								{
-									'Values': Value,
-									'Namespace': New_Namespace + Value_Key,
-//									'Is_URI': Parameters['Is_URI'],
-								}
-							));
-						}
-					break;
-				default:
-					// Handle undefined case
-					if (Value == undefined)
-					{
-						// Serialize to "key=" and store in serialized strings array
-						Serialized_Strings.push(New_Namespace + Value_Key + "=");
-						break;					
-					}					
-					// Handle unknown case
-					else
-					{
-						// Throw error.
-						Jelly.Debug.Display_Error("Unsupported Post Value Type: " + typeof(Value));
-					}
-					break;
-			}
-		}
-	}
-	
-	// Join each serialized string by join_token
-	if (Parameters["Token"])
-		Token = Parameters["Token"];
-	else
-		Token = "&";
-
-	var Value_String = Serialized_Strings.join(Token);
-	
-	if (Debug)
-	{
-		Jelly.Debug.Log(Value_String);
-		Jelly.Debug.End_Group("Serialize");
-	}
-	
-	// Return 
-	return Value_String;
-}
-
-
-Jelly.Utilities.Require_SSL = function()
-{
-	// Checks for https protocol, redirect to https if not alreay
-	// TODO: lol obsolete
-	
-	// If not https protocol
-	if (document.location.href.substr(0, 5) != "https")
-	{
-		// Assumes http protocol, replaces https in place of the the first four letters in the document location
-		// TODO: i guess this works..., but it's not the right code.
-		document.location.href = "https" + document.location.href.substr(4);
-	}
-};
-
-Jelly.Utilities.Reload_Page = function()
-{
-	// Reloads page.
-	
-//			alert("Reload");
-	// TODO: parameter forceGet = true? false (default) loads from cache.
-	document.location.reload();
-// 	throw 'FAKE RELOAD PAGE';
-};
-
-Jelly.Utilities.Clean_Scripts = function(HTML_Text)
-{	
-	// Cleans scripts from HTML text.
-	// TODO - totally untested
-	
-	// Create a tag with the passed in text as the inner HTML
-	var Content = jQuery(HTML_Text.bold());
-	
-	// Find and remove all script tags
-   Content.find('script').remove();
-   
-   // Return inner HTML
-   return Content.html();
-};
-
-Jelly.Utilities.Execute_Scripts = function(HTML_Text)
-{	
-	// Parses response for scripts, and executes them.	
-	
-	// TODO:  tried jQuery implementation..., but utlimately don't trust it.
-	/*
-	// Turn into jQuery object
-	var DOM = $(HTML_Text);
-	DOM.filter('script').each( function() 
-			{
-				var Script = (this.text || this.textContent || this.innerHTML || '';
-				eval(Script);
-			}
-		);
-	*/
-
-	// TODO: Isn't documented, but seems to work.
-	var Open_Tag = "<script";
-	var Close_Tag = "</script";
-	
-	var Script_Count = 0;
-	var Script_Position = -1;
-	
-	while (1)
-	{
-		var Open_Position = HTML_Text.indexOf(Open_Tag, Script_Position + 1);
-		var Close_Position = HTML_Text.indexOf(Close_Tag, Script_Position + 1);
-
-		if (Open_Position != -1 && (Close_Position == -1 || Open_Position < Close_Position))
-		{
-			Script_Count++;
-			Script_Position = Open_Position;
-			
-			if (Script_Count == 1)
-			{
-				var Script_Start = Open_Position;
-			}
-		}
-		else if (Close_Position != -1 && (Open_Position == -1 || Close_Position < Open_Position))
-		{
-			Script_Count--;
-			Script_Position = Close_Position;
-			
-			if (Script_Count == 0)
-			{				
-				var Script = HTML_Text.substring(HTML_Text.indexOf(">", Script_Start) + 1, Close_Position);
-				try 
-				{
-					eval(Script);
-				} 
-				catch (e)
-				{
-					Jelly.Debug.Log ("Error in Script.");
-					Jelly.Debug.Log (e);
-					Jelly.Debug.Log(e.stack);
-					Jelly.Debug.Log (Script);
-				}
-			}
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	/*
-	var Script_Div = document.createElement("div");
-	Script_Div.innerHTML = HTML_Text;
-	var Script_Tags = Script_Div.getElementsByTagName("script");
-	for (Script_Tag_Index in Script_Tags)
-	{
-		var Script = Script_Tags[Script_Tag_Index].innerHTML;
-		if (Script)
-		{
-			Jelly.Debug.Group("Script");
-			Jelly.Debug.Log(Script);
-			eval(Script);
-			Jelly.Debug.End_Group("");
-		}
-	}
-	*/
-	
-//			Jelly.Debug.End_Group("");
-};
-
-Jelly.Utilities.Insert_At_Cursor = function(Parameters)
-{
-	// TODO: Should be in interface
-	// Inserts Value in Element
-	// Parameters: Element, Value, ID
-	// TODO: Rewrite this function
-	if (Parameters["Element"])
-		var Text_Area_Element = Parameters["Element"];
-	else
-		var Text_Area_Element = document.getElementById(Parameters["ID"]);
-//			Jelly.Debug.Log(Parameters["ID"]);
-//			Jelly.Debug.Log(Text_Area_Element);
-	
-	if (!Text_Area_Element)
-		return;
-	
-	var Scroll_Position = Text_Area_Element.scrollTop; 
-	var Cursor_Position = 0; 
-
-	// Determine browser.
-	var Is_Internet_Explorer;
-	if (Text_Area_Element.selectionStart || Text_Area_Element.selectionStart == "0")
-		Is_Internet_Explorer = false;
-	else
-		Is_Internet_Explorer = false;
-
-	// Get cursor position.
-	if (Is_Internet_Explorer)
-	{
-		Text_Area_Element.focus();
-		var Text_Area_Range = document.selection.createRange();
-		Text_Area_Range.moveStart ('character', Text_Area_Element.value.length); 
-		Cursor_Position = range.text.length; 
-	}
-	else
-		Cursor_Position = Text_Area_Element.selectionStart; 
-
-	// Insert text at cursor.
-	Text_Area_Element.value = Text_Area_Element.value.substr(0, Cursor_Position) + Parameters["Value"] + Text_Area_Element.value.substring(Cursor_Position, Text_Area_Element.value.length);				
-
-	// Advance cursor.
-	Cursor_Position += Parameters["Value"].length;
-
-	if (Is_Internet_Explorer)
-	{
-		Text_Area_Element.focus(); 	
-		var Text_Area_Range = document.selection.createRange();
-		range.moveStart ('character', -Text_Area_Element.value.length); 
-		range.moveStart ('character', Cursor_Position); 
-		range.moveEnd ('character', 0);
-		range.select();
-	}
-	else
-	{
-		Text_Area_Element.selectionStart = Cursor_Position;
-		Text_Area_Element.selectionEnd = Cursor_Position;
-		Text_Area_Element.focus();
-	}
-
-	Text_Area_Element.scrollTop = Scroll_Position; 
 };
 
 Jelly.References = 

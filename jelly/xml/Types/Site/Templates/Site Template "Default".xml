@@ -161,7 +161,7 @@
 
 									<!-- Nanobar -->
 									<script src="/jelly/libraries/nanobar/nanobar.js" type="text/javascript"></script>																							
-						
+		
 									<!-- HeadJS -->
 									<script src="[Globals.URL_Prefix No_Wrap /]/jelly/libraries/head/head.js" type="text/javascript"></script>
 								<!-- --> 
@@ -186,96 +186,102 @@
 					[/No_Wrap]
 	
 					<body id="Body">
-						<!-- Start -->
-						<script>
-							[If Globals.Compiled_Javascript]
-								[Then]
-									head.load("[Globals.URL_Prefix No_Wrap /]/jelly/javascript/Jelly (Compiled).js");
-								[/Then]
-								[Else]
-									head.load("[Globals.URL_Prefix No_Wrap /]/jelly/javascript/development/Jelly.js");
-								[/Else]
-							[/If]
-							head.ready(function() \{
-								Jelly.Start(\{
-											[If Globals.Superuser]'Show_Context_Menu': true,[/If]
-											[Authenticate "Superuser"]'Show_Context_Menu': true,[/If]
-											'URL_Prefix': '[Globals.URL_Prefix No_Wrap /]'
-										\}
-									);
-								\});
-						</script>
-		
-						<!-- Promo -->
-						[Ignore] 
-							[External_Script]
-								[Set Site.Variables.Show_Promotion to True/]
-
-								[Globals.Current_Session no_wrap]
-									[If not This.First_Visit]
-										[Set Site.Variables.Show_Promotion to False/]
+						[If Globals.Upgrading and not Path_Variables.Force]
+							[Then]
+								[Block "Upgrading"/]
+							[/Then]
+							[Else]
+								<!-- Start -->
+								<script>
+									[If Globals.Compiled_Javascript]
+										[Then]
+											head.load("[Globals.URL_Prefix No_Wrap /]/jelly/javascript/Jelly (Compiled).js");
+										[/Then]
+										[Else]
+											head.load("[Globals.URL_Prefix No_Wrap /]/jelly/javascript/development/Jelly.js");
+										[/Else]
 									[/If]
-								[/Globals.Current_Session]
+									head.ready(function() \{
+										Jelly.Start(\{
+													[If Globals.Superuser]'Show_Context_Menu': true,[/If]
+													[Authenticate "Superuser"]'Show_Context_Menu': true,[/If]
+													'URL_Prefix': '[Globals.URL_Prefix No_Wrap /]'
+												\}
+											);
+										\});
+								</script>
+								<!-- Promo -->
+								[Ignore] 
+									[External_Script]
+										[Set Site.Variables.Show_Promotion to True/]
+
+										[Globals.Current_Session no_wrap]
+											[If not This.First_Visit]
+												[Set Site.Variables.Show_Promotion to False/]
+											[/If]
+										[/Globals.Current_Session]
 			
-								[If Site.Variables.Show_Promotion]
-									[Block "Welcome" no_wrap]
-										[Go to "/Block/[Block.ID no_wrap /]" into "Window"/]
-									[/Block]
-									[Set Current_Session.First_Visit to False no_refresh/]
-									[Save Globals.Current_Session no_refresh/]
-								[/If]
-							[/External_Script]
-						[/Ignore]
+										[If Site.Variables.Show_Promotion]
+											[Block "Welcome" no_wrap]
+												[Go to "/Block/[Block.ID no_wrap /]" into "Window"/]
+											[/Block]
+											[Set Current_Session.First_Visit to False no_refresh/]
+											[Save Globals.Current_Session no_refresh/]
+										[/If]
+									[/External_Script]
+								[/Ignore]
 		
-						<!-- Disabled Setup Assistant -->
-						[Ignore]
-							[External_Script]
-								[Admin]
-									<!-- Check if this is the first visit to the site -->
-									[If Site.First_Visit]
-										<!-- Show Setup Assistant -->
-										[Action "Setup Assistant"]
-											[Go to this into "Window" /]
-										[/Action]
+								<!-- Disabled Setup Assistant -->
+								[Ignore]
+									[External_Script]
+										[Admin]
+											<!-- Check if this is the first visit to the site -->
+											[If Site.First_Visit]
+												<!-- Show Setup Assistant -->
+												[Action "Setup Assistant"]
+													[Go to this into "Window" /]
+												[/Action]
 	
-										<!-- Don't show next time -->
-										[Set Site.First_Visit to false /]
-										[Save Site no_refresh /]
-									[/If]
-								[/Admin]
-							[/External_Script]
-						[/Ignore]						
+												<!-- Don't show next time -->
+												[Set Site.First_Visit to false /]
+												[Save Site no_refresh /]
+											[/If]
+										[/Admin]
+									[/External_Script]
+								[/Ignore]						
 
-						<!-- Layout -->
-						<div id="Jelly_Wrapper" [Admin]class="Admin_Mode"[/Admin]>
-							<header id="Jelly_Toolbar">
-								[Block "Toolbar" no_preloader /]
-							</header>
-							<main id="Jelly_Main_Wrapper">
-								<div id="Jelly_Sidebar" [Admin]class="Visible"[/Admin]>[Block "Navigator" no_preloader /]</div>
-								<div id="Jelly_Browse_Bar"></div>
-								<!-- TODO - remove Backend when moved on to better containers --> 
-								<main id="Jelly_Content" class="Jelly_Content[If "[Format as Lowercase][Globals.Path_Template_Alias No_Wrap/][/Format]" = "manage"] Backend[/If][Admin] Sidebar_Visible[/Admin]">
-									[Site.Design /]
-								</main>
-							</main>
-						</div>
+								<!-- Layout -->
+								<div id="Jelly_Wrapper" [Admin]class="Admin_Mode"[/Admin]>
+									<header id="Jelly_Toolbar">
+										[Block "Toolbar" no_preloader /]
+									</header>
+									<main id="Jelly_Main_Wrapper">
+										<div id="Jelly_Sidebar" [Admin]class="Visible"[/Admin]>[Block "Navigator" no_preloader /]</div>
+										<div id="Jelly_Browse_Bar"></div>
+										<!-- TODO - remove Backend when moved on to better containers --> 
+										<main id="Jelly_Content" class="Jelly_Content[If "[Format as Lowercase][Globals.Path_Template_Alias No_Wrap/][/Format]" = "manage"] Backend[/If][Admin] Sidebar_Visible[/Admin]">
+											[Site.Design /]
+										</main>
+									</main>
+								</div>
 		
-						[Member]
-							[External_Script]
-								Jelly.Interface.Show_Toolbar();
-								// Jelly.Interface.Show_Sidebar();
-							[/External_Script]
-						[/Member]
-						[Guest]
-							<!-- TODO Hack -->
-							[Admin]
-								[External_Script]
-									Jelly.Interface.Show_Toolbar();
-									// Jelly.Interface.Show_Sidebar();
-								[/External_Script]
-							[/Admin]
-						[/Guest]
+								[Member]
+									[External_Script]
+										Jelly.Interface.Show_Toolbar();
+										// Jelly.Interface.Show_Sidebar();
+									[/External_Script]
+								[/Member]
+								[Guest]
+									<!-- TODO Hack -->
+									[Admin]
+										[External_Script]
+											Jelly.Interface.Show_Toolbar();
+											// Jelly.Interface.Show_Sidebar();
+										[/External_Script]
+									[/Admin]
+								[/Guest]
+							[/Else]
+						[/If]
 					</body>
 				</html>
 			{/Content}

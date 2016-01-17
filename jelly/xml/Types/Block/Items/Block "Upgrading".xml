@@ -1,0 +1,16 @@
+{?xml version="1.0"?}
+{Jelly}
+	
+	{!-- Block "Upgrading" --}
+		{Block}
+			{Name}Upgrading{/Name}
+			{Content}
+				<div style="position:absolute;top:50%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);text-align:center;">
+					UPGRADING...<br/>
+					<br/>
+					<img src="http://www.zombox.net/stuff/zombox_cap_53.gif"/>
+				</div>
+			{/Content}
+		{/Block}
+	
+{/Jelly}
