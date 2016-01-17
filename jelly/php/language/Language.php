@@ -63,6 +63,7 @@ $Language_Terms = Array(
 	'php' => array('preprocess'),
 	'replace' => array('subject', 'with', 'in'),
 	'authenticate' => array('team', 'ignore_preview_mode'),
+	'superuser' => array('ignore_preview_mode'),
 	'admin' => array('ignore_preview_mode'),
 	'manager' => array('ignore_preview_mode'),
 	'guest' => array('ignore_preview_mode'),

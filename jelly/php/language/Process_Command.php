@@ -1580,6 +1580,7 @@ function &Process_Command(&$Database, &$Command, &$Memory_Stack_Reference = null
 			
 			// Users...
 			// Guest, Member, Authenticate, Admin, Manager
+			case 'superuser':
 			case 'guest':
 			case 'member':
 			case 'authenticate':
@@ -1638,6 +1639,7 @@ function &Process_Command(&$Database, &$Command, &$Memory_Stack_Reference = null
 							unset($_);
 						}
 						break;					
+					case 'superuser':
 					case 'admin':
 					case 'manager':						
 						if (Authenticate($Command_Name, $Authenticate_Parameters))

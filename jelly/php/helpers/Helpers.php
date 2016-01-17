@@ -8,6 +8,7 @@ require_once("Is_Robot.php");
 require_once("Jelly_Format.php");
 require_once("Jelly_Date_Format.php");
 require_once("Authenticate.php");
+require_once("Get_Authentications.php");
 require_once("Unique_File_Name.php");
 require_once("Jelly_MIME_Content_Type.php");
 require_once("Make_Directories_If_Nonexistent.php");

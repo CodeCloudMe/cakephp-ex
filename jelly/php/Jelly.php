@@ -51,7 +51,7 @@ $Start_Time = microtime(true);
 	
 	// Globalize Configuration Variables
 	$GLOBALS['URL_Prefix'] = &New_String(trim($Configuration['URL_Prefix']));
-	$GLOBALS['Admin'] = &$Configuration['Admin'];
+	$GLOBALS['Superuser'] = &$Configuration['Superuser'];
 	$GLOBALS['Compiled_Javascript'] = &$Configuration['Compiled_Javascript'];
 	$GLOBALS['Compiled_Styles'] = &$Configuration['Compiled_Styles'];
 	$GLOBALS['Allow_Tracking'] = &$Configuration['Allow_Tracking'];
@@ -234,7 +234,7 @@ $Start_Time = microtime(true);
 		Set_Simple($Globals_Item, 'Alias', 'Globals');
 		Set_Value($Globals_Item, 'Install_Path', $GLOBALS['Install_Path']);
 		Set_Value($Globals_Item, 'URL_Prefix', $URL_Prefix);
-		Set_Value($Globals_Item, 'Superuser', $GLOBALS['Admin']);
+		Set_Value($Globals_Item, 'Superuser', $GLOBALS['Superuser']);
 		Set_Value($Globals_Item, 'Compiled_Javascript', $GLOBALS['Compiled_Javascript']);
 		Set_Value($Globals_Item, 'Compiled_Styles', $GLOBALS['Compiled_Styles']);
 		Set_Value($Globals_Item, 'Allow_Tracking', $GLOBALS['Allow_Tracking']);
@@ -313,6 +313,11 @@ $Start_Time = microtime(true);
 				}
 			}
 		}
+	}
+	
+	// Cache authentications
+	{
+		$GLOBALS['Cached_Authentications'] = &Get_Authentications();
 	}
 	
 	// TODO hacky implementation	

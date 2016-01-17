@@ -55,9 +55,9 @@ function &Get_Environment_Variables()
 			// URL Prefix
 			"URL_Prefix" => "",
 	
-			// Admin
+			// Superuser
 
-			"Admin" =>  filter_var(getenv('admin'),FILTER_VALIDATE_BOOLEAN),
+			"Superuser" =>  filter_var(getenv('superuser'),FILTER_VALIDATE_BOOLEAN),
 	
 			// Allow Reset
 			// TODO: Remove
