@@ -25,5 +25,5 @@ SetEnv tracking "true"
 SetEnv compiledJavascript "true"
 SetEnv compiledStyles "true"
 SetEnv superuser "false"
-SetEnv reset "false"
+SetEnv reset "true"
 
