@@ -20,6 +20,7 @@ function &Get_Environment_Variables()
 				// MySQL Database Password
 				"Password" => getenv('DATABASE_PASSWORD'),
 				
+				
 				// MySQL Table Prefix
 				"Table_Prefix" => ""
 			),
