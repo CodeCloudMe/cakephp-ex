@@ -12,8 +12,7 @@ function &Get_Environment_Variables()
 				"Database_Name" => getenv("DATABASE_NAME"),
 				
 				// Database Host Name
-				"Host_Name" => "172.30.44.76",
-
+				"Host_Name" => "172.17.0.6",	
 				
 				// Database Username
 				"Username" => getenv('DATABASE_USER'),
