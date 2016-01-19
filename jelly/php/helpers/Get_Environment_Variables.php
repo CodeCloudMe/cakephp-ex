@@ -12,13 +12,13 @@ function &Get_Environment_Variables()
 				"Database_Name" => "sampledb",
 				
 				// Database Host Name
-				"Host_Name" => "172.17.0.3",	
+				"Host_Name" => "172.17.0.8",	
 				
 				// Database Username
-				"Username" => 'user3GI',
+				"Username" => 'userLHK',
 				
 				// MySQL Database Password
-				"Password" => 'gLh3KUWSDLT742yP',
+				"Password" => 'EoqNE2mLaTCYUIqr',
 				
 
 				// MySQL Table Prefix
