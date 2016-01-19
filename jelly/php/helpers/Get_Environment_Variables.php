@@ -9,7 +9,7 @@ function &Get_Environment_Variables()
 			"Database" =>
 			array(
 				// Database Name
-				"Database_Name" => getenv(" MYSQL_DATABASE"),
+				"Database_Name" => getenv("MYSQL_DATABASE"),
 				
 				// Database Host Name
 				"Host_Name" => "172.17.0.7",	
