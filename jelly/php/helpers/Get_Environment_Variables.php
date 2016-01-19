@@ -9,16 +9,16 @@ function &Get_Environment_Variables()
 			"Database" =>
 			array(
 				// Database Name
-				"Database_Name" => getenv("DATABASE_NAME"),
+				"Database_Name" => getenv(" MYSQL_DATABASE"),
 				
 				// Database Host Name
 				"Host_Name" => "172.17.0.7",	
 				
 				// Database Username
-				"Username" => getenv('DATABASE_USER'),
+				"Username" => getenv('MYSQL_USER'),
 				
 				// MySQL Database Password
-				"Password" => getenv('DATABASE_PASSWORD'),
+				"Password" => getenv('MYSQL_PASSWORD'),
 				
 
 				// MySQL Table Prefix
