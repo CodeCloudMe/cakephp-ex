@@ -12,7 +12,9 @@ function &Get_Environment_Variables()
 				"Database_Name" => "sampledb",
 				
 				// Database Host Name
-				"Host_Name" => "172.17.0.8",	
+				"Host_Name" => "172.17.0.8 ",	
+				
+
 				
 				// Database Username
 				"Username" => 'userLHK',
